@@ -10,7 +10,7 @@ import { FAQSection } from '@/components/common/FAQSection';
 import type { FAQ } from '@/types';
 
 // ============================================================
-// PRICING PAGE — "{Tool} Pricing" keyword targeting
+// PRICING PAGE — ENHANCED with visual comparison, value meter
 // ============================================================
 
 export const revalidate = 3600;
@@ -59,8 +59,16 @@ export default async function PricingPage({ params }: PageProps) {
   const startingPrice = pricing.startingPrice;
   const freeTrialDays = pricing.freeTrialDays;
   const cheapestPlan = plans.filter((p) => p.price !== null).sort((a, b) => (a.price ?? 0) - (b.price ?? 0))[0];
+  const mostExpensivePlan = plans.filter((p) => p.price !== null).sort((a, b) => (b.price ?? 0) - (a.price ?? 0))[0];
+  const hasEnterprise = plans.some((p) => p.price === null);
 
-  // --- Generate dynamic FAQ answers ---
+  // Value score color
+  const valueScore = tool.ratings.valueForMoney;
+  const valueColor = valueScore >= 8 ? 'text-green-600' : valueScore >= 6 ? 'text-yellow-600' : 'text-red-500';
+  const valueBg = valueScore >= 8 ? 'bg-green-500' : valueScore >= 6 ? 'bg-yellow-500' : 'bg-red-500';
+  const valueLabel = valueScore >= 8 ? 'Excellent Value' : valueScore >= 6 ? 'Good Value' : 'Below Average';
+
+  // Generate dynamic FAQs
   const faqs: FAQ[] = [
     {
       question: `Does ${tool.name} have a free plan?`,
@@ -96,14 +104,13 @@ export default async function PricingPage({ params }: PageProps) {
     },
   ];
 
-  // --- Schemas ---
+  // Schemas
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: '/' },
     { name: cat?.name || category, url: `/${category}` },
     { name: tool.name, url: `/${category}/${toolSlug}` },
     { name: 'Pricing', url: `/${category}/${toolSlug}/pricing` },
   ]);
-
   const toolSchema = generateToolSchema(tool, cat?.name || category);
   const faqSchema = generateFAQSchema(faqs);
 
@@ -115,8 +122,7 @@ export default async function PricingPage({ params }: PageProps) {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       )}
 
-      <article className="max-w-5xl mx-auto px-4 py-8">
-        {/* Breadcrumbs */}
+      <article className="max-w-6xl mx-auto px-4 py-8">
         <Breadcrumbs items={[
           { name: 'Home', url: '/' },
           { name: cat?.name || category, url: `/${category}` },
@@ -124,91 +130,157 @@ export default async function PricingPage({ params }: PageProps) {
           { name: 'Pricing', url: '' },
         ]} />
 
-        {/* H1 */}
-        <h1 className="text-3xl md:text-4xl font-bold mt-6 mb-4">
-          {tool.name} Pricing Plans &amp; Costs ({year})
-        </h1>
-        <p className="text-lg text-gray-600 dark:text-gray-300 mb-10">
-          A complete breakdown of {tool.name} pricing, plans, and what you get at each tier.
-          Find the right plan for your needs and budget.
-        </p>
-
-        {/* Quick Summary */}
-        <div className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-6 mb-10">
-          <h2 className="font-semibold mb-4">Quick Pricing Overview</h2>
-          <div className="flex flex-wrap gap-4 text-sm">
-            {hasFree && (
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-full font-medium">
-                Free Plan Available
-              </span>
+        {/* ========== PRICING HERO ========== */}
+        <div className="mt-6 mb-10">
+          <div className="flex items-center gap-4 mb-4">
+            {tool.logoUrl ? (
+              <img src={tool.logoUrl} alt={`${tool.name} logo`} className="w-14 h-14 rounded-xl shadow-sm" loading="lazy" />
+            ) : (
+              <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-2xl font-bold text-white">
+                {tool.name[0]}
+              </div>
             )}
-            {startingPrice !== null && (
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded-full font-medium">
-                From ${startingPrice}/mo
-              </span>
-            )}
-            {freeTrialDays !== null && freeTrialDays > 0 && (
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 rounded-full font-medium">
-                {freeTrialDays}-Day Free Trial
-              </span>
-            )}
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 rounded-full font-medium">
-              Value: {tool.ratings.valueForMoney.toFixed(1)}/10
-            </span>
+            <div>
+              <h1 className="text-3xl md:text-4xl font-bold">
+                {tool.name} Pricing Plans ({year})
+              </h1>
+              <p className="text-gray-500 dark:text-gray-400 mt-1">
+                Complete pricing breakdown and plan comparison
+              </p>
+            </div>
           </div>
         </div>
 
-        {/* Pricing Cards Grid */}
+        {/* ========== PRICING SNAPSHOT ========== */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+          <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 p-5 text-center">
+            <div className="text-3xl mb-2">{hasFree ? '\u2705' : '\u274C'}</div>
+            <div className="text-sm font-semibold">{hasFree ? 'Free Plan' : 'No Free Plan'}</div>
+            <div className="text-xs text-gray-400 mt-1">{hasFree ? 'Available' : 'Paid only'}</div>
+          </div>
+          <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 p-5 text-center">
+            <div className="text-2xl font-black text-blue-600 mb-1">
+              {startingPrice !== null ? `$${startingPrice}` : 'Custom'}
+            </div>
+            <div className="text-sm font-semibold">Starting Price</div>
+            <div className="text-xs text-gray-400 mt-1">{startingPrice !== null ? 'per month' : 'Contact sales'}</div>
+          </div>
+          <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 p-5 text-center">
+            <div className="text-2xl font-black text-purple-600 mb-1">
+              {freeTrialDays ? `${freeTrialDays}d` : 'N/A'}
+            </div>
+            <div className="text-sm font-semibold">Free Trial</div>
+            <div className="text-xs text-gray-400 mt-1">{freeTrialDays ? `${freeTrialDays} days` : 'Not available'}</div>
+          </div>
+          <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 p-5 text-center">
+            <div className="text-2xl font-black mb-1">{plans.length}</div>
+            <div className="text-sm font-semibold">Plans Available</div>
+            <div className="text-xs text-gray-400 mt-1">{hasEnterprise ? 'Incl. Enterprise' : 'Standard plans'}</div>
+          </div>
+        </div>
+
+        {/* ========== VALUE FOR MONEY METER ========== */}
+        <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 mb-10">
+          <div className="flex flex-col md:flex-row items-center gap-6">
+            <div className="flex items-center gap-4">
+              <div className="relative w-20 h-20">
+                <svg className="w-20 h-20 -rotate-90" viewBox="0 0 80 80">
+                  <circle cx="40" cy="40" r="35" fill="none" stroke="currentColor" strokeWidth="6" className="text-gray-100 dark:text-gray-800" />
+                  <circle
+                    cx="40" cy="40" r="35" fill="none" strokeWidth="6"
+                    strokeDasharray={`${(valueScore / 10) * 220} 220`}
+                    strokeLinecap="round"
+                    className={valueBg}
+                  />
+                </svg>
+                <span className={`absolute inset-0 flex items-center justify-center text-xl font-black ${valueColor}`}>
+                  {valueScore.toFixed(1)}
+                </span>
+              </div>
+              <div>
+                <div className={`text-lg font-bold ${valueColor}`}>{valueLabel}</div>
+                <div className="text-sm text-gray-500">Value for Money Score</div>
+              </div>
+            </div>
+            <div className="flex-1 grid grid-cols-3 gap-4 text-center">
+              <div>
+                <div className="text-sm font-bold">{tool.ratings.overall.toFixed(1)}/10</div>
+                <div className="text-xs text-gray-400">Overall Rating</div>
+              </div>
+              <div>
+                <div className="text-sm font-bold">{tool.ratings.features.toFixed(1)}/10</div>
+                <div className="text-xs text-gray-400">Features Score</div>
+              </div>
+              <div>
+                <div className="text-sm font-bold">{tool.ratings.support.toFixed(1)}/10</div>
+                <div className="text-xs text-gray-400">Support Score</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ========== PRICING CARDS ========== */}
         {plans.length > 0 ? (
           <section className="mb-14">
             <h2 className="text-2xl font-bold mb-6">{tool.name} Plans Comparison</h2>
-            <div className="grid md:grid-cols-3 gap-6">
+            <div className={`grid gap-6 ${plans.length === 1 ? 'md:grid-cols-1 max-w-md mx-auto' : plans.length === 2 ? 'md:grid-cols-2' : plans.length >= 4 ? 'md:grid-cols-2 lg:grid-cols-4' : 'md:grid-cols-3'}`}>
               {plans.map((plan, idx) => (
                 <div
                   key={idx}
-                  className={`relative rounded-2xl border p-6 flex flex-col ${
+                  className={`relative rounded-2xl border p-6 flex flex-col bg-white dark:bg-gray-900 ${
                     plan.isPopular
-                      ? 'border-blue-500 dark:border-blue-400 shadow-lg shadow-blue-100 dark:shadow-blue-900/20'
+                      ? 'border-blue-500 dark:border-blue-400 shadow-lg shadow-blue-100 dark:shadow-blue-900/20 ring-1 ring-blue-500/20'
                       : 'border-gray-200 dark:border-gray-700'
-                  } hover:border-blue-200 dark:hover:border-blue-600 transition-colors`}
+                  } hover:shadow-lg transition-all`}
                 >
                   {plan.isPopular && (
-                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-blue-600 text-white text-xs font-semibold rounded-full">
-                      Most Popular
-                    </span>
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-xs font-bold rounded-full shadow-md">
+                      MOST POPULAR
+                    </div>
                   )}
-                  <h3 className="text-lg font-semibold mb-2">{plan.name}</h3>
-                  <div className="mb-4">
+
+                  <h3 className="text-lg font-bold mb-1 mt-1">{plan.name}</h3>
+
+                  <div className="mb-5">
                     {plan.price !== null ? (
-                      <>
-                        <span className="text-3xl font-bold">${plan.price}</span>
-                        <span className="text-gray-500 dark:text-gray-400 text-sm ml-1">
-                          /{plan.billingCycle === 'yearly' ? 'year' : plan.billingCycle === 'one-time' ? 'one-time' : 'mo'}
+                      <div className="flex items-baseline gap-1">
+                        <span className="text-4xl font-black">${plan.price}</span>
+                        <span className="text-gray-400 text-sm">
+                          /{plan.billingCycle === 'yearly' ? 'yr' : plan.billingCycle === 'one-time' ? 'once' : 'mo'}
                         </span>
-                      </>
+                      </div>
                     ) : (
-                      <span className="text-3xl font-bold">Custom</span>
+                      <span className="text-4xl font-black">Custom</span>
+                    )}
+                    {plan.billingCycle === 'yearly' && plan.price !== null && (
+                      <div className="text-xs text-green-600 font-medium mt-1">
+                        &#8776; ${(plan.price / 12).toFixed(0)}/mo billed annually
+                      </div>
                     )}
                   </div>
-                  <ul className="space-y-2 mb-6 flex-1">
+
+                  <ul className="space-y-2.5 mb-6 flex-1">
                     {plan.features.map((feature, fIdx) => (
                       <li key={fIdx} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-300">
-                        <span className="text-green-500 mt-0.5 flex-shrink-0">&#10003;</span>
+                        <svg className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
                         {feature}
                       </li>
                     ))}
                   </ul>
+
                   <Link
                     href={tool.websiteUrl || '#'}
                     target="_blank"
                     rel="noopener noreferrer nofollow"
-                    className={`block text-center py-2.5 px-4 rounded-xl text-sm font-semibold transition-colors ${
+                    className={`block text-center py-3 px-4 rounded-xl text-sm font-bold transition-all ${
                       plan.isPopular
-                        ? 'bg-blue-600 text-white hover:bg-blue-700'
+                        ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 shadow-md'
                         : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700'
                     }`}
                   >
-                    Get {plan.name}
+                    Get {plan.name} {plan.price === 0 ? '(Free)' : ''}
                   </Link>
                 </div>
               ))}
@@ -216,7 +288,8 @@ export default async function PricingPage({ params }: PageProps) {
           </section>
         ) : (
           <section className="mb-14">
-            <div className="text-center py-12 bg-gray-50 dark:bg-gray-800/50 rounded-2xl">
+            <div className="text-center py-12 bg-gray-50 dark:bg-gray-800/50 rounded-2xl border border-dashed border-gray-300 dark:border-gray-700">
+              <div className="text-4xl mb-3">&#128176;</div>
               <p className="text-gray-500 dark:text-gray-400 mb-3">
                 Detailed plan information for {tool.name} is not yet available.
               </p>
@@ -224,33 +297,153 @@ export default async function PricingPage({ params }: PageProps) {
                 href={tool.websiteUrl || '#'}
                 target="_blank"
                 rel="noopener noreferrer nofollow"
-                className="text-blue-600 hover:underline"
+                className="inline-flex items-center gap-2 text-blue-600 hover:underline font-medium"
               >
-                Visit {tool.name} website for pricing details
+                Visit {tool.name} for pricing &#8599;
               </Link>
             </div>
           </section>
         )}
 
-        {/* Pricing FAQ */}
+        {/* ========== PLAN COMPARISON TABLE ========== */}
+        {plans.length >= 2 && (
+          <section className="mb-14">
+            <h2 className="text-2xl font-bold mb-6">Plan Feature Comparison</h2>
+            <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="bg-gray-50 dark:bg-gray-800">
+                  <tr>
+                    <th className="py-3 px-5 text-left font-semibold text-gray-600 dark:text-gray-300">Feature</th>
+                    {plans.map((plan, idx) => (
+                      <th key={idx} className="py-3 px-5 text-center font-semibold">
+                        <div>{plan.name}</div>
+                        <div className="text-xs font-normal text-gray-400 mt-0.5">
+                          {plan.price !== null ? (plan.price === 0 ? 'Free' : `$${plan.price}/mo`) : 'Custom'}
+                        </div>
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {/* Collect all unique features */}
+                  {getAllUniqueFeatures(plans).map((feature, fIdx) => (
+                    <tr key={fIdx} className="border-t border-gray-100 dark:border-gray-800">
+                      <td className="py-3 px-5 text-gray-600 dark:text-gray-300">{feature}</td>
+                      {plans.map((plan, pIdx) => (
+                        <td key={pIdx} className="py-3 px-5 text-center">
+                          {plan.features.includes(feature) ? (
+                            <span className="text-green-500 font-bold">&#10003;</span>
+                          ) : (
+                            <span className="text-gray-300 dark:text-gray-600">&#8212;</span>
+                          )}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        )}
+
+        {/* ========== PRICING SUMMARY BOX ========== */}
+        <section className="mb-14">
+          <h2 className="text-2xl font-bold mb-6">{tool.name} Pricing Summary</h2>
+          <div className="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-800 dark:to-gray-800 rounded-2xl p-6 border border-blue-100 dark:border-gray-700">
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between py-2 border-b border-blue-100 dark:border-gray-700">
+                  <span className="text-sm font-medium text-gray-600 dark:text-gray-300">Free Plan</span>
+                  <span className={`text-sm font-bold ${hasFree ? 'text-green-600' : 'text-gray-400'}`}>
+                    {hasFree ? 'Available' : 'Not Available'}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between py-2 border-b border-blue-100 dark:border-gray-700">
+                  <span className="text-sm font-medium text-gray-600 dark:text-gray-300">Starting Price</span>
+                  <span className="text-sm font-bold">
+                    {startingPrice !== null ? `$${startingPrice}/mo` : 'Custom pricing'}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between py-2 border-b border-blue-100 dark:border-gray-700">
+                  <span className="text-sm font-medium text-gray-600 dark:text-gray-300">Free Trial</span>
+                  <span className="text-sm font-bold">
+                    {freeTrialDays ? `${freeTrialDays} days` : 'Not available'}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between py-2">
+                  <span className="text-sm font-medium text-gray-600 dark:text-gray-300">Number of Plans</span>
+                  <span className="text-sm font-bold">{plans.length}</span>
+                </div>
+              </div>
+              <div className="space-y-3">
+                {cheapestPlan && (
+                  <div className="flex items-center justify-between py-2 border-b border-blue-100 dark:border-gray-700">
+                    <span className="text-sm font-medium text-gray-600 dark:text-gray-300">Cheapest Paid Plan</span>
+                    <span className="text-sm font-bold">{cheapestPlan.name} (${cheapestPlan.price}/mo)</span>
+                  </div>
+                )}
+                {mostExpensivePlan && mostExpensivePlan !== cheapestPlan && (
+                  <div className="flex items-center justify-between py-2 border-b border-blue-100 dark:border-gray-700">
+                    <span className="text-sm font-medium text-gray-600 dark:text-gray-300">Premium Plan</span>
+                    <span className="text-sm font-bold">{mostExpensivePlan.name} (${mostExpensivePlan.price}/mo)</span>
+                  </div>
+                )}
+                <div className="flex items-center justify-between py-2 border-b border-blue-100 dark:border-gray-700">
+                  <span className="text-sm font-medium text-gray-600 dark:text-gray-300">Enterprise Option</span>
+                  <span className={`text-sm font-bold ${hasEnterprise ? 'text-green-600' : 'text-gray-400'}`}>
+                    {hasEnterprise ? 'Available' : 'Not available'}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between py-2">
+                  <span className="text-sm font-medium text-gray-600 dark:text-gray-300">Value Rating</span>
+                  <span className={`text-sm font-bold ${valueColor}`}>
+                    {valueScore.toFixed(1)}/10 ({valueLabel})
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ========== PRICING FAQ ========== */}
         <section className="mb-14">
           <h2 className="text-2xl font-bold mb-6">{tool.name} Pricing FAQ</h2>
           <FAQSection faqs={faqs} />
         </section>
 
-        {/* Compare Pricing CTA */}
+        {/* ========== CTA SECTION ========== */}
         <section className="mb-14">
-          <div className="bg-blue-50 dark:bg-blue-900/20 rounded-2xl p-6 text-center">
-            <h2 className="text-xl font-bold mb-2">Compare {tool.name} Pricing with Alternatives</h2>
-            <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">
-              See how {tool.name} pricing stacks up against similar tools in the market.
+          <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 p-8 text-center">
+            <h2 className="text-xl font-bold mb-3">Ready to try {tool.name}?</h2>
+            <p className="text-gray-500 text-sm mb-6 max-w-lg mx-auto">
+              {hasFree
+                ? `Start with ${tool.name}'s free plan and upgrade when you're ready.`
+                : freeTrialDays
+                  ? `Try ${tool.name} free for ${freeTrialDays} days. No commitment required.`
+                  : `Visit ${tool.name} to explore their plans and find the best fit.`}
             </p>
-            <Link
-              href={`/${category}/${toolSlug}/alternatives`}
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-semibold hover:bg-blue-700 transition-colors"
-            >
-              Compare {tool.name} Pricing with Alternatives
-            </Link>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+              <Link
+                href={tool.websiteUrl || '#'}
+                target="_blank"
+                rel="noopener noreferrer nofollow"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl text-sm font-bold hover:from-blue-700 hover:to-purple-700 shadow-md transition-all"
+              >
+                Visit {tool.name} &#8599;
+              </Link>
+              <Link
+                href={`/${category}/${toolSlug}/alternatives`}
+                className="inline-flex items-center gap-2 px-6 py-3 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 rounded-xl text-sm font-semibold hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+              >
+                Compare Alternatives
+              </Link>
+              <Link
+                href={`/${category}/${toolSlug}`}
+                className="inline-flex items-center gap-2 px-6 py-3 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 rounded-xl text-sm font-semibold hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+              >
+                Full Review
+              </Link>
+            </div>
           </div>
         </section>
 
@@ -269,4 +462,19 @@ export default async function PricingPage({ params }: PageProps) {
       </article>
     </>
   );
+}
+
+// Helper: get all unique features across all plans
+function getAllUniqueFeatures(plans: { features: string[] }[]): string[] {
+  const seen = new Set<string>();
+  const result: string[] = [];
+  for (const plan of plans) {
+    for (const f of plan.features) {
+      if (!seen.has(f)) {
+        seen.add(f);
+        result.push(f);
+      }
+    }
+  }
+  return result;
 }

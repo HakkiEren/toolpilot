@@ -6,6 +6,7 @@ import { generateOrganizationSchema, generateWebSiteSchema } from '@/lib/schema'
 import { MobileMenu } from '@/components/layout/MobileMenu';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { NewsletterPopup } from '@/components/ui/NewsletterPopup';
+import { Footer } from '@/components/layout/Footer';
 
 const inter = Inter({ subsets: ['latin'], display: 'swap' });
 
@@ -92,51 +93,7 @@ export default function RootLayout({
         <NewsletterPopup />
 
         {/* Footer */}
-        <footer className="bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 mt-20">
-          <div className="max-w-7xl mx-auto px-4 py-12">
-            <div className="grid md:grid-cols-4 gap-8">
-              <div>
-                <h3 className="font-bold text-lg mb-4">{SITE_NAME}</h3>
-                <p className="text-sm text-gray-500">
-                  Unbiased tool comparisons powered by data, not sponsorships.
-                </p>
-              </div>
-              <div>
-                <h4 className="font-semibold mb-3">Categories</h4>
-                <ul className="space-y-2 text-sm text-gray-500">
-                  <li><a href="/ai-tools" className="hover:text-blue-600">AI Tools</a></li>
-                  <li><a href="/saas" className="hover:text-blue-600">SaaS Tools</a></li>
-                  <li><a href="/ecommerce" className="hover:text-blue-600">E-commerce</a></li>
-                  <li><a href="/marketing" className="hover:text-blue-600">Marketing</a></li>
-                  <li><a href="/hosting" className="hover:text-blue-600">Web Hosting</a></li>
-                  <li><a href="/business" className="hover:text-blue-600">Business Tools</a></li>
-                </ul>
-              </div>
-              <div>
-                <h4 className="font-semibold mb-3">Resources</h4>
-                <ul className="space-y-2 text-sm text-gray-500">
-                  <li><a href="/blog" className="hover:text-blue-600">Blog</a></li>
-                  <li><a href="/ai-tools/best/ai-chatbots" className="hover:text-blue-600">Best AI Chatbots</a></li>
-                  <li><a href="/ai-tools/best/ai-coding" className="hover:text-blue-600">Best AI Coding Tools</a></li>
-                  <li><a href="/ai-tools/best/ai-writing" className="hover:text-blue-600">Best AI Writing Tools</a></li>
-                  <li><a href="/ai-tools/best/ai-image" className="hover:text-blue-600">Best AI Image Generators</a></li>
-                </ul>
-              </div>
-              <div>
-                <h4 className="font-semibold mb-3">Legal</h4>
-                <ul className="space-y-2 text-sm text-gray-500">
-                  <li><a href="/about" className="hover:text-blue-600">About Us</a></li>
-                  <li><a href="/contact" className="hover:text-blue-600">Contact</a></li>
-                  <li><a href="/privacy" className="hover:text-blue-600">Privacy Policy</a></li>
-                  <li><a href="/terms" className="hover:text-blue-600">Terms of Service</a></li>
-                </ul>
-              </div>
-            </div>
-            <div className="border-t border-gray-200 dark:border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400">
-              &copy; {new Date().getFullYear()} {SITE_NAME}. All rights reserved.
-            </div>
-          </div>
-        </footer>
+        <Footer />
       </body>
     </html>
   );
