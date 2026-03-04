@@ -4,7 +4,7 @@ import { SITE_NAME } from '@/lib/constants';
 export default function NotFound() {
   return (
     <div className="min-h-[60vh] flex flex-col items-center justify-center px-4 text-center">
-      <div className="text-8xl font-bold text-gray-200 dark:text-gray-800 mb-4">404</div>
+      <div className="text-8xl font-extrabold gradient-text mb-4">404</div>
       <h1 className="text-3xl font-bold mb-4">Page Not Found</h1>
       <p className="text-gray-500 dark:text-gray-400 max-w-md mb-8">
         Sorry, the page you&apos;re looking for doesn&apos;t exist or has been moved.

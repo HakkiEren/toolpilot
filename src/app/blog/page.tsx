@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 };
 
 export default async function BlogIndexPage() {
-  const posts = await getBlogPosts(50);
+  const posts = await getBlogPosts(200);
 
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: '/' },
@@ -48,8 +48,8 @@ export default async function BlogIndexPage() {
 
         {/* Page Header */}
         <div className="mt-6 mb-12">
-          <h1 className="text-3xl md:text-4xl font-bold mb-4">
-            {SITE_NAME} Blog
+          <h1 className="text-3xl md:text-4xl font-extrabold mb-4">
+            <span className="gradient-text">{SITE_NAME} Blog</span>
           </h1>
           <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl">
             Expert guides, in-depth tool reviews, and actionable insights to help
@@ -64,7 +64,8 @@ export default async function BlogIndexPage() {
               <Link
                 key={post.slug}
                 href={`/blog/${post.slug}`}
-                className="group flex flex-col p-6 rounded-2xl border border-gray-200 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-600 hover:shadow-md transition-all"
+                className="group hover-lift card-animate flex flex-col p-6 rounded-2xl border border-gray-200 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-600 hover:shadow-md transition-all"
+                style={{ animationDelay: `${(posts.indexOf(post) % 9) * 60}ms` }}
               >
                 {/* Category Badge */}
                 {post.categorySlug && (

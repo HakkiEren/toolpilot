@@ -59,10 +59,10 @@ function FeatureGroup({
           className="border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/30 transition-colors"
         >
           <td className="py-3 px-4 font-medium">{f.feature}</td>
-          <td className="py-3 px-4 text-center">
+          <td className={`py-3 px-4 text-center ${f.winner === 'a' ? 'bg-green-50/50 dark:bg-green-900/5' : ''}`}>
             <FeatureValue value={f.toolAValue} isWinner={f.winner === 'a'} />
           </td>
-          <td className="py-3 px-4 text-center">
+          <td className={`py-3 px-4 text-center ${f.winner === 'b' ? 'bg-green-50/50 dark:bg-green-900/5' : ''}`}>
             <FeatureValue value={f.toolBValue} isWinner={f.winner === 'b'} />
           </td>
         </tr>

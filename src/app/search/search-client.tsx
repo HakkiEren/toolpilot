@@ -86,7 +86,7 @@ export function SearchClient({ tools }: { tools: SearchTool[] }) {
       {/* Hero */}
       <div className="text-center mb-10">
         <h1 className="text-4xl font-extrabold tracking-tight mb-3">
-          Search & Compare Tools
+          <span className="gradient-text">Search & Compare Tools</span>
         </h1>
         <p className="text-lg text-gray-500 max-w-2xl mx-auto">
           Instantly search and filter {tools.length}+ tools across AI, SaaS, E-commerce, Marketing, Hosting & Business.
@@ -101,7 +101,7 @@ export function SearchClient({ tools }: { tools: SearchTool[] }) {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search tools... (e.g. ChatGPT, Shopify, email marketing)"
-            className="w-full px-5 py-4 pl-12 text-lg border-2 border-gray-200 rounded-2xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 outline-none transition-all dark:bg-gray-900 dark:border-gray-700"
+            className="w-full px-5 py-4 pl-12 text-lg glass border-2 border-gray-200 rounded-2xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 outline-none transition-all dark:bg-gray-900 dark:border-gray-700"
           />
           <svg
             className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
@@ -253,7 +253,7 @@ export function SearchClient({ tools }: { tools: SearchTool[] }) {
             <a
               key={`${tool.category_slug}-${tool.slug}`}
               href={`/${tool.category_slug}/${tool.slug}`}
-              className="group block p-5 border border-gray-200 dark:border-gray-700 rounded-2xl hover:border-blue-300 hover:shadow-lg transition-all duration-200 bg-white dark:bg-gray-900"
+              className="group hover-lift block p-5 border border-gray-200 dark:border-gray-700 rounded-2xl hover:border-blue-300 hover:shadow-lg transition-all duration-200 bg-white dark:bg-gray-900"
             >
               <div className="flex items-start gap-3 mb-3">
                 {tool.logo_url ? (

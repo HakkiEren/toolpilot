@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <article className="max-w-3xl mx-auto px-4 py-12">
-      <h1 className="text-3xl md:text-4xl font-bold mb-6">About {SITE_NAME}</h1>
+      <h1 className="text-3xl md:text-4xl font-extrabold mb-6"><span className="gradient-text">About {SITE_NAME}</span></h1>
 
       <div className="prose dark:prose-invert max-w-none space-y-6 text-gray-600 dark:text-gray-300 leading-relaxed">
         <p>
