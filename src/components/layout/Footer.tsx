@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { SITE_NAME, CATEGORY_LIST, AI_SUBCATEGORIES } from '@/lib/constants';
+import { SITE_NAME, CATEGORY_LIST } from '@/lib/constants';
 
 // ============================================================
 // Professional Footer — Multi-column mega footer
@@ -7,20 +7,29 @@ import { SITE_NAME, CATEGORY_LIST, AI_SUBCATEGORIES } from '@/lib/constants';
 
 const POPULAR_COMPARISONS = [
   { label: 'ChatGPT vs Claude', href: '/ai-tools/compare/chatgpt-vs-claude' },
-  { label: 'Midjourney vs DALL-E', href: '/ai-tools/compare/midjourney-vs-dall-e-3' },
-  { label: 'Cursor vs GitHub Copilot', href: '/ai-tools/compare/cursor-vs-github-copilot' },
-  { label: 'Jasper vs Copy.ai', href: '/ai-tools/compare/jasper-vs-copy-ai' },
-  { label: 'Runway vs HeyGen', href: '/ai-tools/compare/runway-vs-heygen' },
-  { label: 'ElevenLabs vs HeyGen', href: '/ai-tools/compare/elevenlabs-vs-heygen' },
+  { label: 'Shopify vs WooCommerce', href: '/ecommerce/compare/shopify-vs-woocommerce' },
+  { label: 'Ahrefs vs Semrush', href: '/marketing/compare/ahrefs-vs-semrush' },
+  { label: 'HubSpot vs Salesforce', href: '/saas/compare/hubspot-vs-salesforce' },
+  { label: 'Vercel vs Netlify', href: '/hosting/compare/vercel-vs-netlify' },
+  { label: 'QuickBooks vs Xero', href: '/business/compare/quickbooks-vs-xero' },
 ];
 
 const POPULAR_TOOLS = [
   { label: 'ChatGPT Review', href: '/ai-tools/chatgpt' },
-  { label: 'Claude Review', href: '/ai-tools/claude' },
-  { label: 'Midjourney Review', href: '/ai-tools/midjourney' },
-  { label: 'Cursor Review', href: '/ai-tools/cursor' },
-  { label: 'Notion Review', href: '/saas/notion' },
   { label: 'Shopify Review', href: '/ecommerce/shopify' },
+  { label: 'Notion Review', href: '/saas/notion' },
+  { label: 'Mailchimp Review', href: '/marketing/mailchimp' },
+  { label: 'Vercel Review', href: '/hosting/vercel' },
+  { label: 'QuickBooks Review', href: '/business/quickbooks' },
+];
+
+const BEST_OF_LINKS = [
+  { label: 'Best AI Writing Tools', href: '/ai-tools/best/ai-writing' },
+  { label: 'Best CRM Software', href: '/saas/best/crm' },
+  { label: 'Best Email Marketing', href: '/marketing/best/email-marketing' },
+  { label: 'Best WordPress Hosting', href: '/hosting/best/wordpress-hosting' },
+  { label: 'Best Store Builders', href: '/ecommerce/best/store-builders' },
+  { label: 'Best Accounting Tools', href: '/business/best/accounting' },
 ];
 
 export function Footer() {
@@ -55,7 +64,7 @@ export function Footer() {
 
       {/* Main Footer Content */}
       <div className="max-w-7xl mx-auto px-4 py-12 md:py-16">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-8">
           {/* Brand Column */}
           <div className="col-span-2 md:col-span-3 lg:col-span-2">
             <Link href="/" className="inline-flex items-center gap-2 mb-4">
@@ -73,7 +82,7 @@ export function Footer() {
                 <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
                 </svg>
-                25+ Tools Reviewed
+                100+ Tools Reviewed
               </span>
               <span className="inline-flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400">
                 <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
@@ -130,16 +139,33 @@ export function Footer() {
             </ul>
           </div>
 
+          {/* Best Of */}
+          <div>
+            <h4 className="font-semibold text-gray-900 dark:text-white mb-4 text-sm uppercase tracking-wider">Best Of</h4>
+            <ul className="space-y-2.5">
+              {BEST_OF_LINKS.map((item) => (
+                <li key={item.href}>
+                  <Link href={item.href} className="text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
           {/* Resources */}
           <div>
             <h4 className="font-semibold text-gray-900 dark:text-white mb-4 text-sm uppercase tracking-wider">Resources</h4>
             <ul className="space-y-2.5">
               <li><Link href="/blog" className="text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Blog</Link></li>
-              <li><Link href="/ai-tools/best/ai-chatbots" className="text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Best AI Chatbots</Link></li>
-              <li><Link href="/ai-tools/best/ai-coding" className="text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Best AI Coding</Link></li>
-              <li><Link href="/ai-tools/best/ai-writing" className="text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Best AI Writing</Link></li>
-              <li><Link href="/ai-tools/best/ai-image" className="text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Best AI Image Gen</Link></li>
               <li><Link href="/search" className="text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Search Tools</Link></li>
+              {POPULAR_TOOLS.slice(0, 4).map((item) => (
+                <li key={item.href}>
+                  <Link href={item.href} className="text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 

@@ -6,6 +6,7 @@ import { generateBlogSchema, generateBreadcrumbSchema } from '@/lib/schema';
 import { SITE_URL, SEO, SITE_NAME, CATEGORIES } from '@/lib/constants';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { RelatedLinks } from '@/components/common/RelatedLinks';
+import { AdBanner, AdInArticle } from '@/components/ads/AdSlot';
 import type { InternalLink } from '@/types';
 
 // ============================================================
@@ -208,6 +209,9 @@ export default async function BlogPostPage({ params }: PageProps) {
               </div>
             </header>
 
+            {/* Ad: Before Article Body */}
+            <AdBanner />
+
             {/* Article Body */}
             <div
               className="prose prose-lg dark:prose-invert max-w-none
@@ -218,6 +222,9 @@ export default async function BlogPostPage({ params }: PageProps) {
                 prose-blockquote:border-blue-500 prose-blockquote:bg-blue-50/50 dark:prose-blockquote:bg-blue-900/10 prose-blockquote:rounded-r-lg prose-blockquote:py-1"
               dangerouslySetInnerHTML={{ __html: post.content }}
             />
+
+            {/* Ad: After Article Body */}
+            <AdInArticle />
 
             {/* Related Tools & Comparisons */}
             {relatedLinks.length > 0 && (
@@ -277,9 +284,9 @@ export default async function BlogPostPage({ params }: PageProps) {
 
           {/* Sidebar */}
           <aside className="hidden lg:block">
-            <div className="sticky top-8 space-y-8">
+            <div className="sticky top-20 space-y-8">
               {/* About the Author */}
-              <div className="p-6 rounded-2xl border border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/50">
+              <div className="glass p-6 rounded-2xl shadow-sm">
                 <h3 className="font-semibold mb-3">About the Author</h3>
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-100 to-purple-100 dark:from-gray-700 dark:to-gray-600 flex items-center justify-center text-sm font-bold text-blue-600 dark:text-blue-400">

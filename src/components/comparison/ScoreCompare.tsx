@@ -78,7 +78,7 @@ export function ScoreCompare({ toolA, toolB }: Props) {
                     </span>
                     <div className="w-20 h-2.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
                       <div
-                        className={`h-full rounded-full ${
+                        className={`h-full rounded-full score-bar-animated ${
                           aScore >= 8 ? 'bg-green-500' : aScore >= 6 ? 'bg-yellow-500' : 'bg-red-500'
                         }`}
                         style={{ width: `${(aScore / 10) * 100}%` }}
@@ -105,7 +105,7 @@ export function ScoreCompare({ toolA, toolB }: Props) {
                     {winner === 'b' && <span className="text-green-500 text-xs">&#9650;</span>}
                     <div className="w-20 h-2.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
                       <div
-                        className={`h-full rounded-full ${
+                        className={`h-full rounded-full score-bar-animated ${
                           bScore >= 8 ? 'bg-green-500' : bScore >= 6 ? 'bg-yellow-500' : 'bg-red-500'
                         }`}
                         style={{ width: `${(bScore / 10) * 100}%` }}

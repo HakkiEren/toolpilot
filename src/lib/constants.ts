@@ -84,23 +84,72 @@ export const CATEGORIES: Record<string, Category> = {
 export const CATEGORY_LIST = Object.values(CATEGORIES);
 
 // ============================================================
-// AI TOOLS SUBCATEGORIES (First vertical to launch)
+// SUBCATEGORIES PER VERTICAL
 // ============================================================
 
-export const AI_SUBCATEGORIES = [
-  { slug: 'ai-writing', name: 'AI Writing Tools', description: 'AI-powered content creation, copywriting, and text generation tools.' },
-  { slug: 'ai-image', name: 'AI Image Generators', description: 'Text-to-image, image editing, and AI art generation tools.' },
-  { slug: 'ai-video', name: 'AI Video Tools', description: 'AI video generation, editing, and enhancement tools.' },
-  { slug: 'ai-coding', name: 'AI Coding Assistants', description: 'AI-powered code generation, completion, and development tools.' },
-  { slug: 'ai-chatbots', name: 'AI Chatbots', description: 'Conversational AI, customer service bots, and AI assistants.' },
-  { slug: 'ai-voice', name: 'AI Voice & Speech', description: 'Text-to-speech, speech recognition, and voice cloning tools.' },
-  { slug: 'ai-music', name: 'AI Music Tools', description: 'AI music generation, audio editing, and sound design tools.' },
-  { slug: 'ai-research', name: 'AI Research Tools', description: 'AI-powered research assistants, summarizers, and knowledge tools.' },
-  { slug: 'ai-productivity', name: 'AI Productivity', description: 'AI meeting assistants, note-taking, scheduling, and workflow automation.' },
-  { slug: 'ai-design', name: 'AI Design Tools', description: 'AI-powered graphic design, UI/UX, and presentation tools.' },
-  { slug: 'ai-data', name: 'AI Data & Analytics', description: 'AI-powered data analysis, visualization, and business intelligence.' },
-  { slug: 'ai-agents', name: 'AI Agents & Automation', description: 'Autonomous AI agents, workflow automation, and multi-step AI systems.' },
-];
+export const SUBCATEGORIES: Record<string, { slug: string; name: string; description: string }[]> = {
+  'ai-tools': [
+    { slug: 'ai-writing', name: 'AI Writing Tools', description: 'AI-powered content creation, copywriting, and text generation tools.' },
+    { slug: 'ai-image', name: 'AI Image Generators', description: 'Text-to-image, image editing, and AI art generation tools.' },
+    { slug: 'ai-video', name: 'AI Video Tools', description: 'AI video generation, editing, and enhancement tools.' },
+    { slug: 'ai-coding', name: 'AI Coding Assistants', description: 'AI-powered code generation, completion, and development tools.' },
+    { slug: 'ai-chatbots', name: 'AI Chatbots', description: 'Conversational AI, customer service bots, and AI assistants.' },
+    { slug: 'ai-voice', name: 'AI Voice & Speech', description: 'Text-to-speech, speech recognition, and voice cloning tools.' },
+    { slug: 'ai-music', name: 'AI Music Tools', description: 'AI music generation, audio editing, and sound design tools.' },
+    { slug: 'ai-research', name: 'AI Research Tools', description: 'AI-powered research assistants, summarizers, and knowledge tools.' },
+    { slug: 'ai-productivity', name: 'AI Productivity', description: 'AI meeting assistants, note-taking, scheduling, and workflow automation.' },
+    { slug: 'ai-design', name: 'AI Design Tools', description: 'AI-powered graphic design, UI/UX, and presentation tools.' },
+    { slug: 'ai-data', name: 'AI Data & Analytics', description: 'AI-powered data analysis, visualization, and business intelligence.' },
+    { slug: 'ai-agents', name: 'AI Agents & Automation', description: 'Autonomous AI agents, workflow automation, and multi-step AI systems.' },
+  ],
+  'saas': [
+    { slug: 'crm', name: 'CRM Software', description: 'Customer relationship management platforms for sales teams and businesses.' },
+    { slug: 'project-management', name: 'Project Management', description: 'Task tracking, team collaboration, and project planning tools.' },
+    { slug: 'hr-software', name: 'HR Software', description: 'Human resources management, payroll, and employee engagement platforms.' },
+    { slug: 'helpdesk', name: 'Help Desk & Support', description: 'Customer support ticketing, live chat, and knowledge base solutions.' },
+    { slug: 'communication', name: 'Team Communication', description: 'Business messaging, video conferencing, and team collaboration tools.' },
+    { slug: 'document-management', name: 'Document Management', description: 'File storage, document collaboration, and digital asset management platforms.' },
+    { slug: 'erp', name: 'ERP Systems', description: 'Enterprise resource planning solutions for mid-market and large businesses.' },
+    { slug: 'scheduling', name: 'Scheduling & Booking', description: 'Appointment scheduling, calendar management, and booking software.' },
+  ],
+  'ecommerce': [
+    { slug: 'store-builders', name: 'Online Store Builders', description: 'Complete e-commerce platforms for building and managing online stores.' },
+    { slug: 'payment-processing', name: 'Payment Processing', description: 'Payment gateways, checkout solutions, and transaction processing tools.' },
+    { slug: 'shipping', name: 'Shipping & Fulfillment', description: 'Shipping label platforms, order fulfillment, and logistics management.' },
+    { slug: 'inventory', name: 'Inventory Management', description: 'Stock tracking, warehouse management, and inventory optimization tools.' },
+    { slug: 'marketplace', name: 'Marketplace Platforms', description: 'Multi-vendor marketplaces, dropshipping platforms, and digital product stores.' },
+    { slug: 'ecommerce-analytics', name: 'E-commerce Analytics', description: 'Sales analytics, customer behavior tracking, and revenue optimization tools.' },
+  ],
+  'marketing': [
+    { slug: 'email-marketing', name: 'Email Marketing', description: 'Email campaign management, automation, and newsletter platforms.' },
+    { slug: 'seo-tools', name: 'SEO Tools', description: 'Search engine optimization, keyword research, and rank tracking software.' },
+    { slug: 'social-media', name: 'Social Media Management', description: 'Social media scheduling, analytics, and content management tools.' },
+    { slug: 'content-marketing', name: 'Content Marketing', description: 'Content planning, creation, distribution, and performance tracking platforms.' },
+    { slug: 'advertising', name: 'Advertising Platforms', description: 'PPC management, ad optimization, and cross-channel advertising tools.' },
+    { slug: 'analytics', name: 'Marketing Analytics', description: 'Web analytics, attribution modeling, and marketing performance measurement tools.' },
+    { slug: 'landing-pages', name: 'Landing Page Builders', description: 'Drag-and-drop landing page creation and conversion optimization tools.' },
+    { slug: 'marketing-automation', name: 'Marketing Automation', description: 'Workflow automation, lead nurturing, and multi-channel campaign orchestration.' },
+  ],
+  'hosting': [
+    { slug: 'shared-hosting', name: 'Shared Hosting', description: 'Affordable shared web hosting for blogs, personal sites, and small businesses.' },
+    { slug: 'vps-hosting', name: 'VPS Hosting', description: 'Virtual private servers for growing websites that need dedicated resources.' },
+    { slug: 'cloud-hosting', name: 'Cloud Hosting', description: 'Scalable cloud infrastructure including AWS, Google Cloud, and Azure alternatives.' },
+    { slug: 'wordpress-hosting', name: 'WordPress Hosting', description: 'Managed and optimized hosting specifically for WordPress websites.' },
+    { slug: 'domain-registrars', name: 'Domain Registrars', description: 'Domain name registration, transfer, and management services.' },
+    { slug: 'cdn', name: 'CDN Services', description: 'Content delivery networks for faster global page load times and DDoS protection.' },
+  ],
+  'business': [
+    { slug: 'accounting', name: 'Accounting Software', description: 'Bookkeeping, invoicing, expense tracking, and financial reporting tools.' },
+    { slug: 'legal-tools', name: 'Legal & Compliance', description: 'Contract management, e-signature, and legal compliance tools.' },
+    { slug: 'productivity', name: 'Productivity Tools', description: 'Note-taking, to-do lists, time tracking, and personal productivity apps.' },
+    { slug: 'collaboration', name: 'Collaboration Platforms', description: 'Team workspaces, whiteboarding, and real-time document collaboration tools.' },
+    { slug: 'cybersecurity', name: 'Cybersecurity Tools', description: 'Password managers, VPNs, endpoint protection, and security monitoring.' },
+    { slug: 'no-code', name: 'No-Code / Low-Code', description: 'Visual app builders, workflow automation, and no-code development platforms.' },
+  ],
+};
+
+// Legacy alias for AI Tools subcategories
+export const AI_SUBCATEGORIES = SUBCATEGORIES['ai-tools'];
 
 // ============================================================
 // PAGE GENERATION LIMITS

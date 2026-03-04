@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { SITE_NAME, CATEGORY_LIST, CATEGORIES } from '@/lib/constants';
+import { SITE_NAME, CATEGORY_LIST, CATEGORIES, SUBCATEGORIES } from '@/lib/constants';
 import { supabase } from '@/lib/supabase';
 import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
 
@@ -81,7 +81,7 @@ export default async function HomePage() {
             Updated for 2026 — {toolCount || 40}+ tools across {Object.keys(CATEGORIES).length} categories
           </div>
 
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 dark:from-white dark:via-blue-200 dark:to-purple-200 bg-clip-text text-transparent">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 gradient-text">
             Find the Right Tool
             <br />
             for Your Business
@@ -95,7 +95,7 @@ export default async function HomePage() {
           <div className="max-w-xl mx-auto mb-10">
             <Link
               href="/search"
-              className="flex items-center gap-3 px-5 py-4 bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-2xl shadow-lg hover:shadow-xl hover:border-blue-300 transition-all group"
+              className="flex items-center gap-3 px-5 py-4 glass rounded-2xl shadow-lg hover:shadow-xl hover:border-blue-300 transition-all group"
             >
               <svg className="w-5 h-5 text-gray-400 group-hover:text-blue-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -120,7 +120,7 @@ export default async function HomePage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/ai-tools"
-              className="inline-flex items-center justify-center px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-full font-medium hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40"
+              className="glow-pulse inline-flex items-center justify-center px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-full font-medium hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40"
             >
               Explore AI Tools
             </Link>
@@ -179,7 +179,8 @@ export default async function HomePage() {
               <Link
                 key={tool.slug}
                 href={`/${tool.category_slug}/${tool.slug}`}
-                className="group flex items-start gap-4 p-5 border border-gray-200 dark:border-gray-800 rounded-2xl hover:border-blue-300 hover:shadow-lg transition-all duration-200 bg-white dark:bg-gray-900"
+                className="group hover-lift flex items-start gap-4 p-5 border border-gray-200 dark:border-gray-800 rounded-2xl hover:border-blue-300 transition-all duration-200 bg-white dark:bg-gray-900 card-animate"
+                style={{ animationDelay: `${i * 60}ms` }}
               >
                 <div className="flex-shrink-0 relative">
                   {tool.logo_url ? (
@@ -257,7 +258,7 @@ export default async function HomePage() {
                   <Link
                     key={comp.slug as string}
                     href={`/${catSlug}/compare/${comp.slug}`}
-                    className="group relative p-5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl hover:border-blue-300 hover:shadow-lg transition-all"
+                    className="group hover-lift shine-hover relative p-5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl hover:border-blue-300 transition-all"
                   >
                     {/* Category badge */}
                     <span
@@ -342,7 +343,7 @@ export default async function HomePage() {
                 <Link
                   key={cat.slug}
                   href={`/${cat.slug}`}
-                  className="group relative p-6 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-700 hover:shadow-lg transition-all duration-300"
+                  className="group hover-lift shine-hover relative p-6 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-700 transition-all duration-300"
                 >
                   <div className="flex items-center justify-between mb-4">
                     <div
@@ -490,7 +491,7 @@ export default async function HomePage() {
                 <Link
                   key={post.slug}
                   href={`/blog/${post.slug}`}
-                  className="group bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden hover:shadow-lg transition-all"
+                  className="group hover-lift bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden transition-all"
                 >
                   <div className="h-32 bg-gradient-to-br from-blue-400 to-purple-500" />
                   <div className="p-5">
@@ -514,6 +515,51 @@ export default async function HomePage() {
           </div>
         </section>
       )}
+
+      {/* ============================================================ */}
+      {/* BROWSE SUBCATEGORIES — Deep links to all verticals */}
+      {/* ============================================================ */}
+      <section className="py-16">
+        <div className="max-w-7xl mx-auto px-4">
+          <h2 className="text-2xl md:text-3xl font-bold text-center mb-4">
+            Explore by Specialization
+          </h2>
+          <p className="text-gray-500 text-center mb-12 max-w-xl mx-auto">
+            Dive deeper into specific tool categories to find exactly what you need.
+          </p>
+
+          <div className="space-y-8">
+            {CATEGORY_LIST.map((cat) => {
+              const subs = SUBCATEGORIES[cat.slug] || [];
+              if (subs.length === 0) return null;
+              return (
+                <div key={cat.slug}>
+                  <div className="flex items-center gap-3 mb-3">
+                    <div
+                      className="w-7 h-7 rounded-lg flex items-center justify-center text-sm"
+                      style={{ backgroundColor: `${cat.color}15` }}
+                    >
+                      <CategoryIcon icon={cat.icon} color={cat.color} />
+                    </div>
+                    <h3 className="font-bold text-sm uppercase tracking-wider text-gray-500">{cat.name}</h3>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {subs.map((sub) => (
+                      <Link
+                        key={sub.slug}
+                        href={`/${cat.slug}/best/${sub.slug}`}
+                        className="px-3 py-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg text-sm hover:border-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all"
+                      >
+                        {sub.name}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
 
       {/* ============================================================ */}
       {/* HOW IT WORKS */}
@@ -544,7 +590,7 @@ export default async function HomePage() {
                 color: 'from-green-500 to-green-600',
               },
             ].map((item) => (
-              <div key={item.step} className="text-center p-8 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800">
+              <div key={item.step} className="text-center p-8 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 hover-lift card-animate" style={{ animationDelay: `${parseInt(item.step) * 150}ms` }}>
                 <div className={`inline-flex w-14 h-14 items-center justify-center bg-gradient-to-r ${item.color} text-white rounded-2xl text-lg font-bold mb-4`}>
                   {item.step}
                 </div>
@@ -605,7 +651,7 @@ export default async function HomePage() {
                 desc: 'Aggregated from thousands of verified user reviews and testimonials.',
               },
             ].map((item) => (
-              <div key={item.title} className="text-center p-6 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800">
+              <div key={item.title} className="text-center p-6 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 hover-lift">
                 <div className="flex justify-center mb-4">{item.icon}</div>
                 <h3 className="font-semibold mb-2">{item.title}</h3>
                 <p className="text-sm text-gray-500">{item.desc}</p>
@@ -634,7 +680,7 @@ export default async function HomePage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/search"
-                className="inline-flex items-center justify-center px-8 py-3 bg-white text-blue-600 rounded-full font-semibold hover:bg-blue-50 transition-colors"
+                className="glow-pulse inline-flex items-center justify-center px-8 py-3 bg-white text-blue-600 rounded-full font-semibold hover:bg-blue-50 transition-colors"
               >
                 Search Tools
               </Link>

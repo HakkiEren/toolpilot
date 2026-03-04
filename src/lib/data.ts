@@ -68,6 +68,24 @@ export async function getToolsBySubcategory(
   return data.map(mapToolRow);
 }
 
+export async function getRelatedTools(
+  tool: Tool,
+  limit = 6
+): Promise<Tool[]> {
+  // First try same subcategory, then same category
+  const { data } = await supabase
+    .from('tools')
+    .select('*')
+    .eq('category_slug', tool.categorySlug)
+    .eq('status', 'published')
+    .neq('id', tool.id)
+    .order('ratings_overall', { ascending: false })
+    .limit(limit);
+
+  if (!data) return [];
+  return data.map(mapToolRow);
+}
+
 export async function getAllToolSlugs(): Promise<
   { categorySlug: string; toolSlug: string }[]
 > {

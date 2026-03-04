@@ -2,10 +2,11 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getToolsByCategory, getCategoryStats, getComparisonsByCategory } from '@/lib/data';
-import { generateBreadcrumbSchema, generateFAQSchema } from '@/lib/schema';
-import { CATEGORIES, CATEGORY_LIST, SITE_URL, AI_SUBCATEGORIES } from '@/lib/constants';
+import { generateBreadcrumbSchema, generateFAQSchema, generateCollectionSchema } from '@/lib/schema';
+import { CATEGORIES, CATEGORY_LIST, SITE_URL, SUBCATEGORIES } from '@/lib/constants';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { FAQSection } from '@/components/common/FAQSection';
+import { AdBanner, AdInArticle } from '@/components/ads/AdSlot';
 import { getCategoryContent } from '@/lib/category-content';
 
 // ============================================================
@@ -46,12 +47,19 @@ export default async function CategoryPage({ params }: PageProps) {
   const categoryContent = getCategoryContent(category);
   const faqSchema = categoryContent ? generateFAQSchema(categoryContent.faqs) : null;
 
-  const subcategories = category === 'ai-tools' ? AI_SUBCATEGORIES : [];
+  const subcategories = SUBCATEGORIES[category] || [];
 
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: '/' },
     { name: cat.name, url: `/${cat.slug}` },
   ]);
+
+  const collectionSchema = generateCollectionSchema(
+    cat.name,
+    cat.slug,
+    cat.description,
+    tools
+  );
 
   // Stats for hero
   const avgRating = tools.length > 0
@@ -62,6 +70,7 @@ export default async function CategoryPage({ params }: PageProps) {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }} />
       {faqSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />}
 
       <div className="max-w-7xl mx-auto px-4 py-8">
@@ -84,19 +93,19 @@ export default async function CategoryPage({ params }: PageProps) {
 
           {/* Stats Bar */}
           <div className="flex flex-wrap gap-4">
-            <div className="flex items-center gap-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg px-4 py-2">
+            <div className="flex items-center gap-2 glass rounded-xl px-4 py-2.5 shadow-sm card-animate" style={{ animationDelay: '0ms' }}>
               <span className="text-2xl font-bold text-blue-600">{stats.toolCount}</span>
               <span className="text-sm text-blue-700 dark:text-blue-400">Tools Reviewed</span>
             </div>
-            <div className="flex items-center gap-2 bg-purple-50 dark:bg-purple-900/20 rounded-lg px-4 py-2">
+            <div className="flex items-center gap-2 glass rounded-xl px-4 py-2.5 shadow-sm card-animate" style={{ animationDelay: '100ms' }}>
               <span className="text-2xl font-bold text-purple-600">{stats.comparisonCount}</span>
               <span className="text-sm text-purple-700 dark:text-purple-400">Comparisons</span>
             </div>
-            <div className="flex items-center gap-2 bg-green-50 dark:bg-green-900/20 rounded-lg px-4 py-2">
+            <div className="flex items-center gap-2 glass rounded-xl px-4 py-2.5 shadow-sm card-animate" style={{ animationDelay: '200ms' }}>
               <span className="text-2xl font-bold text-green-600">{avgRating}</span>
               <span className="text-sm text-green-700 dark:text-green-400">Avg Rating</span>
             </div>
-            <div className="flex items-center gap-2 bg-orange-50 dark:bg-orange-900/20 rounded-lg px-4 py-2">
+            <div className="flex items-center gap-2 glass rounded-xl px-4 py-2.5 shadow-sm card-animate" style={{ animationDelay: '300ms' }}>
               <span className="text-2xl font-bold text-orange-600">{freeCount}</span>
               <span className="text-sm text-orange-700 dark:text-orange-400">Free Plans</span>
             </div>
@@ -112,7 +121,7 @@ export default async function CategoryPage({ params }: PageProps) {
                 <Link
                   key={sub.slug}
                   href={`/${category}/best/${sub.slug}`}
-                  className="group p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 hover:bg-gradient-to-br hover:from-blue-50 hover:to-purple-50 dark:hover:from-gray-800 dark:hover:to-gray-700 transition-all"
+                  className="group hover-lift p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 hover:bg-gradient-to-br hover:from-blue-50 hover:to-purple-50 dark:hover:from-gray-800 dark:hover:to-gray-700 transition-all"
                 >
                   <h3 className="font-medium text-sm group-hover:text-blue-600 transition-colors">{sub.name}</h3>
                   <p className="text-xs text-gray-500 mt-1 line-clamp-2">{sub.description}</p>
@@ -133,7 +142,8 @@ export default async function CategoryPage({ params }: PageProps) {
                   <Link
                     key={tool.id}
                     href={`/${category}/${tool.slug}`}
-                    className="group relative bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 hover:border-blue-300 hover:shadow-lg transition-all"
+                    className="group hover-lift shine-hover relative bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 hover:border-blue-300 transition-all card-animate"
+                    style={{ animationDelay: `${idx * 100}ms` }}
                   >
                     {/* Medal */}
                     <span className="absolute -top-3 -left-3 text-3xl" dangerouslySetInnerHTML={{ __html: medals[idx] }} />
@@ -169,7 +179,7 @@ export default async function CategoryPage({ params }: PageProps) {
                           <span className="w-20 text-gray-400">{label}</span>
                           <div className="flex-1 h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
                             <div
-                              className={`h-full rounded-full ${score >= 8 ? 'bg-green-500' : score >= 6 ? 'bg-yellow-500' : 'bg-red-500'}`}
+                              className={`h-full rounded-full score-bar-animated ${score >= 8 ? 'bg-green-500' : score >= 6 ? 'bg-yellow-500' : 'bg-red-500'}`}
                               style={{ width: `${(score / 10) * 100}%` }}
                             />
                           </div>
@@ -193,6 +203,9 @@ export default async function CategoryPage({ params }: PageProps) {
           </section>
         )}
 
+        {/* ========== AD: AFTER TOP 3 ========== */}
+        <AdBanner />
+
         {/* ========== ALL TOOLS GRID ========== */}
         <section>
           <h2 className="text-xl font-bold mb-6">
@@ -203,7 +216,8 @@ export default async function CategoryPage({ params }: PageProps) {
               <Link
                 key={tool.id}
                 href={`/${category}/${tool.slug}`}
-                className="group flex items-start gap-4 p-5 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-600 hover:shadow-md transition-all bg-white dark:bg-gray-900"
+                className="group hover-lift flex items-start gap-4 p-5 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-600 transition-all bg-white dark:bg-gray-900 card-animate"
+                style={{ animationDelay: `${idx * 40}ms` }}
               >
                 {/* Rank */}
                 <span className="text-sm font-bold text-gray-300 dark:text-gray-600 w-6 text-right mt-1">
@@ -266,7 +280,7 @@ export default async function CategoryPage({ params }: PageProps) {
                 <Link
                   key={comp.id}
                   href={`/${category}/compare/${comp.slug}`}
-                  className="group p-5 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-blue-300 hover:shadow-md transition-all"
+                  className="group hover-lift shine-hover p-5 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-blue-300 transition-all"
                 >
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2">
@@ -292,6 +306,9 @@ export default async function CategoryPage({ params }: PageProps) {
             </div>
           </section>
         )}
+
+        {/* ========== AD: AFTER COMPARISONS ========== */}
+        <AdInArticle />
 
         {/* ========== BUYER'S GUIDE ========== */}
         {categoryContent && (

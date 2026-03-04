@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getToolsBySubcategory } from '@/lib/data';
 import { generateBreadcrumbSchema } from '@/lib/schema';
-import { CATEGORIES, AI_SUBCATEGORIES, SITE_URL, SEO } from '@/lib/constants';
+import { CATEGORIES, SUBCATEGORIES, SITE_URL, SEO } from '@/lib/constants';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 
 // ============================================================
@@ -15,10 +15,13 @@ export const revalidate = 3600;
 export const dynamicParams = true;
 
 export async function generateStaticParams() {
-  return AI_SUBCATEGORIES.map((sub) => ({
-    category: 'ai-tools',
-    subcategory: sub.slug,
-  }));
+  const params: { category: string; subcategory: string }[] = [];
+  for (const [catSlug, subs] of Object.entries(SUBCATEGORIES)) {
+    for (const sub of subs) {
+      params.push({ category: catSlug, subcategory: sub.slug });
+    }
+  }
+  return params;
 }
 
 interface PageProps {
@@ -26,10 +29,9 @@ interface PageProps {
 }
 
 function getSubcategory(categorySlug: string, subcategorySlug: string) {
-  if (categorySlug === 'ai-tools') {
-    return AI_SUBCATEGORIES.find((s) => s.slug === subcategorySlug) || null;
-  }
-  return null;
+  const subs = SUBCATEGORIES[categorySlug];
+  if (!subs) return null;
+  return subs.find((s) => s.slug === subcategorySlug) || null;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -37,6 +39,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const cat = CATEGORIES[category];
   const sub = getSubcategory(category, subcategory);
   if (!cat || !sub) return {};
+
+  // Check if there are tools — noindex empty pages
+  const tools = await getToolsBySubcategory(category, subcategory, 1);
 
   const year = new Date().getFullYear();
   const title = `Best ${sub.name} in ${year} — Compare & Choose | ToolPilot`;
@@ -47,6 +52,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     description,
     alternates: { canonical: `${SITE_URL}/${cat.slug}/best/${sub.slug}` },
     openGraph: { title, description, url: `${SITE_URL}/${cat.slug}/best/${sub.slug}`, type: 'website' },
+    ...(tools.length === 0 && { robots: { index: false, follow: true } }),
   };
 }
 
@@ -95,19 +101,19 @@ export default async function BestSubcategoryPage({ params }: PageProps) {
 
           {/* Quick Stats */}
           <div className="flex flex-wrap gap-3">
-            <div className="flex items-center gap-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg px-4 py-2">
+            <div className="flex items-center gap-2 glass rounded-xl px-4 py-2.5 shadow-sm card-animate" style={{ animationDelay: '0ms' }}>
               <span className="text-xl font-bold text-blue-600">{tools.length}</span>
               <span className="text-sm text-blue-700 dark:text-blue-400">Tools Compared</span>
             </div>
-            <div className="flex items-center gap-2 bg-green-50 dark:bg-green-900/20 rounded-lg px-4 py-2">
+            <div className="flex items-center gap-2 glass rounded-xl px-4 py-2.5 shadow-sm card-animate" style={{ animationDelay: '100ms' }}>
               <span className="text-xl font-bold text-green-600">{avgRating}</span>
               <span className="text-sm text-green-700 dark:text-green-400">Avg Rating</span>
             </div>
-            <div className="flex items-center gap-2 bg-orange-50 dark:bg-orange-900/20 rounded-lg px-4 py-2">
+            <div className="flex items-center gap-2 glass rounded-xl px-4 py-2.5 shadow-sm card-animate" style={{ animationDelay: '200ms' }}>
               <span className="text-xl font-bold text-orange-600">{freeCount}</span>
               <span className="text-sm text-orange-700 dark:text-orange-400">Free Plans</span>
             </div>
-            <div className="flex items-center gap-2 bg-gray-100 dark:bg-gray-800 rounded-lg px-4 py-2">
+            <div className="flex items-center gap-2 glass rounded-xl px-4 py-2.5 shadow-sm card-animate" style={{ animationDelay: '300ms' }}>
               <span className="text-sm text-gray-500">Updated</span>
               <span className="text-sm font-semibold">
                 {new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
@@ -265,7 +271,8 @@ export default async function BestSubcategoryPage({ params }: PageProps) {
                 <Link
                   key={tool.id}
                   href={`/${category}/${tool.slug}`}
-                  className="group relative p-6 rounded-2xl border border-gray-200 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-600 hover:shadow-lg transition-all bg-white dark:bg-gray-900"
+                  className="group hover-lift shine-hover relative p-6 rounded-2xl border border-gray-200 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-600 transition-all bg-white dark:bg-gray-900 card-animate"
+                  style={{ animationDelay: `${index * 60}ms` }}
                 >
                   {/* Rank Badge */}
                   {index < 3 && (
@@ -307,7 +314,7 @@ export default async function BestSubcategoryPage({ params }: PageProps) {
                         <span className="w-16 text-gray-400">{label}</span>
                         <div className="flex-1 h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
                           <div
-                            className={`h-full rounded-full ${score >= 8 ? 'bg-green-500' : score >= 6 ? 'bg-yellow-500' : 'bg-red-500'}`}
+                            className={`h-full rounded-full score-bar-animated ${score >= 8 ? 'bg-green-500' : score >= 6 ? 'bg-yellow-500' : 'bg-red-500'}`}
                             style={{ width: `${(score / 10) * 100}%` }}
                           />
                         </div>
@@ -353,12 +360,27 @@ export default async function BestSubcategoryPage({ params }: PageProps) {
               <svg className="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
               </svg>
-              How We Ranked These Tools
+              How We Ranked the Best {sub.name}
             </h2>
+            <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-3">
+              We evaluated {tools.length} {sub.name.toLowerCase()} tools using a weighted scoring system tailored to this specific category.
+              {topTool ? ` ${topTool.name} leads with a ${topTool.ratings.overall.toFixed(1)}/10 overall score.` : ''}
+              {freeCount > 0 ? ` ${freeCount} out of ${tools.length} tools offer a free plan, making it easy to test before you commit.` : ''}
+            </p>
             <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-              Our rankings are based on a weighted scoring system that evaluates each {sub.name.toLowerCase()} across four key dimensions:
-              overall feature depth (30%), ease of use and learning curve (25%), value for money (25%), and customer support quality (20%).
-              We test every tool hands-on, analyze thousands of user reviews, and update our rankings monthly.
+              For {sub.name.toLowerCase()}, we place extra emphasis on {
+                subcategory.includes('hosting') || subcategory.includes('cloud') ? 'uptime reliability, server performance, and scaling capabilities'
+                : subcategory.includes('email') || subcategory.includes('marketing') ? 'deliverability rates, automation depth, and template quality'
+                : subcategory.includes('crm') || subcategory.includes('hr') ? 'contact management, pipeline visibility, and integration ecosystem'
+                : subcategory.includes('seo') || subcategory.includes('analytics') ? 'data accuracy, keyword tracking depth, and reporting clarity'
+                : subcategory.includes('payment') || subcategory.includes('accounting') ? 'transaction fees, payout speed, and regulatory compliance'
+                : subcategory.includes('store') || subcategory.includes('commerce') ? 'theme flexibility, checkout conversion, and inventory management'
+                : subcategory.includes('security') || subcategory.includes('cyber') ? 'encryption standards, breach detection, and zero-trust architecture'
+                : subcategory.includes('project') || subcategory.includes('collaboration') ? 'task management workflows, real-time collaboration, and Gantt chart capabilities'
+                : subcategory.includes('no-code') || subcategory.includes('design') ? 'visual builder intuitiveness, component libraries, and export quality'
+                : subcategory.includes('ai') ? 'output quality, model accuracy, and responsible AI practices'
+                : 'core feature depth, workflow flexibility, and real-world usability'
+              }. Our team tests each tool hands-on and aggregates data from verified user reviews, updated monthly.
             </p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               {[
@@ -386,7 +408,7 @@ export default async function BestSubcategoryPage({ params }: PageProps) {
                 const colors = ['from-yellow-50 to-amber-50 border-yellow-200', 'from-gray-50 to-slate-50 border-gray-200', 'from-green-50 to-emerald-50 border-green-200'];
                 const darkColors = ['dark:from-yellow-900/10 dark:to-amber-900/10 dark:border-yellow-800/30', 'dark:from-gray-800 dark:to-gray-800 dark:border-gray-700', 'dark:from-green-900/10 dark:to-emerald-900/10 dark:border-green-800/30'];
                 return (
-                  <Link key={t.id} href={`/${category}/${t.slug}`} className={`group bg-gradient-to-br ${colors[idx]} ${darkColors[idx]} rounded-2xl border p-5 hover:shadow-lg transition-all`}>
+                  <Link key={t.id} href={`/${category}/${t.slug}`} className={`group hover-lift bg-gradient-to-br ${colors[idx]} ${darkColors[idx]} rounded-2xl border p-5 transition-all`}>
                     <div className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">{labels[idx]}</div>
                     <div className="flex items-center gap-3 mb-3">
                       {t.logoUrl ? (
@@ -408,11 +430,11 @@ export default async function BestSubcategoryPage({ params }: PageProps) {
         )}
 
         {/* ========== RELATED SUBCATEGORIES ========== */}
-        {category === 'ai-tools' && (
+        {SUBCATEGORIES[category] && SUBCATEGORIES[category].length > 1 && (
           <section className="mb-12">
-            <h2 className="text-xl font-bold mb-6">Browse Other AI Categories</h2>
+            <h2 className="text-xl font-bold mb-6">Browse Other {cat.name} Categories</h2>
             <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-              {AI_SUBCATEGORIES.filter(s => s.slug !== subcategory).slice(0, 8).map((s) => (
+              {SUBCATEGORIES[category].filter(s => s.slug !== subcategory).slice(0, 8).map((s) => (
                 <Link
                   key={s.slug}
                   href={`/${category}/best/${s.slug}`}

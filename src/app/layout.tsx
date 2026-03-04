@@ -48,6 +48,19 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.className}>
       <head>
+        {/* Google Analytics (GA4) — Replace G-XXXXXXXXXX with real ID */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');`,
+          }}
+        />
+        {/* Google AdSense — Replace ca-pub-XXXXXXXXXX with real pub ID */}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXX"
+          crossOrigin="anonymous"
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -63,18 +76,19 @@ export default function RootLayout({
       </head>
       <body className="bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 antialiased">
         {/* Header */}
-        <header className="sticky top-0 z-50 bg-white/80 dark:bg-gray-950/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
+        <header className="sticky top-0 z-50 glass border-b border-gray-200/50 dark:border-gray-800/50 shadow-sm">
           <nav className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-            <a href="/" className="text-xl font-bold text-blue-600">
+            <a href="/" className="text-xl font-extrabold gradient-text hover:opacity-80 transition-opacity">
               {SITE_NAME}
             </a>
             <div className="hidden md:flex items-center gap-6 text-sm font-medium">
-              <a href="/ai-tools" className="hover:text-blue-600 transition-colors">AI Tools</a>
-              <a href="/saas" className="hover:text-blue-600 transition-colors">SaaS</a>
-              <a href="/ecommerce" className="hover:text-blue-600 transition-colors">E-commerce</a>
-              <a href="/marketing" className="hover:text-blue-600 transition-colors">Marketing</a>
-              <a href="/hosting" className="hover:text-blue-600 transition-colors">Hosting</a>
-              <a href="/blog" className="hover:text-blue-600 transition-colors">Blog</a>
+              <a href="/ai-tools" className="relative hover:text-blue-600 transition-colors after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-blue-600 after:transition-all hover:after:w-full">AI Tools</a>
+              <a href="/saas" className="relative hover:text-blue-600 transition-colors after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-blue-600 after:transition-all hover:after:w-full">SaaS</a>
+              <a href="/ecommerce" className="relative hover:text-blue-600 transition-colors after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-blue-600 after:transition-all hover:after:w-full">E-commerce</a>
+              <a href="/marketing" className="relative hover:text-blue-600 transition-colors after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-blue-600 after:transition-all hover:after:w-full">Marketing</a>
+              <a href="/hosting" className="relative hover:text-blue-600 transition-colors after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-blue-600 after:transition-all hover:after:w-full">Hosting</a>
+              <a href="/business" className="relative hover:text-blue-600 transition-colors after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-blue-600 after:transition-all hover:after:w-full">Business</a>
+              <a href="/blog" className="relative hover:text-blue-600 transition-colors after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-blue-600 after:transition-all hover:after:w-full">Blog</a>
               <a href="/search" className="hover:text-blue-600 transition-colors">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />

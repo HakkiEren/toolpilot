@@ -121,6 +121,31 @@ export function generateBlogSchema(post: BlogPost) {
   };
 }
 
+export function generateCollectionSchema(
+  categoryName: string,
+  categorySlug: string,
+  description: string,
+  tools: { name: string; slug: string; ratings: { overall: number } }[]
+) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: `Best ${categoryName} (${new Date().getFullYear()})`,
+    description,
+    url: `${SITE_URL}/${categorySlug}`,
+    mainEntity: {
+      '@type': 'ItemList',
+      numberOfItems: tools.length,
+      itemListElement: tools.slice(0, 10).map((tool, idx) => ({
+        '@type': 'ListItem',
+        position: idx + 1,
+        name: tool.name,
+        url: `${SITE_URL}/${categorySlug}/${tool.slug}`,
+      })),
+    },
+  };
+}
+
 export function generateOrganizationSchema() {
   return {
     '@context': 'https://schema.org',

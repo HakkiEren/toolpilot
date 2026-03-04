@@ -13,6 +13,7 @@ import { VerdictSection } from '@/components/comparison/VerdictSection';
 import { FAQSection } from '@/components/common/FAQSection';
 import { RelatedLinks } from '@/components/common/RelatedLinks';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
+import { AdBanner, AdInArticle } from '@/components/ads/AdSlot';
 
 // ============================================================
 // COMPARISON PAGE — ENHANCED with winner banner, nav, tool cards
@@ -113,7 +114,7 @@ export default async function ComparisonPage({ params }: PageProps) {
 
           {/* Tool Cards Side by Side */}
           <div className="grid md:grid-cols-2 gap-4 mb-6">
-            <div className="bg-white dark:bg-gray-900 rounded-2xl border border-blue-200 dark:border-blue-800/30 p-5">
+            <div className="hover-lift bg-white dark:bg-gray-900 rounded-2xl border border-blue-200 dark:border-blue-800/30 p-5 card-animate" style={{ animationDelay: '0ms' }}>
               <div className="flex items-center gap-3 mb-3">
                 {comparison.toolA.logoUrl ? (
                   <img src={comparison.toolA.logoUrl} alt={comparison.toolA.name} className="w-12 h-12 rounded-xl shadow-sm" loading="lazy" />
@@ -143,7 +144,7 @@ export default async function ComparisonPage({ params }: PageProps) {
               </div>
             </div>
 
-            <div className="bg-white dark:bg-gray-900 rounded-2xl border border-purple-200 dark:border-purple-800/30 p-5">
+            <div className="hover-lift bg-white dark:bg-gray-900 rounded-2xl border border-purple-200 dark:border-purple-800/30 p-5 card-animate" style={{ animationDelay: '100ms' }}>
               <div className="flex items-center gap-3 mb-3">
                 {comparison.toolB.logoUrl ? (
                   <img src={comparison.toolB.logoUrl} alt={comparison.toolB.name} className="w-12 h-12 rounded-xl shadow-sm" loading="lazy" />
@@ -222,7 +223,7 @@ export default async function ComparisonPage({ params }: PageProps) {
         )}
 
         {/* ========== SECTION NAVIGATION ========== */}
-        <nav className="sticky top-16 z-40 bg-white/80 dark:bg-gray-950/80 backdrop-blur-md -mx-4 px-4 py-3 mb-8 border-b border-gray-200 dark:border-gray-800">
+        <nav className="sticky top-16 z-40 glass -mx-4 px-4 py-3 mb-8 border-b border-gray-200/50 dark:border-gray-800/50 shadow-sm">
           <div className="flex items-center gap-1 overflow-x-auto">
             {sections.map((s) => (
               <a
@@ -254,6 +255,9 @@ export default async function ComparisonPage({ params }: PageProps) {
           <ScoreCompare toolA={comparison.toolA} toolB={comparison.toolB} />
         </section>
 
+        {/* ========== AD: AFTER SCORES ========== */}
+        <AdBanner />
+
         {/* ========== FEATURES ========== */}
         <section id="features" className="mb-12 scroll-mt-32">
           <h2 className="text-2xl font-bold mb-6">Feature-by-Feature Comparison</h2>
@@ -270,11 +274,14 @@ export default async function ComparisonPage({ params }: PageProps) {
           <PriceCompare toolA={comparison.toolA} toolB={comparison.toolB} />
         </section>
 
+        {/* ========== AD: AFTER PRICING ========== */}
+        <AdInArticle />
+
         {/* ========== VERDICT / USE CASES ========== */}
         <section id="verdict" className="mb-12 scroll-mt-32">
           <h2 className="text-2xl font-bold mb-6">Which Should You Choose?</h2>
           <div className="grid md:grid-cols-2 gap-6">
-            <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 border border-blue-200 dark:border-blue-800/30">
+            <div className="hover-lift bg-white dark:bg-gray-900 rounded-2xl p-6 border border-blue-200 dark:border-blue-800/30">
               <div className="flex items-center gap-3 mb-4">
                 {comparison.toolA.logoUrl ? (
                   <img src={comparison.toolA.logoUrl} alt={comparison.toolA.name} className="w-8 h-8 rounded-lg" loading="lazy" />
@@ -293,7 +300,7 @@ export default async function ComparisonPage({ params }: PageProps) {
                 Read {comparison.toolA.name} Review &#8594;
               </Link>
             </div>
-            <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 border border-purple-200 dark:border-purple-800/30">
+            <div className="hover-lift bg-white dark:bg-gray-900 rounded-2xl p-6 border border-purple-200 dark:border-purple-800/30">
               <div className="flex items-center gap-3 mb-4">
                 {comparison.toolB.logoUrl ? (
                   <img src={comparison.toolB.logoUrl} alt={comparison.toolB.name} className="w-8 h-8 rounded-lg" loading="lazy" />
@@ -369,7 +376,7 @@ export default async function ComparisonPage({ params }: PageProps) {
                 href={comparison.toolA.websiteUrl || `/${category}/${comparison.toolA.slug}`}
                 target={comparison.toolA.websiteUrl ? '_blank' : undefined}
                 rel={comparison.toolA.websiteUrl ? 'noopener noreferrer nofollow' : undefined}
-                className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-semibold transition-colors"
+                className="glow-pulse px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-semibold transition-colors"
               >
                 Try {comparison.toolA.name}
               </a>

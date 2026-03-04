@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getToolBySlug, getToolsBySubcategory, getAllToolSlugs } from '@/lib/data';
+import { getToolBySlug, getToolsByCategory, getToolsBySubcategory, getAllToolSlugs } from '@/lib/data';
 import { generateBreadcrumbSchema } from '@/lib/schema';
 import { CATEGORIES, SITE_URL, SEO } from '@/lib/constants';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
+import { AdBanner } from '@/components/ads/AdSlot';
 
 // ============================================================
 // ALTERNATIVES PAGE — ENHANCED with comparison table
@@ -32,12 +33,17 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   const year = new Date().getFullYear();
   const title = `Best ${tool.name} Alternatives in ${year}${SEO.titleSuffix}`;
-  const description = `Looking for ${tool.name} alternatives? Compare the top ${tool.name} competitors side-by-side with features, pricing, ratings, and honest reviews.`;
+  const description = `Looking for ${tool.name} alternatives? Compare the top ${tool.name} competitors with ratings (${tool.ratings.overall.toFixed(1)}/10), pricing${tool.pricing.startingPrice ? ` from $${tool.pricing.startingPrice}/mo` : ''}, and features side-by-side.`;
+
+  // Check for alternatives to noindex if none exist
+  const alts = await getToolsBySubcategory(category, tool.subcategorySlug, 2);
+  const hasAlts = alts.filter(t => t.id !== tool.id).length > 0;
 
   return {
     title,
     description,
     alternates: { canonical: `${SITE_URL}/${category}/${toolSlug}/alternatives` },
+    ...(!hasAlts && { robots: { index: false, follow: true } }),
   };
 }
 
@@ -73,9 +79,23 @@ export default async function AlternativesPage({ params }: PageProps) {
         <h1 className="text-3xl md:text-4xl font-bold mt-6 mb-4">
           Best {tool.name} Alternatives ({year})
         </h1>
-        <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
-          Not sure if {tool.name} is right for you? We compared {filtered.length} alternatives
-          with similar features, different pricing tiers, and unique strengths to help you find the perfect fit.
+        <p className="text-lg text-gray-600 dark:text-gray-300 mb-4">
+          {tool.name} scores {tool.ratings.overall.toFixed(1)}/10 in our review{tool.pricing.hasFreeplan ? ' and offers a free plan' : tool.pricing.startingPrice ? ` with plans starting at $${tool.pricing.startingPrice}/mo` : ''}.
+          {tool.ratings.overall >= 8
+            ? ` While it excels in features (${tool.ratings.features.toFixed(1)}/10) and ease of use (${tool.ratings.easeOfUse.toFixed(1)}/10), it may not be the best fit for every team or budget.`
+            : tool.ratings.overall >= 6
+              ? ` It performs well in some areas but has room for improvement in ${tool.ratings.support < 7 ? 'customer support' : tool.ratings.valueForMoney < 7 ? 'value for money' : 'overall features'}.`
+              : ` There are several stronger alternatives worth considering for better features and value.`
+          }
+        </p>
+        <p className="text-gray-600 dark:text-gray-300 mb-8">
+          We compared {filtered.length} {cat?.name.toLowerCase() || 'tools'} alternatives below, ranked by overall score.
+          {filtered.length > 0 && filtered[0].ratings.overall > tool.ratings.overall
+            ? ` ${filtered[0].name} leads with ${filtered[0].ratings.overall.toFixed(1)}/10.`
+            : filtered.length > 0
+              ? ` ${tool.name} currently leads this category — but the alternatives below offer different strengths.`
+              : ''
+          }
         </p>
 
         {/* Current Tool Card */}
@@ -183,6 +203,9 @@ export default async function AlternativesPage({ params }: PageProps) {
           </section>
         )}
 
+        {/* ========== AD: AFTER TABLE ========== */}
+        <AdBanner />
+
         {/* Detailed Alternative Cards */}
         <section className="mb-12">
           <h2 className="text-2xl font-bold mb-6">Detailed Alternative Reviews</h2>
@@ -194,7 +217,8 @@ export default async function AlternativesPage({ params }: PageProps) {
               return (
                 <div
                   key={alt.id}
-                  className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden hover:border-blue-200 dark:hover:border-blue-800 transition-all hover:shadow-lg"
+                  className="hover-lift bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden hover:border-blue-200 dark:hover:border-blue-800 transition-all card-animate"
+                  style={{ animationDelay: `${idx * 80}ms` }}
                 >
                   {/* Card Header */}
                   <div className="flex flex-col md:flex-row md:items-center gap-4 p-6">

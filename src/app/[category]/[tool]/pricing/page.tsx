@@ -7,6 +7,7 @@ import { CATEGORIES, SITE_URL, SEO } from '@/lib/constants';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { RelatedLinks } from '@/components/common/RelatedLinks';
 import { FAQSection } from '@/components/common/FAQSection';
+import { AdBanner } from '@/components/ads/AdSlot';
 import type { FAQ } from '@/types';
 
 // ============================================================
@@ -34,8 +35,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!tool) return {};
 
   const year = new Date().getFullYear();
+  const plans = tool.pricing.plans || [];
+  const planCount = plans.length;
+  const priceRange = plans.filter(p => p.price !== null && p.price > 0).sort((a, b) => (a.price ?? 0) - (b.price ?? 0));
   const title = `${tool.name} Pricing Plans & Costs (${year})${SEO.titleSuffix}`;
-  const description = `Compare ${tool.name} pricing plans, costs, and features. See free plan details, trial options, and find the best plan for your budget in ${year}.`;
+  const description = `${tool.name} pricing: ${planCount} plans${tool.pricing.hasFreeplan ? ' (free plan available)' : ''}${priceRange.length >= 2 ? `, $${priceRange[0].price}-$${priceRange[priceRange.length - 1].price}/mo` : priceRange.length === 1 ? `, from $${priceRange[0].price}/mo` : ''}. Value score: ${tool.ratings.valueForMoney.toFixed(1)}/10. Compare costs, features per tier, and hidden fees.`;
 
   return {
     title,
@@ -153,26 +157,26 @@ export default async function PricingPage({ params }: PageProps) {
 
         {/* ========== PRICING SNAPSHOT ========== */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
-          <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 p-5 text-center">
+          <div className="glass rounded-2xl p-5 text-center shadow-sm card-animate" style={{ animationDelay: '0ms' }}>
             <div className="text-3xl mb-2">{hasFree ? '\u2705' : '\u274C'}</div>
             <div className="text-sm font-semibold">{hasFree ? 'Free Plan' : 'No Free Plan'}</div>
             <div className="text-xs text-gray-400 mt-1">{hasFree ? 'Available' : 'Paid only'}</div>
           </div>
-          <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 p-5 text-center">
+          <div className="glass rounded-2xl p-5 text-center shadow-sm card-animate" style={{ animationDelay: '100ms' }}>
             <div className="text-2xl font-black text-blue-600 mb-1">
               {startingPrice !== null ? `$${startingPrice}` : 'Custom'}
             </div>
             <div className="text-sm font-semibold">Starting Price</div>
             <div className="text-xs text-gray-400 mt-1">{startingPrice !== null ? 'per month' : 'Contact sales'}</div>
           </div>
-          <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 p-5 text-center">
+          <div className="glass rounded-2xl p-5 text-center shadow-sm card-animate" style={{ animationDelay: '200ms' }}>
             <div className="text-2xl font-black text-purple-600 mb-1">
               {freeTrialDays ? `${freeTrialDays}d` : 'N/A'}
             </div>
             <div className="text-sm font-semibold">Free Trial</div>
             <div className="text-xs text-gray-400 mt-1">{freeTrialDays ? `${freeTrialDays} days` : 'Not available'}</div>
           </div>
-          <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 p-5 text-center">
+          <div className="glass rounded-2xl p-5 text-center shadow-sm card-animate" style={{ animationDelay: '300ms' }}>
             <div className="text-2xl font-black mb-1">{plans.length}</div>
             <div className="text-sm font-semibold">Plans Available</div>
             <div className="text-xs text-gray-400 mt-1">{hasEnterprise ? 'Incl. Enterprise' : 'Standard plans'}</div>
@@ -227,11 +231,12 @@ export default async function PricingPage({ params }: PageProps) {
               {plans.map((plan, idx) => (
                 <div
                   key={idx}
-                  className={`relative rounded-2xl border p-6 flex flex-col bg-white dark:bg-gray-900 ${
+                  className={`relative rounded-2xl border p-6 flex flex-col bg-white dark:bg-gray-900 hover-lift ${
                     plan.isPopular
                       ? 'border-blue-500 dark:border-blue-400 shadow-lg shadow-blue-100 dark:shadow-blue-900/20 ring-1 ring-blue-500/20'
                       : 'border-gray-200 dark:border-gray-700'
-                  } hover:shadow-lg transition-all`}
+                  } transition-all card-animate`}
+                  style={{ animationDelay: `${idx * 100}ms` }}
                 >
                   {plan.isPopular && (
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-xs font-bold rounded-full shadow-md">
@@ -405,6 +410,115 @@ export default async function PricingPage({ params }: PageProps) {
           </div>
         </section>
 
+        {/* ========== AD: AFTER PLANS ========== */}
+        <AdBanner />
+
+        {/* ========== HIDDEN COSTS TO WATCH ========== */}
+        <section className="mb-14">
+          <h2 className="text-2xl font-bold mb-6">Hidden Costs to Watch</h2>
+          <div className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-gray-800 dark:to-gray-800 rounded-2xl border border-amber-200 dark:border-gray-700 p-6">
+            <p className="text-sm text-gray-600 dark:text-gray-300 mb-5">
+              Beyond the sticker price, here are potential additional costs to factor into your {tool.name} budget:
+            </p>
+            <div className="grid md:grid-cols-2 gap-4">
+              {[
+                {
+                  icon: '\u{1F4B3}',
+                  title: 'Per-User Scaling',
+                  description: `As your team grows, ${tool.name}'s per-seat pricing can add up quickly. ${startingPrice && plans.length >= 2 ? `Going from 5 to 25 users on the ${plans.find(p => p.isPopular)?.name || 'standard'} plan could mean $${((plans.find(p => p.isPopular)?.price || startingPrice) * 25).toFixed(0)}/mo.` : 'Calculate your total cost at full team size before committing.'}`,
+                },
+                {
+                  icon: '\u{1F50C}',
+                  title: 'Integration Add-ons',
+                  description: `Some integrations and premium connectors may require higher-tier plans or separate subscriptions. Check which integrations are available on your chosen plan level.`,
+                },
+                {
+                  icon: '\u{1F4CA}',
+                  title: 'Usage Overages',
+                  description: `Watch for limits on storage, API calls, or monthly active users. Exceeding plan limits may trigger automatic upgrades or overage charges.`,
+                },
+                {
+                  icon: '\u{1F393}',
+                  title: 'Onboarding & Training',
+                  description: `${hasEnterprise ? 'Enterprise plans typically include dedicated onboarding, but' : 'Most plans don\'t include dedicated onboarding, so'} factor in the time and cost of training your team to use ${tool.name} effectively.`,
+                },
+              ].map((item, idx) => (
+                <div key={idx} className="bg-white/70 dark:bg-gray-900/50 rounded-xl p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-xl">{item.icon}</span>
+                    <h3 className="font-semibold text-sm">{item.title}</h3>
+                  </div>
+                  <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">{item.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ========== PRICING CONTEXT ========== */}
+        <section className="mb-14">
+          <h2 className="text-2xl font-bold mb-6">How Does {tool.name} Pricing Compare?</h2>
+          <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 p-6">
+            <div className="space-y-4">
+              <div className="flex items-start gap-3">
+                <div className="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span className="text-blue-600 text-sm font-bold">$</span>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-sm mb-1">Market Positioning</h3>
+                  <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
+                    {startingPrice !== null && startingPrice <= 15
+                      ? `At $${startingPrice}/mo starting price, ${tool.name} is positioned in the budget-friendly segment of the ${cat?.name || category} market. This makes it accessible for freelancers and small teams testing the waters.`
+                      : startingPrice !== null && startingPrice <= 50
+                        ? `With plans starting at $${startingPrice}/mo, ${tool.name} sits in the mid-range of the ${cat?.name || category} market. This pricing targets growing teams who need professional-grade features without enterprise-level costs.`
+                        : startingPrice !== null
+                          ? `Starting at $${startingPrice}/mo, ${tool.name} is positioned as a premium solution in the ${cat?.name || category} space. This reflects its enterprise-grade feature set and is best suited for teams who need advanced capabilities.`
+                          : `${tool.name} uses custom pricing, which is typical for enterprise-focused ${cat?.name || category} solutions. Contact their sales team for a quote tailored to your specific needs.`}
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="w-8 h-8 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span className="text-green-600 text-sm font-bold">%</span>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-sm mb-1">Price-to-Feature Ratio</h3>
+                  <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
+                    {tool.ratings.valueForMoney >= 8
+                      ? `With a ${tool.ratings.valueForMoney.toFixed(1)}/10 value score, ${tool.name} delivers more features per dollar than most competitors. Users consistently rate it as offering excellent bang for the buck.`
+                      : tool.ratings.valueForMoney >= 6
+                        ? `${tool.name}'s ${tool.ratings.valueForMoney.toFixed(1)}/10 value score puts it on par with market averages. You're getting fair value, though some competitors may offer more aggressive pricing.`
+                        : `At ${tool.ratings.valueForMoney.toFixed(1)}/10 for value, ${tool.name} is considered somewhat expensive for what it offers. Consider whether the specific features justify the premium over lower-cost alternatives.`}
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="w-8 h-8 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span className="text-purple-600 text-sm font-bold">&#8593;</span>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-sm mb-1">Upgrade Path</h3>
+                  <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
+                    {plans.length >= 3
+                      ? `${tool.name} offers ${plans.length} distinct tiers, giving you room to scale as your needs evolve. ${hasFree ? 'Starting from the free plan, you can gradually upgrade' : 'You can start with the entry-level plan and upgrade'} without switching platforms — a significant advantage over competitors with limited plan options.`
+                      : plans.length === 2
+                        ? `With ${plans.length} plans available, ${tool.name} keeps things simple. You won't be overwhelmed by choice, but make sure the upgrade path covers your growth needs for the next 12-24 months.`
+                        : `${tool.name} offers a single plan structure, which simplifies decision-making but limits flexibility as your needs change.`}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="mt-5 pt-4 border-t border-gray-100 dark:border-gray-800">
+              <Link
+                href={`/${category}/${toolSlug}/alternatives`}
+                className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+              >
+                &#8594; Compare {tool.name} pricing with alternatives
+              </Link>
+            </div>
+          </div>
+        </section>
+
         {/* ========== PRICING FAQ ========== */}
         <section className="mb-14">
           <h2 className="text-2xl font-bold mb-6">{tool.name} Pricing FAQ</h2>
@@ -427,7 +541,7 @@ export default async function PricingPage({ params }: PageProps) {
                 href={tool.websiteUrl || '#'}
                 target="_blank"
                 rel="noopener noreferrer nofollow"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl text-sm font-bold hover:from-blue-700 hover:to-purple-700 shadow-md transition-all"
+                className="glow-pulse inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl text-sm font-bold hover:from-blue-700 hover:to-purple-700 shadow-md transition-all"
               >
                 Visit {tool.name} &#8599;
               </Link>

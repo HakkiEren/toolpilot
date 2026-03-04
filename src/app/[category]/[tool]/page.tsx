@@ -1,13 +1,14 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getToolBySlug, getAllToolSlugs, getRelatedLinks, getComparisonsByTool } from '@/lib/data';
+import { getToolBySlug, getAllToolSlugs, getRelatedLinks, getComparisonsByTool, getRelatedTools } from '@/lib/data';
 import { generateToolSchema, generateBreadcrumbSchema, generateFAQSchema } from '@/lib/schema';
 import { CATEGORIES, SEO, SITE_URL } from '@/lib/constants';
 import { generateToolFAQs } from '@/lib/generated-faqs';
 import { FAQSection } from '@/components/common/FAQSection';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { RelatedLinks } from '@/components/common/RelatedLinks';
+import { AdBanner, AdInArticle } from '@/components/ads/AdSlot';
 
 // ============================================================
 // TOOL PROFILE PAGE — Individual tool review (ENHANCED)
@@ -52,8 +53,11 @@ export default async function ToolPage({ params }: PageProps) {
   if (!tool) notFound();
 
   const cat = CATEGORIES[category];
-  const relatedLinks = await getRelatedLinks(tool);
-  const comparisons = await getComparisonsByTool(tool.id);
+  const [relatedLinks, comparisons, relatedTools] = await Promise.all([
+    getRelatedLinks(tool),
+    getComparisonsByTool(tool.id),
+    getRelatedTools(tool, 6),
+  ]);
   const year = new Date().getFullYear();
 
   const toolSchema = generateToolSchema(tool, cat?.name || category);
@@ -162,7 +166,7 @@ export default async function ToolPage({ params }: PageProps) {
                 href={tool.websiteUrl}
                 target="_blank"
                 rel="noopener noreferrer nofollow"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl text-sm font-semibold hover:bg-blue-700 transition-colors shadow-lg shadow-blue-600/20"
+                className="glow-pulse inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl text-sm font-semibold hover:bg-blue-700 transition-colors shadow-lg shadow-blue-600/20"
               >
                 Visit {tool.name} &#8599;
               </a>
@@ -216,7 +220,7 @@ export default async function ToolPage({ params }: PageProps) {
                     <span className="w-36 text-sm font-medium text-gray-700 dark:text-gray-300">{label}</span>
                     <div className="flex-1 h-3 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
                       <div
-                        className={`h-full rounded-full transition-all ${
+                        className={`h-full rounded-full score-bar-animated ${
                           score >= 8 ? 'bg-green-500' : score >= 6 ? 'bg-yellow-500' : score >= 4 ? 'bg-orange-500' : 'bg-red-500'
                         }`}
                         style={{ width: `${(score / 10) * 100}%` }}
@@ -237,6 +241,9 @@ export default async function ToolPage({ params }: PageProps) {
             <p>{tool.description}</p>
           </div>
         </section>
+
+        {/* ========== AD: AFTER DESCRIPTION ========== */}
+        <AdBanner />
 
         {/* ========== KEY FEATURES TABLE ========== */}
         {featureEntries.length > 0 && (
@@ -309,6 +316,9 @@ export default async function ToolPage({ params }: PageProps) {
           </section>
         )}
 
+        {/* ========== AD: AFTER PROS/CONS ========== */}
+        <AdInArticle />
+
         {/* ========== USE CASES ========== */}
         {tool.useCasesContent && (
           <section className="mb-12">
@@ -338,7 +348,7 @@ export default async function ToolPage({ params }: PageProps) {
               {tool.pricing.plans.map((plan, idx) => (
                 <div
                   key={idx}
-                  className={`relative p-6 rounded-2xl border transition-all hover:shadow-lg ${
+                  className={`relative p-6 rounded-2xl border hover-lift transition-all ${
                     plan.isPopular
                       ? 'border-blue-500 ring-2 ring-blue-500/20 bg-blue-50/30 dark:bg-blue-900/10'
                       : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900'
@@ -390,7 +400,7 @@ export default async function ToolPage({ params }: PageProps) {
                   <Link
                     key={comp.id}
                     href={`/${category}/compare/${comp.slug}`}
-                    className="flex items-center gap-4 p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-blue-300 hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-all group"
+                    className="hover-lift flex items-center gap-4 p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-blue-300 hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-all group"
                   >
                     <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-100 to-purple-100 dark:from-gray-700 dark:to-gray-600 flex items-center justify-center text-sm font-bold text-blue-600 dark:text-blue-400">
                       {tool.name[0]}
@@ -491,6 +501,41 @@ export default async function ToolPage({ params }: PageProps) {
             </div>
           </div>
         </section>
+
+        {/* ========== YOU MAY ALSO LIKE ========== */}
+        {relatedTools.length > 0 && (
+          <section className="mb-12">
+            <h2 className="text-2xl font-bold mb-6">You May Also Like</h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {relatedTools.map((rt) => (
+                <Link
+                  key={rt.id}
+                  href={`/${rt.categorySlug}/${rt.slug}`}
+                  className="group hover-lift flex items-start gap-3 p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-blue-300 transition-all bg-white dark:bg-gray-900"
+                >
+                  {rt.logoUrl ? (
+                    <img src={rt.logoUrl} alt={rt.name} className="w-10 h-10 rounded-lg flex-shrink-0" loading="lazy" />
+                  ) : (
+                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-sm font-bold text-white flex-shrink-0">
+                      {rt.name[0]}
+                    </div>
+                  )}
+                  <div className="min-w-0">
+                    <h3 className="font-semibold text-sm group-hover:text-blue-600 transition-colors truncate">{rt.name}</h3>
+                    <p className="text-xs text-gray-500 line-clamp-1 mt-0.5">{rt.tagline}</p>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="text-yellow-500 text-xs">&#9733;</span>
+                      <span className="text-xs font-medium">{rt.ratings.overall.toFixed(1)}/10</span>
+                      {rt.pricing.hasFreeplan && (
+                        <span className="text-[10px] px-1.5 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded">Free</span>
+                      )}
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* ========== FAQ SECTION ========== */}
         {toolFAQs.length > 0 && (
