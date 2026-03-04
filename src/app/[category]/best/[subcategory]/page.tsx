@@ -346,6 +346,67 @@ export default async function BestSubcategoryPage({ params }: PageProps) {
           </div>
         )}
 
+        {/* ========== HOW WE RANKED ========== */}
+        <section className="mb-12">
+          <div className="bg-gradient-to-r from-indigo-50 to-blue-50 dark:from-gray-800 dark:to-gray-800 rounded-2xl p-6 border border-indigo-100 dark:border-gray-700">
+            <h2 className="text-lg font-bold mb-3 flex items-center gap-2">
+              <svg className="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              </svg>
+              How We Ranked These Tools
+            </h2>
+            <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
+              Our rankings are based on a weighted scoring system that evaluates each {sub.name.toLowerCase()} across four key dimensions:
+              overall feature depth (30%), ease of use and learning curve (25%), value for money (25%), and customer support quality (20%).
+              We test every tool hands-on, analyze thousands of user reviews, and update our rankings monthly.
+            </p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {[
+                { label: 'Features', weight: '30%', color: 'text-blue-600' },
+                { label: 'Ease of Use', weight: '25%', color: 'text-green-600' },
+                { label: 'Value', weight: '25%', color: 'text-purple-600' },
+                { label: 'Support', weight: '20%', color: 'text-orange-600' },
+              ].map((item) => (
+                <div key={item.label} className="bg-white/70 dark:bg-gray-900/50 rounded-lg p-3 text-center">
+                  <div className={`text-xl font-bold ${item.color}`}>{item.weight}</div>
+                  <div className="text-xs text-gray-500">{item.label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ========== WHEN TO CHOOSE WHAT ========== */}
+        {tools.length >= 3 && (
+          <section className="mb-12">
+            <h2 className="text-xl font-bold mb-6">Quick Decision Guide</h2>
+            <div className="grid md:grid-cols-3 gap-4">
+              {tools.slice(0, 3).map((t, idx) => {
+                const labels = ['Best Overall', 'Runner-Up', 'Best Value'];
+                const colors = ['from-yellow-50 to-amber-50 border-yellow-200', 'from-gray-50 to-slate-50 border-gray-200', 'from-green-50 to-emerald-50 border-green-200'];
+                const darkColors = ['dark:from-yellow-900/10 dark:to-amber-900/10 dark:border-yellow-800/30', 'dark:from-gray-800 dark:to-gray-800 dark:border-gray-700', 'dark:from-green-900/10 dark:to-emerald-900/10 dark:border-green-800/30'];
+                return (
+                  <Link key={t.id} href={`/${category}/${t.slug}`} className={`group bg-gradient-to-br ${colors[idx]} ${darkColors[idx]} rounded-2xl border p-5 hover:shadow-lg transition-all`}>
+                    <div className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">{labels[idx]}</div>
+                    <div className="flex items-center gap-3 mb-3">
+                      {t.logoUrl ? (
+                        <img src={t.logoUrl} alt={t.name} className="w-10 h-10 rounded-lg" loading="lazy" />
+                      ) : (
+                        <div className="w-10 h-10 rounded-lg bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-sm font-bold">{t.name[0]}</div>
+                      )}
+                      <div>
+                        <h3 className="font-bold group-hover:text-blue-600 transition-colors">{t.name}</h3>
+                        <div className="text-xs text-gray-500">{t.ratings.overall.toFixed(1)}/10 &bull; {t.pricing.hasFreeplan ? 'Free plan' : t.pricing.startingPrice ? `$${t.pricing.startingPrice}/mo` : 'Custom'}</div>
+                      </div>
+                    </div>
+                    <p className="text-xs text-gray-600 dark:text-gray-400 line-clamp-2">{t.tagline}</p>
+                  </Link>
+                );
+              })}
+            </div>
+          </section>
+        )}
+
         {/* ========== RELATED SUBCATEGORIES ========== */}
         {category === 'ai-tools' && (
           <section className="mb-12">

@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { getComparison, getAllComparisonSlugs, getRelatedLinks } from '@/lib/data';
 import { generateComparisonSchema, generateFAQSchema, generateBreadcrumbSchema } from '@/lib/schema';
 import { CATEGORIES, LIMITS, SEO, SITE_URL } from '@/lib/constants';
+import { generateComparisonBottomLine, generateKeyDifferences } from '@/lib/generated-faqs';
 // Components
 import { ScoreCompare } from '@/components/comparison/ScoreCompare';
 import { FeatureMatrix } from '@/components/comparison/FeatureMatrix';
@@ -73,6 +74,10 @@ export default async function ComparisonPage({ params }: PageProps) {
     { name: cat?.name || category, url: `/${category}` },
     { name: `${comparison.toolA.name} vs ${comparison.toolB.name}`, url: `/${category}/compare/${slug}` },
   ]);
+
+  // Key Differences + Bottom Line
+  const keyDiffs = generateKeyDifferences(comparison.toolA.name, comparison.toolB.name, comparison.featureMatrix);
+  const bottomLine = generateComparisonBottomLine(comparison.toolA.name, comparison.toolB.name, aScore, bScore, comparison.verdictContent);
 
   // Section IDs for navigation
   const sections = [
@@ -191,6 +196,30 @@ export default async function ComparisonPage({ params }: PageProps) {
             {comparison.introContent}
           </div>
         </div>
+
+        {/* ========== KEY DIFFERENCES AT A GLANCE ========== */}
+        {keyDiffs.length > 0 && (
+          <section className="mb-10">
+            <h2 className="text-xl font-bold mb-4">Key Differences at a Glance</h2>
+            <div className="space-y-3">
+              {keyDiffs.map((diff, idx) => (
+                <div key={idx} className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
+                  <div className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-wide">{diff.area}</div>
+                  <div className="grid md:grid-cols-2 gap-3">
+                    <div className={`flex items-start gap-2 p-3 rounded-lg ${diff.winner === 'a' ? 'bg-green-50 dark:bg-green-900/10 border border-green-200 dark:border-green-800/30' : 'bg-gray-50 dark:bg-gray-800/50'}`}>
+                      {diff.winner === 'a' && <span className="text-green-600 text-sm mt-0.5">&#10003;</span>}
+                      <span className="text-sm text-gray-700 dark:text-gray-300">{diff.toolAPoint}</span>
+                    </div>
+                    <div className={`flex items-start gap-2 p-3 rounded-lg ${diff.winner === 'b' ? 'bg-green-50 dark:bg-green-900/10 border border-green-200 dark:border-green-800/30' : 'bg-gray-50 dark:bg-gray-800/50'}`}>
+                      {diff.winner === 'b' && <span className="text-green-600 text-sm mt-0.5">&#10003;</span>}
+                      <span className="text-sm text-gray-700 dark:text-gray-300">{diff.toolBPoint}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* ========== SECTION NAVIGATION ========== */}
         <nav className="sticky top-16 z-40 bg-white/80 dark:bg-gray-950/80 backdrop-blur-md -mx-4 px-4 py-3 mb-8 border-b border-gray-200 dark:border-gray-800">
@@ -325,6 +354,36 @@ export default async function ComparisonPage({ params }: PageProps) {
             <FAQSection faqs={comparison.faqs} />
           </section>
         )}
+
+        {/* ========== BOTTOM LINE ========== */}
+        <section className="mb-12">
+          <div className="bg-gradient-to-r from-gray-900 to-gray-800 dark:from-gray-800 dark:to-gray-700 rounded-2xl p-6 md:p-8 text-white">
+            <div className="flex items-center gap-3 mb-3">
+              <span className="text-2xl">&#128161;</span>
+              <h2 className="text-xl font-bold">The Bottom Line</h2>
+            </div>
+            <h3 className="text-lg font-semibold text-blue-300 mb-2">{bottomLine.headline}</h3>
+            <p className="text-gray-300 leading-relaxed">{bottomLine.summary}</p>
+            <div className="mt-5 flex flex-wrap gap-3">
+              <a
+                href={comparison.toolA.websiteUrl || `/${category}/${comparison.toolA.slug}`}
+                target={comparison.toolA.websiteUrl ? '_blank' : undefined}
+                rel={comparison.toolA.websiteUrl ? 'noopener noreferrer nofollow' : undefined}
+                className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-semibold transition-colors"
+              >
+                Try {comparison.toolA.name}
+              </a>
+              <a
+                href={comparison.toolB.websiteUrl || `/${category}/${comparison.toolB.slug}`}
+                target={comparison.toolB.websiteUrl ? '_blank' : undefined}
+                rel={comparison.toolB.websiteUrl ? 'noopener noreferrer nofollow' : undefined}
+                className="px-5 py-2.5 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-sm font-semibold transition-colors"
+              >
+                Try {comparison.toolB.name}
+              </a>
+            </div>
+          </div>
+        </section>
 
         {/* ========== RELATED LINKS ========== */}
         <section className="mb-12">

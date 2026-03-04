@@ -241,6 +241,25 @@ export async function getBlogBySlug(slug: string): Promise<BlogPost | null> {
 
 // --- Category Stats ---
 
+export async function getComparisonsByCategory(
+  categorySlug: string,
+  limit = 8
+): Promise<Comparison[]> {
+  const { data, error } = await supabase
+    .from('comparisons')
+    .select(`
+      *,
+      tool_a:tools!comparisons_tool_a_id_fkey(*),
+      tool_b:tools!comparisons_tool_b_id_fkey(*)
+    `)
+    .eq('category_slug', categorySlug)
+    .order('created_at', { ascending: false })
+    .limit(limit);
+
+  if (error || !data) return [];
+  return data.map(mapComparisonRow);
+}
+
 export async function getCategoryStats(
   categorySlug: string
 ): Promise<{ toolCount: number; comparisonCount: number }> {

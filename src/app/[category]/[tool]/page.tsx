@@ -2,8 +2,10 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getToolBySlug, getAllToolSlugs, getRelatedLinks, getComparisonsByTool } from '@/lib/data';
-import { generateToolSchema, generateBreadcrumbSchema } from '@/lib/schema';
+import { generateToolSchema, generateBreadcrumbSchema, generateFAQSchema } from '@/lib/schema';
 import { CATEGORIES, SEO, SITE_URL } from '@/lib/constants';
+import { generateToolFAQs } from '@/lib/generated-faqs';
+import { FAQSection } from '@/components/common/FAQSection';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { RelatedLinks } from '@/components/common/RelatedLinks';
 
@@ -61,6 +63,21 @@ export default async function ToolPage({ params }: PageProps) {
     { name: tool.name, url: `/${category}/${toolSlug}` },
   ]);
 
+  // Generate dynamic FAQs for this tool
+  const toolFAQs = generateToolFAQs({
+    name: tool.name,
+    tagline: tool.tagline,
+    pricing: {
+      hasFreeplan: tool.pricing.hasFreeplan,
+      startingPrice: tool.pricing.startingPrice,
+      freeTrialDays: tool.pricing.freeTrialDays,
+      plans: tool.pricing.plans || [],
+    },
+    ratings: { overall: tool.ratings.overall },
+    categorySlug: tool.categorySlug,
+  });
+  const faqSchema = generateFAQSchema(toolFAQs);
+
   // Rating label
   const ratingLabel = tool.ratings.overall >= 9 ? 'Excellent' : tool.ratings.overall >= 8 ? 'Very Good' : tool.ratings.overall >= 7 ? 'Good' : tool.ratings.overall >= 6 ? 'Decent' : 'Average';
   const ratingColor = tool.ratings.overall >= 8 ? 'text-green-600' : tool.ratings.overall >= 6 ? 'text-yellow-600' : 'text-red-600';
@@ -72,6 +89,7 @@ export default async function ToolPage({ params }: PageProps) {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(toolSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      {faqSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />}
 
       <article className="max-w-5xl mx-auto px-4 py-8">
         <Breadcrumbs items={[
@@ -434,6 +452,53 @@ export default async function ToolPage({ params }: PageProps) {
             </table>
           </div>
         </section>
+
+        {/* ========== EXPERT VERDICT ========== */}
+        <section className="mb-12">
+          <h2 className="text-2xl font-bold mb-6">Expert Verdict</h2>
+          <div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-800 dark:via-gray-800 dark:to-gray-800 rounded-2xl p-6 md:p-8 border border-blue-200 dark:border-blue-800/30">
+            <div className="flex items-start gap-4 mb-4">
+              <div className="flex-shrink-0 w-14 h-14 rounded-full bg-white dark:bg-gray-900 shadow-md flex items-center justify-center">
+                <span className={`text-2xl font-black ${ratingColor}`}>{tool.ratings.overall.toFixed(1)}</span>
+              </div>
+              <div>
+                <h3 className="text-lg font-bold mb-1">
+                  {tool.name} — {ratingLabel} ({tool.ratings.overall.toFixed(1)}/10)
+                </h3>
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                  {tool.ratings.overall >= 8
+                    ? `${tool.name} stands out as one of the strongest options in the ${cat?.name || 'tools'} category. With excellent scores across features (${tool.ratings.features.toFixed(1)}/10) and ease of use (${tool.ratings.easeOfUse.toFixed(1)}/10), it delivers genuine value for ${tool.pricing.hasFreeplan ? 'teams of all sizes, especially with its free plan' : `organizations willing to invest from $${tool.pricing.startingPrice}/mo`}. We recommend it for users who prioritize reliability and a mature feature set.`
+                    : tool.ratings.overall >= 6
+                      ? `${tool.name} is a solid contender in the ${cat?.name || 'tools'} space with room for growth. It scores well on features (${tool.ratings.features.toFixed(1)}/10) but could improve in some areas. ${tool.pricing.hasFreeplan ? 'The free plan makes it easy to evaluate before committing.' : `At $${tool.pricing.startingPrice}/mo, it offers reasonable value for what you get.`} Worth considering if its strengths align with your specific needs.`
+                      : `${tool.name} offers a basic set of capabilities in the ${cat?.name || 'tools'} category. While it may work for specific use cases, there are stronger alternatives available. We recommend comparing it against top-rated competitors before committing.`
+                  }
+                </p>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4">
+              {[
+                { label: 'Features', score: tool.ratings.features, emoji: '⚙️' },
+                { label: 'Ease of Use', score: tool.ratings.easeOfUse, emoji: '🎯' },
+                { label: 'Value', score: tool.ratings.valueForMoney, emoji: '💰' },
+                { label: 'Support', score: tool.ratings.support, emoji: '💬' },
+              ].map(({ label, score, emoji }) => (
+                <div key={label} className="bg-white/70 dark:bg-gray-900/50 rounded-xl p-3 text-center">
+                  <div className="text-lg mb-1">{emoji}</div>
+                  <div className={`text-lg font-bold ${score >= 8 ? 'text-green-600' : score >= 6 ? 'text-yellow-600' : 'text-red-500'}`}>{score.toFixed(1)}</div>
+                  <div className="text-xs text-gray-500">{label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ========== FAQ SECTION ========== */}
+        {toolFAQs.length > 0 && (
+          <section className="mb-12">
+            <h2 className="text-2xl font-bold mb-6">{tool.name} FAQ</h2>
+            <FAQSection faqs={toolFAQs} />
+          </section>
+        )}
 
         {/* ========== INTERNAL LINKS ========== */}
         <section className="mb-12">

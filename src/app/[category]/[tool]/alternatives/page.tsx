@@ -298,6 +298,61 @@ export default async function AlternativesPage({ params }: PageProps) {
           </div>
         )}
 
+        {/* ========== WHY PEOPLE SWITCH ========== */}
+        {filtered.length > 0 && (
+          <section className="mb-12">
+            <h2 className="text-2xl font-bold mb-6">Why People Look for {tool.name} Alternatives</h2>
+            <div className="bg-gradient-to-r from-orange-50 to-red-50 dark:from-gray-800 dark:to-gray-800 rounded-2xl p-6 border border-orange-100 dark:border-gray-700">
+              <div className="grid md:grid-cols-3 gap-4">
+                {[
+                  {
+                    icon: '💰',
+                    title: 'Pricing Concerns',
+                    desc: `${tool.name} ${tool.pricing.startingPrice ? `starts at $${tool.pricing.startingPrice}/mo which` : 'pricing'} may not fit every budget. ${filtered.filter(a => a.pricing.hasFreeplan).length} alternatives offer free plans.`,
+                  },
+                  {
+                    icon: '⚡',
+                    title: 'Feature Gaps',
+                    desc: `Some users need capabilities ${tool.name} doesn't offer. Top-rated alternatives score up to ${filtered.length > 0 ? Math.max(...filtered.map(a => a.ratings.features)).toFixed(1) : '9.0'}/10 on features.`,
+                  },
+                  {
+                    icon: '🎯',
+                    title: 'Better Fit',
+                    desc: `Different tools excel for different use cases. ${filtered[0]?.name || 'Top alternatives'} may be a better match for your specific workflow and team size.`,
+                  },
+                ].map((reason) => (
+                  <div key={reason.title} className="bg-white/70 dark:bg-gray-900/50 rounded-xl p-4">
+                    <div className="text-2xl mb-2">{reason.icon}</div>
+                    <h3 className="font-semibold text-sm mb-1">{reason.title}</h3>
+                    <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">{reason.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* ========== SWITCHING CHECKLIST ========== */}
+        <section className="mb-12">
+          <h2 className="text-xl font-bold mb-4">Before You Switch: Key Considerations</h2>
+          <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 p-6">
+            <ul className="space-y-3">
+              {[
+                `Review your current ${tool.name} data export options — ensure you can migrate your content and configurations.`,
+                `Compare pricing tiers carefully — factor in hidden costs like add-ons, transaction fees, and per-user charges.`,
+                `Test the alternative with a free trial before committing — most tools in this category offer 14-30 day trials.`,
+                `Check integration compatibility — make sure the alternative works with your existing tech stack.`,
+                `Consider the learning curve — switching costs include time spent training your team on the new tool.`,
+              ].map((item, idx) => (
+                <li key={idx} className="flex items-start gap-3">
+                  <span className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-xs font-bold text-blue-600">{idx + 1}</span>
+                  <span className="text-sm text-gray-600 dark:text-gray-300">{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
         <div className="text-sm text-gray-400 mt-12 flex items-center gap-2">
           <span>&#128197;</span>
           Last updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}

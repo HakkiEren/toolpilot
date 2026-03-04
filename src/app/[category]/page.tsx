@@ -1,10 +1,12 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getToolsByCategory, getCategoryStats } from '@/lib/data';
-import { generateBreadcrumbSchema } from '@/lib/schema';
+import { getToolsByCategory, getCategoryStats, getComparisonsByCategory } from '@/lib/data';
+import { generateBreadcrumbSchema, generateFAQSchema } from '@/lib/schema';
 import { CATEGORIES, CATEGORY_LIST, SITE_URL, AI_SUBCATEGORIES } from '@/lib/constants';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
+import { FAQSection } from '@/components/common/FAQSection';
+import { getCategoryContent } from '@/lib/category-content';
 
 // ============================================================
 // Category Hub Page — ENHANCED with stats, filters, better grid
@@ -35,9 +37,14 @@ export default async function CategoryPage({ params }: PageProps) {
   const cat = CATEGORIES[category];
   if (!cat) notFound();
 
-  const tools = await getToolsByCategory(category, 50);
-  const stats = await getCategoryStats(category);
+  const [tools, stats, comparisons] = await Promise.all([
+    getToolsByCategory(category, 50),
+    getCategoryStats(category),
+    getComparisonsByCategory(category, 6),
+  ]);
   const year = new Date().getFullYear();
+  const categoryContent = getCategoryContent(category);
+  const faqSchema = categoryContent ? generateFAQSchema(categoryContent.faqs) : null;
 
   const subcategories = category === 'ai-tools' ? AI_SUBCATEGORIES : [];
 
@@ -55,6 +62,7 @@ export default async function CategoryPage({ params }: PageProps) {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      {faqSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />}
 
       <div className="max-w-7xl mx-auto px-4 py-8">
         <Breadcrumbs items={[
@@ -248,6 +256,113 @@ export default async function CategoryPage({ params }: PageProps) {
             <p className="text-sm">We are currently adding tools to this category. Check back soon!</p>
           </div>
         )}
+
+        {/* ========== FEATURED COMPARISONS ========== */}
+        {comparisons.length > 0 && (
+          <section className="mt-16 mb-12">
+            <h2 className="text-xl font-bold mb-6">Popular {cat.name} Comparisons</h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {comparisons.map((comp) => (
+                <Link
+                  key={comp.id}
+                  href={`/${category}/compare/${comp.slug}`}
+                  className="group p-5 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-blue-300 hover:shadow-md transition-all"
+                >
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-xs font-bold text-blue-600">
+                        {comp.toolA.name[0]}
+                      </div>
+                      <span className="text-xs font-bold text-orange-500">VS</span>
+                      <div className="w-8 h-8 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-xs font-bold text-purple-600">
+                        {comp.toolB.name[0]}
+                      </div>
+                    </div>
+                    <span className="text-xs text-gray-400">{comp.toolA.ratings.overall.toFixed(1)} vs {comp.toolB.ratings.overall.toFixed(1)}</span>
+                  </div>
+                  <h3 className="font-semibold text-sm group-hover:text-blue-600 transition-colors">
+                    {comp.toolA.name} vs {comp.toolB.name}
+                  </h3>
+                  <p className="text-xs text-gray-500 mt-1 line-clamp-2">{comp.introContent}</p>
+                  <span className="text-xs text-blue-600 font-medium mt-2 inline-block group-hover:translate-x-1 transition-transform">
+                    Compare &#8594;
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* ========== BUYER'S GUIDE ========== */}
+        {categoryContent && (
+          <section className="mt-12 mb-12">
+            <h2 className="text-2xl font-bold mb-6">{cat.name} Buyer&apos;s Guide ({year})</h2>
+            <div className="space-y-8">
+              {categoryContent.buyersGuide.map((section, idx) => (
+                <div key={idx} className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-6">
+                  <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+                    <span className="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-sm font-bold text-blue-600">
+                      {idx + 1}
+                    </span>
+                    {section.title}
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300 leading-relaxed">{section.text}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* ========== KEY FACTORS TO CONSIDER ========== */}
+        {categoryContent && (
+          <section className="mb-12">
+            <h2 className="text-xl font-bold mb-6">Key Factors When Choosing {cat.name}</h2>
+            <div className="grid md:grid-cols-2 gap-4">
+              {categoryContent.keyFactors.map((factor, idx) => (
+                <div key={idx} className="flex items-start gap-3 p-4 bg-gradient-to-r from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 rounded-xl border border-gray-200 dark:border-gray-800">
+                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                    <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-sm mb-1">{factor.factor}</h3>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">{factor.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* ========== HOW WE EVALUATE ========== */}
+        {categoryContent && (
+          <section className="mb-12">
+            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-800 rounded-2xl p-6 border border-blue-100 dark:border-gray-700">
+              <h2 className="text-lg font-bold mb-3 flex items-center gap-2">
+                <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                </svg>
+                How We Evaluate {cat.name}
+              </h2>
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-sm">{categoryContent.methodology}</p>
+            </div>
+          </section>
+        )}
+
+        {/* ========== CATEGORY FAQ ========== */}
+        {categoryContent && categoryContent.faqs.length > 0 && (
+          <section className="mb-12">
+            <h2 className="text-2xl font-bold mb-6">{cat.name} FAQ</h2>
+            <FAQSection faqs={categoryContent.faqs} />
+          </section>
+        )}
+
+        {/* Freshness Signal */}
+        <div className="text-sm text-gray-400 mt-8 flex items-center gap-2">
+          <span>&#128197;</span>
+          Last updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+        </div>
       </div>
     </>
   );
