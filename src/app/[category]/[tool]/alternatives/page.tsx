@@ -3,11 +3,11 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getToolBySlug, getToolsBySubcategory, getAllToolSlugs } from '@/lib/data';
 import { generateBreadcrumbSchema } from '@/lib/schema';
-import { CATEGORIES, LIMITS, SITE_URL, SEO } from '@/lib/constants';
+import { CATEGORIES, SITE_URL, SEO } from '@/lib/constants';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 
 // ============================================================
-// ALTERNATIVES PAGE — "{Tool} Alternatives" keyword targeting
+// ALTERNATIVES PAGE — ENHANCED with comparison table
 // ============================================================
 
 export const revalidate = 3600;
@@ -30,8 +30,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const tool = await getToolBySlug(category, toolSlug);
   if (!tool) return {};
 
-  const title = `Best ${tool.name} Alternatives in ${new Date().getFullYear()}${SEO.titleSuffix}`;
-  const description = `Looking for ${tool.name} alternatives? Compare the top competitors with features, pricing, and honest reviews.`;
+  const year = new Date().getFullYear();
+  const title = `Best ${tool.name} Alternatives in ${year}${SEO.titleSuffix}`;
+  const description = `Looking for ${tool.name} alternatives? Compare the top ${tool.name} competitors side-by-side with features, pricing, ratings, and honest reviews.`;
 
   return {
     title,
@@ -46,6 +47,7 @@ export default async function AlternativesPage({ params }: PageProps) {
   if (!tool) notFound();
 
   const cat = CATEGORIES[category];
+  const year = new Date().getFullYear();
   const alternatives = await getToolsBySubcategory(category, tool.subcategorySlug, 20);
   const filtered = alternatives.filter((t) => t.id !== tool.id);
 
@@ -69,61 +71,235 @@ export default async function AlternativesPage({ params }: PageProps) {
         ]} />
 
         <h1 className="text-3xl md:text-4xl font-bold mt-6 mb-4">
-          Best {tool.name} Alternatives ({new Date().getFullYear()})
+          Best {tool.name} Alternatives ({year})
         </h1>
-        <p className="text-lg text-gray-600 dark:text-gray-300 mb-10">
-          Not sure if {tool.name} is right for you? Here are the top alternatives with similar features,
-          different pricing, or better fit for specific use cases.
+        <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
+          Not sure if {tool.name} is right for you? We compared {filtered.length} alternatives
+          with similar features, different pricing tiers, and unique strengths to help you find the perfect fit.
         </p>
 
-        {/* Current tool quick summary */}
-        <div className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-6 mb-10">
-          <h2 className="font-semibold mb-2">About {tool.name}</h2>
-          <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">{tool.tagline}</p>
-          <div className="flex gap-4 text-sm">
-            <span>★ {tool.ratings.overall.toFixed(1)}/10</span>
-            <span>{tool.pricing.hasFreeplan ? '✅ Free plan' : `From $${tool.pricing.startingPrice}/mo`}</span>
-            <Link href={`/${category}/${toolSlug}`} className="text-blue-600 hover:underline">Full review →</Link>
+        {/* Current Tool Card */}
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-800 rounded-2xl p-6 mb-10 border border-blue-200 dark:border-gray-700">
+          <div className="flex items-center gap-2 text-sm text-blue-600 dark:text-blue-400 font-medium mb-3">
+            <span>&#128270;</span> Currently Evaluating
+          </div>
+          <div className="flex flex-col md:flex-row md:items-center gap-4">
+            <div className="flex items-center gap-4 flex-1">
+              {tool.logoUrl ? (
+                <img src={tool.logoUrl} alt={`${tool.name} logo`} className="w-14 h-14 rounded-xl" />
+              ) : (
+                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-2xl font-bold text-white">
+                  {tool.name[0]}
+                </div>
+              )}
+              <div>
+                <h2 className="text-xl font-bold">{tool.name}</h2>
+                <p className="text-sm text-gray-600 dark:text-gray-300">{tool.tagline}</p>
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-3 text-sm">
+              <div className="bg-white dark:bg-gray-900 rounded-lg px-3 py-1.5 border border-gray-200 dark:border-gray-700">
+                <span className="text-yellow-500">&#9733;</span> <strong>{tool.ratings.overall.toFixed(1)}</strong>/10
+              </div>
+              <div className="bg-white dark:bg-gray-900 rounded-lg px-3 py-1.5 border border-gray-200 dark:border-gray-700">
+                {tool.pricing.hasFreeplan ? '\u2713 Free plan' : `From $${tool.pricing.startingPrice}/mo`}
+              </div>
+              <Link
+                href={`/${category}/${toolSlug}`}
+                className="bg-blue-600 text-white rounded-lg px-4 py-1.5 font-medium hover:bg-blue-700 transition-colors"
+              >
+                Full Review &#8594;
+              </Link>
+            </div>
           </div>
         </div>
 
-        {/* Alternatives List */}
-        <div className="space-y-6">
-          {filtered.map((alt, idx) => (
-            <div key={alt.id} className="flex flex-col md:flex-row gap-6 p-6 rounded-2xl border border-gray-200 dark:border-gray-700 hover:border-blue-200 transition-colors">
-              <div className="flex-shrink-0 flex items-start gap-4">
-                <span className="text-2xl font-bold text-gray-300 w-8">#{idx + 1}</span>
-                {alt.logoUrl ? (
-                  <img src={alt.logoUrl} alt={`${alt.name} logo`} className="w-12 h-12 rounded-xl" loading="lazy" />
-                ) : (
-                  <div className="w-12 h-12 rounded-xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center font-bold text-gray-400">{alt.name[0]}</div>
-                )}
-              </div>
-              <div className="flex-1">
-                <div className="flex items-center gap-3 mb-1">
-                  <h3 className="text-lg font-semibold">{alt.name}</h3>
-                  <span className="text-sm text-yellow-500">★ {alt.ratings.overall.toFixed(1)}</span>
-                </div>
-                <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">{alt.tagline}</p>
-                <div className="flex flex-wrap gap-3 text-sm">
-                  <span className="text-gray-500">
-                    {alt.pricing.hasFreeplan ? '✅ Free plan' : `From $${alt.pricing.startingPrice}/mo`}
-                  </span>
-                  <Link href={`/${category}/${alt.slug}`} className="text-blue-600 hover:underline">Review →</Link>
-                  <Link href={`/${category}/compare/${tool.slug}-vs-${alt.slug}`} className="text-blue-600 hover:underline">
-                    {tool.name} vs {alt.name} →
-                  </Link>
-                </div>
-              </div>
+        {/* Quick Comparison Table */}
+        {filtered.length > 0 && (
+          <section className="mb-12">
+            <h2 className="text-2xl font-bold mb-6">{tool.name} vs Alternatives at a Glance</h2>
+            <div className="overflow-x-auto rounded-2xl border border-gray-200 dark:border-gray-700">
+              <table className="w-full text-sm">
+                <thead className="bg-gray-50 dark:bg-gray-800">
+                  <tr>
+                    <th className="py-3 px-4 text-left font-semibold text-gray-600 dark:text-gray-300">Tool</th>
+                    <th className="py-3 px-4 text-center font-semibold text-gray-600 dark:text-gray-300">Rating</th>
+                    <th className="py-3 px-4 text-center font-semibold text-gray-600 dark:text-gray-300">Free Plan</th>
+                    <th className="py-3 px-4 text-center font-semibold text-gray-600 dark:text-gray-300">Starting Price</th>
+                    <th className="py-3 px-4 text-center font-semibold text-gray-600 dark:text-gray-300">Ease of Use</th>
+                    <th className="py-3 px-4 text-center font-semibold text-gray-600 dark:text-gray-300">Value</th>
+                    <th className="py-3 px-4 text-center font-semibold text-gray-600 dark:text-gray-300"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {/* Current tool row (highlighted) */}
+                  <tr className="bg-blue-50/50 dark:bg-blue-900/10 border-t border-gray-100 dark:border-gray-800">
+                    <td className="py-3 px-4 font-semibold text-blue-700 dark:text-blue-400">{tool.name} &#128205;</td>
+                    <td className="py-3 px-4 text-center font-bold">{tool.ratings.overall.toFixed(1)}</td>
+                    <td className="py-3 px-4 text-center">{tool.pricing.hasFreeplan ? '\u2713' : '\u2717'}</td>
+                    <td className="py-3 px-4 text-center">{tool.pricing.startingPrice ? `$${tool.pricing.startingPrice}` : 'N/A'}</td>
+                    <td className="py-3 px-4 text-center">{tool.ratings.easeOfUse.toFixed(1)}</td>
+                    <td className="py-3 px-4 text-center">{tool.ratings.valueForMoney.toFixed(1)}</td>
+                    <td className="py-3 px-4 text-center">
+                      <span className="text-xs text-blue-600 font-medium">Current</span>
+                    </td>
+                  </tr>
+                  {/* Alternative rows */}
+                  {filtered.map((alt, idx) => (
+                    <tr key={alt.id} className={`border-t border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/30 transition-colors ${idx % 2 === 1 ? 'bg-gray-50/30 dark:bg-gray-800/10' : ''}`}>
+                      <td className="py-3 px-4 font-medium">
+                        <Link href={`/${category}/${alt.slug}`} className="hover:text-blue-600 transition-colors">
+                          {alt.name}
+                        </Link>
+                      </td>
+                      <td className="py-3 px-4 text-center">
+                        <span className={alt.ratings.overall > tool.ratings.overall ? 'text-green-600 font-bold' : alt.ratings.overall < tool.ratings.overall ? 'text-red-500' : 'font-medium'}>
+                          {alt.ratings.overall.toFixed(1)}
+                        </span>
+                      </td>
+                      <td className="py-3 px-4 text-center">
+                        <span className={alt.pricing.hasFreeplan ? 'text-green-500' : 'text-gray-400'}>
+                          {alt.pricing.hasFreeplan ? '\u2713' : '\u2717'}
+                        </span>
+                      </td>
+                      <td className="py-3 px-4 text-center">
+                        {alt.pricing.startingPrice ? `$${alt.pricing.startingPrice}` : 'N/A'}
+                      </td>
+                      <td className="py-3 px-4 text-center">{alt.ratings.easeOfUse.toFixed(1)}</td>
+                      <td className="py-3 px-4 text-center">{alt.ratings.valueForMoney.toFixed(1)}</td>
+                      <td className="py-3 px-4 text-center">
+                        <Link
+                          href={`/${category}/${alt.slug}`}
+                          className="text-xs text-blue-600 hover:underline font-medium"
+                        >
+                          Review &#8594;
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
-          ))}
-        </div>
-
-        {filtered.length === 0 && (
-          <p className="text-center text-gray-400 py-12">No alternatives listed yet. Check back soon!</p>
+          </section>
         )}
 
-        <div className="text-sm text-gray-400 mt-12">
+        {/* Detailed Alternative Cards */}
+        <section className="mb-12">
+          <h2 className="text-2xl font-bold mb-6">Detailed Alternative Reviews</h2>
+          <div className="space-y-5">
+            {filtered.map((alt, idx) => {
+              const isBetter = alt.ratings.overall > tool.ratings.overall;
+              const isCheaper = (alt.pricing.startingPrice || 999) < (tool.pricing.startingPrice || 999);
+
+              return (
+                <div
+                  key={alt.id}
+                  className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden hover:border-blue-200 dark:hover:border-blue-800 transition-all hover:shadow-lg"
+                >
+                  {/* Card Header */}
+                  <div className="flex flex-col md:flex-row md:items-center gap-4 p-6">
+                    <div className="flex items-center gap-4 flex-1">
+                      <div className={`w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold ${
+                        idx < 3 ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600' : 'bg-gray-100 dark:bg-gray-800 text-gray-400'
+                      }`}>
+                        #{idx + 1}
+                      </div>
+                      {alt.logoUrl ? (
+                        <img src={alt.logoUrl} alt={`${alt.name} logo`} className="w-12 h-12 rounded-xl" loading="lazy" />
+                      ) : (
+                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 flex items-center justify-center font-bold text-gray-500 text-lg">
+                          {alt.name[0]}
+                        </div>
+                      )}
+                      <div>
+                        <h3 className="text-lg font-bold">{alt.name}</h3>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">{alt.tagline}</p>
+                      </div>
+                    </div>
+
+                    {/* Quick Badges */}
+                    <div className="flex flex-wrap gap-2">
+                      <div className={`flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium ${
+                        alt.ratings.overall >= 8 ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' :
+                        alt.ratings.overall >= 6 ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400' :
+                        'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'
+                      }`}>
+                        &#9733; {alt.ratings.overall.toFixed(1)}/10
+                      </div>
+                      {isBetter && (
+                        <span className="px-2 py-1 rounded-full text-[10px] font-semibold bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400">
+                          &#9650; HIGHER RATED
+                        </span>
+                      )}
+                      {isCheaper && (
+                        <span className="px-2 py-1 rounded-full text-[10px] font-semibold bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400">
+                          &#128176; MORE AFFORDABLE
+                        </span>
+                      )}
+                      {alt.pricing.hasFreeplan && (
+                        <span className="px-2 py-1 rounded-full text-[10px] font-semibold bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400">
+                          FREE PLAN
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Comparison Mini-Grid */}
+                  <div className="px-6 pb-4">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                      {[
+                        { label: 'Ease of Use', thisScore: alt.ratings.easeOfUse, baseScore: tool.ratings.easeOfUse },
+                        { label: 'Features', thisScore: alt.ratings.features, baseScore: tool.ratings.features },
+                        { label: 'Value', thisScore: alt.ratings.valueForMoney, baseScore: tool.ratings.valueForMoney },
+                        { label: 'Support', thisScore: alt.ratings.support, baseScore: tool.ratings.support },
+                      ].map(({ label, thisScore, baseScore }) => (
+                        <div key={label} className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-3 text-center">
+                          <div className="text-xs text-gray-400 mb-1">{label}</div>
+                          <div className={`text-lg font-bold ${thisScore > baseScore ? 'text-green-600' : thisScore < baseScore ? 'text-orange-500' : ''}`}>
+                            {thisScore.toFixed(1)}
+                          </div>
+                          {thisScore !== baseScore && (
+                            <div className={`text-[10px] font-medium ${thisScore > baseScore ? 'text-green-500' : 'text-orange-400'}`}>
+                              {thisScore > baseScore ? `+${(thisScore - baseScore).toFixed(1)} vs ${tool.name}` : `${(thisScore - baseScore).toFixed(1)} vs ${tool.name}`}
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="px-6 pb-5 flex flex-wrap gap-3">
+                    <Link
+                      href={`/${category}/${alt.slug}`}
+                      className="inline-flex items-center gap-1 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
+                    >
+                      Full Review &#8594;
+                    </Link>
+                    <Link
+                      href={`/${category}/${alt.slug}/pricing`}
+                      className="inline-flex items-center gap-1 px-4 py-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 rounded-lg text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                    >
+                      View Pricing
+                    </Link>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        {filtered.length === 0 && (
+          <div className="text-center py-16 bg-gray-50 dark:bg-gray-800/50 rounded-2xl">
+            <p className="text-gray-400 text-lg mb-4">No alternatives listed yet.</p>
+            <Link href={`/${category}`} className="text-blue-600 hover:underline">
+              Browse all {cat?.name || category} tools &#8594;
+            </Link>
+          </div>
+        )}
+
+        <div className="text-sm text-gray-400 mt-12 flex items-center gap-2">
+          <span>&#128197;</span>
           Last updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
         </div>
       </article>

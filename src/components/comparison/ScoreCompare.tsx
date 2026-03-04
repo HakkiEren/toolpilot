@@ -6,75 +6,121 @@ interface Props {
 }
 
 const ratingCategories = [
-  { key: 'overall', label: 'Overall' },
-  { key: 'easeOfUse', label: 'Ease of Use' },
-  { key: 'features', label: 'Features' },
-  { key: 'valueForMoney', label: 'Value for Money' },
-  { key: 'support', label: 'Customer Support' },
+  { key: 'overall', label: 'Overall Score', icon: '&#127942;' },
+  { key: 'easeOfUse', label: 'Ease of Use', icon: '&#128171;' },
+  { key: 'features', label: 'Features', icon: '&#9881;' },
+  { key: 'valueForMoney', label: 'Value for Money', icon: '&#128176;' },
+  { key: 'support', label: 'Customer Support', icon: '&#128172;' },
 ] as const;
 
 export function ScoreCompare({ toolA, toolB }: Props) {
+  // Count wins
+  let aWins = 0;
+  let bWins = 0;
+  ratingCategories.forEach(({ key }) => {
+    const aScore = key === 'overall' ? toolA.ratings.overall : toolA.ratings[key];
+    const bScore = key === 'overall' ? toolB.ratings.overall : toolB.ratings[key];
+    if (aScore > bScore) aWins++;
+    else if (bScore > aScore) bWins++;
+  });
+
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full text-sm">
-        <thead>
-          <tr className="border-b border-gray-200 dark:border-gray-700">
-            <th className="py-3 px-4 text-left font-medium text-gray-500">Category</th>
-            <th className="py-3 px-4 text-center font-semibold">{toolA.name}</th>
-            <th className="py-3 px-4 text-center font-semibold">{toolB.name}</th>
-            <th className="py-3 px-4 text-center font-medium text-gray-500">Winner</th>
-          </tr>
-        </thead>
-        <tbody>
-          {ratingCategories.map(({ key, label }) => {
+    <div className="space-y-6">
+      {/* Head-to-Head Summary */}
+      <div className="bg-gradient-to-r from-blue-50 via-white to-purple-50 dark:from-gray-800 dark:via-gray-900 dark:to-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700">
+        <div className="flex items-center justify-between">
+          <div className="text-center flex-1">
+            <div className="text-3xl font-black text-blue-600">{toolA.ratings.overall.toFixed(1)}</div>
+            <div className="text-sm font-semibold mt-1">{toolA.name}</div>
+            <div className="text-xs text-gray-400">{aWins} categories won</div>
+          </div>
+          <div className="flex-shrink-0 px-6">
+            <div className="w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-lg font-bold text-gray-400">
+              VS
+            </div>
+          </div>
+          <div className="text-center flex-1">
+            <div className="text-3xl font-black text-purple-600">{toolB.ratings.overall.toFixed(1)}</div>
+            <div className="text-sm font-semibold mt-1">{toolB.name}</div>
+            <div className="text-xs text-gray-400">{bWins} categories won</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Detailed Breakdown */}
+      <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div className="grid grid-cols-[1fr_1fr_auto_1fr] md:grid-cols-[1fr_1.5fr_auto_1.5fr] gap-0">
+          {/* Header */}
+          <div className="py-3 px-4 bg-gray-50 dark:bg-gray-800 font-semibold text-sm text-gray-500">Category</div>
+          <div className="py-3 px-4 bg-blue-50 dark:bg-blue-900/20 font-semibold text-sm text-center text-blue-700 dark:text-blue-400">{toolA.name}</div>
+          <div className="py-3 px-2 bg-gray-50 dark:bg-gray-800" />
+          <div className="py-3 px-4 bg-purple-50 dark:bg-purple-900/20 font-semibold text-sm text-center text-purple-700 dark:text-purple-400">{toolB.name}</div>
+
+          {ratingCategories.map(({ key, label, icon }) => {
             const aScore = key === 'overall' ? toolA.ratings.overall : toolA.ratings[key];
             const bScore = key === 'overall' ? toolB.ratings.overall : toolB.ratings[key];
             const winner = aScore > bScore ? 'a' : bScore > aScore ? 'b' : 'tie';
+            const isOverall = key === 'overall';
 
             return (
-              <tr key={key} className="border-b border-gray-100 dark:border-gray-800">
-                <td className="py-3 px-4 font-medium">{label}</td>
-                <td className="py-3 px-4 text-center">
-                  <span className={`inline-flex items-center gap-1 font-semibold ${winner === 'a' ? 'text-green-600' : ''}`}>
-                    {aScore.toFixed(1)}
-                    <ScoreBar score={aScore} />
-                  </span>
-                </td>
-                <td className="py-3 px-4 text-center">
-                  <span className={`inline-flex items-center gap-1 font-semibold ${winner === 'b' ? 'text-green-600' : ''}`}>
-                    {bScore.toFixed(1)}
-                    <ScoreBar score={bScore} />
-                  </span>
-                </td>
-                <td className="py-3 px-4 text-center">
+              <>
+                {/* Label */}
+                <div key={`${key}-label`} className={`py-4 px-4 flex items-center gap-2 border-t border-gray-100 dark:border-gray-800 ${isOverall ? 'bg-gray-50/50 dark:bg-gray-800/30 font-bold' : ''}`}>
+                  <span className="text-base" dangerouslySetInnerHTML={{ __html: icon }} />
+                  <span className="text-sm font-medium">{label}</span>
+                </div>
+
+                {/* Tool A Score */}
+                <div key={`${key}-a`} className={`py-4 px-4 border-t border-gray-100 dark:border-gray-800 ${isOverall ? 'bg-blue-50/30 dark:bg-blue-900/10' : ''}`}>
+                  <div className="flex items-center gap-2 justify-center">
+                    <span className={`text-lg font-bold ${winner === 'a' ? 'text-green-600' : ''}`}>
+                      {aScore.toFixed(1)}
+                    </span>
+                    <div className="w-20 h-2.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                      <div
+                        className={`h-full rounded-full ${
+                          aScore >= 8 ? 'bg-green-500' : aScore >= 6 ? 'bg-yellow-500' : 'bg-red-500'
+                        }`}
+                        style={{ width: `${(aScore / 10) * 100}%` }}
+                      />
+                    </div>
+                    {winner === 'a' && <span className="text-green-500 text-xs">&#9650;</span>}
+                  </div>
+                </div>
+
+                {/* VS divider */}
+                <div key={`${key}-vs`} className={`py-4 px-2 border-t border-gray-100 dark:border-gray-800 flex items-center justify-center ${isOverall ? 'bg-gray-50/50 dark:bg-gray-800/30' : ''}`}>
                   {winner === 'tie' ? (
-                    <span className="text-gray-400">Tie</span>
+                    <span className="text-xs text-gray-400 font-medium">=</span>
                   ) : (
-                    <span className="font-semibold text-green-600">
-                      {winner === 'a' ? toolA.name : toolB.name}
+                    <span className={`text-xs font-bold ${winner === 'a' ? 'text-blue-500' : 'text-purple-500'}`}>
+                      {winner === 'a' ? '&#9664;' : '&#9654;'}
                     </span>
                   )}
-                </td>
-              </tr>
+                </div>
+
+                {/* Tool B Score */}
+                <div key={`${key}-b`} className={`py-4 px-4 border-t border-gray-100 dark:border-gray-800 ${isOverall ? 'bg-purple-50/30 dark:bg-purple-900/10' : ''}`}>
+                  <div className="flex items-center gap-2 justify-center">
+                    {winner === 'b' && <span className="text-green-500 text-xs">&#9650;</span>}
+                    <div className="w-20 h-2.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                      <div
+                        className={`h-full rounded-full ${
+                          bScore >= 8 ? 'bg-green-500' : bScore >= 6 ? 'bg-yellow-500' : 'bg-red-500'
+                        }`}
+                        style={{ width: `${(bScore / 10) * 100}%` }}
+                      />
+                    </div>
+                    <span className={`text-lg font-bold ${winner === 'b' ? 'text-green-600' : ''}`}>
+                      {bScore.toFixed(1)}
+                    </span>
+                  </div>
+                </div>
+              </>
             );
           })}
-        </tbody>
-      </table>
-    </div>
-  );
-}
-
-function ScoreBar({ score }: { score: number }) {
-  const width = (score / 10) * 100;
-  const color =
-    score >= 8 ? 'bg-green-500' :
-    score >= 6 ? 'bg-yellow-500' :
-    score >= 4 ? 'bg-orange-500' :
-    'bg-red-500';
-
-  return (
-    <div className="w-16 h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-      <div className={`h-full ${color} rounded-full transition-all`} style={{ width: `${width}%` }} />
+        </div>
+      </div>
     </div>
   );
 }

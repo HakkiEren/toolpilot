@@ -3,12 +3,11 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getToolsByCategory, getCategoryStats } from '@/lib/data';
 import { generateBreadcrumbSchema } from '@/lib/schema';
-import { CATEGORIES, CATEGORY_LIST, SITE_URL, SEO, AI_SUBCATEGORIES } from '@/lib/constants';
+import { CATEGORIES, CATEGORY_LIST, SITE_URL, AI_SUBCATEGORIES } from '@/lib/constants';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 
 // ============================================================
-// Category Hub Page — Critical for topical authority
-// Each category page links to ALL its spoke pages (tools, comparisons)
+// Category Hub Page — ENHANCED with stats, filters, better grid
 // ============================================================
 
 export async function generateStaticParams() {
@@ -38,14 +37,20 @@ export default async function CategoryPage({ params }: PageProps) {
 
   const tools = await getToolsByCategory(category, 50);
   const stats = await getCategoryStats(category);
+  const year = new Date().getFullYear();
 
-  // Determine subcategories based on category
   const subcategories = category === 'ai-tools' ? AI_SUBCATEGORIES : [];
 
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: '/' },
     { name: cat.name, url: `/${cat.slug}` },
   ]);
+
+  // Stats for hero
+  const avgRating = tools.length > 0
+    ? (tools.reduce((sum, t) => sum + t.ratings.overall, 0) / tools.length).toFixed(1)
+    : '0';
+  const freeCount = tools.filter(t => t.pricing.hasFreeplan).length;
 
   return (
     <>
@@ -57,33 +62,51 @@ export default async function CategoryPage({ params }: PageProps) {
           { name: cat.name, url: '' },
         ]} />
 
-        {/* Category Header */}
-        <div className="mt-6 mb-12">
-          <h1 className="text-3xl md:text-4xl font-bold mb-4">
-            Best {cat.name} Compared ({new Date().getFullYear()})
-          </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl">
+        {/* ========== CATEGORY HERO ========== */}
+        <div className="mt-6 mb-10">
+          <div className="flex items-center gap-3 mb-4">
+            <span className="text-4xl">{cat.icon}</span>
+            <h1 className="text-3xl md:text-4xl font-bold">
+              Best {cat.name} ({year})
+            </h1>
+          </div>
+          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mb-6">
             {cat.description}
           </p>
-          <div className="flex gap-6 mt-4 text-sm text-gray-500">
-            <span><strong>{stats.toolCount}</strong> tools reviewed</span>
-            <span><strong>{stats.comparisonCount}</strong> comparisons</span>
-            <span>Updated <strong>weekly</strong></span>
+
+          {/* Stats Bar */}
+          <div className="flex flex-wrap gap-4">
+            <div className="flex items-center gap-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg px-4 py-2">
+              <span className="text-2xl font-bold text-blue-600">{stats.toolCount}</span>
+              <span className="text-sm text-blue-700 dark:text-blue-400">Tools Reviewed</span>
+            </div>
+            <div className="flex items-center gap-2 bg-purple-50 dark:bg-purple-900/20 rounded-lg px-4 py-2">
+              <span className="text-2xl font-bold text-purple-600">{stats.comparisonCount}</span>
+              <span className="text-sm text-purple-700 dark:text-purple-400">Comparisons</span>
+            </div>
+            <div className="flex items-center gap-2 bg-green-50 dark:bg-green-900/20 rounded-lg px-4 py-2">
+              <span className="text-2xl font-bold text-green-600">{avgRating}</span>
+              <span className="text-sm text-green-700 dark:text-green-400">Avg Rating</span>
+            </div>
+            <div className="flex items-center gap-2 bg-orange-50 dark:bg-orange-900/20 rounded-lg px-4 py-2">
+              <span className="text-2xl font-bold text-orange-600">{freeCount}</span>
+              <span className="text-sm text-orange-700 dark:text-orange-400">Free Plans</span>
+            </div>
           </div>
         </div>
 
-        {/* Subcategories — Hub links (critical for internal linking) */}
+        {/* ========== SUBCATEGORIES (AI Tools only) ========== */}
         {subcategories.length > 0 && (
           <section className="mb-12">
-            <h2 className="text-xl font-semibold mb-4">Browse by Type</h2>
+            <h2 className="text-xl font-bold mb-4">Browse by Type</h2>
             <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {subcategories.map((sub) => (
                 <Link
                   key={sub.slug}
                   href={`/${category}/best/${sub.slug}`}
-                  className="p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-all"
+                  className="group p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 hover:bg-gradient-to-br hover:from-blue-50 hover:to-purple-50 dark:hover:from-gray-800 dark:hover:to-gray-700 transition-all"
                 >
-                  <h3 className="font-medium text-sm">{sub.name}</h3>
+                  <h3 className="font-medium text-sm group-hover:text-blue-600 transition-colors">{sub.name}</h3>
                   <p className="text-xs text-gray-500 mt-1 line-clamp-2">{sub.description}</p>
                 </Link>
               ))}
@@ -91,45 +114,127 @@ export default async function CategoryPage({ params }: PageProps) {
           </section>
         )}
 
-        {/* Tools Grid */}
+        {/* ========== TOP 3 SPOTLIGHT ========== */}
+        {tools.length >= 3 && (
+          <section className="mb-12">
+            <h2 className="text-xl font-bold mb-6">Top 3 {cat.name}</h2>
+            <div className="grid md:grid-cols-3 gap-6">
+              {tools.slice(0, 3).map((tool, idx) => {
+                const medals = ['&#129351;', '&#129352;', '&#129353;'];
+                return (
+                  <Link
+                    key={tool.id}
+                    href={`/${category}/${tool.slug}`}
+                    className="group relative bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 hover:border-blue-300 hover:shadow-lg transition-all"
+                  >
+                    {/* Medal */}
+                    <span className="absolute -top-3 -left-3 text-3xl" dangerouslySetInnerHTML={{ __html: medals[idx] }} />
+
+                    <div className="flex items-center gap-3 mb-4 mt-2">
+                      {tool.logoUrl ? (
+                        <img src={tool.logoUrl} alt={`${tool.name} logo`} className="w-14 h-14 rounded-xl shadow-sm" loading="lazy" />
+                      ) : (
+                        <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-2xl font-bold text-white">
+                          {tool.name[0]}
+                        </div>
+                      )}
+                      <div>
+                        <h3 className="text-lg font-bold group-hover:text-blue-600 transition-colors">{tool.name}</h3>
+                        <div className="flex items-center gap-1 text-sm">
+                          <span className="text-yellow-500">&#9733;</span>
+                          <span className="font-bold">{tool.ratings.overall.toFixed(1)}</span>
+                          <span className="text-gray-400">/10</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-2 mb-4">{tool.tagline}</p>
+
+                    {/* Mini rating bars */}
+                    <div className="space-y-2">
+                      {[
+                        { label: 'Features', score: tool.ratings.features },
+                        { label: 'Ease of Use', score: tool.ratings.easeOfUse },
+                        { label: 'Value', score: tool.ratings.valueForMoney },
+                      ].map(({ label, score }) => (
+                        <div key={label} className="flex items-center gap-2 text-xs">
+                          <span className="w-20 text-gray-400">{label}</span>
+                          <div className="flex-1 h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                            <div
+                              className={`h-full rounded-full ${score >= 8 ? 'bg-green-500' : score >= 6 ? 'bg-yellow-500' : 'bg-red-500'}`}
+                              style={{ width: `${(score / 10) * 100}%` }}
+                            />
+                          </div>
+                          <span className="w-8 text-right font-medium">{score.toFixed(1)}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="mt-4 flex items-center justify-between text-sm">
+                      <span className="text-gray-400">
+                        {tool.pricing.hasFreeplan ? '\u2713 Free plan' : `From $${tool.pricing.startingPrice}/mo`}
+                      </span>
+                      <span className="text-blue-600 font-medium group-hover:translate-x-1 transition-transform">
+                        Review &#8594;
+                      </span>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </section>
+        )}
+
+        {/* ========== ALL TOOLS GRID ========== */}
         <section>
-          <h2 className="text-xl font-semibold mb-6">
-            Top {cat.name} ({tools.length} reviewed)
+          <h2 className="text-xl font-bold mb-6">
+            All {cat.name} ({tools.length} reviewed)
           </h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {tools.map((tool) => (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {tools.map((tool, idx) => (
               <Link
                 key={tool.id}
                 href={`/${category}/${tool.slug}`}
-                className="group p-6 rounded-2xl border border-gray-200 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-600 hover:shadow-md transition-all"
+                className="group flex items-start gap-4 p-5 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-600 hover:shadow-md transition-all bg-white dark:bg-gray-900"
               >
-                <div className="flex items-center gap-3 mb-3">
-                  {tool.logoUrl ? (
-                    <img src={tool.logoUrl} alt={`${tool.name} logo`} className="w-10 h-10 rounded-lg" loading="lazy" />
-                  ) : (
-                    <div className="w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-lg font-bold text-gray-400">
-                      {tool.name[0]}
-                    </div>
-                  )}
-                  <div>
-                    <h3 className="font-semibold group-hover:text-blue-600 transition-colors">
+                {/* Rank */}
+                <span className="text-sm font-bold text-gray-300 dark:text-gray-600 w-6 text-right mt-1">
+                  {idx + 1}
+                </span>
+
+                {/* Logo */}
+                {tool.logoUrl ? (
+                  <img src={tool.logoUrl} alt={`${tool.name} logo`} className="w-10 h-10 rounded-lg flex-shrink-0" loading="lazy" />
+                ) : (
+                  <div className="w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-lg font-bold text-gray-400 flex-shrink-0">
+                    {tool.name[0]}
+                  </div>
+                )}
+
+                {/* Info */}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <h3 className="font-semibold group-hover:text-blue-600 transition-colors truncate">
                       {tool.name}
                     </h3>
-                    <div className="flex items-center gap-2 text-sm">
-                      <span className="text-yellow-500">★</span>
+                    <span className="flex items-center gap-0.5 text-sm flex-shrink-0">
+                      <span className="text-yellow-500">&#9733;</span>
                       <span className="font-medium">{tool.ratings.overall.toFixed(1)}</span>
-                      <span className="text-gray-400">({tool.ratings.reviewCount})</span>
-                    </div>
+                    </span>
                   </div>
-                </div>
-                <p className="text-sm text-gray-500 line-clamp-2">{tool.tagline}</p>
-                <div className="mt-3 flex items-center justify-between text-sm">
-                  <span className="text-gray-400">
-                    {tool.pricing.hasFreeplan ? '✅ Free plan' : `From $${tool.pricing.startingPrice}/mo`}
-                  </span>
-                  <span className="text-blue-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-                    View →
-                  </span>
+                  <p className="text-xs text-gray-500 line-clamp-1 mt-0.5">{tool.tagline}</p>
+                  <div className="mt-2 flex items-center gap-2 text-xs">
+                    {tool.pricing.hasFreeplan && (
+                      <span className="px-2 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded font-medium">
+                        Free
+                      </span>
+                    )}
+                    {tool.pricing.startingPrice && (
+                      <span className="text-gray-400">
+                        From ${tool.pricing.startingPrice}/mo
+                      </span>
+                    )}
+                  </div>
                 </div>
               </Link>
             ))}
