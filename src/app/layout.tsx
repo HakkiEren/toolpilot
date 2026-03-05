@@ -88,6 +88,7 @@ export default function RootLayout({
               <a href="/marketing" className="relative hover:text-blue-600 transition-colors after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-blue-600 after:transition-all hover:after:w-full">Marketing</a>
               <a href="/hosting" className="relative hover:text-blue-600 transition-colors after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-blue-600 after:transition-all hover:after:w-full">Hosting</a>
               <a href="/business" className="relative hover:text-blue-600 transition-colors after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-blue-600 after:transition-all hover:after:w-full">Business</a>
+              <a href="/best" className="relative hover:text-purple-600 transition-colors after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-purple-600 after:transition-all hover:after:w-full">Best Of</a>
               <a href="/blog" className="relative hover:text-blue-600 transition-colors after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-blue-600 after:transition-all hover:after:w-full">Blog</a>
               <a href="/search" className="hover:text-blue-600 transition-colors">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

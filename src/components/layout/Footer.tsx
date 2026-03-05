@@ -26,12 +26,13 @@ const POPULAR_TOOLS = [
 ];
 
 const BEST_OF_LINKS = [
-  { label: 'Best AI Writing Tools', href: '/ai-tools/best/ai-writing' },
-  { label: 'Best CRM Software', href: '/saas/best/crm' },
-  { label: 'Best Email Marketing', href: '/marketing/best/email-marketing' },
-  { label: 'Best WordPress Hosting', href: '/hosting/best/wordpress-hosting' },
-  { label: 'Best Store Builders', href: '/ecommerce/best/store-builders' },
-  { label: 'Best Accounting Tools', href: '/business/best/accounting' },
+  { label: 'Best AI Writing Tools', href: '/best/ai-writing' },
+  { label: 'Best CRM Software', href: '/best/crm' },
+  { label: 'Best Email Marketing', href: '/best/email-marketing' },
+  { label: 'Best WordPress Hosting', href: '/best/wordpress-hosting' },
+  { label: 'Best Store Builders', href: '/best/store-builders' },
+  { label: 'Best Accounting Tools', href: '/best/accounting' },
+  { label: 'All Best-of Lists', href: '/best' },
 ];
 
 export function Footer() {

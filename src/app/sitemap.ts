@@ -47,11 +47,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     });
   }
 
-  // 3. Best-of / subcategory pages
-  for (const [catSlug, subs] of Object.entries(SUBCATEGORIES)) {
+  // 3. Best-of index + subcategory pages
+  entries.push({
+    url: `${SITE_URL}/best`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly',
+    priority: 0.85,
+  });
+  for (const subs of Object.values(SUBCATEGORIES)) {
     for (const sub of subs) {
       entries.push({
-        url: `${SITE_URL}/${catSlug}/best/${sub.slug}`,
+        url: `${SITE_URL}/best/${sub.slug}`,
         lastModified: new Date(),
         changeFrequency: 'weekly',
         priority: 0.8,

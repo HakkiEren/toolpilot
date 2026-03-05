@@ -11,6 +11,7 @@ const NAV_LINKS = [
   { href: '/marketing', label: 'Marketing', emoji: '📢' },
   { href: '/hosting', label: 'Hosting', emoji: '🖥️' },
   { href: '/business', label: 'Business', emoji: '💼' },
+  { href: '/best', label: 'Best Of', emoji: '🏆' },
   { href: '/blog', label: 'Blog', emoji: '📝' },
 ];
 
