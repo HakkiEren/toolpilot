@@ -7,7 +7,7 @@ import { CATEGORIES, SITE_URL, SEO } from '@/lib/constants';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { RelatedLinks } from '@/components/common/RelatedLinks';
 import { FAQSection } from '@/components/common/FAQSection';
-import { AdBanner } from '@/components/ads/AdSlot';
+import { AdBanner, AdInArticle, AdMultiplex } from '@/components/ads/AdSlot';
 import { ToolLogo } from '@/components/common/ToolLogo';
 import type { FAQ } from '@/types';
 
@@ -514,6 +514,9 @@ export default async function PricingPage({ params }: PageProps) {
           </div>
         </section>
 
+        {/* ========== AD: BEFORE FAQ ========== */}
+        <AdInArticle />
+
         {/* ========== PRICING FAQ ========== */}
         <section className="mb-14">
           <h2 className="text-2xl font-bold mb-6">{tool.name} Pricing FAQ</h2>
@@ -555,6 +558,9 @@ export default async function PricingPage({ params }: PageProps) {
             </div>
           </div>
         </section>
+
+        {/* ========== AD: BEFORE RELATED LINKS ========== */}
+        <AdMultiplex />
 
         {/* Related Links */}
         {relatedLinks.length > 0 && (

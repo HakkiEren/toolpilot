@@ -4,6 +4,7 @@ import { getBlogPosts } from '@/lib/data';
 import { generateBreadcrumbSchema } from '@/lib/schema';
 import { SITE_URL, SEO, SITE_NAME } from '@/lib/constants';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
+import { AdBanner, AdMultiplex } from '@/components/ads/AdSlot';
 
 // ============================================================
 // Blog Index Page — Editorial content hub for topical authority
@@ -150,6 +151,9 @@ export default async function BlogIndexPage() {
               </Link>
             )}
 
+            {/* Ad: After Featured Post */}
+            <AdBanner />
+
             {/* Blog Posts Grid */}
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {restPosts.map((post, idx) => {
@@ -213,6 +217,9 @@ export default async function BlogIndexPage() {
             </p>
           </div>
         )}
+
+        {/* Ad: Before CTA */}
+        <AdMultiplex className="mt-10" />
 
         {/* Bottom CTA */}
         <div className="mt-16 text-center bg-gradient-to-r from-blue-50 to-purple-50 dark:from-gray-800 dark:to-gray-800 rounded-2xl p-8 border border-blue-100 dark:border-gray-700">

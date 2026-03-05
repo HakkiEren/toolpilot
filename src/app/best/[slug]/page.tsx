@@ -5,6 +5,7 @@ import { getToolsBySubcategory, getToolsByCategory } from '@/lib/data';
 import { CATEGORIES, SUBCATEGORIES, SITE_URL, SITE_NAME } from '@/lib/constants';
 import { generateBreadcrumbSchema, generateCollectionSchema, generateBestOfItemListSchema, generateFAQSchema } from '@/lib/schema';
 import { ToolLogo } from '@/components/common/ToolLogo';
+import { AdBanner, AdInArticle, AdMultiplex } from '@/components/ads/AdSlot';
 import type { Tool } from '@/types';
 
 export const revalidate = 3600;
@@ -282,6 +283,9 @@ export default async function BestOfPage({ params }: { params: Promise<{ slug: s
           </div>
         )}
 
+        {/* Ad: After Quick Comparison */}
+        <AdBanner />
+
         {/* Detailed Rankings */}
         <h2 className="text-2xl font-bold text-gray-900 mb-6">
           Detailed Rankings &amp; Reviews
@@ -393,6 +397,9 @@ export default async function BestOfPage({ params }: { params: Promise<{ slug: s
           </div>
         )}
 
+        {/* Ad: Before FAQ */}
+        <AdInArticle />
+
         {/* FAQ Section */}
         {faqs.length > 0 && (
           <div className="mb-12">
@@ -435,6 +442,9 @@ export default async function BestOfPage({ params }: { params: Promise<{ slug: s
             </p>
           </div>
         </div>
+
+        {/* Ad: Before Cross-links */}
+        <AdMultiplex />
 
         {/* Cross-links to related best-of pages */}
         <div className="mb-10">

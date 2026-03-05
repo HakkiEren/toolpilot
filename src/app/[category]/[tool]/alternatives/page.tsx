@@ -5,7 +5,7 @@ import { getToolBySlug, getToolsByCategory, getToolsBySubcategory, getAllToolSlu
 import { generateBreadcrumbSchema } from '@/lib/schema';
 import { CATEGORIES, SITE_URL, SEO } from '@/lib/constants';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
-import { AdBanner } from '@/components/ads/AdSlot';
+import { AdBanner, AdInArticle, AdMultiplex } from '@/components/ads/AdSlot';
 import { ToolLogo } from '@/components/common/ToolLogo';
 
 // ============================================================
@@ -311,6 +311,9 @@ export default async function AlternativesPage({ params }: PageProps) {
           </div>
         )}
 
+        {/* ========== AD: AFTER DETAILED CARDS ========== */}
+        <AdInArticle />
+
         {/* ========== WHY PEOPLE SWITCH ========== */}
         {filtered.length > 0 && (
           <section className="mb-12">
@@ -365,6 +368,9 @@ export default async function AlternativesPage({ params }: PageProps) {
             </ul>
           </div>
         </section>
+
+        {/* ========== AD: BEFORE FOOTER ========== */}
+        <AdMultiplex />
 
         <div className="text-sm text-gray-400 mt-12 flex items-center gap-2">
           <span>&#128197;</span>
