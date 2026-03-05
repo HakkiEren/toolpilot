@@ -162,6 +162,7 @@ export function Footer() {
               <li><Link href="/blog" className="text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Blog</Link></li>
               <li><Link href="/search" className="text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Search Tools</Link></li>
               <li><Link href="/calculators/roi" className="text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">ROI Calculator</Link></li>
+              <li><Link href="/glossary" className="text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Glossary</Link></li>
               {POPULAR_TOOLS.slice(0, 4).map((item) => (
                 <li key={item.href}>
                   <Link href={item.href} className="text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
