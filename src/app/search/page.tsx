@@ -7,7 +7,7 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: 'Search & Compare Tools — Find the Perfect Software | ToolPilot',
   description:
-    'Search and filter 100+ tools instantly across AI, SaaS, E-commerce, Marketing, Hosting & Business. Compare features, pricing, and ratings.',
+    'Search and filter 400+ tools instantly across AI, SaaS, E-commerce, Marketing, Hosting & Business. Compare features, pricing, and ratings.',
 };
 
 export default async function SearchPage() {
