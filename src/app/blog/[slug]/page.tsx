@@ -17,7 +17,7 @@ export const revalidate = 3600;
 export const dynamicParams = true;
 
 export async function generateStaticParams() {
-  const posts = await getBlogPosts(100);
+  const posts = await getBlogPosts(200);
   return posts.map((post) => ({ slug: post.slug }));
 }
 
