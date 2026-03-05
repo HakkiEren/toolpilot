@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { SITE_NAME, CATEGORY_LIST, CATEGORIES, SUBCATEGORIES } from '@/lib/constants';
 import { supabase } from '@/lib/supabase';
 import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
+import { generateFAQSchema } from '@/lib/schema';
 
 export const revalidate = 3600;
 
@@ -662,6 +663,11 @@ export default async function HomePage() {
       </section>
 
       {/* ============================================================ */}
+      {/* FAQ SECTION — SEO-rich content with FAQ schema */}
+      {/* ============================================================ */}
+      <HomeFAQ toolCount={toolCount || 40} comparisonCount={comparisonCount || 30} />
+
+      {/* ============================================================ */}
       {/* CTA SECTION */}
       {/* ============================================================ */}
       <section className="max-w-7xl mx-auto px-4 py-16">
@@ -708,4 +714,80 @@ function CategoryIcon({ icon, color }: { icon: string; color: string }) {
     briefcase: '💼',
   };
   return <span style={{ color }}>{icons[icon] || '📦'}</span>;
+}
+
+const HOME_FAQS = [
+  {
+    question: 'How does ToolPilot compare and rate tools?',
+    answer: 'We evaluate every tool across four key dimensions: Features (30%), Ease of Use (25%), Value for Money (25%), and Customer Support (20%). Our team tests each product hands-on, aggregates verified user reviews, and updates scores monthly to ensure accuracy.',
+  },
+  {
+    question: 'Is ToolPilot really independent and unbiased?',
+    answer: 'Yes. ToolPilot does not accept sponsored placements or paid reviews. Our revenue comes from advertising, not from the tools we review. This ensures our ratings and recommendations remain 100% independent and data-driven.',
+  },
+  {
+    question: 'How often are tool reviews updated?',
+    answer: 'We update pricing, features, and ratings on a monthly basis. When a tool releases a major update or changes its pricing, we re-evaluate and adjust our scores within 48 hours to keep information current.',
+  },
+  {
+    question: 'Can I compare more than two tools at once?',
+    answer: 'Our comparison pages are designed for detailed head-to-head matchups between two tools. However, you can use our category pages and Best Of lists to compare multiple tools side by side using our comparison tables that show ratings, pricing, and key features.',
+  },
+  {
+    question: 'What categories of tools does ToolPilot cover?',
+    answer: 'ToolPilot covers six major categories: AI Tools (writing, image, coding, chatbots), SaaS (CRM, project management, HR), E-commerce (store builders, payments, shipping), Marketing (SEO, email, social media), Web Hosting (shared, VPS, cloud, WordPress), and Business Tools (accounting, legal, productivity, cybersecurity).',
+  },
+  {
+    question: 'How do I find the best tool for my specific needs?',
+    answer: 'Start with our Search page to find tools by name or feature. Then browse our Best Of lists for curated recommendations by subcategory. Use our comparison pages to do detailed side-by-side analysis between your top picks. Each tool review includes a "Best For" section to help match tools to specific use cases.',
+  },
+];
+
+function HomeFAQ({ toolCount, comparisonCount }: { toolCount: number; comparisonCount: number }) {
+  const faqSchema = generateFAQSchema(
+    HOME_FAQS.map((f) => ({ question: f.question, answer: f.answer }))
+  );
+
+  return (
+    <section className="bg-gray-50 dark:bg-gray-900/50 py-16">
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
+      <div className="max-w-4xl mx-auto px-4">
+        <h2 className="text-2xl md:text-3xl font-bold text-center mb-4">
+          Frequently Asked Questions
+        </h2>
+        <p className="text-gray-500 text-center mb-10 max-w-xl mx-auto">
+          Everything you need to know about using {SITE_NAME} to find the perfect tools.
+        </p>
+
+        <div className="space-y-4">
+          {HOME_FAQS.map((faq, i) => (
+            <details
+              key={i}
+              className="group bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden hover-lift"
+            >
+              <summary className="flex items-center justify-between cursor-pointer p-5 md:p-6 font-semibold text-left">
+                <span className="pr-4">{faq.question}</span>
+                <svg
+                  className="w-5 h-5 text-gray-400 flex-shrink-0 transition-transform group-open:rotate-180"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </summary>
+              <div className="px-5 pb-5 md:px-6 md:pb-6 text-sm text-gray-600 dark:text-gray-400 leading-relaxed border-t border-gray-100 dark:border-gray-800 pt-4">
+                {faq.answer}
+              </div>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
 }

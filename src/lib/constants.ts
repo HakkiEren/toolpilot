@@ -157,9 +157,9 @@ export const AI_SUBCATEGORIES = SUBCATEGORIES['ai-tools'];
 
 export const LIMITS = {
   /** Max tools to generate in ISR at build time */
-  BUILD_TIME_TOOLS: 500,
+  BUILD_TIME_TOOLS: 1000,
   /** Max comparisons to generate at build time */
-  BUILD_TIME_COMPARISONS: 200,
+  BUILD_TIME_COMPARISONS: 500,
   /** ISR revalidation interval in seconds */
   REVALIDATE_INTERVAL: 3600,         // 1 hour
   /** Min word count per page for quality */

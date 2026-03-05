@@ -84,7 +84,7 @@ export function Footer() {
                 <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
                 </svg>
-                200+ Tools Reviewed
+                300+ Tools Reviewed
               </span>
               <span className="inline-flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400">
                 <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
@@ -161,6 +161,7 @@ export function Footer() {
             <ul className="space-y-2.5">
               <li><Link href="/blog" className="text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Blog</Link></li>
               <li><Link href="/search" className="text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Search Tools</Link></li>
+              <li><Link href="/calculators/roi" className="text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">ROI Calculator</Link></li>
               {POPULAR_TOOLS.slice(0, 4).map((item) => (
                 <li key={item.href}>
                   <Link href={item.href} className="text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
@@ -179,6 +180,7 @@ export function Footer() {
               <li><Link href="/contact" className="text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Contact</Link></li>
               <li><Link href="/privacy" className="text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Privacy Policy</Link></li>
               <li><Link href="/terms" className="text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Terms of Service</Link></li>
+              <li><Link href="/sitemap-html" className="text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Sitemap</Link></li>
             </ul>
           </div>
         </div>
