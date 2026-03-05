@@ -6,6 +6,7 @@ import { generateBreadcrumbSchema, generateCollectionSchema } from '@/lib/schema
 import { CATEGORIES, CATEGORY_LIST, SITE_URL } from '@/lib/constants';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { AdBanner, AdInArticle } from '@/components/ads/AdSlot';
+import { ToolLogo } from '@/components/common/ToolLogo';
 
 // ============================================================
 // COMPARISON HUB PAGE — Lists all comparisons for a category
@@ -162,9 +163,7 @@ export default async function ComparisonHubPage({ params }: PageProps) {
                   {/* Tool Logos */}
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-2">
-                      <div className="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-sm font-bold text-blue-600">
-                        {comp.toolA.name[0]}
-                      </div>
+                      <ToolLogo logoUrl={comp.toolA.logoUrl} name={comp.toolA.name} size={40} />
                       <div className="flex flex-col">
                         <span className="text-sm font-semibold">{comp.toolA.name}</span>
                         <span className="text-xs text-gray-400">{scoreA.toFixed(1)}/10</span>
@@ -178,9 +177,7 @@ export default async function ComparisonHubPage({ params }: PageProps) {
                         <span className="text-sm font-semibold">{comp.toolB.name}</span>
                         <span className="text-xs text-gray-400">{scoreB.toFixed(1)}/10</span>
                       </div>
-                      <div className="w-10 h-10 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-sm font-bold text-purple-600">
-                        {comp.toolB.name[0]}
-                      </div>
+                      <ToolLogo logoUrl={comp.toolB.logoUrl} name={comp.toolB.name} size={40} />
                     </div>
                   </div>
 
