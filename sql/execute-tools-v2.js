@@ -103,11 +103,13 @@ function parseValues(str) {
 function mapToSchema(row) {
   // Build pros/cons content from arrays
   let prosConsContent = '';
-  if (row.pros && Array.isArray(row.pros)) {
-    prosConsContent += '<h3>Pros</h3><ul>' + row.pros.map(p => `<li>${p}</li>`).join('') + '</ul>';
+  const prosArr = Array.isArray(row.pros) ? row.pros : (typeof row.pros === 'string' ? row.pros.split('|').map(s => s.trim()) : []);
+  const consArr = Array.isArray(row.cons) ? row.cons : (typeof row.cons === 'string' ? row.cons.split('|').map(s => s.trim()) : []);
+  if (prosArr.length > 0) {
+    prosConsContent += '<h3>Pros</h3><ul>' + prosArr.map(p => `<li>${p}</li>`).join('') + '</ul>';
   }
-  if (row.cons && Array.isArray(row.cons)) {
-    prosConsContent += '<h3>Cons</h3><ul>' + row.cons.map(c => `<li>${c}</li>`).join('') + '</ul>';
+  if (consArr.length > 0) {
+    prosConsContent += '<h3>Cons</h3><ul>' + consArr.map(c => `<li>${c}</li>`).join('') + '</ul>';
   }
 
   // Build pricing JSON
@@ -121,15 +123,19 @@ function mapToSchema(row) {
 
   // Build best_for_content
   let bestForContent = '';
-  if (row.best_for && Array.isArray(row.best_for)) {
-    bestForContent = '<ul>' + row.best_for.map(b => `<li>${b}</li>`).join('') + '</ul>';
+  if (row.best_for) {
+    if (Array.isArray(row.best_for)) {
+      bestForContent = '<ul>' + row.best_for.map(b => `<li>${b}</li>`).join('') + '</ul>';
+    } else {
+      bestForContent = `<p>${row.best_for}</p>`;
+    }
   }
 
   return {
     name: row.name,
     slug: row.slug,
-    category_slug: row.category_slug,
-    subcategory_slug: row.subcategory || null,
+    category_slug: row.category_slug || row.category,
+    subcategory_slug: row.subcategory_slug || row.subcategory || null,
     tagline: row.headline || '',
     description: row.description || '',
     logo_url: row.logo_url || null,
