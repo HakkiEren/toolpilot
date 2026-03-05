@@ -12,8 +12,8 @@ import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: `Blog — Expert Guides & Tool Reviews | ${SITE_NAME}`,
-  description: `Read expert guides, in-depth tool reviews, and industry insights from the ${SITE_NAME} team. Stay informed about AI tools, SaaS, marketing, and more.`,
+  title: `Blog — Expert Guides, Tutorials & Tool Reviews | ${SITE_NAME}`,
+  description: `Read expert guides, in-depth tool reviews, comparison roundups, and industry insights from the ${SITE_NAME} team. Covering AI tools, SaaS, marketing, hosting, e-commerce and more.`,
   alternates: { canonical: `${SITE_URL}/blog` },
   openGraph: {
     title: `Blog — Expert Guides & Tool Reviews | ${SITE_NAME}`,
@@ -23,6 +23,23 @@ export const metadata: Metadata = {
   },
 };
 
+const CATEGORY_COLORS: Record<string, { bg: string; text: string }> = {
+  guides: { bg: 'bg-blue-100 dark:bg-blue-900/30', text: 'text-blue-700 dark:text-blue-400' },
+  tutorials: { bg: 'bg-green-100 dark:bg-green-900/30', text: 'text-green-700 dark:text-green-400' },
+  comparisons: { bg: 'bg-purple-100 dark:bg-purple-900/30', text: 'text-purple-700 dark:text-purple-400' },
+  reviews: { bg: 'bg-orange-100 dark:bg-orange-900/30', text: 'text-orange-700 dark:text-orange-400' },
+  news: { bg: 'bg-red-100 dark:bg-red-900/30', text: 'text-red-700 dark:text-red-400' },
+};
+
+const GRADIENT_COLORS = [
+  'from-blue-400 to-indigo-500',
+  'from-purple-400 to-pink-500',
+  'from-green-400 to-teal-500',
+  'from-orange-400 to-red-500',
+  'from-cyan-400 to-blue-500',
+  'from-rose-400 to-purple-500',
+];
+
 export default async function BlogIndexPage() {
   const posts = await getBlogPosts(200);
 
@@ -30,6 +47,17 @@ export default async function BlogIndexPage() {
     { name: 'Home', url: '/' },
     { name: 'Blog', url: '/blog' },
   ]);
+
+  // Group posts by category for stats
+  const categoryMap: Record<string, number> = {};
+  posts.forEach((p) => {
+    const cat = p.categorySlug || 'guides';
+    categoryMap[cat] = (categoryMap[cat] || 0) + 1;
+  });
+
+  // Featured post = first/latest post
+  const featured = posts[0];
+  const restPosts = posts.slice(1);
 
   return (
     <>
@@ -47,7 +75,7 @@ export default async function BlogIndexPage() {
         />
 
         {/* Page Header */}
-        <div className="mt-6 mb-12">
+        <div className="mt-6 mb-8">
           <h1 className="text-3xl md:text-4xl font-extrabold mb-4">
             <span className="gradient-text">{SITE_NAME} Blog</span>
           </h1>
@@ -57,52 +85,125 @@ export default async function BlogIndexPage() {
           </p>
         </div>
 
-        {/* Blog Posts Grid */}
+        {/* Category Filter Chips */}
+        <div className="flex flex-wrap gap-2 mb-10">
+          <span className="px-4 py-2 bg-blue-600 text-white rounded-full text-sm font-medium">
+            All ({posts.length})
+          </span>
+          {Object.entries(categoryMap)
+            .sort((a, b) => b[1] - a[1])
+            .map(([cat, count]) => {
+              const colors = CATEGORY_COLORS[cat] || CATEGORY_COLORS.guides;
+              return (
+                <span
+                  key={cat}
+                  className={`px-4 py-2 rounded-full text-sm font-medium ${colors.bg} ${colors.text}`}
+                >
+                  {cat.charAt(0).toUpperCase() + cat.slice(1)} ({count})
+                </span>
+              );
+            })}
+        </div>
+
         {posts.length > 0 ? (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {posts.map((post) => (
+          <>
+            {/* Featured Post */}
+            {featured && (
               <Link
-                key={post.slug}
-                href={`/blog/${post.slug}`}
-                className="group hover-lift card-animate flex flex-col p-6 rounded-2xl border border-gray-200 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-600 hover:shadow-md transition-all"
-                style={{ animationDelay: `${(posts.indexOf(post) % 9) * 60}ms` }}
+                href={`/blog/${featured.slug}`}
+                className="group block mb-10 overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-800 hover:border-blue-300 hover:shadow-lg transition-all"
               >
-                {/* Category Badge */}
-                {post.categorySlug && (
-                  <span className="self-start inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 mb-3">
-                    {post.categorySlug.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())}
-                  </span>
-                )}
-
-                {/* Title */}
-                <h2 className="text-lg font-semibold mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2">
-                  {post.title}
-                </h2>
-
-                {/* Excerpt */}
-                <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-3 flex-1">
-                  {post.excerpt}
-                </p>
-
-                {/* Footer: Date + Read More */}
-                <div className="mt-4 flex items-center justify-between text-sm">
-                  <time
-                    dateTime={post.publishedAt}
-                    className="text-gray-400 dark:text-gray-500"
-                  >
-                    {new Date(post.publishedAt).toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'short',
-                      day: 'numeric',
-                    })}
-                  </time>
-                  <span className="text-blue-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-                    Read More &rarr;
-                  </span>
+                <div className="grid md:grid-cols-2">
+                  <div className={`h-48 md:h-auto bg-gradient-to-br ${GRADIENT_COLORS[0]}`} />
+                  <div className="p-8 flex flex-col justify-center">
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className="text-xs font-bold text-blue-600 uppercase tracking-wider">Featured</span>
+                      {featured.categorySlug && (
+                        <>
+                          <span className="w-1 h-1 bg-gray-300 rounded-full" />
+                          <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${CATEGORY_COLORS[featured.categorySlug]?.bg || 'bg-gray-100'} ${CATEGORY_COLORS[featured.categorySlug]?.text || 'text-gray-600'}`}>
+                            {featured.categorySlug.charAt(0).toUpperCase() + featured.categorySlug.slice(1)}
+                          </span>
+                        </>
+                      )}
+                    </div>
+                    <h2 className="text-2xl font-bold mb-3 group-hover:text-blue-600 transition-colors">
+                      {featured.title}
+                    </h2>
+                    <p className="text-gray-500 dark:text-gray-400 mb-4 line-clamp-3">
+                      {featured.excerpt}
+                    </p>
+                    <div className="flex items-center gap-4 text-sm text-gray-400">
+                      <time dateTime={featured.publishedAt}>
+                        {new Date(featured.publishedAt).toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric',
+                        })}
+                      </time>
+                      <span className="text-blue-600 font-medium group-hover:underline">
+                        Read Article &rarr;
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </Link>
-            ))}
-          </div>
+            )}
+
+            {/* Blog Posts Grid */}
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {restPosts.map((post, idx) => {
+                const gradientIdx = (idx + 1) % GRADIENT_COLORS.length;
+                return (
+                  <Link
+                    key={post.slug}
+                    href={`/blog/${post.slug}`}
+                    className="group hover-lift card-animate flex flex-col rounded-2xl border border-gray-200 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-600 hover:shadow-md transition-all overflow-hidden bg-white dark:bg-gray-900"
+                    style={{ animationDelay: `${(idx % 9) * 60}ms` }}
+                  >
+                    {/* Color header */}
+                    <div className={`h-2 bg-gradient-to-r ${GRADIENT_COLORS[gradientIdx]}`} />
+
+                    <div className="p-6 flex flex-col flex-1">
+                      {/* Category Badge */}
+                      {post.categorySlug && (
+                        <span className={`self-start inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium mb-3 ${CATEGORY_COLORS[post.categorySlug]?.bg || 'bg-gray-100'} ${CATEGORY_COLORS[post.categorySlug]?.text || 'text-gray-600'}`}>
+                          {post.categorySlug.charAt(0).toUpperCase() + post.categorySlug.slice(1)}
+                        </span>
+                      )}
+
+                      {/* Title */}
+                      <h2 className="text-lg font-semibold mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2">
+                        {post.title}
+                      </h2>
+
+                      {/* Excerpt */}
+                      <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-3 flex-1">
+                        {post.excerpt}
+                      </p>
+
+                      {/* Footer: Date + Read More */}
+                      <div className="mt-4 flex items-center justify-between text-sm">
+                        <time
+                          dateTime={post.publishedAt}
+                          className="text-gray-400 dark:text-gray-500"
+                        >
+                          {new Date(post.publishedAt).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric',
+                          })}
+                        </time>
+                        <span className="text-blue-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                          Read &rarr;
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </>
         ) : (
           /* Empty State */
           <div className="text-center py-20 text-gray-400">
@@ -112,6 +213,22 @@ export default async function BlogIndexPage() {
             </p>
           </div>
         )}
+
+        {/* Bottom CTA */}
+        <div className="mt-16 text-center bg-gradient-to-r from-blue-50 to-purple-50 dark:from-gray-800 dark:to-gray-800 rounded-2xl p-8 border border-blue-100 dark:border-gray-700">
+          <h2 className="text-xl font-bold mb-2">Looking for Specific Tools?</h2>
+          <p className="text-sm text-gray-500 mb-6">
+            Browse our tool reviews and side-by-side comparisons to find the perfect software.
+          </p>
+          <div className="flex flex-wrap justify-center gap-3">
+            <Link href="/search" className="px-6 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-medium hover:bg-blue-700 transition-colors">
+              Search Tools
+            </Link>
+            <Link href="/glossary" className="px-6 py-2.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl text-sm font-medium hover:border-blue-300 transition-colors">
+              Tech Glossary
+            </Link>
+          </div>
+        </div>
       </div>
     </>
   );
