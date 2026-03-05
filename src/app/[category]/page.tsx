@@ -274,7 +274,15 @@ export default async function CategoryPage({ params }: PageProps) {
         {/* ========== FEATURED COMPARISONS ========== */}
         {comparisons.length > 0 && (
           <section className="mt-16 mb-12">
-            <h2 className="text-xl font-bold mb-6">Popular {cat.name} Comparisons</h2>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-bold">Popular {cat.name} Comparisons</h2>
+              <Link
+                href={`/${category}/compare`}
+                className="text-sm text-blue-600 font-medium hover:underline"
+              >
+                View all comparisons &#8594;
+              </Link>
+            </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
               {comparisons.map((comp) => (
                 <Link

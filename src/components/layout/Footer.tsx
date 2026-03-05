@@ -118,9 +118,12 @@ export function Footer() {
             <h4 className="font-semibold text-gray-900 dark:text-white mb-4 text-sm uppercase tracking-wider">Categories</h4>
             <ul className="space-y-2.5">
               {CATEGORY_LIST.map((cat) => (
-                <li key={cat.slug}>
+                <li key={cat.slug} className="flex items-center gap-1.5">
                   <Link href={`/${cat.slug}`} className="text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                     {cat.name}
+                  </Link>
+                  <Link href={`/${cat.slug}/compare`} className="text-[10px] text-gray-400 hover:text-purple-500 transition-colors" title={`${cat.name} comparisons`}>
+                    (vs)
                   </Link>
                 </li>
               ))}

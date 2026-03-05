@@ -31,13 +31,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/glossary`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
   );
 
-  // 2. Category pages
+  // 2. Category pages + comparison hub pages
   for (const cat of CATEGORY_LIST) {
     entries.push({
       url: `${SITE_URL}/${cat.slug}`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.9,
+    });
+    entries.push({
+      url: `${SITE_URL}/${cat.slug}/compare`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.85,
     });
   }
 

@@ -19,7 +19,7 @@ export const dynamicParams = true;
 
 export async function generateStaticParams() {
   const slugs = await getAllToolSlugs();
-  return slugs.slice(0, 200).map(({ categorySlug, toolSlug }) => ({
+  return slugs.map(({ categorySlug, toolSlug }) => ({
     category: categorySlug,
     tool: toolSlug,
   }));
