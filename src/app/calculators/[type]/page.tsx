@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { SITE_NAME, SITE_URL } from '@/lib/constants';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
+import { AdBanner, AdInArticle } from '@/components/ads/AdSlot';
 import { CalculatorClient } from './calculator-client';
 
 // ============================================================
@@ -113,6 +114,9 @@ export default async function CalculatorPage({ params }: PageProps) {
         <CalculatorClient type={type} />
       </div>
 
+      {/* Ad: After Calculator */}
+      <AdBanner />
+
       {/* Other Calculators */}
       <section className="mb-12">
         <h2 className="text-xl font-bold mb-6">More Free Calculators</h2>
@@ -129,6 +133,9 @@ export default async function CalculatorPage({ params }: PageProps) {
           ))}
         </div>
       </section>
+
+      {/* Ad: Before Category Link */}
+      <AdInArticle />
 
       {/* Category Link */}
       <div className="text-center">

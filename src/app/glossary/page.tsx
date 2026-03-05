@@ -1,6 +1,9 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SITE_NAME, SITE_URL } from '@/lib/constants';
+import { AdBanner, AdInArticle } from '@/components/ads/AdSlot';
+import { generateBreadcrumbSchema } from '@/lib/schema';
+import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 
 // ============================================================
 // GLOSSARY PAGE — SEO-rich definitions page
@@ -101,13 +104,41 @@ function groupByCategory(terms: Term[]) {
   return groups;
 }
 
+function generateGlossarySchema(terms: Term[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'DefinedTermSet',
+    name: 'Software & Tech Glossary',
+    description: `${terms.length} essential terms for understanding software tools, SaaS, AI, and digital business.`,
+    url: `${SITE_URL}/glossary`,
+    hasDefinedTerm: terms.slice(0, 20).map((t) => ({
+      '@type': 'DefinedTerm',
+      name: t.term,
+      description: t.definition,
+      inDefinedTermSet: `${SITE_URL}/glossary`,
+    })),
+  };
+}
+
 export default function GlossaryPage() {
   const byCategory = groupByCategory(GLOSSARY_TERMS);
   const categories = Object.keys(byCategory).sort();
 
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: '/' },
+    { name: 'Glossary', url: '/glossary' },
+  ]);
+  const glossarySchema = generateGlossarySchema(GLOSSARY_TERMS);
+
   return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(glossarySchema) }} />
+
     <div className="max-w-4xl mx-auto px-4 py-12">
-      <div className="text-center mb-12">
+      <Breadcrumbs items={[{ name: 'Home', url: '/' }, { name: 'Glossary', url: '' }]} />
+
+      <div className="text-center mb-12 mt-6">
         <h1 className="text-3xl md:text-4xl font-extrabold gradient-text mb-4">
           Software & Tech Glossary
         </h1>
@@ -129,6 +160,9 @@ export default function GlossaryPage() {
           </a>
         ))}
       </div>
+
+      {/* Ad: After category links */}
+      <AdBanner />
 
       {/* Terms by category */}
       <div className="space-y-12">
@@ -163,6 +197,9 @@ export default function GlossaryPage() {
         ))}
       </div>
 
+      {/* Ad: Before CTA */}
+      <AdInArticle />
+
       {/* Bottom CTA */}
       <div className="mt-16 text-center bg-gradient-to-r from-blue-50 to-purple-50 dark:from-gray-800 dark:to-gray-800 rounded-2xl p-8 border border-blue-100 dark:border-gray-700">
         <h2 className="text-xl font-bold mb-2">Ready to Find the Right Tools?</h2>
@@ -185,5 +222,6 @@ export default function GlossaryPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }
