@@ -90,6 +90,8 @@ function parseValues(str) {
       if (str[i] === '-') { num += '-'; i++; }
       while (i < str.length && /[\d.]/.test(str[i])) { num += str[i]; i++; }
       values.push(num.includes('.') ? parseFloat(num) : parseInt(num));
+    } else if (str.substring(i).match(/^NOW\(\)/i)) {
+      values.push(new Date().toISOString()); i += 5;
     } else if (str[i] === ',') { i++; continue; }
     else { i++; continue; }
 

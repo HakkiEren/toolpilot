@@ -120,7 +120,7 @@ export default async function CategoryPage({ params }: PageProps) {
               {subcategories.map((sub) => (
                 <Link
                   key={sub.slug}
-                  href={`/${category}/best/${sub.slug}`}
+                  href={`/best/${sub.slug}`}
                   className="group hover-lift p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 hover:bg-gradient-to-br hover:from-blue-50 hover:to-purple-50 dark:hover:from-gray-800 dark:hover:to-gray-700 transition-all"
                 >
                   <h3 className="font-medium text-sm group-hover:text-blue-600 transition-colors">{sub.name}</h3>

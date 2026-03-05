@@ -107,6 +107,8 @@ function parseValues(str) {
       if (str[i] === '-') { num += '-'; i++; }
       while (i < str.length && /[\d.]/.test(str[i])) { num += str[i]; i++; }
       values.push(num.includes('.') ? parseFloat(num) : parseInt(num));
+    } else if (str.substring(i).match(/^NOW\(\)/i)) {
+      values.push(new Date().toISOString()); i += 5;
     } else if (str[i] === ',') { i++; continue; }
     else { i++; continue; }
 
@@ -122,28 +124,45 @@ function listToHtml(arr) {
 }
 
 function mapToSchema(row) {
-  // Build intro_content from summary, pros, cons, scores
+  // If the row already has the correct columns (direct SQL format), pass through
+  if (row.intro_content !== undefined) {
+    const toolNames = (row.slug || '').split('-vs-').map(s =>
+      s.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
+    );
+    return {
+      slug: row.slug,
+      category_slug: row.category_slug,
+      tool_a_id: row.tool_a_id,
+      tool_b_id: row.tool_b_id,
+      intro_content: row.intro_content || '',
+      verdict_content: row.verdict_content || '',
+      migration_content: row.migration_content || '',
+      scenario_content: row.scenario_content || '',
+      feature_matrix: row.feature_matrix || [],
+      faqs: row.faqs || [],
+      meta_title: row.meta_title || `${toolNames[0]} vs ${toolNames[1]}: Detailed Comparison`,
+      meta_description: row.meta_description || '',
+    };
+  }
+
+  // Legacy format: Build intro_content from summary, pros, cons, scores
   let introContent = '';
   if (row.summary) introContent += `<p>${row.summary}</p>`;
 
-  // Build scores section
   if (row.scores_a && row.scores_b) {
     const sa = typeof row.scores_a === 'object' ? row.scores_a : {};
     const sb = typeof row.scores_b === 'object' ? row.scores_b : {};
     introContent += `<div class="scores-data" data-scores-a='${JSON.stringify(sa)}' data-scores-b='${JSON.stringify(sb)}'></div>`;
   }
 
-  // Pros/cons in intro
   if (row.pros_a && Array.isArray(row.pros_a)) introContent += `<h3>Tool A Strengths</h3>${listToHtml(row.pros_a)}`;
   if (row.cons_a && Array.isArray(row.cons_a)) introContent += `<h3>Tool A Weaknesses</h3>${listToHtml(row.cons_a)}`;
   if (row.pros_b && Array.isArray(row.pros_b)) introContent += `<h3>Tool B Strengths</h3>${listToHtml(row.pros_b)}`;
   if (row.cons_b && Array.isArray(row.cons_b)) introContent += `<h3>Tool B Weaknesses</h3>${listToHtml(row.cons_b)}`;
 
-  // Build verdict content
   let verdictContent = '';
   if (row.verdict) verdictContent = `<p>${row.verdict}</p>`;
 
-  // Build scenario content from best_for
   let scenarioContent = '';
   if (row.best_for_a && Array.isArray(row.best_for_a)) {
     scenarioContent += `<h3>Choose Tool A if you are:</h3>${listToHtml(row.best_for_a)}`;
@@ -152,13 +171,11 @@ function mapToSchema(row) {
     scenarioContent += `<h3>Choose Tool B if you are:</h3>${listToHtml(row.best_for_b)}`;
   }
 
-  // Feature matrix
   let featureMatrix = [];
   if (row.features && Array.isArray(row.features)) {
     featureMatrix = row.features;
   }
 
-  // Generate meta from slug
   const toolNames = (row.slug || '').split('-vs-').map(s =>
     s.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
   );
@@ -168,7 +185,7 @@ function mapToSchema(row) {
   return {
     slug: row.slug,
     category_slug: row.category_slug,
-    tool_a_id: row.tool_a_id, // will be resolved
+    tool_a_id: row.tool_a_id,
     tool_b_id: row.tool_b_id,
     intro_content: introContent,
     verdict_content: verdictContent,

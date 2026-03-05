@@ -37,7 +37,7 @@ export default function NotFound() {
           <span className="text-gray-300">·</span>
           <Link href="/ai-tools/compare/chatgpt-vs-claude" className="text-blue-500 hover:underline">ChatGPT vs Claude</Link>
           <span className="text-gray-300">·</span>
-          <Link href="/ai-tools/best/ai-coding" className="text-blue-500 hover:underline">Best AI Coding Tools</Link>
+          <Link href="/best/ai-coding" className="text-blue-500 hover:underline">Best AI Coding Tools</Link>
         </div>
       </div>
     </div>

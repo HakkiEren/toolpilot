@@ -548,7 +548,7 @@ export default async function HomePage() {
                     {subs.map((sub) => (
                       <Link
                         key={sub.slug}
-                        href={`/${cat.slug}/best/${sub.slug}`}
+                        href={`/best/${sub.slug}`}
                         className="px-3 py-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg text-sm hover:border-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all"
                       >
                         {sub.name}
