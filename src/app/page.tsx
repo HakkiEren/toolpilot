@@ -4,6 +4,7 @@ import { supabase } from '@/lib/supabase';
 import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
 import { generateFAQSchema } from '@/lib/schema';
 import { ToolLogo } from '@/components/common/ToolLogo';
+import { AdBanner, AdInArticle, AdMultiplex, AdNative } from '@/components/ads/AdSlot';
 
 export const revalidate = 3600;
 
@@ -230,6 +231,11 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* ========== AD: AFTER TRENDING TOOLS ========== */}
+      <div className="max-w-7xl mx-auto px-4">
+        <AdBanner />
+      </div>
+
       {/* ============================================================ */}
       {/* POPULAR COMPARISONS — VS battles across categories */}
       {/* ============================================================ */}
@@ -307,6 +313,11 @@ export default async function HomePage() {
         </section>
       )}
 
+      {/* ========== AD: AFTER COMPARISONS ========== */}
+      <div className="max-w-7xl mx-auto px-4">
+        <AdInArticle />
+      </div>
+
       {/* ============================================================ */}
       {/* BROWSE BY CATEGORY — Enhanced cards with tool counts */}
       {/* ============================================================ */}
@@ -370,6 +381,11 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ========== AD: AFTER BROWSE BY CATEGORY ========== */}
+      <div className="max-w-7xl mx-auto px-4">
+        <AdNative />
+      </div>
 
       {/* ============================================================ */}
       {/* POPULAR TOOLS BY CATEGORY — Tabbed view of top tools */}
@@ -535,6 +551,11 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ========== AD: BEFORE HOW IT WORKS ========== */}
+      <div className="max-w-7xl mx-auto px-4">
+        <AdMultiplex />
+      </div>
 
       {/* ============================================================ */}
       {/* HOW IT WORKS */}

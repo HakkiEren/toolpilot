@@ -7,7 +7,7 @@ import { ToolLogo } from '@/components/common/ToolLogo';
 import { CATEGORIES, CATEGORY_LIST, SITE_URL, SUBCATEGORIES } from '@/lib/constants';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { FAQSection } from '@/components/common/FAQSection';
-import { AdBanner, AdInArticle } from '@/components/ads/AdSlot';
+import { AdBanner, AdInArticle, AdMultiplex } from '@/components/ads/AdSlot';
 import { getCategoryContent } from '@/lib/category-content';
 
 // ============================================================
@@ -281,13 +281,9 @@ export default async function CategoryPage({ params }: PageProps) {
                 >
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-xs font-bold text-blue-600">
-                        {comp.toolA.name[0]}
-                      </div>
+                      <ToolLogo logoUrl={comp.toolA.logoUrl} name={comp.toolA.name} size={32} />
                       <span className="text-xs font-bold text-orange-500">VS</span>
-                      <div className="w-8 h-8 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-xs font-bold text-purple-600">
-                        {comp.toolB.name[0]}
-                      </div>
+                      <ToolLogo logoUrl={comp.toolB.logoUrl} name={comp.toolB.name} size={32} />
                     </div>
                     <span className="text-xs text-gray-400">{comp.toolA.ratings.overall.toFixed(1)} vs {comp.toolB.ratings.overall.toFixed(1)}</span>
                   </div>
@@ -306,6 +302,9 @@ export default async function CategoryPage({ params }: PageProps) {
 
         {/* ========== AD: AFTER COMPARISONS ========== */}
         <AdInArticle />
+
+        {/* ========== AD: BEFORE BUYER'S GUIDE ========== */}
+        <AdMultiplex className="mt-8" />
 
         {/* ========== BUYER'S GUIDE ========== */}
         {categoryContent && (
