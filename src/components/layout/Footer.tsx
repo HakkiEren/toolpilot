@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { SITE_NAME, CATEGORY_LIST } from '@/lib/constants';
+import { AdFooter } from '@/components/ads/AdSlot';
 
 // ============================================================
 // Professional Footer — Multi-column mega footer
@@ -40,6 +41,11 @@ export function Footer() {
 
   return (
     <footer className="bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 mt-20">
+      {/* Footer Ad — Catch-all for users who read the full page */}
+      <div className="max-w-7xl mx-auto px-4 pt-6">
+        <AdFooter />
+      </div>
+
       {/* Newsletter Banner */}
       <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600">
         <div className="max-w-7xl mx-auto px-4 py-8 md:py-10">
