@@ -14,6 +14,7 @@ import { FAQSection } from '@/components/common/FAQSection';
 import { RelatedLinks } from '@/components/common/RelatedLinks';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { AdBanner, AdInArticle } from '@/components/ads/AdSlot';
+import { ToolLogo } from '@/components/common/ToolLogo';
 
 // ============================================================
 // COMPARISON PAGE — ENHANCED with winner banner, nav, tool cards
@@ -116,11 +117,7 @@ export default async function ComparisonPage({ params }: PageProps) {
           <div className="grid md:grid-cols-2 gap-4 mb-6">
             <div className="hover-lift bg-white dark:bg-gray-900 rounded-2xl border border-blue-200 dark:border-blue-800/30 p-5 card-animate" style={{ animationDelay: '0ms' }}>
               <div className="flex items-center gap-3 mb-3">
-                {comparison.toolA.logoUrl ? (
-                  <img src={comparison.toolA.logoUrl} alt={comparison.toolA.name} className="w-12 h-12 rounded-xl shadow-sm" loading="lazy" />
-                ) : (
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-xl font-bold text-white">{comparison.toolA.name[0]}</div>
-                )}
+                <ToolLogo logoUrl={comparison.toolA.logoUrl} name={comparison.toolA.name} size={48} className="shadow-sm" />
                 <div>
                   <h2 className="font-bold text-lg">{comparison.toolA.name}</h2>
                   <div className="flex items-center gap-1 text-sm">
@@ -146,11 +143,7 @@ export default async function ComparisonPage({ params }: PageProps) {
 
             <div className="hover-lift bg-white dark:bg-gray-900 rounded-2xl border border-purple-200 dark:border-purple-800/30 p-5 card-animate" style={{ animationDelay: '100ms' }}>
               <div className="flex items-center gap-3 mb-3">
-                {comparison.toolB.logoUrl ? (
-                  <img src={comparison.toolB.logoUrl} alt={comparison.toolB.name} className="w-12 h-12 rounded-xl shadow-sm" loading="lazy" />
-                ) : (
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center text-xl font-bold text-white">{comparison.toolB.name[0]}</div>
-                )}
+                <ToolLogo logoUrl={comparison.toolB.logoUrl} name={comparison.toolB.name} size={48} className="shadow-sm" />
                 <div>
                   <h2 className="font-bold text-lg">{comparison.toolB.name}</h2>
                   <div className="flex items-center gap-1 text-sm">
@@ -283,11 +276,7 @@ export default async function ComparisonPage({ params }: PageProps) {
           <div className="grid md:grid-cols-2 gap-6">
             <div className="hover-lift bg-white dark:bg-gray-900 rounded-2xl p-6 border border-blue-200 dark:border-blue-800/30">
               <div className="flex items-center gap-3 mb-4">
-                {comparison.toolA.logoUrl ? (
-                  <img src={comparison.toolA.logoUrl} alt={comparison.toolA.name} className="w-8 h-8 rounded-lg" loading="lazy" />
-                ) : (
-                  <div className="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-sm font-bold text-blue-600">{comparison.toolA.name[0]}</div>
-                )}
+                <ToolLogo logoUrl={comparison.toolA.logoUrl} name={comparison.toolA.name} size={32} />
                 <h3 className="text-lg font-semibold">
                   Choose {comparison.toolA.name} if...
                 </h3>
@@ -302,11 +291,7 @@ export default async function ComparisonPage({ params }: PageProps) {
             </div>
             <div className="hover-lift bg-white dark:bg-gray-900 rounded-2xl p-6 border border-purple-200 dark:border-purple-800/30">
               <div className="flex items-center gap-3 mb-4">
-                {comparison.toolB.logoUrl ? (
-                  <img src={comparison.toolB.logoUrl} alt={comparison.toolB.name} className="w-8 h-8 rounded-lg" loading="lazy" />
-                ) : (
-                  <div className="w-8 h-8 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-sm font-bold text-purple-600">{comparison.toolB.name[0]}</div>
-                )}
+                <ToolLogo logoUrl={comparison.toolB.logoUrl} name={comparison.toolB.name} size={32} />
                 <h3 className="text-lg font-semibold">
                   Choose {comparison.toolB.name} if...
                 </h3>
@@ -375,7 +360,7 @@ export default async function ComparisonPage({ params }: PageProps) {
               <a
                 href={comparison.toolA.websiteUrl || `/${category}/${comparison.toolA.slug}`}
                 target={comparison.toolA.websiteUrl ? '_blank' : undefined}
-                rel={comparison.toolA.websiteUrl ? 'noopener noreferrer nofollow' : undefined}
+                rel={comparison.toolA.websiteUrl ? 'noopener noreferrer nofollow sponsored' : undefined}
                 className="glow-pulse px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-semibold transition-colors"
               >
                 Try {comparison.toolA.name}
@@ -383,7 +368,7 @@ export default async function ComparisonPage({ params }: PageProps) {
               <a
                 href={comparison.toolB.websiteUrl || `/${category}/${comparison.toolB.slug}`}
                 target={comparison.toolB.websiteUrl ? '_blank' : undefined}
-                rel={comparison.toolB.websiteUrl ? 'noopener noreferrer nofollow' : undefined}
+                rel={comparison.toolB.websiteUrl ? 'noopener noreferrer nofollow sponsored' : undefined}
                 className="px-5 py-2.5 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-sm font-semibold transition-colors"
               >
                 Try {comparison.toolB.name}

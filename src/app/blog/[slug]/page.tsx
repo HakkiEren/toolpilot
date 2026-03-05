@@ -42,6 +42,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       publishedTime: post.publishedAt,
       modifiedTime: post.updatedAt || post.publishedAt,
       authors: [post.author],
+      section: post.categorySlug
+        ? post.categorySlug.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase())
+        : 'Technology',
+      tags: post.relatedToolSlugs?.map(s => s.split('/').pop()).filter(Boolean) as string[] || [],
     },
   };
 }

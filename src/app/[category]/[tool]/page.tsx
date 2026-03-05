@@ -2,13 +2,14 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getToolBySlug, getAllToolSlugs, getRelatedLinks, getComparisonsByTool, getRelatedTools } from '@/lib/data';
-import { generateToolSchema, generateBreadcrumbSchema, generateFAQSchema } from '@/lib/schema';
+import { generateToolReviewSchema, generateBreadcrumbSchema, generateFAQSchema } from '@/lib/schema';
 import { CATEGORIES, SEO, SITE_URL } from '@/lib/constants';
 import { generateToolFAQs } from '@/lib/generated-faqs';
 import { FAQSection } from '@/components/common/FAQSection';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { RelatedLinks } from '@/components/common/RelatedLinks';
 import { AdBanner, AdInArticle } from '@/components/ads/AdSlot';
+import { ToolLogo } from '@/components/common/ToolLogo';
 
 // ============================================================
 // TOOL PROFILE PAGE — Individual tool review (ENHANCED)
@@ -43,6 +44,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description: tool.tagline,
       url: `${SITE_URL}/${category}/${toolSlug}`,
       type: 'article',
+      publishedTime: tool.createdAt,
+      modifiedTime: tool.lastUpdated,
     },
   };
 }
@@ -60,7 +63,7 @@ export default async function ToolPage({ params }: PageProps) {
   ]);
   const year = new Date().getFullYear();
 
-  const toolSchema = generateToolSchema(tool, cat?.name || category);
+  const toolSchema = generateToolReviewSchema(tool, cat?.name || category);
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: '/' },
     { name: cat?.name || category, url: `/${category}` },
@@ -107,13 +110,7 @@ export default async function ToolPage({ params }: PageProps) {
           <div className="flex flex-col md:flex-row md:items-start gap-6">
             {/* Logo */}
             <div className="flex-shrink-0">
-              {tool.logoUrl ? (
-                <img src={tool.logoUrl} alt={`${tool.name} logo`} className="w-24 h-24 rounded-2xl shadow-lg" />
-              ) : (
-                <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-4xl font-bold text-white shadow-lg">
-                  {tool.name[0]}
-                </div>
-              )}
+              <ToolLogo logoUrl={tool.logoUrl} name={tool.name} size={96} className="shadow-lg" priority />
             </div>
 
             {/* Title & Quick Info */}
@@ -165,7 +162,7 @@ export default async function ToolPage({ params }: PageProps) {
               <a
                 href={tool.websiteUrl}
                 target="_blank"
-                rel="noopener noreferrer nofollow"
+                rel="noopener noreferrer nofollow sponsored"
                 className="glow-pulse inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl text-sm font-semibold hover:bg-blue-700 transition-colors shadow-lg shadow-blue-600/20"
               >
                 Visit {tool.name} &#8599;
@@ -513,13 +510,7 @@ export default async function ToolPage({ params }: PageProps) {
                   href={`/${rt.categorySlug}/${rt.slug}`}
                   className="group hover-lift flex items-start gap-3 p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-blue-300 transition-all bg-white dark:bg-gray-900"
                 >
-                  {rt.logoUrl ? (
-                    <img src={rt.logoUrl} alt={rt.name} className="w-10 h-10 rounded-lg flex-shrink-0" loading="lazy" />
-                  ) : (
-                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-sm font-bold text-white flex-shrink-0">
-                      {rt.name[0]}
-                    </div>
-                  )}
+                  <ToolLogo logoUrl={rt.logoUrl} name={rt.name} size={40} />
                   <div className="min-w-0">
                     <h3 className="font-semibold text-sm group-hover:text-blue-600 transition-colors truncate">{rt.name}</h3>
                     <p className="text-xs text-gray-500 line-clamp-1 mt-0.5">{rt.tagline}</p>

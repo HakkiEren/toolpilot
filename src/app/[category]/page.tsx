@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getToolsByCategory, getCategoryStats, getComparisonsByCategory } from '@/lib/data';
 import { generateBreadcrumbSchema, generateFAQSchema, generateCollectionSchema } from '@/lib/schema';
+import { ToolLogo } from '@/components/common/ToolLogo';
 import { CATEGORIES, CATEGORY_LIST, SITE_URL, SUBCATEGORIES } from '@/lib/constants';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { FAQSection } from '@/components/common/FAQSection';
@@ -149,13 +150,7 @@ export default async function CategoryPage({ params }: PageProps) {
                     <span className="absolute -top-3 -left-3 text-3xl" dangerouslySetInnerHTML={{ __html: medals[idx] }} />
 
                     <div className="flex items-center gap-3 mb-4 mt-2">
-                      {tool.logoUrl ? (
-                        <img src={tool.logoUrl} alt={`${tool.name} logo`} className="w-14 h-14 rounded-xl shadow-sm" loading="lazy" />
-                      ) : (
-                        <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-2xl font-bold text-white">
-                          {tool.name[0]}
-                        </div>
-                      )}
+                      <ToolLogo logoUrl={tool.logoUrl} name={tool.name} size={56} className="shadow-sm" />
                       <div>
                         <h3 className="text-lg font-bold group-hover:text-blue-600 transition-colors">{tool.name}</h3>
                         <div className="flex items-center gap-1 text-sm">
@@ -225,13 +220,7 @@ export default async function CategoryPage({ params }: PageProps) {
                 </span>
 
                 {/* Logo */}
-                {tool.logoUrl ? (
-                  <img src={tool.logoUrl} alt={`${tool.name} logo`} className="w-10 h-10 rounded-lg flex-shrink-0" loading="lazy" />
-                ) : (
-                  <div className="w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-lg font-bold text-gray-400 flex-shrink-0">
-                    {tool.name[0]}
-                  </div>
-                )}
+                <ToolLogo logoUrl={tool.logoUrl} name={tool.name} size={40} />
 
                 {/* Info */}
                 <div className="flex-1 min-w-0">

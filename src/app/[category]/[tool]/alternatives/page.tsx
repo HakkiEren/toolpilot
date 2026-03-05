@@ -6,6 +6,7 @@ import { generateBreadcrumbSchema } from '@/lib/schema';
 import { CATEGORIES, SITE_URL, SEO } from '@/lib/constants';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { AdBanner } from '@/components/ads/AdSlot';
+import { ToolLogo } from '@/components/common/ToolLogo';
 
 // ============================================================
 // ALTERNATIVES PAGE — ENHANCED with comparison table
@@ -105,13 +106,7 @@ export default async function AlternativesPage({ params }: PageProps) {
           </div>
           <div className="flex flex-col md:flex-row md:items-center gap-4">
             <div className="flex items-center gap-4 flex-1">
-              {tool.logoUrl ? (
-                <img src={tool.logoUrl} alt={`${tool.name} logo`} className="w-14 h-14 rounded-xl" />
-              ) : (
-                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-2xl font-bold text-white">
-                  {tool.name[0]}
-                </div>
-              )}
+              <ToolLogo logoUrl={tool.logoUrl} name={tool.name} size={56} priority />
               <div>
                 <h2 className="text-xl font-bold">{tool.name}</h2>
                 <p className="text-sm text-gray-600 dark:text-gray-300">{tool.tagline}</p>
@@ -228,13 +223,7 @@ export default async function AlternativesPage({ params }: PageProps) {
                       }`}>
                         #{idx + 1}
                       </div>
-                      {alt.logoUrl ? (
-                        <img src={alt.logoUrl} alt={`${alt.name} logo`} className="w-12 h-12 rounded-xl" loading="lazy" />
-                      ) : (
-                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 flex items-center justify-center font-bold text-gray-500 text-lg">
-                          {alt.name[0]}
-                        </div>
-                      )}
+                      <ToolLogo logoUrl={alt.logoUrl} name={alt.name} size={48} />
                       <div>
                         <h3 className="text-lg font-bold">{alt.name}</h3>
                         <p className="text-sm text-gray-500 dark:text-gray-400">{alt.tagline}</p>

@@ -48,6 +48,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.className}>
       <head>
+        {/* Preconnect to logo CDN for faster image loads */}
+        <link rel="preconnect" href="https://logo.clearbit.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://logo.clearbit.com" />
+        <link rel="dns-prefetch" href="https://www.google.com" />
         {/* Google Analytics (GA4) — set NEXT_PUBLIC_GA_ID env var */}
         {process.env.NEXT_PUBLIC_GA_ID && (
           <>

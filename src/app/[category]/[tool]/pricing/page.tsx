@@ -8,6 +8,7 @@ import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { RelatedLinks } from '@/components/common/RelatedLinks';
 import { FAQSection } from '@/components/common/FAQSection';
 import { AdBanner } from '@/components/ads/AdSlot';
+import { ToolLogo } from '@/components/common/ToolLogo';
 import type { FAQ } from '@/types';
 
 // ============================================================
@@ -137,13 +138,7 @@ export default async function PricingPage({ params }: PageProps) {
         {/* ========== PRICING HERO ========== */}
         <div className="mt-6 mb-10">
           <div className="flex items-center gap-4 mb-4">
-            {tool.logoUrl ? (
-              <img src={tool.logoUrl} alt={`${tool.name} logo`} className="w-14 h-14 rounded-xl shadow-sm" loading="lazy" />
-            ) : (
-              <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-2xl font-bold text-white">
-                {tool.name[0]}
-              </div>
-            )}
+            <ToolLogo logoUrl={tool.logoUrl} name={tool.name} size={56} className="shadow-sm" priority />
             <div>
               <h1 className="text-3xl md:text-4xl font-bold">
                 {tool.name} Pricing Plans ({year})
@@ -278,7 +273,7 @@ export default async function PricingPage({ params }: PageProps) {
                   <Link
                     href={tool.websiteUrl || '#'}
                     target="_blank"
-                    rel="noopener noreferrer nofollow"
+                    rel="noopener noreferrer nofollow sponsored"
                     className={`block text-center py-3 px-4 rounded-xl text-sm font-bold transition-all ${
                       plan.isPopular
                         ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 shadow-md'
@@ -301,7 +296,7 @@ export default async function PricingPage({ params }: PageProps) {
               <Link
                 href={tool.websiteUrl || '#'}
                 target="_blank"
-                rel="noopener noreferrer nofollow"
+                rel="noopener noreferrer nofollow sponsored"
                 className="inline-flex items-center gap-2 text-blue-600 hover:underline font-medium"
               >
                 Visit {tool.name} for pricing &#8599;
@@ -540,7 +535,7 @@ export default async function PricingPage({ params }: PageProps) {
               <Link
                 href={tool.websiteUrl || '#'}
                 target="_blank"
-                rel="noopener noreferrer nofollow"
+                rel="noopener noreferrer nofollow sponsored"
                 className="glow-pulse inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl text-sm font-bold hover:from-blue-700 hover:to-purple-700 shadow-md transition-all"
               >
                 Visit {tool.name} &#8599;

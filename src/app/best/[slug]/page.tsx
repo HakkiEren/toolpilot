@@ -3,7 +3,8 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getToolsBySubcategory, getToolsByCategory } from '@/lib/data';
 import { CATEGORIES, SUBCATEGORIES, SITE_URL, SITE_NAME } from '@/lib/constants';
-import { generateBreadcrumbSchema, generateCollectionSchema, generateFAQSchema } from '@/lib/schema';
+import { generateBreadcrumbSchema, generateCollectionSchema, generateBestOfItemListSchema, generateFAQSchema } from '@/lib/schema';
+import { ToolLogo } from '@/components/common/ToolLogo';
 import type { Tool } from '@/types';
 
 export const revalidate = 3600;
@@ -135,14 +136,28 @@ export default async function BestOfPage({ params }: { params: Promise<{ slug: s
         }}
       />
       {allTools.length > 0 && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(
-              generateCollectionSchema(sub.name, `best/${slug}`, sub.description, allTools)
-            ),
-          }}
-        />
+        <>
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(
+                generateBestOfItemListSchema(
+                  `Best ${sub.name} in ${year}`,
+                  `/best/${slug}`,
+                  allTools.map(t => ({ ...t, categorySlug: t.categorySlug || sub.categorySlug }))
+                )
+              ),
+            }}
+          />
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(
+                generateCollectionSchema(sub.name, `best/${slug}`, sub.description, allTools)
+              ),
+            }}
+          />
+        </>
       )}
       {faqs.length > 0 && (
         <script
@@ -220,9 +235,7 @@ export default async function BestOfPage({ params }: { params: Promise<{ slug: s
                         </td>
                         <td className="py-4 px-4">
                           <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center text-xs font-bold text-gray-500">
-                              {tool.name.charAt(0)}
-                            </div>
+                            <ToolLogo logoUrl={tool.logoUrl} name={tool.name} size={32} />
                             <div>
                               <div className="font-semibold text-gray-900">{tool.name}</div>
                               <div className="text-xs text-gray-500 line-clamp-1 max-w-[200px]">{tool.tagline}</div>
@@ -287,6 +300,7 @@ export default async function BestOfPage({ params }: { params: Promise<{ slug: s
                     <div className={`flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold ${index < 3 ? 'bg-gradient-to-br from-indigo-500 to-purple-600 text-white' : 'bg-gray-100 text-gray-600'}`}>
                       #{index + 1}
                     </div>
+                    <ToolLogo logoUrl={tool.logoUrl} name={tool.name} size={40} />
                     <div>
                       <div className="flex items-center gap-2 mb-1">
                         <h3 className="text-xl font-bold text-gray-900">{tool.name}</h3>

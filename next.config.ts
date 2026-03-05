@@ -1,17 +1,20 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Image optimization for external logos
+  // Image optimization for tool logos (Clearbit + Google Favicons)
   images: {
     remotePatterns: [
-      { protocol: 'https', hostname: '**' },
+      { protocol: 'https', hostname: 'logo.clearbit.com' },
+      { protocol: 'https', hostname: 'www.google.com', pathname: '/s2/favicons**' },
     ],
+    formats: ['image/avif', 'image/webp'],
+    minimumCacheTTL: 86400,
   },
 
   // Strict mode for better development
   reactStrictMode: true,
 
-  // Headers for security & caching
+  // Headers for security, caching & crawl budget
   async headers() {
     return [
       {
@@ -27,6 +30,13 @@ const nextConfig: NextConfig = {
         source: '/(.*)\\.(ico|png|jpg|jpeg|gif|webp|svg|woff|woff2)',
         headers: [
           { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+        ],
+      },
+      {
+        // Crawl budget: don't index search page (thin content)
+        source: '/search',
+        headers: [
+          { key: 'X-Robots-Tag', value: 'noindex, follow' },
         ],
       },
     ];

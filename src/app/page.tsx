@@ -3,6 +3,7 @@ import { SITE_NAME, CATEGORY_LIST, CATEGORIES, SUBCATEGORIES } from '@/lib/const
 import { supabase } from '@/lib/supabase';
 import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
 import { generateFAQSchema } from '@/lib/schema';
+import { ToolLogo } from '@/components/common/ToolLogo';
 
 export const revalidate = 3600;
 
@@ -184,13 +185,7 @@ export default async function HomePage() {
                 style={{ animationDelay: `${i * 60}ms` }}
               >
                 <div className="flex-shrink-0 relative">
-                  {tool.logo_url ? (
-                    <img src={tool.logo_url} alt={tool.name} className="w-12 h-12 rounded-xl object-contain bg-gray-50 dark:bg-gray-800 p-1" />
-                  ) : (
-                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 text-white rounded-xl flex items-center justify-center text-sm font-bold">
-                      {tool.name.charAt(0)}
-                    </div>
-                  )}
+                  <ToolLogo logoUrl={tool.logo_url || ''} name={tool.name} size={48} className="p-1" />
                   {i < 3 && (
                     <span className="absolute -top-1 -right-1 w-5 h-5 bg-yellow-400 text-[10px] font-bold rounded-full flex items-center justify-center text-yellow-900">
                       {i + 1}
@@ -275,13 +270,7 @@ export default async function HomePage() {
                     <div className="flex items-center gap-4">
                       {/* Tool A */}
                       <div className="flex items-center gap-2 flex-1">
-                        {toolA?.logo_url ? (
-                          <img src={toolA.logo_url} alt={toolA.name} className="w-8 h-8 rounded-lg object-contain bg-gray-50 dark:bg-gray-800 p-0.5" />
-                        ) : (
-                          <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center text-xs font-bold text-blue-600">
-                            {toolA?.name?.charAt(0) || 'A'}
-                          </div>
-                        )}
+                        <ToolLogo logoUrl={toolA?.logo_url || ''} name={toolA?.name || 'A'} size={32} className="p-0.5" />
                         <div>
                           <span className="font-bold text-sm text-blue-600">{toolA?.name || 'Tool A'}</span>
                           {toolA?.ratings_overall && (
@@ -303,13 +292,7 @@ export default async function HomePage() {
                             <div className="text-[10px] text-gray-400">{toolB.ratings_overall}/10</div>
                           )}
                         </div>
-                        {toolB?.logo_url ? (
-                          <img src={toolB.logo_url} alt={toolB.name} className="w-8 h-8 rounded-lg object-contain bg-gray-50 dark:bg-gray-800 p-0.5" />
-                        ) : (
-                          <div className="w-8 h-8 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center text-xs font-bold text-purple-600">
-                            {toolB?.name?.charAt(0) || 'B'}
-                          </div>
-                        )}
+                        <ToolLogo logoUrl={toolB?.logo_url || ''} name={toolB?.name || 'B'} size={32} className="p-0.5" />
                       </div>
                     </div>
 
@@ -427,16 +410,7 @@ export default async function HomePage() {
                         href={`/${tool.category_slug}/${tool.slug}`}
                         className="group flex items-center gap-3 p-4 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl hover:border-blue-300 hover:shadow-md transition-all"
                       >
-                        {tool.logo_url ? (
-                          <img src={tool.logo_url} alt={tool.name} className="w-10 h-10 rounded-lg object-contain bg-gray-50 dark:bg-gray-800 p-1" />
-                        ) : (
-                          <div
-                            className="w-10 h-10 rounded-lg flex items-center justify-center text-white text-sm font-bold"
-                            style={{ background: `linear-gradient(135deg, ${cat.color}, ${cat.color}88)` }}
-                          >
-                            {tool.name.charAt(0)}
-                          </div>
-                        )}
+                        <ToolLogo logoUrl={tool.logo_url || ''} name={tool.name} size={40} className="p-1" />
                         <div className="flex-1 min-w-0">
                           <div className="font-semibold text-sm group-hover:text-blue-600 transition-colors truncate">
                             {tool.name}
