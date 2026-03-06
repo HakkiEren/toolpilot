@@ -138,23 +138,23 @@ export default async function HomePage() {
       </section>
 
       {/* ============================================================ */}
-      {/* LIVE STATS — Dynamic numbers from database */}
+      {/* LIVE STATS — Glassmorphism gradient pills */}
       {/* ============================================================ */}
-      <section className="border-y border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950">
+      <section className="relative border-y border-gray-200/60 dark:border-gray-800/60 bg-gradient-to-r from-white via-blue-50/30 to-white dark:from-gray-950 dark:via-blue-950/10 dark:to-gray-950">
         <div className="max-w-7xl mx-auto px-4 py-10">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
             {[
-              { end: toolCount || 40, suffix: '+', label: 'Tools Reviewed', icon: '🛠️' },
-              { end: comparisonCount || 30, suffix: '+', label: 'Comparisons', icon: '⚖️' },
-              { end: Object.keys(CATEGORIES).length, suffix: '', label: 'Categories', icon: '📂' },
-              { end: 100, suffix: '%', label: 'Independent', icon: '✅' },
-            ].map((stat) => (
-              <div key={stat.label} className="flex flex-col items-center">
+              { end: toolCount || 40, suffix: '+', label: 'Tools Reviewed', icon: '🛠️', color: 'text-blue-600 dark:text-blue-400', bg: 'from-blue-100/80 to-blue-50/80 dark:from-blue-900/30 dark:to-blue-800/20' },
+              { end: comparisonCount || 30, suffix: '+', label: 'Comparisons', icon: '⚖️', color: 'text-purple-600 dark:text-purple-400', bg: 'from-purple-100/80 to-purple-50/80 dark:from-purple-900/30 dark:to-purple-800/20' },
+              { end: Object.keys(CATEGORIES).length, suffix: '', label: 'Categories', icon: '📂', color: 'text-orange-600 dark:text-orange-400', bg: 'from-orange-100/80 to-orange-50/80 dark:from-orange-900/30 dark:to-orange-800/20' },
+              { end: 100, suffix: '%', label: 'Independent', icon: '✅', color: 'text-green-600 dark:text-green-400', bg: 'from-green-100/80 to-green-50/80 dark:from-green-900/30 dark:to-green-800/20' },
+            ].map((stat, idx) => (
+              <div key={stat.label} className={`flex flex-col items-center p-5 bg-gradient-to-r ${stat.bg} backdrop-blur-sm rounded-2xl border border-white/50 dark:border-gray-700/50 shadow-sm card-animate`} style={{ animationDelay: `${idx * 80}ms` }}>
                 <div className="text-2xl mb-1">{stat.icon}</div>
-                <div className="text-3xl md:text-4xl font-extrabold text-blue-600">
+                <div className={`text-3xl md:text-4xl font-extrabold ${stat.color}`}>
                   <AnimatedCounter end={stat.end} suffix={stat.suffix} />
                 </div>
-                <div className="text-sm text-gray-500 mt-1">{stat.label}</div>
+                <div className="text-sm text-gray-500 dark:text-gray-400 mt-1 font-medium">{stat.label}</div>
               </div>
             ))}
           </div>
@@ -792,28 +792,29 @@ export default async function HomePage() {
       {/* CTA SECTION */}
       {/* ============================================================ */}
       <section className="max-w-7xl mx-auto px-4 py-16">
-        <div className="relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl p-10 md:p-16 text-center text-white">
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-0 left-0 w-64 h-64 bg-white rounded-full -translate-x-1/2 -translate-y-1/2" />
-            <div className="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full translate-x-1/3 translate-y-1/3" />
-          </div>
+        <div className="relative overflow-hidden bg-gradient-to-br from-gray-900 via-slate-900 to-indigo-950 rounded-3xl p-10 md:p-16 text-center text-white shadow-2xl">
+          <div className="absolute -top-24 -right-24 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-indigo-500/5 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
+
           <div className="relative">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h2 className="text-3xl md:text-4xl font-extrabold mb-4 tracking-tight">
               Ready to Find Your Perfect Tool?
             </h2>
-            <p className="text-lg text-blue-100 mb-8 max-w-xl mx-auto">
+            <p className="text-lg text-white/60 mb-10 max-w-xl mx-auto">
               Stop paying for the wrong software. Compare {toolCount || 40}+ tools side by side and make data-driven decisions.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/search"
-                className="glow-pulse inline-flex items-center justify-center px-8 py-3 bg-white text-blue-600 rounded-full font-semibold hover:bg-blue-50 transition-colors"
+                className="glow-pulse inline-flex items-center justify-center px-10 py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-blue-500/20 transition-all hover:scale-105"
               >
                 Search Tools
               </Link>
               <Link
                 href="/ai-tools"
-                className="inline-flex items-center justify-center px-8 py-3 border-2 border-white/30 text-white rounded-full font-semibold hover:bg-white/10 transition-colors"
+                className="inline-flex items-center justify-center px-10 py-4 bg-white/10 backdrop-blur-sm border border-white/20 text-white rounded-xl font-semibold hover:bg-white/20 transition-all"
               >
                 Browse Categories
               </Link>

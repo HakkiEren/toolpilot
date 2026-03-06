@@ -59,29 +59,39 @@ export default async function SitemapPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-12">
-      {/* Header */}
-      <div className="mb-12 text-center">
-        <h1 className="text-3xl md:text-4xl font-extrabold gradient-text mb-4">
-          Site Map
-        </h1>
-        <p className="text-gray-500 max-w-2xl mx-auto">
-          Browse all {totalTools}+ tool reviews, {totalComparisons}+ comparisons,
-          and {totalPosts}+ blog posts on {SITE_NAME}.
-        </p>
+      {/* Hero — Premium glassmorphism */}
+      <div className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-gray-50/40 to-blue-50/30 dark:from-gray-900 dark:via-gray-900/40 dark:to-blue-950/10 rounded-3xl border border-gray-200/60 dark:border-gray-800/60 p-8 md:p-10 mb-12 text-center">
+        <div className="absolute -top-24 -right-24 w-72 h-72 bg-blue-400/10 dark:bg-blue-400/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-20 -left-20 w-56 h-56 bg-gray-400/10 dark:bg-gray-400/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.02]" style={{ backgroundImage: 'radial-gradient(circle, currentColor 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
 
-        {/* Quick stats */}
-        <div className="flex flex-wrap justify-center gap-4 mt-6">
-          <div className="glass rounded-xl px-5 py-3 card-animate" style={{ animationDelay: '0ms' }}>
-            <span className="text-2xl font-bold text-blue-600">{totalTools}</span>
-            <span className="text-sm text-gray-500 ml-2">Tool Reviews</span>
+        <div className="relative">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gray-100/80 dark:bg-gray-800/50 text-gray-600 dark:text-gray-400 text-xs font-semibold mb-4 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50">
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z" />
+            </svg>
+            Full Site Navigation
           </div>
-          <div className="glass rounded-xl px-5 py-3 card-animate" style={{ animationDelay: '100ms' }}>
-            <span className="text-2xl font-bold text-purple-600">{totalComparisons}</span>
-            <span className="text-sm text-gray-500 ml-2">Comparisons</span>
-          </div>
-          <div className="glass rounded-xl px-5 py-3 card-animate" style={{ animationDelay: '200ms' }}>
-            <span className="text-2xl font-bold text-green-600">{totalPosts}</span>
-            <span className="text-sm text-gray-500 ml-2">Blog Posts</span>
+          <h1 className="text-3xl md:text-4xl font-extrabold mb-4 tracking-tight">
+            <span className="gradient-text">Site Map</span>
+          </h1>
+          <p className="text-gray-500 dark:text-gray-400 max-w-2xl mx-auto mb-6">
+            Browse all {totalTools}+ tool reviews, {totalComparisons}+ comparisons,
+            and {totalPosts}+ blog posts on {SITE_NAME}.
+          </p>
+
+          {/* Quick stats — gradient pills */}
+          <div className="flex flex-wrap justify-center gap-3">
+            {[
+              { value: totalTools, label: 'Tool Reviews', color: 'text-blue-600 dark:text-blue-400', bg: 'from-blue-100/80 to-blue-50/80 dark:from-blue-900/30 dark:to-blue-800/20' },
+              { value: totalComparisons, label: 'Comparisons', color: 'text-purple-600 dark:text-purple-400', bg: 'from-purple-100/80 to-purple-50/80 dark:from-purple-900/30 dark:to-purple-800/20' },
+              { value: totalPosts, label: 'Blog Posts', color: 'text-green-600 dark:text-green-400', bg: 'from-green-100/80 to-green-50/80 dark:from-green-900/30 dark:to-green-800/20' },
+            ].map((stat, idx) => (
+              <div key={stat.label} className={`flex items-center gap-2.5 bg-gradient-to-r ${stat.bg} backdrop-blur-sm rounded-xl px-4 py-3 shadow-sm border border-white/50 dark:border-gray-700/50 card-animate`} style={{ animationDelay: `${idx * 80}ms` }}>
+                <span className={`text-2xl font-black ${stat.color}`}>{stat.value}</span>
+                <span className="text-sm font-medium text-gray-600 dark:text-gray-300">{stat.label}</span>
+              </div>
+            ))}
           </div>
         </div>
       </div>
