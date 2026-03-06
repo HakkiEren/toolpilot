@@ -100,17 +100,30 @@ export default async function CalculatorPage({ params }: PageProps) {
         { name: calc.title, url: '' },
       ]} />
 
-      <div className="mt-6 mb-8 text-center">
-        <h1 className="text-3xl md:text-4xl font-extrabold gradient-text mb-4">
-          {calc.title}
-        </h1>
-        <p className="text-gray-500 max-w-2xl mx-auto">
-          {calc.description}
-        </p>
+      {/* Hero — Premium glassmorphism */}
+      <div className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-indigo-50/30 to-purple-50/40 dark:from-gray-900 dark:via-indigo-950/10 dark:to-purple-950/10 rounded-3xl border border-gray-200/60 dark:border-gray-800/60 p-8 md:p-10 mt-6 mb-8 text-center">
+        <div className="absolute -top-24 -right-24 w-72 h-72 bg-indigo-400/10 dark:bg-indigo-400/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-20 -left-20 w-56 h-56 bg-purple-400/10 dark:bg-purple-400/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.02]" style={{ backgroundImage: 'radial-gradient(circle, currentColor 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
+
+        <div className="relative">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-100/80 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 text-xs font-semibold mb-4 backdrop-blur-sm border border-indigo-200/50 dark:border-indigo-800/50">
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 15.75V18m-7.5-6.75h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25V13.5zm0 2.25h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25V18zm2.498-6.75h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007V13.5zm0 2.25h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007V18zm2.504-6.75h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V13.5zm0 2.25h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V18zm2.498-6.75h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V13.5zM8.25 6h7.5v2.25h-7.5V6zM12 2.25c-1.892 0-3.758.11-5.593.322C5.307 2.7 4.5 3.65 4.5 4.757V19.5a2.25 2.25 0 002.25 2.25h10.5a2.25 2.25 0 002.25-2.25V4.757c0-1.108-.806-2.057-1.907-2.185A48.507 48.507 0 0012 2.25z" />
+            </svg>
+            Free Calculator
+          </div>
+          <h1 className="text-3xl md:text-4xl font-extrabold mb-4 tracking-tight">
+            <span className="gradient-text">{calc.title}</span>
+          </h1>
+          <p className="text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
+            {calc.description}
+          </p>
+        </div>
       </div>
 
       {/* Calculator Component */}
-      <div className="glass rounded-3xl p-6 md:p-8 mb-12">
+      <div className="glass rounded-3xl p-6 md:p-8 mb-12 shadow-sm">
         <CalculatorClient type={type} />
       </div>
 
