@@ -61,6 +61,26 @@ export function generateToolReviewSchema(tool: Tool, categoryName: string) {
       '@type': 'SpeakableSpecification',
       cssSelector: ['h1', '[data-speakable]'],
     },
+    // Pros/Cons — triggers rich results in Google SERPs
+    positiveNotes: {
+      '@type': 'ItemList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: `Strong overall rating of ${tool.ratings.overall.toFixed(1)}/10` },
+        ...(tool.ratings.easeOfUse >= 7 ? [{ '@type': 'ListItem', position: 2, name: `Easy to use (${tool.ratings.easeOfUse.toFixed(1)}/10)` }] : []),
+        ...(tool.ratings.features >= 7 ? [{ '@type': 'ListItem', position: 3, name: `Feature-rich platform (${tool.ratings.features.toFixed(1)}/10)` }] : []),
+        ...(tool.pricing.hasFreeplan ? [{ '@type': 'ListItem', position: 4, name: 'Free plan available' }] : []),
+        ...(tool.ratings.support >= 7 ? [{ '@type': 'ListItem', position: 5, name: `Good customer support (${tool.ratings.support.toFixed(1)}/10)` }] : []),
+      ].map((item, i) => ({ ...item, position: i + 1 })),
+    },
+    negativeNotes: {
+      '@type': 'ItemList',
+      itemListElement: [
+        ...(tool.ratings.valueForMoney < 7 ? [{ '@type': 'ListItem', position: 1, name: `Value for money could be better (${tool.ratings.valueForMoney.toFixed(1)}/10)` }] : []),
+        ...(tool.ratings.support < 7 ? [{ '@type': 'ListItem', position: 2, name: `Customer support needs improvement (${tool.ratings.support.toFixed(1)}/10)` }] : []),
+        ...(!tool.pricing.hasFreeplan ? [{ '@type': 'ListItem', position: 3, name: 'No free plan available' }] : []),
+        ...(tool.ratings.easeOfUse < 7 ? [{ '@type': 'ListItem', position: 4, name: `Steeper learning curve (${tool.ratings.easeOfUse.toFixed(1)}/10)` }] : []),
+      ].map((item, i) => ({ ...item, position: i + 1 })),
+    },
   };
 }
 
