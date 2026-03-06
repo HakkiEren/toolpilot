@@ -129,11 +129,11 @@ export default async function AlternativesPage({ params }: PageProps) {
           </div>
         </div>
 
-        {/* Quick Comparison Table */}
+        {/* Quick Comparison Table — With logos */}
         {filtered.length > 0 && (
           <section className="mb-12">
             <h2 className="text-2xl font-bold mb-6">{tool.name} vs Alternatives at a Glance</h2>
-            <div className="overflow-x-auto rounded-2xl border border-gray-200 dark:border-gray-700">
+            <div className="overflow-x-auto rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm">
               <table className="w-full text-sm">
                 <thead className="bg-gray-50 dark:bg-gray-800">
                   <tr>
@@ -149,22 +149,29 @@ export default async function AlternativesPage({ params }: PageProps) {
                 <tbody>
                   {/* Current tool row (highlighted) */}
                   <tr className="bg-blue-50/50 dark:bg-blue-900/10 border-t border-gray-100 dark:border-gray-800">
-                    <td className="py-3 px-4 font-semibold text-blue-700 dark:text-blue-400">{tool.name} &#128205;</td>
+                    <td className="py-3 px-4">
+                      <div className="flex items-center gap-2">
+                        <ToolLogo logoUrl={tool.logoUrl} name={tool.name} size={24} />
+                        <span className="font-semibold text-blue-700 dark:text-blue-400">{tool.name}</span>
+                        <span className="text-[10px] bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 px-1.5 py-0.5 rounded font-bold">YOU</span>
+                      </div>
+                    </td>
                     <td className="py-3 px-4 text-center font-bold">{tool.ratings.overall.toFixed(1)}</td>
                     <td className="py-3 px-4 text-center">{tool.pricing.hasFreeplan ? '\u2713' : '\u2717'}</td>
                     <td className="py-3 px-4 text-center">{tool.pricing.startingPrice ? `$${tool.pricing.startingPrice}` : 'N/A'}</td>
                     <td className="py-3 px-4 text-center">{tool.ratings.easeOfUse.toFixed(1)}</td>
                     <td className="py-3 px-4 text-center">{tool.ratings.valueForMoney.toFixed(1)}</td>
                     <td className="py-3 px-4 text-center">
-                      <span className="text-xs text-blue-600 font-medium">Current</span>
+                      <span className="text-xs text-blue-600 dark:text-blue-400 font-medium">Current</span>
                     </td>
                   </tr>
                   {/* Alternative rows */}
                   {filtered.map((alt, idx) => (
                     <tr key={alt.id} className={`border-t border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/30 transition-colors ${idx % 2 === 1 ? 'bg-gray-50/30 dark:bg-gray-800/10' : ''}`}>
-                      <td className="py-3 px-4 font-medium">
-                        <Link href={`/${category}/${alt.slug}`} className="hover:text-blue-600 transition-colors">
-                          {alt.name}
+                      <td className="py-3 px-4">
+                        <Link href={`/${category}/${alt.slug}`} className="flex items-center gap-2 hover:text-blue-600 transition-colors">
+                          <ToolLogo logoUrl={alt.logoUrl} name={alt.name} size={24} />
+                          <span className="font-medium">{alt.name}</span>
                         </Link>
                       </td>
                       <td className="py-3 px-4 text-center">

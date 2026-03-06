@@ -8,7 +8,7 @@ import { generateToolFAQs } from '@/lib/generated-faqs';
 import { FAQSection } from '@/components/common/FAQSection';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { RelatedLinks } from '@/components/common/RelatedLinks';
-import { AdBanner, AdInArticle } from '@/components/ads/AdSlot';
+import { AdBanner, AdInArticle, AdMultiplex } from '@/components/ads/AdSlot';
 import { ToolLogo } from '@/components/common/ToolLogo';
 
 // ============================================================
@@ -105,125 +105,169 @@ export default async function ToolPage({ params }: PageProps) {
           { name: tool.name, url: '' },
         ]} />
 
-        {/* ========== HERO HEADER ========== */}
-        <div className="mt-6 mb-8">
-          <div className="flex flex-col md:flex-row md:items-start gap-6">
-            {/* Logo */}
-            <div className="flex-shrink-0">
-              <ToolLogo logoUrl={tool.logoUrl} name={tool.name} size={96} className="shadow-lg" priority />
-            </div>
+        {/* ========== HERO HEADER — Premium glassmorphism card ========== */}
+        <div className="mt-6 mb-10">
+          <div className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50/40 to-indigo-50/60 dark:from-gray-900 dark:via-blue-950/20 dark:to-indigo-950/20 rounded-3xl border border-gray-200/60 dark:border-gray-800/60 p-6 md:p-8">
+            {/* Decorative gradient orbs */}
+            <div className="absolute -top-20 -right-20 w-64 h-64 bg-blue-400/10 dark:bg-blue-400/5 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute -bottom-16 -left-16 w-48 h-48 bg-purple-400/10 dark:bg-purple-400/5 rounded-full blur-3xl pointer-events-none" />
 
-            {/* Title & Quick Info */}
-            <div className="flex-1">
-              <div className="flex items-center gap-3 mb-2">
-                <h1 className="text-3xl md:text-4xl font-bold">
-                  {tool.name}
-                </h1>
-                <span className={`text-sm font-semibold px-3 py-1 rounded-full ${
-                  tool.ratings.overall >= 8 ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' :
-                  tool.ratings.overall >= 6 ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' :
-                  'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
-                }`}>
-                  {ratingLabel}
-                </span>
+            <div className="relative flex flex-col md:flex-row md:items-start gap-6">
+              {/* Logo with glow effect */}
+              <div className="flex-shrink-0 relative">
+                <div className="absolute inset-0 bg-blue-500/20 rounded-2xl blur-xl scale-110" />
+                <ToolLogo logoUrl={tool.logoUrl} name={tool.name} size={96} className="shadow-xl relative" priority />
               </div>
-              <p className="text-lg text-gray-600 dark:text-gray-300 mb-4">{tool.tagline}</p>
 
-              {/* Quick Stats Bar */}
-              <div className="flex flex-wrap gap-3 text-sm">
-                <div className="flex items-center gap-1.5 bg-gray-100 dark:bg-gray-800 rounded-lg px-3 py-1.5">
-                  <span className="text-yellow-500 text-lg">&#9733;</span>
-                  <span className="font-bold text-lg">{tool.ratings.overall.toFixed(1)}</span>
-                  <span className="text-gray-400">/10</span>
-                  {tool.ratings.reviewCount > 0 && (
-                    <span className="text-gray-400 text-xs ml-1">({tool.ratings.reviewCount} reviews)</span>
+              {/* Title & Quick Info */}
+              <div className="flex-1">
+                <div className="flex flex-wrap items-center gap-3 mb-2">
+                  <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">
+                    {tool.name}
+                  </h1>
+                  <span className={`text-sm font-bold px-3.5 py-1 rounded-full shadow-sm ${
+                    tool.ratings.overall >= 8 ? 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400 shadow-green-200/50' :
+                    tool.ratings.overall >= 6 ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-400 shadow-yellow-200/50' :
+                    'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-400 shadow-red-200/50'
+                  }`}>
+                    {ratingLabel}
+                  </span>
+                </div>
+                <p className="text-lg text-gray-600 dark:text-gray-300 mb-5 max-w-2xl">{tool.tagline}</p>
+
+                {/* Quick Stats Bar — Pill chips with icons */}
+                <div className="flex flex-wrap gap-2.5 text-sm">
+                  <div className="flex items-center gap-1.5 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full px-4 py-2 shadow-sm border border-gray-200/50 dark:border-gray-700/50">
+                    <span className="text-yellow-500 text-lg">&#9733;</span>
+                    <span className="font-black text-lg">{tool.ratings.overall.toFixed(1)}</span>
+                    <span className="text-gray-400">/10</span>
+                    {tool.ratings.reviewCount > 0 && (
+                      <span className="text-gray-400 text-xs ml-1">({tool.ratings.reviewCount})</span>
+                    )}
+                  </div>
+                  {tool.pricing.hasFreeplan && (
+                    <span className="inline-flex items-center px-3.5 py-2 bg-emerald-100/80 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 rounded-full text-xs font-semibold backdrop-blur-sm">
+                      &#10003; Free Plan
+                    </span>
+                  )}
+                  {tool.pricing.startingPrice && (
+                    <span className="inline-flex items-center px-3.5 py-2 bg-blue-100/80 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded-full text-xs font-semibold backdrop-blur-sm">
+                      From ${tool.pricing.startingPrice}/mo
+                    </span>
+                  )}
+                  {tool.pricing.freeTrialDays && (
+                    <span className="inline-flex items-center px-3.5 py-2 bg-purple-100/80 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 rounded-full text-xs font-semibold backdrop-blur-sm">
+                      {tool.pricing.freeTrialDays}-Day Trial
+                    </span>
                   )}
                 </div>
-                {tool.pricing.hasFreeplan && (
-                  <span className="inline-flex items-center px-3 py-1.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-lg text-xs font-medium">
-                    &#10003; Free Plan
-                  </span>
-                )}
-                {tool.pricing.startingPrice && (
-                  <span className="inline-flex items-center px-3 py-1.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded-lg text-xs font-medium">
-                    From ${tool.pricing.startingPrice}/mo
-                  </span>
-                )}
-                {tool.pricing.freeTrialDays && (
-                  <span className="inline-flex items-center px-3 py-1.5 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 rounded-lg text-xs font-medium">
-                    {tool.pricing.freeTrialDays}-Day Trial
-                  </span>
-                )}
               </div>
-            </div>
 
-            {/* CTA Sidebar */}
-            <div className="flex-shrink-0 flex flex-col gap-2">
-              <a
-                href={tool.websiteUrl}
-                target="_blank"
-                rel="noopener noreferrer nofollow sponsored"
-                className="glow-pulse inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl text-sm font-semibold hover:bg-blue-700 transition-colors shadow-lg shadow-blue-600/20"
-              >
-                Visit {tool.name} &#8599;
-              </a>
-              <Link
-                href={`/${category}/${toolSlug}/pricing`}
-                className="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 rounded-xl text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-              >
-                View Pricing
-              </Link>
-              <Link
-                href={`/${category}/${toolSlug}/alternatives`}
-                className="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 rounded-xl text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-              >
-                See Alternatives
-              </Link>
+              {/* CTA Sidebar — Vertical action stack */}
+              <div className="flex-shrink-0 flex flex-col gap-2.5">
+                <a
+                  href={tool.websiteUrl}
+                  target="_blank"
+                  rel="noopener noreferrer nofollow sponsored"
+                  className="glow-pulse inline-flex items-center justify-center gap-2 px-7 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl text-sm font-bold hover:from-blue-700 hover:to-indigo-700 transition-all shadow-lg shadow-blue-600/25"
+                >
+                  Visit {tool.name} &#8599;
+                </a>
+                <Link
+                  href={`/${category}/${toolSlug}/pricing`}
+                  className="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm text-gray-700 dark:text-gray-200 rounded-xl text-sm font-medium hover:bg-white dark:hover:bg-gray-700 transition-all border border-gray-200/60 dark:border-gray-700/60"
+                >
+                  View Pricing
+                </Link>
+                <Link
+                  href={`/${category}/${toolSlug}/alternatives`}
+                  className="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm text-gray-700 dark:text-gray-200 rounded-xl text-sm font-medium hover:bg-white dark:hover:bg-gray-700 transition-all border border-gray-200/60 dark:border-gray-700/60"
+                >
+                  See Alternatives
+                </Link>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* ========== RATING DASHBOARD ========== */}
+        {/* ========== TL;DR SUMMARY BOX — AI Overview + Passage Ranking optimized ========== */}
+        <div className="mb-10 p-5 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 rounded-2xl border border-blue-200/60 dark:border-blue-800/30">
+          <div className="flex items-center gap-2 mb-3">
+            <span className="text-sm font-bold text-blue-700 dark:text-blue-400 uppercase tracking-wider">TL;DR</span>
+            <div className="flex-1 h-px bg-blue-200/50 dark:bg-blue-800/30" />
+          </div>
+          <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+            {tool.name} is {tool.ratings.overall >= 8 ? 'a top-rated' : tool.ratings.overall >= 6 ? 'a solid' : 'an'} {cat?.name?.toLowerCase() || 'digital'} tool rated {tool.ratings.overall.toFixed(1)}/10.{' '}
+            {tool.pricing.hasFreeplan ? 'It offers a free plan, making it accessible for individuals and small teams.' : tool.pricing.startingPrice ? `Plans start at $${tool.pricing.startingPrice}/mo.` : 'Contact sales for pricing.'}{' '}
+            Key strengths: features ({tool.ratings.features.toFixed(1)}/10) and ease of use ({tool.ratings.easeOfUse.toFixed(1)}/10).{' '}
+            {tool.ratings.overall >= 8 ? 'Highly recommended for most use cases.' : tool.ratings.overall >= 6 ? 'Worth considering if its strengths align with your needs.' : 'Consider comparing with top-rated alternatives.'}
+          </p>
+        </div>
+
+        {/* ========== RATING DASHBOARD — Premium donut + gradient bars ========== */}
         <section className="mb-12">
           <h2 className="text-2xl font-bold mb-6">Our Rating</h2>
-          <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
-            {/* Overall Score Header */}
-            <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-gray-800 dark:to-gray-800 p-6 flex items-center gap-6">
-              <div className="flex-shrink-0 w-24 h-24 rounded-full bg-white dark:bg-gray-900 shadow-lg flex items-center justify-center">
-                <div className="text-center">
-                  <div className={`text-3xl font-black ${ratingColor}`}>{tool.ratings.overall.toFixed(1)}</div>
-                  <div className="text-[10px] text-gray-400 font-medium">OUT OF 10</div>
+          <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm">
+            {/* Overall Score Header — Donut chart */}
+            <div className="bg-gradient-to-br from-slate-50 via-blue-50/50 to-indigo-50/50 dark:from-gray-800 dark:via-gray-800 dark:to-gray-800 p-6 md:p-8 flex flex-col md:flex-row items-center gap-6">
+              <div className="flex-shrink-0 relative">
+                <svg className="w-28 h-28 -rotate-90" viewBox="0 0 100 100">
+                  <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" strokeWidth="8" className="text-gray-200 dark:text-gray-700" />
+                  <circle
+                    cx="50" cy="50" r="42" fill="none" strokeWidth="8"
+                    strokeDasharray={`${(tool.ratings.overall / 10) * 264} 264`}
+                    strokeLinecap="round"
+                    className={tool.ratings.overall >= 8 ? 'text-green-500' : tool.ratings.overall >= 6 ? 'text-yellow-500' : 'text-red-500'}
+                    stroke="currentColor"
+                    style={{ filter: 'drop-shadow(0 0 6px currentColor)' }}
+                  />
+                </svg>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-center">
+                    <div className={`text-3xl font-black ${ratingColor}`}>{tool.ratings.overall.toFixed(1)}</div>
+                    <div className="text-[10px] text-gray-400 font-semibold tracking-wider">OUT OF 10</div>
+                  </div>
                 </div>
               </div>
-              <div className="flex-1">
+              <div className="flex-1 text-center md:text-left">
                 <div className={`text-xl font-bold ${ratingColor}`}>{ratingLabel}</div>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 max-w-md">
                   Based on comprehensive analysis of features, pricing, ease of use, and customer feedback
                 </p>
+                {tool.ratings.reviewCount > 0 && (
+                  <div className="flex items-center gap-1 mt-2 justify-center md:justify-start">
+                    {[...Array(5)].map((_, i) => (
+                      <span key={i} className={`text-sm ${i < Math.round(tool.ratings.overall / 2) ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-600'}`}>&#9733;</span>
+                    ))}
+                    <span className="text-xs text-gray-400 ml-1">({tool.ratings.reviewCount} reviews)</span>
+                  </div>
+                )}
               </div>
             </div>
 
-            {/* Individual Ratings */}
-            <div className="p-6">
-              <div className="space-y-4">
+            {/* Individual Ratings — Enhanced gradient bars */}
+            <div className="p-6 md:p-8">
+              <div className="space-y-5">
                 {[
-                  { label: 'Ease of Use', score: tool.ratings.easeOfUse, icon: '&#128171;' },
-                  { label: 'Features', score: tool.ratings.features, icon: '&#9881;' },
-                  { label: 'Value for Money', score: tool.ratings.valueForMoney, icon: '&#128176;' },
-                  { label: 'Customer Support', score: tool.ratings.support, icon: '&#128172;' },
-                ].map(({ label, score, icon }) => (
-                  <div key={label} className="flex items-center gap-4">
-                    <span className="text-xl w-8" dangerouslySetInnerHTML={{ __html: icon }} />
-                    <span className="w-36 text-sm font-medium text-gray-700 dark:text-gray-300">{label}</span>
-                    <div className="flex-1 h-3 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                  { label: 'Ease of Use', score: tool.ratings.easeOfUse, icon: '🎯', gradient: 'from-blue-500 to-cyan-400' },
+                  { label: 'Features', score: tool.ratings.features, icon: '⚙️', gradient: 'from-purple-500 to-indigo-400' },
+                  { label: 'Value for Money', score: tool.ratings.valueForMoney, icon: '💰', gradient: 'from-green-500 to-emerald-400' },
+                  { label: 'Customer Support', score: tool.ratings.support, icon: '💬', gradient: 'from-orange-500 to-amber-400' },
+                ].map(({ label, score, icon, gradient }) => (
+                  <div key={label} className="group">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <span className="text-lg">{icon}</span>
+                        <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">{label}</span>
+                      </div>
+                      <span className={`text-sm font-black ${score >= 8 ? 'text-green-600' : score >= 6 ? 'text-yellow-600' : 'text-red-500'}`}>{score.toFixed(1)}</span>
+                    </div>
+                    <div className="h-2.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
                       <div
-                        className={`h-full rounded-full score-bar-animated ${
-                          score >= 8 ? 'bg-green-500' : score >= 6 ? 'bg-yellow-500' : score >= 4 ? 'bg-orange-500' : 'bg-red-500'
-                        }`}
+                        className={`h-full rounded-full score-bar-animated bg-gradient-to-r ${gradient}`}
                         style={{ width: `${(score / 10) * 100}%` }}
                       />
                     </div>
-                    <span className="w-12 text-right font-bold text-sm">{score.toFixed(1)}</span>
                   </div>
                 ))}
               </div>
@@ -242,48 +286,46 @@ export default async function ToolPage({ params }: PageProps) {
         {/* ========== AD: AFTER DESCRIPTION ========== */}
         <AdBanner />
 
-        {/* ========== KEY FEATURES TABLE ========== */}
+        {/* ========== KEY FEATURES TABLE — Premium card grid ========== */}
         {featureEntries.length > 0 && (
           <section className="mb-12">
             <h2 className="text-2xl font-bold mb-6">{tool.name} Key Features</h2>
-            <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
-              <table className="w-full text-sm">
-                <thead className="bg-gray-50 dark:bg-gray-800">
-                  <tr>
-                    <th className="py-3 px-5 text-left font-semibold text-gray-600 dark:text-gray-300">Feature</th>
-                    <th className="py-3 px-5 text-left font-semibold text-gray-600 dark:text-gray-300">Details</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {featureEntries.map(([key, value], idx) => {
-                    const label = key
-                      .replace(/([A-Z])/g, ' $1')
-                      .replace(/^./, (s) => s.toUpperCase())
-                      .replace(/has /i, '')
-                      .replace(/_/g, ' ');
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {featureEntries.map(([key, value], idx) => {
+                const label = key
+                  .replace(/([A-Z])/g, ' $1')
+                  .replace(/^./, (s) => s.toUpperCase())
+                  .replace(/has /i, '')
+                  .replace(/_/g, ' ');
 
-                    return (
-                      <tr
-                        key={key}
-                        className={`border-t border-gray-100 dark:border-gray-800 ${
-                          idx % 2 === 0 ? 'bg-white dark:bg-gray-900' : 'bg-gray-50/50 dark:bg-gray-800/30'
-                        }`}
-                      >
-                        <td className="py-3 px-5 font-medium text-gray-800 dark:text-gray-200">{label}</td>
-                        <td className="py-3 px-5">
-                          {typeof value === 'boolean' ? (
-                            <span className={value ? 'text-green-500 font-semibold' : 'text-red-400'}>
-                              {value ? '&#10003; Yes' : '&#10007; No'}
-                            </span>
-                          ) : (
-                            <span className="text-gray-700 dark:text-gray-300">{String(value)}</span>
-                          )}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+                return (
+                  <div
+                    key={key}
+                    className="flex items-center gap-3 p-4 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-blue-200 dark:hover:border-blue-800/50 transition-colors"
+                  >
+                    <div className={`flex-shrink-0 w-9 h-9 rounded-lg flex items-center justify-center text-sm ${
+                      typeof value === 'boolean'
+                        ? value ? 'bg-green-100 dark:bg-green-900/30 text-green-600' : 'bg-red-100 dark:bg-red-900/30 text-red-500'
+                        : 'bg-blue-100 dark:bg-blue-900/30 text-blue-600'
+                    }`}>
+                      {typeof value === 'boolean' ? (value ? '✓' : '✗') : '⚡'}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-sm font-semibold text-gray-800 dark:text-gray-200">{label}</div>
+                      {typeof value !== 'boolean' && (
+                        <div className="text-xs text-gray-500 dark:text-gray-400 truncate">{String(value)}</div>
+                      )}
+                    </div>
+                    {typeof value === 'boolean' && (
+                      <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${
+                        value ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' : 'bg-gray-100 dark:bg-gray-800 text-gray-400'
+                      }`}>
+                        {value ? 'Yes' : 'No'}
+                      </span>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </section>
         )}
@@ -386,33 +428,33 @@ export default async function ToolPage({ params }: PageProps) {
           )}
         </section>
 
-        {/* ========== VS COMPETITORS ========== */}
+        {/* ========== VS COMPETITORS — With real logos ========== */}
         {comparisons.length > 0 && (
           <section className="mb-12">
             <h2 className="text-2xl font-bold mb-6">{tool.name} vs Competitors</h2>
-            <div className="grid md:grid-cols-2 gap-3">
+            <div className="grid md:grid-cols-2 gap-4">
               {comparisons.map((comp) => {
                 const otherTool = comp.toolA.id === tool.id ? comp.toolB : comp.toolA;
+                const thisTool = comp.toolA.id === tool.id ? comp.toolA : comp.toolB;
+                const isWinner = thisTool.ratings.overall > otherTool.ratings.overall;
                 return (
                   <Link
                     key={comp.id}
                     href={`/${category}/compare/${comp.slug}`}
-                    className="hover-lift flex items-center gap-4 p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-blue-300 hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-all group"
+                    className="hover-lift flex items-center gap-3 p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-blue-300 hover:bg-blue-50/30 dark:hover:bg-blue-900/10 transition-all group bg-white dark:bg-gray-900"
                   >
-                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-100 to-purple-100 dark:from-gray-700 dark:to-gray-600 flex items-center justify-center text-sm font-bold text-blue-600 dark:text-blue-400">
-                      {tool.name[0]}
-                    </div>
-                    <span className="text-gray-400 text-sm font-medium">vs</span>
-                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-100 to-red-100 dark:from-gray-700 dark:to-gray-600 flex items-center justify-center text-sm font-bold text-orange-600 dark:text-orange-400">
-                      {otherTool.name[0]}
-                    </div>
-                    <div className="flex-1">
-                      <span className="font-medium text-sm">{tool.name} vs {otherTool.name}</span>
-                      <div className="text-xs text-gray-400">
-                        {tool.ratings.overall.toFixed(1)} vs {otherTool.ratings.overall.toFixed(1)}
+                    <ToolLogo logoUrl={thisTool.logoUrl} name={thisTool.name} size={36} />
+                    <div className="vs-divider !w-8 !h-8 !text-[10px]">VS</div>
+                    <ToolLogo logoUrl={otherTool.logoUrl} name={otherTool.name} size={36} />
+                    <div className="flex-1 min-w-0">
+                      <span className="font-semibold text-sm block truncate">{tool.name} vs {otherTool.name}</span>
+                      <div className="flex items-center gap-2 text-xs mt-0.5">
+                        <span className={`font-bold ${isWinner ? 'text-green-600' : 'text-gray-500'}`}>{thisTool.ratings.overall.toFixed(1)}</span>
+                        <span className="text-gray-300">vs</span>
+                        <span className={`font-bold ${!isWinner ? 'text-green-600' : 'text-gray-500'}`}>{otherTool.ratings.overall.toFixed(1)}</span>
                       </div>
                     </div>
-                    <span className="text-blue-600 text-sm font-medium group-hover:translate-x-1 transition-transform">&#8594;</span>
+                    <span className="text-blue-600 text-sm font-medium group-hover:translate-x-1 transition-transform flex-shrink-0">&#8594;</span>
                   </Link>
                 );
               })}
@@ -432,47 +474,60 @@ export default async function ToolPage({ params }: PageProps) {
           </section>
         )}
 
-        {/* ========== QUICK SUMMARY TABLE ========== */}
+        {/* ========== AT A GLANCE — Info card grid ========== */}
         <section className="mb-12">
           <h2 className="text-2xl font-bold mb-6">{tool.name} at a Glance</h2>
-          <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
-            <table className="w-full text-sm">
-              <tbody>
-                {[
-                  ['Category', cat?.name || category],
-                  ['Overall Rating', `${tool.ratings.overall.toFixed(1)}/10 (${ratingLabel})`],
-                  ['Free Plan', tool.pricing.hasFreeplan ? 'Yes' : 'No'],
-                  ['Starting Price', tool.pricing.startingPrice ? `$${tool.pricing.startingPrice}/mo` : 'N/A'],
-                  ['Free Trial', tool.pricing.freeTrialDays ? `${tool.pricing.freeTrialDays} days` : 'Not available'],
-                  ['Best For', tool.bestForContent ? 'See details above' : tool.tagline],
-                  ['Ease of Use', `${tool.ratings.easeOfUse.toFixed(1)}/10`],
-                  ['Value for Money', `${tool.ratings.valueForMoney.toFixed(1)}/10`],
-                  ['Customer Support', `${tool.ratings.support.toFixed(1)}/10`],
-                  ['Last Updated', new Date(tool.lastUpdated).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })],
-                ].map(([label, value], idx) => (
-                  <tr key={label} className={`border-t border-gray-100 dark:border-gray-800 ${idx % 2 === 0 ? '' : 'bg-gray-50/50 dark:bg-gray-800/20'}`}>
-                    <td className="py-3 px-5 font-medium text-gray-700 dark:text-gray-300 w-1/3">{label}</td>
-                    <td className="py-3 px-5 text-gray-800 dark:text-gray-200">{value}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+            {[
+              { label: 'Category', value: cat?.name || category, icon: '📂' },
+              { label: 'Rating', value: `${tool.ratings.overall.toFixed(1)}/10`, icon: '⭐' },
+              { label: 'Free Plan', value: tool.pricing.hasFreeplan ? 'Yes ✓' : 'No', icon: '🆓' },
+              { label: 'From', value: tool.pricing.startingPrice ? `$${tool.pricing.startingPrice}/mo` : 'N/A', icon: '💵' },
+              { label: 'Trial', value: tool.pricing.freeTrialDays ? `${tool.pricing.freeTrialDays} days` : 'N/A', icon: '⏱️' },
+              { label: 'Ease of Use', value: `${tool.ratings.easeOfUse.toFixed(1)}/10`, icon: '🎯' },
+              { label: 'Features', value: `${tool.ratings.features.toFixed(1)}/10`, icon: '⚙️' },
+              { label: 'Value', value: `${tool.ratings.valueForMoney.toFixed(1)}/10`, icon: '💰' },
+              { label: 'Support', value: `${tool.ratings.support.toFixed(1)}/10`, icon: '💬' },
+              { label: 'Updated', value: new Date(tool.lastUpdated).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }), icon: '📅' },
+            ].map(({ label, value, icon }) => (
+              <div key={label} className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-3.5 text-center hover:border-blue-200 dark:hover:border-blue-800/50 transition-colors">
+                <div className="text-lg mb-1">{icon}</div>
+                <div className="text-sm font-bold text-gray-900 dark:text-white">{value}</div>
+                <div className="text-[11px] text-gray-400 mt-0.5">{label}</div>
+              </div>
+            ))}
           </div>
         </section>
 
-        {/* ========== EXPERT VERDICT ========== */}
+        {/* ========== EXPERT VERDICT — Dark premium card ========== */}
         <section className="mb-12">
           <h2 className="text-2xl font-bold mb-6">Expert Verdict</h2>
-          <div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-800 dark:via-gray-800 dark:to-gray-800 rounded-2xl p-6 md:p-8 border border-blue-200 dark:border-blue-800/30">
-            <div className="flex items-start gap-4 mb-4">
-              <div className="flex-shrink-0 w-14 h-14 rounded-full bg-white dark:bg-gray-900 shadow-md flex items-center justify-center">
-                <span className={`text-2xl font-black ${ratingColor}`}>{tool.ratings.overall.toFixed(1)}</span>
+          <div className="relative overflow-hidden bg-gradient-to-br from-gray-900 via-slate-900 to-indigo-950 rounded-2xl p-6 md:p-8 text-white shadow-xl">
+            {/* Decorative elements */}
+            <div className="absolute top-0 right-0 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
+
+            <div className="relative flex items-start gap-5 mb-6">
+              <div className="flex-shrink-0 relative">
+                <svg className="w-16 h-16 -rotate-90" viewBox="0 0 60 60">
+                  <circle cx="30" cy="30" r="24" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="5" />
+                  <circle
+                    cx="30" cy="30" r="24" fill="none" strokeWidth="5"
+                    strokeDasharray={`${(tool.ratings.overall / 10) * 151} 151`}
+                    strokeLinecap="round"
+                    className={tool.ratings.overall >= 8 ? 'text-green-400' : tool.ratings.overall >= 6 ? 'text-yellow-400' : 'text-red-400'}
+                    stroke="currentColor"
+                  />
+                </svg>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-xl font-black">{tool.ratings.overall.toFixed(1)}</span>
+                </div>
               </div>
               <div>
-                <h3 className="text-lg font-bold mb-1">
-                  {tool.name} — {ratingLabel} ({tool.ratings.overall.toFixed(1)}/10)
+                <h3 className="text-xl font-bold mb-2">
+                  {tool.name} — {ratingLabel}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                <p className="text-gray-300 leading-relaxed text-sm">
                   {tool.ratings.overall >= 8
                     ? `${tool.name} stands out as one of the strongest options in the ${cat?.name || 'tools'} category. With excellent scores across features (${tool.ratings.features.toFixed(1)}/10) and ease of use (${tool.ratings.easeOfUse.toFixed(1)}/10), it delivers genuine value for ${tool.pricing.hasFreeplan ? 'teams of all sizes, especially with its free plan' : `organizations willing to invest from $${tool.pricing.startingPrice}/mo`}. We recommend it for users who prioritize reliability and a mature feature set.`
                     : tool.ratings.overall >= 6
@@ -482,22 +537,25 @@ export default async function ToolPage({ params }: PageProps) {
                 </p>
               </div>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4">
+            <div className="relative grid grid-cols-2 md:grid-cols-4 gap-3">
               {[
                 { label: 'Features', score: tool.ratings.features, emoji: '⚙️' },
                 { label: 'Ease of Use', score: tool.ratings.easeOfUse, emoji: '🎯' },
                 { label: 'Value', score: tool.ratings.valueForMoney, emoji: '💰' },
                 { label: 'Support', score: tool.ratings.support, emoji: '💬' },
               ].map(({ label, score, emoji }) => (
-                <div key={label} className="bg-white/70 dark:bg-gray-900/50 rounded-xl p-3 text-center">
+                <div key={label} className="bg-white/5 backdrop-blur-sm rounded-xl p-3.5 text-center border border-white/10">
                   <div className="text-lg mb-1">{emoji}</div>
-                  <div className={`text-lg font-bold ${score >= 8 ? 'text-green-600' : score >= 6 ? 'text-yellow-600' : 'text-red-500'}`}>{score.toFixed(1)}</div>
-                  <div className="text-xs text-gray-500">{label}</div>
+                  <div className={`text-xl font-black ${score >= 8 ? 'text-green-400' : score >= 6 ? 'text-yellow-400' : 'text-red-400'}`}>{score.toFixed(1)}</div>
+                  <div className="text-xs text-gray-400 mt-0.5">{label}</div>
                 </div>
               ))}
             </div>
           </div>
         </section>
+
+        {/* ========== AD: MULTIPLEX BEFORE RELATED ========== */}
+        <AdMultiplex />
 
         {/* ========== YOU MAY ALSO LIKE ========== */}
         {relatedTools.length > 0 && (

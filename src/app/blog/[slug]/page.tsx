@@ -6,7 +6,7 @@ import { generateBlogSchema, generateBreadcrumbSchema } from '@/lib/schema';
 import { SITE_URL, SEO, SITE_NAME, CATEGORIES } from '@/lib/constants';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { RelatedLinks } from '@/components/common/RelatedLinks';
-import { AdBanner, AdInArticle } from '@/components/ads/AdSlot';
+import { AdBanner, AdInArticle, AdSidebar } from '@/components/ads/AdSlot';
 import type { InternalLink } from '@/types';
 
 // ============================================================
@@ -140,13 +140,13 @@ export default async function BlogPostPage({ params }: PageProps) {
         <div className="mt-8 grid lg:grid-cols-[1fr_300px] gap-10">
           {/* Main Article Content */}
           <article className="min-w-0">
-            {/* Article Header */}
+            {/* Article Header — Premium magazine style */}
             <header className="mb-10">
               {/* Category Badge */}
               {post.categorySlug && (
                 <Link
                   href={`/${post.categorySlug}`}
-                  className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors mb-4"
+                  className="inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-semibold bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 hover:from-blue-200 hover:to-indigo-200 dark:hover:bg-blue-900/50 transition-colors mb-4 shadow-sm"
                 >
                   {post.categorySlug
                     .replace(/-/g, ' ')
@@ -154,7 +154,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                 </Link>
               )}
 
-              <h1 className="text-3xl md:text-4xl font-bold mb-4 leading-tight">
+              <h1 className="text-3xl md:text-4xl font-extrabold mb-4 leading-tight tracking-tight">
                 {post.title}
               </h1>
 
@@ -286,14 +286,14 @@ export default async function BlogPostPage({ params }: PageProps) {
             </div>
           </article>
 
-          {/* Sidebar */}
+          {/* Sidebar — Premium with AdSidebar */}
           <aside className="hidden lg:block">
-            <div className="sticky top-20 space-y-8">
+            <div className="sticky top-20 space-y-6">
               {/* About the Author */}
               <div className="glass p-6 rounded-2xl shadow-sm">
-                <h3 className="font-semibold mb-3">About the Author</h3>
+                <h3 className="font-semibold mb-3 text-sm uppercase tracking-wider text-gray-500 dark:text-gray-400">About the Author</h3>
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-100 to-purple-100 dark:from-gray-700 dark:to-gray-600 flex items-center justify-center text-sm font-bold text-blue-600 dark:text-blue-400">
+                  <div className="w-11 h-11 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-sm font-bold text-white shadow-md">
                     {post.author
                       .split(' ')
                       .map((n) => n[0])
@@ -301,7 +301,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                       .slice(0, 2)}
                   </div>
                   <div>
-                    <div className="font-medium text-sm">{post.author}</div>
+                    <div className="font-semibold text-sm">{post.author}</div>
                     <div className="text-xs text-gray-400">{SITE_NAME}</div>
                   </div>
                 </div>
@@ -311,20 +311,23 @@ export default async function BlogPostPage({ params }: PageProps) {
                 </p>
               </div>
 
+              {/* Sidebar Ad */}
+              <AdSidebar />
+
               {/* Related Tools (sidebar version) */}
               {relatedLinks.filter((l) => l.type === 'sibling').length > 0 && (
-                <div className="p-6 rounded-2xl border border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/50">
-                  <h3 className="font-semibold mb-4">Mentioned Tools</h3>
-                  <div className="space-y-3">
+                <div className="p-5 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900/80">
+                  <h3 className="font-semibold mb-4 text-sm">Mentioned Tools</h3>
+                  <div className="space-y-2.5">
                     {relatedLinks
                       .filter((l) => l.type === 'sibling')
                       .map((link, idx) => (
                         <Link
                           key={idx}
                           href={link.url}
-                          className="flex items-center gap-2 text-sm font-medium hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                          className="flex items-center gap-2.5 p-2 rounded-lg text-sm font-medium hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-blue-600 dark:hover:text-blue-400 transition-colors -mx-2"
                         >
-                          <span className="w-6 h-6 rounded-md bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-xs text-blue-600 dark:text-blue-400">
+                          <span className="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-100 to-indigo-100 dark:bg-blue-900/30 flex items-center justify-center text-xs font-bold text-blue-600 dark:text-blue-400">
                             {link.text[0]}
                           </span>
                           {link.text}
@@ -335,14 +338,14 @@ export default async function BlogPostPage({ params }: PageProps) {
               )}
 
               {/* Browse More */}
-              <div className="p-6 rounded-2xl border border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/50">
-                <h3 className="font-semibold mb-4">Browse Categories</h3>
-                <div className="space-y-2">
+              <div className="p-5 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900/80">
+                <h3 className="font-semibold mb-4 text-sm">Browse Categories</h3>
+                <div className="space-y-1.5">
                   {Object.values(CATEGORIES).map((cat) => (
                     <Link
                       key={cat.slug}
                       href={`/${cat.slug}`}
-                      className="block text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                      className="block text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors py-1"
                     >
                       {cat.name}
                     </Link>

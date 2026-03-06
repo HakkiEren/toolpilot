@@ -179,37 +179,46 @@ export default async function BestOfPage({ params }: { params: Promise<{ slug: s
           <span className="text-gray-900 font-medium">Best {sub.name}</span>
         </nav>
 
-        {/* Hero */}
-        <div className="bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-700 rounded-2xl p-8 md:p-12 mb-10 text-white">
-          <div className="flex items-center gap-2 mb-3">
-            <span className="bg-white/20 text-white text-xs font-bold px-3 py-1 rounded-full">
-              {year} RANKINGS
-            </span>
-            <span className="bg-white/20 text-white text-xs font-bold px-3 py-1 rounded-full">
-              {allTools.length} TOOLS REVIEWED
-            </span>
-          </div>
-          <h1 className="text-3xl md:text-4xl font-extrabold mb-4">
-            Best {sub.name} in {year}
-          </h1>
-          <p className="text-lg text-white/90 max-w-2xl leading-relaxed">
-            {sub.description} We&apos;ve tested and compared {allTools.length} options to help you find the perfect fit.
-          </p>
-          {allTools.length > 0 && (
-            <div className="mt-6 flex items-center gap-4 text-sm">
-              <div className="flex items-center gap-2">
-                <span className="text-yellow-300 text-lg">&#9733;</span>
-                <span>Top Pick: <strong>{allTools[0].name}</strong> ({allTools[0].ratings.overall}/10)</span>
-              </div>
+        {/* Hero — Premium gradient with animated pattern */}
+        <div className="relative overflow-hidden bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-700 rounded-3xl p-8 md:p-12 mb-10 text-white shadow-xl shadow-indigo-600/20">
+          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSIyMCIgY3k9IjIwIiByPSIxIiBmaWxsPSJyZ2JhKDI1NSwgMjU1LCAyNTUsIDAuMDgpIi8+PC9zdmc+')] pointer-events-none" />
+          <div className="absolute -top-20 -right-20 w-72 h-72 bg-white/5 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-16 -left-16 w-56 h-56 bg-blue-300/10 rounded-full blur-3xl pointer-events-none" />
+
+          <div className="relative">
+            <div className="flex flex-wrap items-center gap-2 mb-4">
+              <span className="bg-white/15 backdrop-blur-sm text-white text-xs font-bold px-4 py-1.5 rounded-full border border-white/10">
+                🏆 {year} RANKINGS
+              </span>
+              <span className="bg-white/15 backdrop-blur-sm text-white text-xs font-bold px-4 py-1.5 rounded-full border border-white/10">
+                {allTools.length} TOOLS REVIEWED
+              </span>
             </div>
-          )}
+            <h1 className="text-3xl md:text-5xl font-extrabold mb-4 tracking-tight">
+              Best {sub.name} in {year}
+            </h1>
+            <p className="text-lg text-white/85 max-w-2xl leading-relaxed">
+              {sub.description} We&apos;ve tested and compared {allTools.length} options to help you find the perfect fit.
+            </p>
+            {allTools.length > 0 && (
+              <div className="mt-6 flex flex-wrap items-center gap-4">
+                <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 border border-white/10">
+                  <ToolLogo logoUrl={allTools[0].logoUrl} name={allTools[0].name} size={28} />
+                  <div>
+                    <div className="text-xs text-white/70">Top Pick</div>
+                    <div className="text-sm font-bold">{allTools[0].name} — {allTools[0].ratings.overall}/10 ⭐</div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Quick Summary Table */}
         {allTools.length > 0 && (
-          <div className="bg-white border border-gray-200 rounded-xl overflow-hidden mb-10">
-            <div className="bg-gray-50 px-6 py-4 border-b">
-              <h2 className="text-lg font-bold text-gray-900">Quick Comparison</h2>
+          <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl overflow-hidden mb-10 shadow-sm">
+            <div className="bg-gray-50 dark:bg-gray-800 px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+              <h2 className="text-lg font-bold text-gray-900 dark:text-white">Quick Comparison</h2>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
@@ -228,9 +237,9 @@ export default async function BestOfPage({ params }: { params: Promise<{ slug: s
                   {allTools.slice(0, 10).map((tool, i) => {
                     const label = getRatingLabel(tool.ratings.overall);
                     return (
-                      <tr key={tool.id} className={`border-b last:border-0 ${i === 0 ? 'bg-yellow-50/40' : 'hover:bg-gray-50'}`}>
+                      <tr key={tool.id} className={`border-b border-gray-100 dark:border-gray-800 last:border-0 ${i === 0 ? 'bg-yellow-50/40 dark:bg-yellow-900/5' : 'hover:bg-gray-50 dark:hover:bg-gray-800/50'}`}>
                         <td className="py-4 px-4">
-                          <span className={`inline-flex items-center justify-center w-7 h-7 rounded-full text-xs font-bold ${i < 3 ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-600'}`}>
+                          <span className={`inline-flex items-center justify-center w-7 h-7 rounded-full text-xs font-bold ${i < 3 ? 'bg-indigo-600 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400'}`}>
                             {i + 1}
                           </span>
                         </td>
@@ -238,8 +247,8 @@ export default async function BestOfPage({ params }: { params: Promise<{ slug: s
                           <div className="flex items-center gap-3">
                             <ToolLogo logoUrl={tool.logoUrl} name={tool.name} size={32} />
                             <div>
-                              <div className="font-semibold text-gray-900">{tool.name}</div>
-                              <div className="text-xs text-gray-500 line-clamp-1 max-w-[200px]">{tool.tagline}</div>
+                              <div className="font-semibold text-gray-900 dark:text-white">{tool.name}</div>
+                              <div className="text-xs text-gray-500 dark:text-gray-400 line-clamp-1 max-w-[200px]">{tool.tagline}</div>
                             </div>
                           </div>
                         </td>
@@ -287,63 +296,69 @@ export default async function BestOfPage({ params }: { params: Promise<{ slug: s
         <AdBanner />
 
         {/* Detailed Rankings */}
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
           Detailed Rankings &amp; Reviews
         </h2>
 
-        <div className="space-y-6 mb-12">
+        <div className="space-y-5 mb-12">
           {allTools.map((tool, index) => {
             const label = getRatingLabel(tool.ratings.overall);
             return (
               <div
                 key={tool.id}
-                className={`bg-white border rounded-xl p-6 ${index === 0 ? 'border-indigo-300 ring-2 ring-indigo-100' : 'border-gray-200'}`}
+                className={`hover-lift bg-white dark:bg-gray-900 border rounded-2xl p-6 transition-all card-animate ${index === 0 ? 'border-indigo-300 dark:border-indigo-700 ring-2 ring-indigo-100 dark:ring-indigo-900/30 shadow-md' : 'border-gray-200 dark:border-gray-700'}`}
+                style={{ animationDelay: `${index * 60}ms` }}
               >
                 <div className="flex items-start justify-between mb-4">
-                  <div className="flex items-start gap-4">
-                    <div className={`flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold ${index < 3 ? 'bg-gradient-to-br from-indigo-500 to-purple-600 text-white' : 'bg-gray-100 text-gray-600'}`}>
+                  <div className="flex items-start gap-3">
+                    <div className={`flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold ${index < 3 ? 'bg-gradient-to-br from-indigo-500 to-purple-600 text-white shadow-md shadow-indigo-500/20' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400'}`}>
                       #{index + 1}
                     </div>
                     <ToolLogo logoUrl={tool.logoUrl} name={tool.name} size={40} />
                     <div>
-                      <div className="flex items-center gap-2 mb-1">
-                        <h3 className="text-xl font-bold text-gray-900">{tool.name}</h3>
+                      <div className="flex flex-wrap items-center gap-2 mb-1">
+                        <h3 className="text-xl font-bold text-gray-900 dark:text-white">{tool.name}</h3>
                         {index === 0 && (
-                          <span className="bg-yellow-100 text-yellow-800 text-[10px] font-bold px-2 py-0.5 rounded-full">
-                            TOP PICK
+                          <span className="bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-400 text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-sm">
+                            🏆 TOP PICK
                           </span>
                         )}
                         {index === 1 && (
-                          <span className="bg-gray-100 text-gray-600 text-[10px] font-bold px-2 py-0.5 rounded-full">
-                            RUNNER-UP
+                          <span className="bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 text-[10px] font-bold px-2.5 py-0.5 rounded-full">
+                            🥈 RUNNER-UP
+                          </span>
+                        )}
+                        {index === 2 && (
+                          <span className="bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400 text-[10px] font-bold px-2.5 py-0.5 rounded-full">
+                            🥉 3RD PLACE
                           </span>
                         )}
                       </div>
-                      <p className="text-gray-600 text-sm">{tool.tagline}</p>
+                      <p className="text-gray-600 dark:text-gray-400 text-sm">{tool.tagline}</p>
                     </div>
                   </div>
                   <div className="text-right flex-shrink-0">
-                    <div className="text-2xl font-extrabold text-gray-900">{tool.ratings.overall}</div>
-                    <div className={`text-xs font-semibold px-2 py-0.5 rounded ${label.color}`}>{label.text}</div>
+                    <div className="text-2xl font-extrabold text-gray-900 dark:text-white">{tool.ratings.overall}</div>
+                    <div className={`text-xs font-semibold px-2 py-0.5 rounded ${label.color} dark:bg-opacity-20`}>{label.text}</div>
                   </div>
                 </div>
 
                 {/* Rating Bars */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
                   {[
-                    { label: 'Ease of Use', value: tool.ratings.easeOfUse },
-                    { label: 'Features', value: tool.ratings.features },
-                    { label: 'Value', value: tool.ratings.valueForMoney },
-                    { label: 'Support', value: tool.ratings.support },
+                    { label: 'Ease of Use', value: tool.ratings.easeOfUse, gradient: 'from-blue-500 to-cyan-400' },
+                    { label: 'Features', value: tool.ratings.features, gradient: 'from-purple-500 to-indigo-400' },
+                    { label: 'Value', value: tool.ratings.valueForMoney, gradient: 'from-green-500 to-emerald-400' },
+                    { label: 'Support', value: tool.ratings.support, gradient: 'from-orange-500 to-amber-400' },
                   ].map((r) => (
                     <div key={r.label}>
-                      <div className="flex justify-between text-xs mb-1">
-                        <span className="text-gray-500">{r.label}</span>
-                        <span className="font-semibold text-gray-700">{r.value.toFixed(1)}</span>
+                      <div className="flex justify-between text-xs mb-1.5">
+                        <span className="text-gray-500 dark:text-gray-400">{r.label}</span>
+                        <span className="font-bold text-gray-700 dark:text-gray-300">{r.value.toFixed(1)}</span>
                       </div>
-                      <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                      <div className="h-2 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
                         <div
-                          className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full"
+                          className={`h-full bg-gradient-to-r ${r.gradient} rounded-full score-bar-animated`}
                           style={{ width: `${(r.value / 10) * 100}%` }}
                         />
                       </div>
@@ -352,32 +367,32 @@ export default async function BestOfPage({ params }: { params: Promise<{ slug: s
                 </div>
 
                 {/* Quick Info + Actions */}
-                <div className="flex flex-wrap items-center justify-between pt-4 border-t border-gray-100">
+                <div className="flex flex-wrap items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-800">
                   <div className="flex flex-wrap gap-2">
                     {tool.pricing.hasFreeplan && (
-                      <span className="bg-green-50 text-green-700 text-xs font-medium px-2.5 py-1 rounded-full">
-                        Free Plan Available
+                      <span className="bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 text-xs font-medium px-2.5 py-1 rounded-full">
+                        ✓ Free Plan
                       </span>
                     )}
                     {tool.pricing.startingPrice && (
-                      <span className="bg-blue-50 text-blue-700 text-xs font-medium px-2.5 py-1 rounded-full">
+                      <span className="bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 text-xs font-medium px-2.5 py-1 rounded-full">
                         From ${tool.pricing.startingPrice}/mo
                       </span>
                     )}
-                    <span className="bg-gray-50 text-gray-600 text-xs font-medium px-2.5 py-1 rounded-full">
+                    <span className="bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-400 text-xs font-medium px-2.5 py-1 rounded-full">
                       {tool.ratings.reviewCount} reviews
                     </span>
                   </div>
                   <div className="flex items-center gap-3 mt-2 md:mt-0">
                     <Link
                       href={`/${tool.categorySlug}/${tool.slug}`}
-                      className="text-sm font-semibold text-indigo-600 hover:text-indigo-800"
+                      className="text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300"
                     >
                       Full Review &#8594;
                     </Link>
                     <Link
                       href={`/${tool.categorySlug}/${tool.slug}/alternatives`}
-                      className="text-sm text-gray-500 hover:text-gray-700"
+                      className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
                     >
                       Alternatives
                     </Link>
@@ -389,9 +404,9 @@ export default async function BestOfPage({ params }: { params: Promise<{ slug: s
         </div>
 
         {allTools.length === 0 && (
-          <div className="text-center py-16 bg-gray-50 rounded-xl mb-10">
-            <p className="text-gray-500 text-lg mb-4">No tools found in this category yet.</p>
-            <Link href={`/${sub.categorySlug}`} className="text-indigo-600 font-semibold hover:underline">
+          <div className="text-center py-16 bg-gray-50 dark:bg-gray-900/50 rounded-xl mb-10 border border-gray-200 dark:border-gray-800">
+            <p className="text-gray-500 dark:text-gray-400 text-lg mb-4">No tools found in this category yet.</p>
+            <Link href={`/${sub.categorySlug}`} className="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">
               Browse all {sub.categoryName} &#8594;
             </Link>
           </div>
@@ -403,15 +418,15 @@ export default async function BestOfPage({ params }: { params: Promise<{ slug: s
         {/* FAQ Section */}
         {faqs.length > 0 && (
           <div className="mb-12">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h2>
-            <div className="space-y-4">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Frequently Asked Questions</h2>
+            <div className="space-y-3">
               {faqs.map((faq, i) => (
-                <details key={i} className="bg-white border border-gray-200 rounded-xl group" open={i === 0}>
-                  <summary className="flex items-center justify-between px-6 py-4 cursor-pointer font-semibold text-gray-900 hover:text-indigo-600">
+                <details key={i} className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl group" open={i === 0}>
+                  <summary className="flex items-center justify-between px-6 py-4 cursor-pointer font-semibold text-gray-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
                     {faq.question}
-                    <span className="text-gray-400 group-open:rotate-180 transition-transform">&#9660;</span>
+                    <span className="text-gray-400 dark:text-gray-500 group-open:rotate-180 transition-transform">&#9660;</span>
                   </summary>
-                  <div className="px-6 pb-4 text-gray-600 text-sm leading-relaxed">
+                  <div className="px-6 pb-4 text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
                     {faq.answer}
                   </div>
                 </details>
@@ -421,11 +436,11 @@ export default async function BestOfPage({ params }: { params: Promise<{ slug: s
         )}
 
         {/* SEO Text Block */}
-        <div className="bg-gray-50 rounded-xl p-8 mb-10">
-          <h2 className="text-xl font-bold text-gray-900 mb-4">
+        <div className="bg-gray-50 dark:bg-gray-900/50 rounded-2xl p-8 mb-10 border border-gray-200/50 dark:border-gray-800">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
             How We Choose the Best {sub.name}
           </h2>
-          <div className="text-gray-600 text-sm leading-relaxed space-y-3">
+          <div className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed space-y-3">
             <p>
               Our editorial team evaluates every {sub.name.toLowerCase().replace(/tools?$/i, 'tool')} through
               hands-on testing and analysis across four key dimensions: ease of use, feature completeness,
@@ -448,7 +463,7 @@ export default async function BestOfPage({ params }: { params: Promise<{ slug: s
 
         {/* Cross-links to related best-of pages */}
         <div className="mb-10">
-          <h2 className="text-lg font-bold text-gray-900 mb-4">Explore More Best-of Lists</h2>
+          <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Explore More Best-of Lists</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
             {SUBCATEGORIES[sub.categorySlug]
               ?.filter((s) => s.slug !== slug)
@@ -457,7 +472,7 @@ export default async function BestOfPage({ params }: { params: Promise<{ slug: s
                 <Link
                   key={related.slug}
                   href={`/best/${related.slug}`}
-                  className="bg-white border border-gray-200 rounded-lg px-4 py-3 text-sm font-medium text-gray-700 hover:border-indigo-300 hover:text-indigo-600 transition-colors"
+                  className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 hover:border-indigo-300 dark:hover:border-indigo-600 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
                 >
                   Best {related.name} &#8594;
                 </Link>
@@ -472,7 +487,7 @@ export default async function BestOfPage({ params }: { params: Promise<{ slug: s
                 <Link
                   key={s.slug}
                   href={`/best/${s.slug}`}
-                  className="bg-white border border-gray-200 rounded-lg px-4 py-3 text-sm font-medium text-gray-700 hover:border-indigo-300 hover:text-indigo-600 transition-colors"
+                  className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 hover:border-indigo-300 dark:hover:border-indigo-600 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
                 >
                   Best {s.name} &#8594;
                 </Link>
@@ -484,7 +499,7 @@ export default async function BestOfPage({ params }: { params: Promise<{ slug: s
         <div className="text-center">
           <Link
             href={`/${sub.categorySlug}`}
-            className="text-indigo-600 font-semibold hover:underline"
+            className="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline"
           >
             &#8592; Back to all {sub.categoryName}
           </Link>
