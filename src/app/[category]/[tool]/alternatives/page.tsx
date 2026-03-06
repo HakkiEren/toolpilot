@@ -77,51 +77,68 @@ export default async function AlternativesPage({ params }: PageProps) {
           { name: 'Alternatives', url: '' },
         ]} />
 
-        <h1 className="text-3xl md:text-4xl font-bold mt-6 mb-4">
-          Best {tool.name} Alternatives ({year})
-        </h1>
-        <p className="text-lg text-gray-600 dark:text-gray-300 mb-4">
-          {tool.name} scores {tool.ratings.overall.toFixed(1)}/10 in our review{tool.pricing.hasFreeplan ? ' and offers a free plan' : tool.pricing.startingPrice ? ` with plans starting at $${tool.pricing.startingPrice}/mo` : ''}.
-          {tool.ratings.overall >= 8
-            ? ` While it excels in features (${tool.ratings.features.toFixed(1)}/10) and ease of use (${tool.ratings.easeOfUse.toFixed(1)}/10), it may not be the best fit for every team or budget.`
-            : tool.ratings.overall >= 6
-              ? ` It performs well in some areas but has room for improvement in ${tool.ratings.support < 7 ? 'customer support' : tool.ratings.valueForMoney < 7 ? 'value for money' : 'overall features'}.`
-              : ` There are several stronger alternatives worth considering for better features and value.`
-          }
-        </p>
-        <p className="text-gray-600 dark:text-gray-300 mb-8">
-          We compared {filtered.length} {cat?.name.toLowerCase() || 'tools'} alternatives below, ranked by overall score.
-          {filtered.length > 0 && filtered[0].ratings.overall > tool.ratings.overall
-            ? ` ${filtered[0].name} leads with ${filtered[0].ratings.overall.toFixed(1)}/10.`
-            : filtered.length > 0
-              ? ` ${tool.name} currently leads this category — but the alternatives below offer different strengths.`
-              : ''
-          }
-        </p>
+        {/* ========== HERO — Premium glassmorphism ========== */}
+        <div className="mt-6 mb-10">
+          <div className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-orange-50/30 to-red-50/40 dark:from-gray-900 dark:via-orange-950/10 dark:to-red-950/10 rounded-3xl border border-gray-200/60 dark:border-gray-800/60 p-6 md:p-8">
+            {/* Decorative gradient orbs */}
+            <div className="absolute -top-20 -right-20 w-64 h-64 bg-orange-400/10 dark:bg-orange-400/5 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute -bottom-16 -left-16 w-48 h-48 bg-red-400/10 dark:bg-red-400/5 rounded-full blur-3xl pointer-events-none" />
 
-        {/* Current Tool Card */}
-        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-800 rounded-2xl p-6 mb-10 border border-blue-200 dark:border-gray-700">
+            <div className="relative">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-orange-100/80 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400 backdrop-blur-sm">ALTERNATIVES</span>
+              </div>
+              <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-3">
+                Best {tool.name} Alternatives ({year})
+              </h1>
+              <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mb-2">
+                {tool.name} scores {tool.ratings.overall.toFixed(1)}/10 in our review{tool.pricing.hasFreeplan ? ' and offers a free plan' : tool.pricing.startingPrice ? ` with plans starting at $${tool.pricing.startingPrice}/mo` : ''}.
+                {tool.ratings.overall >= 8
+                  ? ` While it excels in features (${tool.ratings.features.toFixed(1)}/10) and ease of use (${tool.ratings.easeOfUse.toFixed(1)}/10), it may not be the best fit for every team or budget.`
+                  : tool.ratings.overall >= 6
+                    ? ` It performs well in some areas but has room for improvement in ${tool.ratings.support < 7 ? 'customer support' : tool.ratings.valueForMoney < 7 ? 'value for money' : 'overall features'}.`
+                    : ` There are several stronger alternatives worth considering for better features and value.`
+                }
+              </p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                We compared {filtered.length} {cat?.name.toLowerCase() || 'tools'} alternatives below, ranked by overall score.
+                {filtered.length > 0 && filtered[0].ratings.overall > tool.ratings.overall
+                  ? ` ${filtered[0].name} leads with ${filtered[0].ratings.overall.toFixed(1)}/10.`
+                  : filtered.length > 0
+                    ? ` ${tool.name} currently leads this category — but the alternatives below offer different strengths.`
+                    : ''
+                }
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Current Tool Card — Elevated glassmorphism */}
+        <div className="relative bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-800/80 dark:to-gray-900/80 rounded-2xl p-6 mb-10 border border-blue-200/60 dark:border-gray-700/60 shadow-sm">
           <div className="flex items-center gap-2 text-sm text-blue-600 dark:text-blue-400 font-medium mb-3">
             <span>&#128270;</span> Currently Evaluating
           </div>
           <div className="flex flex-col md:flex-row md:items-center gap-4">
             <div className="flex items-center gap-4 flex-1">
-              <ToolLogo logoUrl={tool.logoUrl} name={tool.name} size={56} priority />
+              <div className="relative flex-shrink-0">
+                <div className="absolute inset-0 bg-blue-500/20 rounded-xl blur-lg scale-110" />
+                <ToolLogo logoUrl={tool.logoUrl} name={tool.name} size={56} className="shadow-lg relative" priority />
+              </div>
               <div>
                 <h2 className="text-xl font-bold">{tool.name}</h2>
                 <p className="text-sm text-gray-600 dark:text-gray-300">{tool.tagline}</p>
               </div>
             </div>
-            <div className="flex flex-wrap gap-3 text-sm">
-              <div className="bg-white dark:bg-gray-900 rounded-lg px-3 py-1.5 border border-gray-200 dark:border-gray-700">
+            <div className="flex flex-wrap gap-2 text-sm">
+              <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-full px-4 py-2 border border-gray-200/50 dark:border-gray-700/50 shadow-sm">
                 <span className="text-yellow-500">&#9733;</span> <strong>{tool.ratings.overall.toFixed(1)}</strong>/10
               </div>
-              <div className="bg-white dark:bg-gray-900 rounded-lg px-3 py-1.5 border border-gray-200 dark:border-gray-700">
+              <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-full px-4 py-2 border border-gray-200/50 dark:border-gray-700/50 shadow-sm">
                 {tool.pricing.hasFreeplan ? '\u2713 Free plan' : `From $${tool.pricing.startingPrice}/mo`}
               </div>
               <Link
                 href={`/${category}/${toolSlug}`}
-                className="bg-blue-600 text-white rounded-lg px-4 py-1.5 font-medium hover:bg-blue-700 transition-colors"
+                className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-full px-5 py-2 font-medium hover:from-blue-700 hover:to-indigo-700 transition-all shadow-md shadow-blue-600/25"
               >
                 Full Review &#8594;
               </Link>

@@ -135,17 +135,39 @@ export default async function PricingPage({ params }: PageProps) {
           { name: 'Pricing', url: '' },
         ]} />
 
-        {/* ========== PRICING HERO ========== */}
+        {/* ========== PRICING HERO — Premium glassmorphism ========== */}
         <div className="mt-6 mb-10">
-          <div className="flex items-center gap-4 mb-4">
-            <ToolLogo logoUrl={tool.logoUrl} name={tool.name} size={56} className="shadow-sm" priority />
-            <div>
-              <h1 className="text-3xl md:text-4xl font-bold">
-                {tool.name} Pricing Plans ({year})
-              </h1>
-              <p className="text-gray-500 dark:text-gray-400 mt-1">
-                Complete pricing breakdown and plan comparison
-              </p>
+          <div className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-emerald-50/30 to-blue-50/50 dark:from-gray-900 dark:via-emerald-950/10 dark:to-blue-950/10 rounded-3xl border border-gray-200/60 dark:border-gray-800/60 p-6 md:p-8">
+            {/* Decorative gradient orbs */}
+            <div className="absolute -top-20 -right-20 w-64 h-64 bg-emerald-400/10 dark:bg-emerald-400/5 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute -bottom-16 -left-16 w-48 h-48 bg-blue-400/10 dark:bg-blue-400/5 rounded-full blur-3xl pointer-events-none" />
+
+            <div className="relative flex flex-col md:flex-row md:items-center gap-5">
+              <div className="flex-shrink-0 relative">
+                <div className="absolute inset-0 bg-emerald-500/20 rounded-2xl blur-xl scale-110" />
+                <ToolLogo logoUrl={tool.logoUrl} name={tool.name} size={72} className="shadow-xl relative" priority />
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-100/80 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 backdrop-blur-sm">PRICING</span>
+                </div>
+                <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">
+                  {tool.name} Pricing Plans ({year})
+                </h1>
+                <p className="text-gray-500 dark:text-gray-400 mt-2">
+                  Complete pricing breakdown, plan comparison and value analysis
+                </p>
+              </div>
+              <div className="flex-shrink-0">
+                <a
+                  href={tool.websiteUrl || '#'}
+                  target="_blank"
+                  rel="noopener noreferrer nofollow sponsored"
+                  className="glow-pulse inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-600 to-blue-600 text-white rounded-xl text-sm font-bold hover:from-emerald-700 hover:to-blue-700 transition-all shadow-lg shadow-emerald-600/25"
+                >
+                  Get {tool.name} &#8599;
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -523,38 +545,42 @@ export default async function PricingPage({ params }: PageProps) {
           <FAQSection faqs={faqs} />
         </section>
 
-        {/* ========== CTA SECTION ========== */}
+        {/* ========== CTA SECTION — Premium dark gradient ========== */}
         <section className="mb-14">
-          <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 p-8 text-center">
-            <h2 className="text-xl font-bold mb-3">Ready to try {tool.name}?</h2>
-            <p className="text-gray-500 text-sm mb-6 max-w-lg mx-auto">
-              {hasFree
-                ? `Start with ${tool.name}'s free plan and upgrade when you're ready.`
-                : freeTrialDays
-                  ? `Try ${tool.name} free for ${freeTrialDays} days. No commitment required.`
-                  : `Visit ${tool.name} to explore their plans and find the best fit.`}
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-              <Link
-                href={tool.websiteUrl || '#'}
-                target="_blank"
-                rel="noopener noreferrer nofollow sponsored"
-                className="glow-pulse inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl text-sm font-bold hover:from-blue-700 hover:to-purple-700 shadow-md transition-all"
-              >
-                Visit {tool.name} &#8599;
-              </Link>
-              <Link
-                href={`/${category}/${toolSlug}/alternatives`}
-                className="inline-flex items-center gap-2 px-6 py-3 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 rounded-xl text-sm font-semibold hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-              >
-                Compare Alternatives
-              </Link>
-              <Link
-                href={`/${category}/${toolSlug}`}
-                className="inline-flex items-center gap-2 px-6 py-3 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 rounded-xl text-sm font-semibold hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-              >
-                Full Review
-              </Link>
+          <div className="relative overflow-hidden bg-gradient-to-br from-gray-900 via-slate-900 to-indigo-950 rounded-2xl p-8 text-center text-white shadow-xl">
+            <div className="absolute top-0 right-0 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="relative">
+              <h2 className="text-2xl font-extrabold mb-3">Ready to try {tool.name}?</h2>
+              <p className="text-gray-300 text-sm mb-6 max-w-lg mx-auto">
+                {hasFree
+                  ? `Start with ${tool.name}'s free plan and upgrade when you're ready.`
+                  : freeTrialDays
+                    ? `Try ${tool.name} free for ${freeTrialDays} days. No commitment required.`
+                    : `Visit ${tool.name} to explore their plans and find the best fit.`}
+              </p>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                <Link
+                  href={tool.websiteUrl || '#'}
+                  target="_blank"
+                  rel="noopener noreferrer nofollow sponsored"
+                  className="glow-pulse inline-flex items-center gap-2 px-7 py-3.5 bg-gradient-to-r from-emerald-500 to-blue-500 text-white rounded-xl text-sm font-bold hover:from-emerald-600 hover:to-blue-600 shadow-lg shadow-emerald-500/25 transition-all"
+                >
+                  Visit {tool.name} &#8599;
+                </Link>
+                <Link
+                  href={`/${category}/${toolSlug}/alternatives`}
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-sm text-white rounded-xl text-sm font-semibold hover:bg-white/20 transition-colors border border-white/10"
+                >
+                  Compare Alternatives
+                </Link>
+                <Link
+                  href={`/${category}/${toolSlug}`}
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-sm text-white rounded-xl text-sm font-semibold hover:bg-white/20 transition-colors border border-white/10"
+                >
+                  Full Review
+                </Link>
+              </div>
             </div>
           </div>
         </section>

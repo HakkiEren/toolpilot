@@ -80,35 +80,45 @@ export default async function CategoryPage({ params }: PageProps) {
           { name: cat.name, url: '' },
         ]} />
 
-        {/* ========== CATEGORY HERO ========== */}
+        {/* ========== CATEGORY HERO — Premium glassmorphism ========== */}
         <div className="mt-6 mb-10">
-          <div className="flex items-center gap-3 mb-4">
-            <span className="text-4xl">{cat.icon}</span>
-            <h1 className="text-3xl md:text-4xl font-bold">
-              Best {cat.name} ({year})
-            </h1>
-          </div>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mb-6">
-            {cat.description}
-          </p>
+          <div className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50/40 to-indigo-50/60 dark:from-gray-900 dark:via-blue-950/20 dark:to-indigo-950/20 rounded-3xl border border-gray-200/60 dark:border-gray-800/60 p-6 md:p-8">
+            {/* Decorative gradient orbs */}
+            <div className="absolute -top-24 -right-24 w-72 h-72 bg-blue-400/10 dark:bg-blue-400/5 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute -bottom-20 -left-20 w-56 h-56 bg-purple-400/10 dark:bg-purple-400/5 rounded-full blur-3xl pointer-events-none" />
+            {/* Dot pattern overlay */}
+            <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.02]" style={{ backgroundImage: 'radial-gradient(circle, currentColor 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
 
-          {/* Stats Bar */}
-          <div className="flex flex-wrap gap-4">
-            <div className="flex items-center gap-2 glass rounded-xl px-4 py-2.5 shadow-sm card-animate" style={{ animationDelay: '0ms' }}>
-              <span className="text-2xl font-bold text-blue-600">{stats.toolCount}</span>
-              <span className="text-sm text-blue-700 dark:text-blue-400">Tools Reviewed</span>
-            </div>
-            <div className="flex items-center gap-2 glass rounded-xl px-4 py-2.5 shadow-sm card-animate" style={{ animationDelay: '100ms' }}>
-              <span className="text-2xl font-bold text-purple-600">{stats.comparisonCount}</span>
-              <span className="text-sm text-purple-700 dark:text-purple-400">Comparisons</span>
-            </div>
-            <div className="flex items-center gap-2 glass rounded-xl px-4 py-2.5 shadow-sm card-animate" style={{ animationDelay: '200ms' }}>
-              <span className="text-2xl font-bold text-green-600">{avgRating}</span>
-              <span className="text-sm text-green-700 dark:text-green-400">Avg Rating</span>
-            </div>
-            <div className="flex items-center gap-2 glass rounded-xl px-4 py-2.5 shadow-sm card-animate" style={{ animationDelay: '300ms' }}>
-              <span className="text-2xl font-bold text-orange-600">{freeCount}</span>
-              <span className="text-sm text-orange-700 dark:text-orange-400">Free Plans</span>
+            <div className="relative">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-16 h-16 rounded-2xl bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-lg flex items-center justify-center text-3xl border border-gray-200/50 dark:border-gray-700/50">
+                  {cat.icon}
+                </div>
+                <div>
+                  <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">
+                    Best {cat.name} ({year})
+                  </h1>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Expert reviews, ratings & comparisons</p>
+                </div>
+              </div>
+              <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mb-6">
+                {cat.description}
+              </p>
+
+              {/* Stats Bar — Premium glassmorphism pills */}
+              <div className="flex flex-wrap gap-3">
+                {[
+                  { value: stats.toolCount, label: 'Tools Reviewed', color: 'text-blue-600 dark:text-blue-400', bg: 'from-blue-100/80 to-blue-50/80 dark:from-blue-900/30 dark:to-blue-800/20' },
+                  { value: stats.comparisonCount, label: 'Comparisons', color: 'text-purple-600 dark:text-purple-400', bg: 'from-purple-100/80 to-purple-50/80 dark:from-purple-900/30 dark:to-purple-800/20' },
+                  { value: avgRating, label: 'Avg Rating', color: 'text-green-600 dark:text-green-400', bg: 'from-green-100/80 to-green-50/80 dark:from-green-900/30 dark:to-green-800/20' },
+                  { value: freeCount, label: 'Free Plans', color: 'text-orange-600 dark:text-orange-400', bg: 'from-orange-100/80 to-orange-50/80 dark:from-orange-900/30 dark:to-orange-800/20' },
+                ].map((stat, idx) => (
+                  <div key={stat.label} className={`flex items-center gap-2.5 bg-gradient-to-r ${stat.bg} backdrop-blur-sm rounded-xl px-4 py-3 shadow-sm border border-white/50 dark:border-gray-700/50 card-animate`} style={{ animationDelay: `${idx * 80}ms` }}>
+                    <span className={`text-2xl font-black ${stat.color}`}>{stat.value}</span>
+                    <span className="text-sm font-medium text-gray-600 dark:text-gray-300">{stat.label}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -306,20 +316,27 @@ export default async function CategoryPage({ params }: PageProps) {
         {/* ========== AD: BEFORE BUYER'S GUIDE ========== */}
         <AdMultiplex className="mt-8" />
 
-        {/* ========== BUYER'S GUIDE ========== */}
+        {/* ========== BUYER'S GUIDE — Premium numbered cards ========== */}
         {categoryContent && (
           <section className="mt-12 mb-12">
-            <h2 className="text-2xl font-bold mb-6">{cat.name} Buyer&apos;s Guide ({year})</h2>
-            <div className="space-y-8">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center">
+                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
+              </div>
+              <h2 className="text-2xl font-extrabold tracking-tight">{cat.name} Buyer&apos;s Guide ({year})</h2>
+            </div>
+            <div className="space-y-4">
               {categoryContent.buyersGuide.map((section, idx) => (
-                <div key={idx} className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-6">
-                  <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
-                    <span className="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-sm font-bold text-blue-600">
+                <div key={idx} className="group relative bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-6 hover:border-blue-200 dark:hover:border-blue-800/50 transition-all hover:shadow-md">
+                  <div className="flex items-start gap-4">
+                    <span className="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center text-sm font-black text-white shadow-md shadow-blue-500/20">
                       {idx + 1}
                     </span>
-                    {section.title}
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-300 leading-relaxed">{section.text}</p>
+                    <div>
+                      <h3 className="text-lg font-bold mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{section.title}</h3>
+                      <p className="text-gray-600 dark:text-gray-300 leading-relaxed">{section.text}</p>
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
@@ -348,17 +365,28 @@ export default async function CategoryPage({ params }: PageProps) {
           </section>
         )}
 
-        {/* ========== HOW WE EVALUATE ========== */}
+        {/* ========== HOW WE EVALUATE — Premium dark card ========== */}
         {categoryContent && (
           <section className="mb-12">
-            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-800 rounded-2xl p-6 border border-blue-100 dark:border-gray-700">
-              <h2 className="text-lg font-bold mb-3 flex items-center gap-2">
-                <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                </svg>
-                How We Evaluate {cat.name}
-              </h2>
-              <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-sm">{categoryContent.methodology}</p>
+            <div className="relative overflow-hidden bg-gradient-to-br from-gray-900 via-slate-900 to-indigo-950 rounded-2xl p-6 md:p-8 text-white shadow-xl">
+              <div className="absolute top-0 right-0 w-48 h-48 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+              <div className="absolute bottom-0 left-0 w-32 h-32 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
+              <div className="relative">
+                <h2 className="text-lg font-bold mb-3 flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-lg bg-white/10 backdrop-blur-sm flex items-center justify-center">
+                    <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    </svg>
+                  </div>
+                  How We Evaluate {cat.name}
+                </h2>
+                <p className="text-gray-300 leading-relaxed text-sm">{categoryContent.methodology}</p>
+                <div className="mt-4 flex flex-wrap gap-3">
+                  {['Hands-on Testing', 'Feature Analysis', 'Pricing Review', 'User Feedback'].map(item => (
+                    <span key={item} className="text-xs px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-gray-300">{item}</span>
+                  ))}
+                </div>
+              </div>
             </div>
           </section>
         )}
