@@ -62,16 +62,26 @@ export default async function BestOfIndexPage() {
           <span className="text-gray-900 font-medium">Best Tools</span>
         </nav>
 
-        {/* Hero */}
-        <div className="bg-gradient-to-br from-purple-700 via-indigo-600 to-blue-700 rounded-2xl p-8 md:p-12 mb-12 text-white text-center">
-          <h1 className="text-3xl md:text-5xl font-extrabold mb-4">
-            Best Tools &amp; Software ({year})
-          </h1>
-          <p className="text-lg text-white/90 max-w-2xl mx-auto leading-relaxed">
-            Expert-curated rankings across {Object.keys(SUBCATEGORIES).length} categories
-            and {Object.values(SUBCATEGORIES).flat().length} subcategories.
-            Find the perfect tool for your needs.
-          </p>
+        {/* Hero — Premium glassmorphism */}
+        <div className="relative overflow-hidden bg-gradient-to-br from-purple-700 via-indigo-600 to-blue-700 rounded-3xl p-8 md:p-12 mb-12 text-white text-center shadow-xl">
+          <div className="absolute -top-20 -right-20 w-64 h-64 bg-white/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-16 -left-16 w-48 h-48 bg-purple-300/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute inset-0 opacity-[0.05]" style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
+
+          <div className="relative">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-sm font-semibold mb-6">
+              <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+              Updated for {year}
+            </div>
+            <h1 className="text-3xl md:text-5xl font-extrabold mb-4 tracking-tight">
+              Best Tools &amp; Software ({year})
+            </h1>
+            <p className="text-lg text-white/80 max-w-2xl mx-auto leading-relaxed">
+              Expert-curated rankings across {Object.keys(SUBCATEGORIES).length} categories
+              and {Object.values(SUBCATEGORIES).flat().length} subcategories.
+              Find the perfect tool for your needs.
+            </p>
+          </div>
         </div>
 
         {/* Category Sections */}
