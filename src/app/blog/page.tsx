@@ -75,20 +75,32 @@ export default async function BlogIndexPage() {
           ]}
         />
 
-        {/* Page Header */}
-        <div className="mt-6 mb-8">
-          <h1 className="text-3xl md:text-4xl font-extrabold mb-4">
-            <span className="gradient-text">{SITE_NAME} Blog</span>
-          </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl">
-            Expert guides, in-depth tool reviews, and actionable insights to help
-            you choose the right software for your business.
-          </p>
+        {/* Page Header — Premium glassmorphism */}
+        <div className="mt-6 mb-10">
+          <div className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-purple-50/30 to-pink-50/40 dark:from-gray-900 dark:via-purple-950/10 dark:to-pink-950/10 rounded-3xl border border-gray-200/60 dark:border-gray-800/60 p-6 md:p-8">
+            <div className="absolute -top-24 -right-24 w-72 h-72 bg-purple-400/10 dark:bg-purple-400/5 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute -bottom-20 -left-20 w-56 h-56 bg-pink-400/10 dark:bg-pink-400/5 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.02]" style={{ backgroundImage: 'radial-gradient(circle, currentColor 1px, transparent 1px)', backgroundSize: '24px 24px' }} />
+
+            <div className="relative">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-sm border border-gray-200/50 dark:border-gray-700/50 text-xs font-semibold text-purple-600 dark:text-purple-400 mb-4">
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" /></svg>
+                {posts.length} Articles Published
+              </div>
+              <h1 className="text-3xl md:text-4xl font-extrabold mb-3">
+                <span className="gradient-text">{SITE_NAME} Blog</span>
+              </h1>
+              <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl">
+                Expert guides, in-depth tool reviews, and actionable insights to help
+                you choose the right software for your business.
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Category Filter Chips */}
         <div className="flex flex-wrap gap-2 mb-10">
-          <span className="px-4 py-2 bg-blue-600 text-white rounded-full text-sm font-medium">
+          <span className="px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full text-sm font-medium shadow-md shadow-blue-500/20">
             All ({posts.length})
           </span>
           {Object.entries(categoryMap)
@@ -221,19 +233,23 @@ export default async function BlogIndexPage() {
         {/* Ad: Before CTA */}
         <AdMultiplex className="mt-10" />
 
-        {/* Bottom CTA */}
-        <div className="mt-16 text-center bg-gradient-to-r from-blue-50 to-purple-50 dark:from-gray-800 dark:to-gray-800 rounded-2xl p-8 border border-blue-100 dark:border-gray-700">
-          <h2 className="text-xl font-bold mb-2">Looking for Specific Tools?</h2>
-          <p className="text-sm text-gray-500 mb-6">
-            Browse our tool reviews and side-by-side comparisons to find the perfect software.
-          </p>
-          <div className="flex flex-wrap justify-center gap-3">
-            <Link href="/search" className="px-6 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-medium hover:bg-blue-700 transition-colors">
-              Search Tools
-            </Link>
-            <Link href="/glossary" className="px-6 py-2.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl text-sm font-medium hover:border-blue-300 transition-colors">
-              Tech Glossary
-            </Link>
+        {/* Bottom CTA — Dark premium card */}
+        <div className="mt-16 relative overflow-hidden bg-gradient-to-br from-gray-900 via-slate-900 to-indigo-950 rounded-2xl p-8 text-center text-white shadow-xl">
+          <div className="absolute top-0 right-0 w-48 h-48 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-32 h-32 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="relative">
+            <h2 className="text-xl font-extrabold mb-2">Looking for Specific Tools?</h2>
+            <p className="text-sm text-gray-300 mb-6">
+              Browse our tool reviews and side-by-side comparisons to find the perfect software.
+            </p>
+            <div className="flex flex-wrap justify-center gap-3">
+              <Link href="/search" className="px-6 py-2.5 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl text-sm font-bold hover:from-blue-600 hover:to-purple-600 shadow-lg shadow-blue-500/25 transition-all">
+                Search Tools
+              </Link>
+              <Link href="/glossary" className="px-6 py-2.5 bg-white/10 backdrop-blur-sm text-white border border-white/10 rounded-xl text-sm font-medium hover:bg-white/20 transition-colors">
+                Tech Glossary
+              </Link>
+            </div>
           </div>
         </div>
       </div>

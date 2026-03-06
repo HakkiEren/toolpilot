@@ -91,29 +91,38 @@ export default async function ComparisonHubPage({ params }: PageProps) {
           { name: 'Comparisons', url: '' },
         ]} />
 
-        {/* Hero */}
+        {/* Hero — Premium glassmorphism */}
         <div className="mt-6 mb-10">
-          <h1 className="text-3xl md:text-4xl font-bold mb-3">
-            {cat.name} Comparisons ({year})
-          </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mb-6">
-            Browse {comparisons.length} head-to-head comparisons across {stats.toolCount} {cat.name.toLowerCase()}.
-            Each comparison includes detailed feature analysis, pricing breakdowns, and expert verdicts.
-          </p>
+          <div className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-orange-50/30 to-red-50/40 dark:from-gray-900 dark:via-orange-950/10 dark:to-red-950/10 rounded-3xl border border-gray-200/60 dark:border-gray-800/60 p-6 md:p-8">
+            <div className="absolute -top-24 -right-24 w-72 h-72 bg-orange-400/10 dark:bg-orange-400/5 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute -bottom-20 -left-20 w-56 h-56 bg-red-400/10 dark:bg-red-400/5 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.02]" style={{ backgroundImage: 'radial-gradient(circle, currentColor 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
 
-          {/* Stats */}
-          <div className="flex flex-wrap gap-4">
-            <div className="flex items-center gap-2 glass rounded-xl px-4 py-2.5 shadow-sm">
-              <span className="text-2xl font-bold text-blue-600">{comparisons.length}</span>
-              <span className="text-sm text-blue-700 dark:text-blue-400">Comparisons</span>
-            </div>
-            <div className="flex items-center gap-2 glass rounded-xl px-4 py-2.5 shadow-sm">
-              <span className="text-2xl font-bold text-purple-600">{stats.toolCount}</span>
-              <span className="text-sm text-purple-700 dark:text-purple-400">Tools Covered</span>
-            </div>
-            <div className="flex items-center gap-2 glass rounded-xl px-4 py-2.5 shadow-sm">
-              <span className="text-2xl font-bold text-green-600">{topComparedTools.length}</span>
-              <span className="text-sm text-green-700 dark:text-green-400">Popular Tools</span>
+            <div className="relative">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-orange-100/80 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400 backdrop-blur-sm">VS BATTLES</span>
+              </div>
+              <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-3">
+                {cat.name} Comparisons ({year})
+              </h1>
+              <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mb-6">
+                Browse {comparisons.length} head-to-head comparisons across {stats.toolCount} {cat.name.toLowerCase()}.
+                Each comparison includes detailed feature analysis, pricing breakdowns, and expert verdicts.
+              </p>
+
+              {/* Stats — Premium glassmorphism pills */}
+              <div className="flex flex-wrap gap-3">
+                {[
+                  { value: comparisons.length, label: 'Comparisons', color: 'text-orange-600 dark:text-orange-400', bg: 'from-orange-100/80 to-orange-50/80 dark:from-orange-900/30 dark:to-orange-800/20' },
+                  { value: stats.toolCount, label: 'Tools Covered', color: 'text-purple-600 dark:text-purple-400', bg: 'from-purple-100/80 to-purple-50/80 dark:from-purple-900/30 dark:to-purple-800/20' },
+                  { value: topComparedTools.length, label: 'Popular Tools', color: 'text-green-600 dark:text-green-400', bg: 'from-green-100/80 to-green-50/80 dark:from-green-900/30 dark:to-green-800/20' },
+                ].map((stat, idx) => (
+                  <div key={stat.label} className={`flex items-center gap-2.5 bg-gradient-to-r ${stat.bg} backdrop-blur-sm rounded-xl px-4 py-3 shadow-sm border border-white/50 dark:border-gray-700/50 card-animate`} style={{ animationDelay: `${idx * 80}ms` }}>
+                    <span className={`text-2xl font-black ${stat.color}`}>{stat.value}</span>
+                    <span className="text-sm font-medium text-gray-600 dark:text-gray-300">{stat.label}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
