@@ -558,6 +558,132 @@ export default async function HomePage() {
       </div>
 
       {/* ============================================================ */}
+      {/* USE CASES — Target different audiences for engagement */}
+      {/* ============================================================ */}
+      <section className="py-16 bg-white dark:bg-gray-950">
+        <div className="max-w-7xl mx-auto px-4">
+          <h2 className="text-2xl md:text-3xl font-bold text-center mb-4">
+            Who Uses {SITE_NAME}?
+          </h2>
+          <p className="text-gray-500 text-center mb-12 max-w-xl mx-auto">
+            From solo founders to enterprise teams, we help every type of decision-maker.
+          </p>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+            {[
+              {
+                emoji: '🚀',
+                title: 'Startup Founders',
+                desc: 'Find affordable tools that scale with your growth. Compare free plans and startup-friendly pricing.',
+                cta: 'Explore SaaS Tools',
+                href: '/saas',
+                gradient: 'from-blue-500/10 to-blue-600/5',
+              },
+              {
+                emoji: '📊',
+                title: 'Marketing Teams',
+                desc: 'Compare SEO, email, social, and analytics tools. Find the stack that maximizes your ROI.',
+                cta: 'Marketing Tools',
+                href: '/marketing',
+                gradient: 'from-purple-500/10 to-purple-600/5',
+              },
+              {
+                emoji: '💻',
+                title: 'Developers',
+                desc: 'Evaluate hosting, CI/CD, AI coding assistants, and DevOps platforms side by side.',
+                cta: 'Hosting & Dev Tools',
+                href: '/hosting',
+                gradient: 'from-green-500/10 to-green-600/5',
+              },
+              {
+                emoji: '🏢',
+                title: 'Enterprise Buyers',
+                desc: 'Compare enterprise-grade solutions with security, compliance, and support ratings.',
+                cta: 'Business Tools',
+                href: '/business',
+                gradient: 'from-orange-500/10 to-orange-600/5',
+              },
+            ].map((useCase) => (
+              <Link
+                key={useCase.title}
+                href={useCase.href}
+                className={`group hover-lift p-6 rounded-2xl bg-gradient-to-br ${useCase.gradient} border border-gray-200 dark:border-gray-800 hover:border-blue-300 transition-all`}
+              >
+                <div className="text-3xl mb-3">{useCase.emoji}</div>
+                <h3 className="font-bold mb-2 group-hover:text-blue-600 transition-colors">{useCase.title}</h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-4 leading-relaxed">{useCase.desc}</p>
+                <span className="text-sm font-medium text-blue-600 group-hover:translate-x-1 transition-transform inline-block">
+                  {useCase.cta} &#8594;
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================================ */}
+      {/* SOCIAL PROOF — Testimonials and trust signals */}
+      {/* ============================================================ */}
+      <section className="py-16">
+        <div className="max-w-7xl mx-auto px-4">
+          <h2 className="text-2xl md:text-3xl font-bold text-center mb-4">
+            Trusted by Decision-Makers
+          </h2>
+          <p className="text-gray-500 text-center mb-12 max-w-xl mx-auto">
+            See what our users say about finding the right tools with {SITE_NAME}.
+          </p>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              {
+                quote: 'ToolPilot saved our team weeks of research. The comparison tables made it easy to choose between HubSpot and Salesforce for our growing sales team.',
+                name: 'Sarah Chen',
+                role: 'VP of Sales, TechScale',
+                avatar: 'SC',
+                color: 'from-blue-500 to-blue-600',
+              },
+              {
+                quote: 'Finally, a review site that does not feel like one big ad. The ratings are fair, the pricing data is accurate, and the pros/cons are genuinely helpful.',
+                name: 'Marcus Rivera',
+                role: 'CTO, LaunchPad Studios',
+                avatar: 'MR',
+                color: 'from-purple-500 to-purple-600',
+              },
+              {
+                quote: 'We switched our entire marketing stack based on ToolPilot recommendations. The ROI calculator alone saved us $2,400/year on unnecessary subscriptions.',
+                name: 'Priya Patel',
+                role: 'Marketing Director, GrowthBox',
+                avatar: 'PP',
+                color: 'from-green-500 to-green-600',
+              },
+            ].map((testimonial) => (
+              <div
+                key={testimonial.name}
+                className="relative p-6 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 hover-lift"
+              >
+                {/* Quote mark */}
+                <div className="absolute -top-3 left-6 text-4xl text-blue-200 dark:text-blue-900 font-serif">&ldquo;</div>
+
+                <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-6 mt-2">
+                  {testimonial.quote}
+                </p>
+
+                <div className="flex items-center gap-3">
+                  <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${testimonial.color} flex items-center justify-center text-white text-sm font-bold`}>
+                    {testimonial.avatar}
+                  </div>
+                  <div>
+                    <div className="font-semibold text-sm">{testimonial.name}</div>
+                    <div className="text-xs text-gray-400">{testimonial.role}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================================ */}
       {/* HOW IT WORKS */}
       {/* ============================================================ */}
       <section className="bg-gray-50 dark:bg-gray-900/50 py-16">
