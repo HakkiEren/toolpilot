@@ -96,8 +96,11 @@ export default function RootLayout({
         {/* Header */}
         <header className="sticky top-0 z-50 glass border-b border-gray-200/50 dark:border-gray-800/50" role="banner">
           <nav className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between" aria-label="Primary navigation">
-            <Link href="/" className="text-xl font-extrabold gradient-text hover:opacity-80 transition-opacity" aria-label={`${SITE_NAME} homepage`}>
-              {SITE_NAME}
+            <Link href="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity" aria-label={`${SITE_NAME} homepage`}>
+              <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center shadow-md shadow-blue-500/20">
+                <span className="text-white font-bold text-sm">T</span>
+              </div>
+              <span className="text-xl font-extrabold gradient-text">{SITE_NAME}</span>
             </Link>
             <div className="hidden md:flex items-center gap-1 text-sm font-medium">
               {CATEGORY_LIST.map((cat) => (
