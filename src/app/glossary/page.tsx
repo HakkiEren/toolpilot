@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SITE_NAME, SITE_URL } from '@/lib/constants';
 import { AdBanner, AdInArticle } from '@/components/ads/AdSlot';
-import { generateBreadcrumbSchema } from '@/lib/schema';
+import { generateBreadcrumbSchema, generateGlossarySchema } from '@/lib/schema';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 
 // ============================================================
@@ -102,22 +102,6 @@ function groupByCategory(terms: Term[]) {
     groups[t.category].push(t);
   });
   return groups;
-}
-
-function generateGlossarySchema(terms: Term[]) {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'DefinedTermSet',
-    name: 'Software & Tech Glossary',
-    description: `${terms.length} essential terms for understanding software tools, SaaS, AI, and digital business.`,
-    url: `${SITE_URL}/glossary`,
-    hasDefinedTerm: terms.slice(0, 20).map((t) => ({
-      '@type': 'DefinedTerm',
-      name: t.term,
-      description: t.definition,
-      inDefinedTermSet: `${SITE_URL}/glossary`,
-    })),
-  };
 }
 
 export default function GlossaryPage() {

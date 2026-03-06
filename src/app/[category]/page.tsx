@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getToolsByCategory, getCategoryStats, getComparisonsByCategory } from '@/lib/data';
+import { getToolsByCategory, getCategoryStats, getComparisonsByCategory, getBlogPosts } from '@/lib/data';
 import { generateBreadcrumbSchema, generateFAQSchema, generateCollectionSchema } from '@/lib/schema';
 import { ToolLogo } from '@/components/common/ToolLogo';
 import { CATEGORIES, CATEGORY_LIST, SITE_URL, SUBCATEGORIES } from '@/lib/constants';
@@ -39,11 +39,15 @@ export default async function CategoryPage({ params }: PageProps) {
   const cat = CATEGORIES[category];
   if (!cat) notFound();
 
-  const [tools, stats, comparisons] = await Promise.all([
+  const [tools, stats, comparisons, allPosts] = await Promise.all([
     getToolsByCategory(category, 50),
     getCategoryStats(category),
     getComparisonsByCategory(category, 6),
+    getBlogPosts(50),
   ]);
+
+  // Filter blog posts related to this category
+  const categoryPosts = allPosts.filter(p => p.categorySlug === category).slice(0, 3);
   const year = new Date().getFullYear();
   const categoryContent = getCategoryContent(category);
   const faqSchema = categoryContent ? generateFAQSchema(categoryContent.faqs) : null;
@@ -387,6 +391,40 @@ export default async function CategoryPage({ params }: PageProps) {
                   ))}
                 </div>
               </div>
+            </div>
+          </section>
+        )}
+
+        {/* ========== RELATED BLOG POSTS ========== */}
+        {categoryPosts.length > 0 && (
+          <section className="mb-12">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-bold">{cat.name} Insights &amp; Guides</h2>
+              <Link href="/blog" className="text-sm text-blue-600 font-medium hover:underline">
+                All articles &#8594;
+              </Link>
+            </div>
+            <div className="grid md:grid-cols-3 gap-4">
+              {categoryPosts.map((post) => (
+                <Link
+                  key={post.slug}
+                  href={`/blog/${post.slug}`}
+                  className="group hover-lift bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-700 transition-all overflow-hidden"
+                >
+                  <div className="p-5">
+                    <span className="inline-block px-2.5 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 text-[10px] font-semibold rounded-full mb-3 uppercase tracking-wide">
+                      {cat.name}
+                    </span>
+                    <h3 className="font-semibold text-sm group-hover:text-blue-600 transition-colors line-clamp-2 mb-2">{post.title}</h3>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-2">{post.excerpt}</p>
+                    <div className="mt-3 flex items-center gap-2 text-xs text-gray-400">
+                      <span>By {post.author}</span>
+                      <span>·</span>
+                      <span>{new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
             </div>
           </section>
         )}

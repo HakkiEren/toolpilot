@@ -309,6 +309,57 @@ export function generateOrganizationSchema() {
   };
 }
 
+// --- HOW-TO SCHEMA (Calculator pages — rich snippet in Google) ---
+export function generateCalculatorHowToSchema(
+  title: string,
+  description: string,
+  calculatorType: string,
+  steps: { name: string; text: string }[]
+) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: title,
+    description,
+    url: `${SITE_URL}/calculators/${calculatorType}`,
+    totalTime: 'PT2M',
+    tool: {
+      '@type': 'HowToTool',
+      name: `${SITE_NAME} ${title}`,
+    },
+    step: steps.map((step, idx) => ({
+      '@type': 'HowToStep',
+      position: idx + 1,
+      name: step.name,
+      text: step.text,
+      url: `${SITE_URL}/calculators/${calculatorType}#step-${idx + 1}`,
+    })),
+    publisher: {
+      '@type': 'Organization',
+      name: SITE_NAME,
+      url: SITE_URL,
+    },
+  };
+}
+
+// --- GLOSSARY SCHEMA (DefinedTermSet for glossary pages) ---
+export function generateGlossarySchema(
+  terms: { term: string; definition: string }[]
+) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'DefinedTermSet',
+    name: `${SITE_NAME} Glossary — Digital Tools & Technology Terms`,
+    url: `${SITE_URL}/glossary`,
+    description: `Comprehensive glossary of ${terms.length} digital tools, SaaS, AI, and technology terms explained simply.`,
+    hasDefinedTerm: terms.map((t) => ({
+      '@type': 'DefinedTerm',
+      name: t.term,
+      description: t.definition,
+    })),
+  };
+}
+
 // --- WEBSITE SCHEMA (with SearchAction for sitelinks search box) ---
 export function generateWebSiteSchema() {
   return {

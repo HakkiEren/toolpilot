@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getComparison, getAllComparisonSlugs, getRelatedLinks } from '@/lib/data';
+import { getComparison, getAllComparisonSlugs, getRelatedLinks, getRelatedComparisons, getRelatedBlogPosts } from '@/lib/data';
 import { generateComparisonSchema, generateFAQSchema, generateBreadcrumbSchema } from '@/lib/schema';
 import { CATEGORIES, LIMITS, SEO, SITE_URL } from '@/lib/constants';
 import { generateComparisonBottomLine, generateKeyDifferences } from '@/lib/generated-faqs';
@@ -58,7 +58,11 @@ export default async function ComparisonPage({ params }: PageProps) {
   if (!comparison) notFound();
 
   const cat = CATEGORIES[category];
-  const relatedLinks = await getRelatedLinks(comparison.toolA);
+  const [relatedLinks, alsoCompare, relatedPosts] = await Promise.all([
+    getRelatedLinks(comparison.toolA),
+    getRelatedComparisons(comparison, 4),
+    getRelatedBlogPosts(category, comparison.toolA.slug, 2),
+  ]);
   const year = new Date().getFullYear();
 
   // Determine winner
@@ -376,6 +380,60 @@ export default async function ComparisonPage({ params }: PageProps) {
           <section id="faq" className="mb-12 scroll-mt-32">
             <h2 className="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
             <FAQSection faqs={comparison.faqs} />
+          </section>
+        )}
+
+        {/* ========== ALSO COMPARE — Related comparisons ========== */}
+        {alsoCompare.length > 0 && (
+          <section className="mb-12">
+            <h2 className="text-2xl font-bold mb-6">You Might Also Compare</h2>
+            <div className="grid md:grid-cols-2 gap-4">
+              {alsoCompare.map((comp) => (
+                <Link
+                  key={comp.id}
+                  href={`/${comp.categorySlug}/compare/${comp.slug}`}
+                  className="group hover-lift flex items-center gap-3 p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700 transition-all bg-white dark:bg-gray-900"
+                >
+                  <ToolLogo logoUrl={comp.toolA.logoUrl} name={comp.toolA.name} size={32} />
+                  <div className="vs-divider !w-6 !h-6 !text-[8px]">VS</div>
+                  <ToolLogo logoUrl={comp.toolB.logoUrl} name={comp.toolB.name} size={32} />
+                  <div className="flex-1 min-w-0">
+                    <span className="font-semibold text-sm block truncate group-hover:text-blue-600 transition-colors">
+                      {comp.toolA.name} vs {comp.toolB.name}
+                    </span>
+                    <div className="flex items-center gap-2 text-xs text-gray-400 mt-0.5">
+                      <span className="font-bold text-gray-600 dark:text-gray-300">{comp.toolA.ratings.overall.toFixed(1)}</span>
+                      <span>vs</span>
+                      <span className="font-bold text-gray-600 dark:text-gray-300">{comp.toolB.ratings.overall.toFixed(1)}</span>
+                    </div>
+                  </div>
+                  <span className="text-blue-600 text-sm group-hover:translate-x-1 transition-transform">&#8594;</span>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* ========== RELATED BLOG POSTS ========== */}
+        {relatedPosts.length > 0 && (
+          <section className="mb-12">
+            <h2 className="text-2xl font-bold mb-6">Related Articles</h2>
+            <div className="grid md:grid-cols-2 gap-4">
+              {relatedPosts.map((post) => (
+                <Link
+                  key={post.slug}
+                  href={`/blog/${post.slug}`}
+                  className="group hover-lift bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700 transition-all p-5"
+                >
+                  <h3 className="font-semibold text-sm group-hover:text-blue-600 transition-colors line-clamp-2 mb-2">{post.title}</h3>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-2">{post.excerpt}</p>
+                  <div className="mt-3 text-xs text-gray-400 flex items-center gap-1">
+                    <span>📅</span>
+                    {new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                  </div>
+                </Link>
+              ))}
+            </div>
           </section>
         )}
 

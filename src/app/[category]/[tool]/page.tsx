@@ -1,14 +1,14 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getToolBySlug, getAllToolSlugs, getRelatedLinks, getComparisonsByTool, getRelatedTools } from '@/lib/data';
+import { getToolBySlug, getAllToolSlugs, getRelatedLinks, getComparisonsByTool, getRelatedTools, getRelatedBlogPosts } from '@/lib/data';
 import { generateToolReviewSchema, generateBreadcrumbSchema, generateFAQSchema } from '@/lib/schema';
-import { CATEGORIES, SEO, SITE_URL } from '@/lib/constants';
+import { CATEGORIES, SEO, SITE_URL, SUBCATEGORIES } from '@/lib/constants';
 import { generateToolFAQs } from '@/lib/generated-faqs';
 import { FAQSection } from '@/components/common/FAQSection';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { RelatedLinks } from '@/components/common/RelatedLinks';
-import { AdBanner, AdInArticle, AdMultiplex } from '@/components/ads/AdSlot';
+import { AdBanner, AdInArticle, AdMultiplex, AdSidebar } from '@/components/ads/AdSlot';
 import { ToolLogo } from '@/components/common/ToolLogo';
 
 // ============================================================
@@ -56,12 +56,18 @@ export default async function ToolPage({ params }: PageProps) {
   if (!tool) notFound();
 
   const cat = CATEGORIES[category];
-  const [relatedLinks, comparisons, relatedTools] = await Promise.all([
+  const [relatedLinks, comparisons, relatedTools, relatedPosts] = await Promise.all([
     getRelatedLinks(tool),
     getComparisonsByTool(tool.id),
     getRelatedTools(tool, 6),
+    getRelatedBlogPosts(category, toolSlug, 3),
   ]);
   const year = new Date().getFullYear();
+
+  // Find which best-of subcategories this tool appears in
+  const toolSubcategories = (SUBCATEGORIES[category] || []).filter(
+    (sub) => tool.subcategorySlug === sub.slug
+  );
 
   const toolSchema = generateToolReviewSchema(tool, cat?.name || category);
   const breadcrumbSchema = generateBreadcrumbSchema([
@@ -161,6 +167,22 @@ export default async function ToolPage({ params }: PageProps) {
                     </span>
                   )}
                 </div>
+
+                {/* Best-of Badges — Shows which rankings this tool appears in */}
+                {toolSubcategories.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mt-3">
+                    {toolSubcategories.map((sub) => (
+                      <Link
+                        key={sub.slug}
+                        href={`/best/${sub.slug}`}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-50/80 dark:bg-amber-900/20 border border-amber-200/60 dark:border-amber-800/40 text-amber-700 dark:text-amber-400 rounded-lg text-xs font-semibold hover:bg-amber-100 dark:hover:bg-amber-900/30 transition-colors backdrop-blur-sm"
+                      >
+                        <span>🏆</span>
+                        Best {sub.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
               </div>
 
               {/* CTA Sidebar — Vertical action stack */}
@@ -586,6 +608,41 @@ export default async function ToolPage({ params }: PageProps) {
           </section>
         )}
 
+        {/* ========== RELATED BLOG POSTS — Tool→Blog cross-linking ========== */}
+        {relatedPosts.length > 0 && (
+          <section className="mb-12">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold">Related Articles</h2>
+              <Link href="/blog" className="text-blue-600 hover:text-blue-700 text-sm font-medium">
+                All articles &#8594;
+              </Link>
+            </div>
+            <div className="grid md:grid-cols-3 gap-4">
+              {relatedPosts.map((post) => (
+                <Link
+                  key={post.slug}
+                  href={`/blog/${post.slug}`}
+                  className="group hover-lift bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700 transition-all overflow-hidden"
+                >
+                  <div className="p-5">
+                    {post.categorySlug && (
+                      <span className="inline-block px-2.5 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 text-[10px] font-semibold rounded-full mb-3 uppercase tracking-wide">
+                        {CATEGORIES[post.categorySlug]?.name || post.categorySlug}
+                      </span>
+                    )}
+                    <h3 className="font-semibold text-sm group-hover:text-blue-600 transition-colors line-clamp-2 mb-2">{post.title}</h3>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-2">{post.excerpt}</p>
+                    <div className="mt-3 flex items-center gap-2 text-xs text-gray-400">
+                      <span>📅</span>
+                      <span>{new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
         {/* ========== FAQ SECTION ========== */}
         {toolFAQs.length > 0 && (
           <section className="mb-12">
@@ -599,6 +656,11 @@ export default async function ToolPage({ params }: PageProps) {
           <h2 className="text-2xl font-bold mb-6">Related Tools &amp; Comparisons</h2>
           <RelatedLinks links={relatedLinks} />
         </section>
+
+        {/* ========== AD: STICKY SIDEBAR (Desktop) ========== */}
+        <div className="hidden lg:block fixed right-4 top-32 z-30" style={{ maxWidth: '300px' }}>
+          <AdSidebar />
+        </div>
 
         {/* ========== FRESHNESS SIGNAL ========== */}
         <div className="text-sm text-gray-400 mt-8 flex items-center gap-2">

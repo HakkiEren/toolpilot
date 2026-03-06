@@ -233,6 +233,80 @@ export async function getRelatedLinks(
 
 // --- Blog ---
 
+/**
+ * Get blog posts that mention a specific tool (via relatedToolSlugs)
+ * Used for tool→blog cross-linking on tool detail pages
+ */
+export async function getRelatedBlogPosts(
+  categorySlug: string,
+  toolSlug: string,
+  limit = 3
+): Promise<BlogPost[]> {
+  const pattern = `${categorySlug}/${toolSlug}`;
+  const { data, error } = await supabase
+    .from('blog_posts')
+    .select('*')
+    .eq('status', 'published')
+    .contains('related_tool_slugs', [pattern])
+    .order('published_at', { ascending: false })
+    .limit(limit);
+
+  if (error || !data) {
+    // Fallback: get posts from the same category
+    const { data: catPosts } = await supabase
+      .from('blog_posts')
+      .select('*')
+      .eq('status', 'published')
+      .eq('category_slug', categorySlug)
+      .order('published_at', { ascending: false })
+      .limit(limit);
+
+    if (!catPosts) return [];
+    return catPosts.map(mapBlogRow);
+  }
+  return data.map(mapBlogRow);
+}
+
+/**
+ * Get related comparisons for a comparison page (comparisons involving the same tools)
+ * Used for comparison→comparison cross-linking
+ */
+export async function getRelatedComparisons(
+  comparison: Comparison,
+  limit = 4
+): Promise<Comparison[]> {
+  const { data, error } = await supabase
+    .from('comparisons')
+    .select(`
+      *,
+      tool_a:tools!comparisons_tool_a_id_fkey(*),
+      tool_b:tools!comparisons_tool_b_id_fkey(*)
+    `)
+    .eq('category_slug', comparison.categorySlug)
+    .neq('id', comparison.id)
+    .or(`tool_a_id.eq.${comparison.toolA.id},tool_b_id.eq.${comparison.toolA.id},tool_a_id.eq.${comparison.toolB.id},tool_b_id.eq.${comparison.toolB.id}`)
+    .limit(limit);
+
+  if (error || !data) {
+    // Fallback: any comparisons from same category
+    const { data: catComps } = await supabase
+      .from('comparisons')
+      .select(`
+        *,
+        tool_a:tools!comparisons_tool_a_id_fkey(*),
+        tool_b:tools!comparisons_tool_b_id_fkey(*)
+      `)
+      .eq('category_slug', comparison.categorySlug)
+      .neq('id', comparison.id)
+      .order('created_at', { ascending: false })
+      .limit(limit);
+
+    if (!catComps) return [];
+    return catComps.map(mapComparisonRow);
+  }
+  return data.map(mapComparisonRow);
+}
+
 export async function getBlogPosts(limit = 10): Promise<BlogPost[]> {
   const { data, error } = await supabase
     .from('blog_posts')

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { SITE_NAME, SITE_URL } from '@/lib/constants';
+import { generateCalculatorHowToSchema, generateBreadcrumbSchema } from '@/lib/schema';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { AdBanner, AdInArticle } from '@/components/ads/AdSlot';
 import { CalculatorClient } from './calculator-client';
@@ -18,6 +19,7 @@ const CALCULATORS: Record<string, {
   metaTitle: string;
   metaDescription: string;
   category: string;
+  howToSteps: { name: string; text: string }[];
 }> = {
   'roi': {
     title: 'SaaS ROI Calculator',
@@ -25,6 +27,12 @@ const CALCULATORS: Record<string, {
     metaTitle: 'SaaS ROI Calculator — Calculate Your Software Investment Returns',
     metaDescription: 'Free SaaS ROI calculator. Estimate how much time and money you can save by switching tools. Compare costs vs benefits instantly.',
     category: 'saas',
+    howToSteps: [
+      { name: 'Enter your current tool cost', text: 'Input how much you currently pay per month for your existing software solution.' },
+      { name: 'Add the new tool cost', text: 'Enter the monthly cost of the SaaS tool you are considering switching to.' },
+      { name: 'Estimate time savings', text: 'Input the estimated hours saved per week with the new tool.' },
+      { name: 'Review your ROI results', text: 'The calculator shows your projected annual savings, payback period, and ROI percentage.' },
+    ],
   },
   'email-marketing-roi': {
     title: 'Email Marketing ROI Calculator',
@@ -32,6 +40,12 @@ const CALCULATORS: Record<string, {
     metaTitle: 'Email Marketing ROI Calculator — Measure Campaign Returns',
     metaDescription: 'Free email marketing ROI calculator. Estimate revenue from your email campaigns based on list size, open rates, and conversions.',
     category: 'marketing',
+    howToSteps: [
+      { name: 'Enter your email list size', text: 'Input the total number of subscribers in your email list.' },
+      { name: 'Set your open and click rates', text: 'Enter your average email open rate and click-through rate percentages.' },
+      { name: 'Add conversion rate and value', text: 'Input your average conversion rate and the value per conversion.' },
+      { name: 'Review campaign ROI', text: 'See your projected revenue, ROI percentage, and revenue per subscriber.' },
+    ],
   },
   'hosting-cost': {
     title: 'Web Hosting Cost Calculator',
@@ -39,6 +53,12 @@ const CALCULATORS: Record<string, {
     metaTitle: 'Web Hosting Cost Calculator — Compare Provider Pricing',
     metaDescription: 'Free web hosting cost calculator. Compare monthly costs across hosting providers based on your traffic, storage, and feature needs.',
     category: 'hosting',
+    howToSteps: [
+      { name: 'Select hosting type', text: 'Choose between shared, VPS, cloud, or dedicated hosting based on your needs.' },
+      { name: 'Enter traffic estimates', text: 'Input your expected monthly visitors and page views.' },
+      { name: 'Specify storage and features', text: 'Select the storage space, bandwidth, and features you need.' },
+      { name: 'Compare hosting costs', text: 'Review the estimated monthly and annual costs across different hosting types.' },
+    ],
   },
   'ecommerce-profit': {
     title: 'E-commerce Profit Margin Calculator',
@@ -46,6 +66,12 @@ const CALCULATORS: Record<string, {
     metaTitle: 'E-commerce Profit Margin Calculator — Know Your True Margins',
     metaDescription: 'Free e-commerce profit calculator. Calculate true margins after platform fees, shipping costs, marketing spend, and payment processing.',
     category: 'ecommerce',
+    howToSteps: [
+      { name: 'Enter product selling price', text: 'Input the retail price at which you sell your product.' },
+      { name: 'Add product cost and fees', text: 'Enter your cost of goods, platform fees, and payment processing fees.' },
+      { name: 'Include shipping and marketing', text: 'Add average shipping cost per order and marketing cost per acquisition.' },
+      { name: 'See your true margins', text: 'Review your net profit per unit, profit margin percentage, and break-even point.' },
+    ],
   },
   'ai-cost': {
     title: 'AI Tool Cost Estimator',
@@ -53,6 +79,12 @@ const CALCULATORS: Record<string, {
     metaTitle: 'AI Tool Cost Estimator — Calculate Your AI Spending',
     metaDescription: 'Free AI cost calculator. Estimate monthly spending on AI tools based on usage volume, API calls, and subscription tiers.',
     category: 'ai-tools',
+    howToSteps: [
+      { name: 'Select AI tool type', text: 'Choose the type of AI tool (chatbot, image generation, coding assistant, etc.).' },
+      { name: 'Enter usage volume', text: 'Input your estimated monthly API calls, tokens used, or generations needed.' },
+      { name: 'Select pricing tier', text: 'Choose between free tier, pro subscription, or enterprise API pricing.' },
+      { name: 'Review cost breakdown', text: 'See your estimated monthly cost, cost per request, and annual projection.' },
+    ],
   },
   'team-productivity': {
     title: 'Team Productivity Savings Calculator',
@@ -60,6 +92,12 @@ const CALCULATORS: Record<string, {
     metaTitle: 'Team Productivity Calculator — Estimate Time & Cost Savings',
     metaDescription: 'Free team productivity calculator. Estimate annual savings from better tools based on team size, hourly rates, and automation potential.',
     category: 'business',
+    howToSteps: [
+      { name: 'Enter team size and rates', text: 'Input the number of team members and their average hourly rate.' },
+      { name: 'Estimate time spent on tasks', text: 'Enter hours spent weekly on repetitive tasks that could be automated.' },
+      { name: 'Set efficiency improvement', text: 'Estimate the percentage of time savings from better tools (typically 20-40%).' },
+      { name: 'Review productivity savings', text: 'See your projected annual time savings, cost savings, and productivity ROI.' },
+    ],
   },
 };
 
@@ -92,8 +130,22 @@ export default async function CalculatorPage({ params }: PageProps) {
     .filter(([key]) => key !== type)
     .map(([key, val]) => ({ slug: key, ...val }));
 
+  const howToSchema = generateCalculatorHowToSchema(
+    calc.title,
+    calc.description,
+    type,
+    calc.howToSteps
+  );
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: '/' },
+    { name: 'Calculators', url: '/calculators/roi' },
+    { name: calc.title, url: `/calculators/${type}` },
+  ]);
+
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <Breadcrumbs items={[
         { name: 'Home', url: '/' },
         { name: 'Calculators', url: '/calculators/roi' },
