@@ -46,6 +46,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title,
     description,
     alternates: { canonical: `${SITE_URL}/${category}/${toolSlug}/pricing` },
+    openGraph: {
+      title,
+      description,
+      url: `${SITE_URL}/${category}/${toolSlug}/pricing`,
+      type: 'article',
+      publishedTime: tool.createdAt,
+      modifiedTime: tool.lastUpdated,
+    },
   };
 }
 

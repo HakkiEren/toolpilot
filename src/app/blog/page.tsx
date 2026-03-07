@@ -98,7 +98,7 @@ export default async function BlogIndexPage() {
           </div>
         </div>
 
-        {/* Category Filter Chips */}
+        {/* Category Filter Chips — linked to category pages for internal linking */}
         <div className="flex flex-wrap gap-2 mb-10">
           <span className="px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full text-sm font-medium shadow-md shadow-blue-500/20">
             All ({posts.length})
@@ -107,13 +107,15 @@ export default async function BlogIndexPage() {
             .sort((a, b) => b[1] - a[1])
             .map(([cat, count]) => {
               const colors = CATEGORY_COLORS[cat] || CATEGORY_COLORS.guides;
+              const catLabel = cat.charAt(0).toUpperCase() + cat.slice(1).replace(/-/g, ' ');
               return (
-                <span
+                <Link
                   key={cat}
-                  className={`px-4 py-2 rounded-full text-sm font-medium ${colors.bg} ${colors.text}`}
+                  href={`/${cat}`}
+                  className={`px-4 py-2 rounded-full text-sm font-medium hover:opacity-80 transition-opacity ${colors.bg} ${colors.text}`}
                 >
-                  {cat.charAt(0).toUpperCase() + cat.slice(1)} ({count})
-                </span>
+                  {catLabel} ({count})
+                </Link>
               );
             })}
         </div>
