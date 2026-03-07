@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo, useEffect } from 'react';
+import { ToolLogo } from '@/components/common/ToolLogo';
 
 interface SearchTool {
   slug: string;
@@ -296,16 +297,7 @@ export function SearchClient({ tools }: { tools: SearchTool[] }) {
               style={{ animationDelay: `${Math.min(idx, 11) * 40}ms` }}
             >
               <div className="flex items-start gap-3 mb-3">
-                {tool.logo_url ? (
-                  <img src={tool.logo_url} alt={tool.name} className="w-11 h-11 rounded-xl object-contain bg-gray-50 dark:bg-gray-800 p-0.5 shadow-sm" loading="lazy" />
-                ) : (
-                  <div
-                    className="w-11 h-11 rounded-xl flex items-center justify-center text-white text-sm font-bold shadow-sm"
-                    style={{ background: `linear-gradient(135deg, ${catInfo?.color || '#3B82F6'}, ${catInfo?.color || '#3B82F6'}88)` }}
-                  >
-                    {tool.name.charAt(0)}
-                  </div>
-                )}
+                <ToolLogo logoUrl={tool.logo_url || ''} name={tool.name} size={44} className="shadow-sm" />
                 <div className="flex-1 min-w-0">
                   <h3 className="font-bold text-base group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors truncate">
                     {tool.name}
