@@ -4,6 +4,15 @@ import type { NextRequest } from 'next/server';
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // ─── www → non-www normalization (301 redirect) ───
+  // Canonical domain is non-www; redirect www to avoid duplicate content
+  const host = request.headers.get('host') || '';
+  if (host.startsWith('www.')) {
+    const url = request.nextUrl.clone();
+    url.host = host.replace(/^www\./, '');
+    return NextResponse.redirect(url, 301);
+  }
+
   // ─── Trailing slash normalization (301 redirect) ───
   // Remove trailing slash (except root "/")
   if (pathname !== '/' && pathname.endsWith('/')) {

@@ -430,6 +430,11 @@ export function generateOrganizationSchema() {
     description:
       'Compare the best digital tools across AI, SaaS, E-commerce, Marketing, Hosting & Business.',
     logo: `${SITE_URL}/opengraph-image`,
+    foundingDate: '2026',
+    numberOfEmployees: {
+      '@type': 'QuantitativeValue',
+      value: 5,
+    },
     sameAs: [
       'https://twitter.com/propicked',
       'https://linkedin.com/company/propicked',
@@ -439,7 +444,17 @@ export function generateOrganizationSchema() {
       '@type': 'ContactPoint',
       contactType: 'customer service',
       url: `${SITE_URL}/contact`,
+      availableLanguage: 'English',
     },
+    knowsAbout: [
+      'Software Reviews',
+      'SaaS Tools',
+      'AI Tools',
+      'E-commerce Platforms',
+      'Digital Marketing Tools',
+      'Web Hosting',
+      'Business Software',
+    ],
   };
 }
 
