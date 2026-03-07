@@ -109,6 +109,10 @@ export default async function BlogPostPage({ params }: PageProps) {
     }
   }
 
+  // Reading time estimate (avg 200 words/min)
+  const wordCount = (post.content || '').replace(/<[^>]*>/g, '').split(/\s+/).filter(Boolean).length;
+  const readingTime = Math.max(1, Math.round(wordCount / 200));
+
   // JSON-LD schemas
   const blogSchema = generateBlogSchema(post);
   const breadcrumbSchema = generateBreadcrumbSchema([
@@ -159,35 +163,17 @@ export default async function BlogPostPage({ params }: PageProps) {
               </h1>
 
               <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+                {/* Author with avatar */}
+                <Link href="/about/team" className="flex items-center gap-2 hover:text-blue-600 transition-colors">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+                    {(post.author || 'T')[0]}
+                  </div>
+                  <span className="font-medium">{post.author}</span>
+                </Link>
+                <span className="w-1 h-1 bg-gray-300 rounded-full" />
                 <span className="flex items-center gap-1.5">
-                  <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                    />
-                  </svg>
-                  {post.author}
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                    />
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                   <time dateTime={post.publishedAt}>
                     {new Date(post.publishedAt).toLocaleDateString('en-US', {
@@ -196,6 +182,13 @@ export default async function BlogPostPage({ params }: PageProps) {
                       day: 'numeric',
                     })}
                   </time>
+                </span>
+                <span className="w-1 h-1 bg-gray-300 rounded-full" />
+                <span className="flex items-center gap-1.5">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  {readingTime} min read
                 </span>
                 {post.updatedAt && post.updatedAt !== post.publishedAt && (
                   <span className="text-gray-400 dark:text-gray-500">
