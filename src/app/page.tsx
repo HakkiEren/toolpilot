@@ -264,6 +264,31 @@ export default async function HomePage() {
       </section>
 
       {/* ============================================================ */}
+      {/* QUICK BROWSE — Popular subcategory links for SEO crawling */}
+      {/* ============================================================ */}
+      <section className="max-w-7xl mx-auto px-4 pt-8 pb-4">
+        <div className="flex items-center gap-2 mb-3">
+          <svg className="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+          <h2 className="text-sm font-bold text-gray-700 dark:text-gray-300">Quick Browse</h2>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {Object.entries(SUBCATEGORIES).flatMap(([catSlug, subs]) =>
+            subs.slice(0, 3).map((sub) => (
+              <Link
+                key={sub.slug}
+                href={`/best/${sub.slug}`}
+                className="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-blue-100 hover:text-blue-700 dark:hover:bg-blue-900/30 dark:hover:text-blue-400 transition-colors border border-transparent hover:border-blue-200 dark:hover:border-blue-800"
+              >
+                {sub.name}
+              </Link>
+            ))
+          )}
+        </div>
+      </section>
+
+      {/* ============================================================ */}
       {/* TRENDING TOOLS — Top rated across all categories */}
       {/* ============================================================ */}
       <section className="max-w-7xl mx-auto px-4 py-16">
