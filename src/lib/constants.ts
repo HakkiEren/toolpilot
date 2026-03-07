@@ -4,8 +4,8 @@ import type { Category } from '@/types';
 // SITE CONFIGURATION
 // ============================================================
 
-export const SITE_NAME = 'ToolPilot'; // Placeholder — will be updated with final domain
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://toolpilot.io';
+export const SITE_NAME = 'ProPicked';
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://propicked.com';
 export const SITE_DESCRIPTION = 'Compare the best digital tools across AI, SaaS, E-commerce, Marketing, Hosting & Business. Unbiased reviews, real pricing, and honest comparisons.';
 
 // ============================================================
@@ -181,6 +181,6 @@ export const LIMITS = {
 export const SEO = {
   titleSuffix: ` | ${SITE_NAME}`,
   defaultOgImage: '/og-default.png',
-  twitterHandle: '@toolpilot',
+  twitterHandle: '@propicked',
   locale: 'en_US',
 };

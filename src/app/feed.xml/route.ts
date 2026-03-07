@@ -42,7 +42,7 @@ export async function GET() {
       <link>${SITE_URL}/blog/${post.slug}</link>
       <guid isPermaLink="true">${SITE_URL}/blog/${post.slug}</guid>
       <description>${escapeXml(post.excerpt || '')}</description>
-      <author>${escapeXml(post.author || 'ToolPilot Editorial Team')}</author>
+      <author>${escapeXml(post.author || `${SITE_NAME} Editorial Team`)}</author>
       <category>${escapeXml(post.category_slug || 'guides')}</category>
       <pubDate>${new Date(post.published_at).toUTCString()}</pubDate>
     </item>`).join('');

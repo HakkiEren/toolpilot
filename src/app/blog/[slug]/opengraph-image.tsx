@@ -18,7 +18,7 @@ export default async function OGImage({
     return new ImageResponse(
       (
         <div style={{ display: 'flex', width: '100%', height: '100%', background: 'linear-gradient(135deg, #0c1220, #1e293b)', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: 48, fontWeight: 'bold' }}>
-          ToolPilot Blog
+          ProPicked Blog
         </div>
       ),
       size
@@ -57,8 +57,8 @@ export default async function OGImage({
         {/* Top bar */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '40px', position: 'relative' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-            <div style={{ width: '36px', height: '36px', background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '18px', fontWeight: 'bold' }}>T</div>
-            <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#e2e8f0' }}>ToolPilot</div>
+            <div style={{ width: '36px', height: '36px', background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '18px', fontWeight: 'bold' }}>P</div>
+            <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#e2e8f0' }}>ProPicked</div>
             <div style={{ color: '#334155', fontSize: '20px' }}>|</div>
             <div style={{ color: '#94a3b8', fontSize: '18px' }}>Blog</div>
           </div>
@@ -112,7 +112,7 @@ export default async function OGImage({
           <div style={{ color: '#475569', fontSize: '14px', display: 'flex', gap: '6px' }}>
             Expert Analysis • Data-Driven Insights
           </div>
-          <div style={{ color: '#3b82f6', fontSize: '15px', fontWeight: 600 }}>toolpilot.com/blog</div>
+          <div style={{ color: '#3b82f6', fontSize: '15px', fontWeight: 600 }}>propicked.com/blog</div>
         </div>
       </div>
     ),

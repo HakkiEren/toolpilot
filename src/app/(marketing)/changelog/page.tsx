@@ -151,7 +151,7 @@ const CHANGELOG: {
     date: '2026-03-03',
     version: '2.0',
     entries: [
-      { type: 'launched', text: 'ToolPilot 2.0 — Complete redesign with glassmorphism UI' },
+      { type: 'launched', text: 'ProPicked 2.0 — Complete redesign with glassmorphism UI' },
       { type: 'added', text: '433 tools across 6 categories: AI, SaaS, E-commerce, Marketing, Hosting, Business' },
       { type: 'added', text: '327 head-to-head comparisons with feature matrices' },
       { type: 'added', text: '128 blog posts with expert analysis' },

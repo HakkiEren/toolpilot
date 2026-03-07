@@ -182,7 +182,7 @@ export default async function BlogIndexPage() {
                           {(featured.author || 'T')[0]}
                         </div>
                         <span className="text-gray-600 dark:text-gray-300 font-medium">
-                          {featured.author || 'ToolPilot Team'}
+                          {featured.author || `${SITE_NAME} Team`}
                         </span>
                       </div>
                       <span className="w-1 h-1 bg-gray-300 rounded-full" />
@@ -244,7 +244,7 @@ export default async function BlogIndexPage() {
                             {(post.author || 'T')[0]}
                           </div>
                           <span className="text-gray-500 dark:text-gray-400 truncate text-xs">
-                            {post.author || 'ToolPilot Team'}
+                            {post.author || `${SITE_NAME} Team`}
                           </span>
                         </div>
                         <time

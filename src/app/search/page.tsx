@@ -6,7 +6,7 @@ import { AdBanner, AdMultiplex } from '@/components/ads/AdSlot';
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: 'Search & Compare Tools — Find the Perfect Software | ToolPilot',
+  title: `Search & Compare Tools — Find the Perfect Software | ProPicked`,
   description:
     'Search and filter 400+ tools instantly across AI, SaaS, E-commerce, Marketing, Hosting & Business. Compare features, pricing, and ratings.',
 };

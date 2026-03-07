@@ -105,7 +105,7 @@ export default async function HomePage() {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
     name: 'Trending Digital Tools',
-    description: 'The highest rated digital tools across all categories, curated by ToolPilot experts.',
+    description: 'The highest rated digital tools across all categories, curated by ProPicked experts.',
     numberOfItems: trendingTools.length,
     itemListElement: trendingTools.map((tool, i) => ({
       '@type': 'ListItem',
@@ -813,7 +813,7 @@ export default async function HomePage() {
           <div className="grid md:grid-cols-3 gap-6">
             {[
               {
-                quote: 'ToolPilot saved our team weeks of research. The comparison tables made it easy to choose between HubSpot and Salesforce for our growing sales team.',
+                quote: 'ProPicked saved our team weeks of research. The comparison tables made it easy to choose between HubSpot and Salesforce for our growing sales team.',
                 name: 'Sarah Chen',
                 role: 'VP of Sales, TechScale',
                 avatar: 'SC',
@@ -827,7 +827,7 @@ export default async function HomePage() {
                 color: 'from-purple-500 to-purple-600',
               },
               {
-                quote: 'We switched our entire marketing stack based on ToolPilot recommendations. The ROI calculator alone saved us $2,400/year on unnecessary subscriptions.',
+                quote: 'We switched our entire marketing stack based on ProPicked recommendations. The ROI calculator alone saved us $2,400/year on unnecessary subscriptions.',
                 name: 'Priya Patel',
                 role: 'Marketing Director, GrowthBox',
                 avatar: 'PP',
@@ -1212,12 +1212,12 @@ function CategoryIcon({ icon, color }: { icon: string; color: string }) {
 
 const HOME_FAQS = [
   {
-    question: 'How does ToolPilot compare and rate tools?',
+    question: 'How does ProPicked compare and rate tools?',
     answer: 'We evaluate every tool across four key dimensions: Features (30%), Ease of Use (25%), Value for Money (25%), and Customer Support (20%). Our team tests each product hands-on, aggregates verified user reviews, and updates scores monthly to ensure accuracy.',
   },
   {
-    question: 'Is ToolPilot really independent and unbiased?',
-    answer: 'Yes. ToolPilot does not accept sponsored placements or paid reviews. Our revenue comes from advertising, not from the tools we review. This ensures our ratings and recommendations remain 100% independent and data-driven.',
+    question: 'Is ProPicked really independent and unbiased?',
+    answer: 'Yes. ProPicked does not accept sponsored placements or paid reviews. Our revenue comes from advertising, not from the tools we review. This ensures our ratings and recommendations remain 100% independent and data-driven.',
   },
   {
     question: 'How often are tool reviews updated?',
@@ -1228,8 +1228,8 @@ const HOME_FAQS = [
     answer: 'Our comparison pages are designed for detailed head-to-head matchups between two tools. However, you can use our category pages and Best Of lists to compare multiple tools side by side using our comparison tables that show ratings, pricing, and key features.',
   },
   {
-    question: 'What categories of tools does ToolPilot cover?',
-    answer: 'ToolPilot covers six major categories: AI Tools (writing, image, coding, chatbots), SaaS (CRM, project management, HR), E-commerce (store builders, payments, shipping), Marketing (SEO, email, social media), Web Hosting (shared, VPS, cloud, WordPress), and Business Tools (accounting, legal, productivity, cybersecurity).',
+    question: 'What categories of tools does ProPicked cover?',
+    answer: 'ProPicked covers six major categories: AI Tools (writing, image, coding, chatbots), SaaS (CRM, project management, HR), E-commerce (store builders, payments, shipping), Marketing (SEO, email, social media), Web Hosting (shared, VPS, cloud, WordPress), and Business Tools (accounting, legal, productivity, cybersecurity).',
   },
   {
     question: 'How do I find the best tool for my specific needs?',

@@ -127,24 +127,24 @@ export const AUTHORS: Record<string, Author> = {
       'Accounting Software', 'Project Management', 'Team Communication',
     ],
   },
-  'ToolPilot Editorial Team': {
+  'ProPicked Editorial Team': {
     slug: 'editorial-team',
-    name: 'ToolPilot Editorial Team',
+    name: `${SITE_NAME} Editorial Team`,
     role: 'Editorial Team',
     bio: `The ${SITE_NAME} editorial team combines decades of industry experience to deliver honest, data-driven reviews. Every tool gets the same rigorous evaluation process.`,
     shortBio: 'Our team rigorously tests tools to provide unbiased, data-driven recommendations.',
-    initials: 'TP',
+    initials: 'PP',
     gradient: 'from-blue-500 to-purple-600',
     expertise: ['AI Tools', 'SaaS', 'E-commerce', 'Marketing', 'Hosting', 'Business'],
     social: {
-      twitter: 'https://twitter.com/toolpilot',
-      linkedin: 'https://linkedin.com/company/toolpilot',
+      twitter: 'https://twitter.com/propicked',
+      linkedin: 'https://linkedin.com/company/propicked',
     },
     articles: 140,
     reviews: 400,
     sameAs: [
-      'https://twitter.com/toolpilot',
-      'https://linkedin.com/company/toolpilot',
+      'https://twitter.com/propicked',
+      'https://linkedin.com/company/propicked',
     ],
     knowsAbout: [
       'Software Reviews', 'Technology Comparison', 'Digital Tools',
@@ -156,7 +156,7 @@ export const AUTHORS: Record<string, Author> = {
  * Get author data by name. Falls back to editorial team.
  */
 export function getAuthor(name: string): Author {
-  return AUTHORS[name] || AUTHORS['ToolPilot Editorial Team'];
+  return AUTHORS[name] || AUTHORS['ProPicked Editorial Team'];
 }
 
 /**

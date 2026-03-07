@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og';
 
 export const runtime = 'edge';
-export const alt = 'ToolPilot — Compare the Best Digital Tools';
+export const alt = 'ProPicked — Compare the Best Digital Tools';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -47,10 +47,10 @@ export default function OGImage() {
               boxShadow: '0 8px 32px rgba(59,130,246,0.3)',
             }}
           >
-            T
+            P
           </div>
           <span style={{ fontSize: '56px', fontWeight: 800, color: 'white', letterSpacing: '-1px' }}>
-            ToolPilot
+            ProPicked
           </span>
         </div>
 

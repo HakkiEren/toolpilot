@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getComparison, getAllComparisonSlugs, getRelatedLinks, getRelatedComparisons, getRelatedBlogPosts } from '@/lib/data';
 import { generateComparisonSchema, generateFAQSchema, generateBreadcrumbSchema } from '@/lib/schema';
-import { CATEGORIES, LIMITS, SEO, SITE_URL } from '@/lib/constants';
+import { CATEGORIES, LIMITS, SEO, SITE_URL, SITE_NAME } from '@/lib/constants';
 import { generateComparisonBottomLine, generateKeyDifferences } from '@/lib/generated-faqs';
 // Components
 import { ScoreCompare } from '@/components/comparison/ScoreCompare';
@@ -59,7 +59,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       publishedTime: comparison.lastUpdated,
       modifiedTime: comparison.lastUpdated,
       section: CATEGORIES[category]?.name || category,
-      authors: ['ToolPilot Editorial Team'],
+      authors: [`${SITE_NAME} Editorial Team`],
       tags: [comparison.toolA.name, comparison.toolB.name, 'comparison', CATEGORIES[category]?.name || category],
     },
     twitter: {

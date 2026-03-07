@@ -9,7 +9,7 @@ import { getAuthor, getAuthorUrl } from './authors';
 
 // --- TOOL REVIEW SCHEMA (enables star ratings in Google SERPs) ---
 export function generateToolReviewSchema(tool: Tool, categoryName: string) {
-  const editorialTeam = getAuthor('ToolPilot Editorial Team');
+  const editorialTeam = getAuthor(`${SITE_NAME} Editorial Team`);
 
   return {
     '@context': 'https://schema.org',
@@ -127,7 +127,7 @@ export function generateToolSchema(tool: Tool, categoryName: string) {
 
 // --- COMPARISON SCHEMA (Article with datePublished + E-E-A-T author signals) ---
 export function generateComparisonSchema(comparison: Comparison) {
-  const editorialTeam = getAuthor('ToolPilot Editorial Team');
+  const editorialTeam = getAuthor(`${SITE_NAME} Editorial Team`);
 
   return {
     '@context': 'https://schema.org',
@@ -431,9 +431,9 @@ export function generateOrganizationSchema() {
       'Compare the best digital tools across AI, SaaS, E-commerce, Marketing, Hosting & Business.',
     logo: `${SITE_URL}/opengraph-image`,
     sameAs: [
-      'https://twitter.com/toolpilot',
-      'https://linkedin.com/company/toolpilot',
-      'https://youtube.com/@toolpilot',
+      'https://twitter.com/propicked',
+      'https://linkedin.com/company/propicked',
+      'https://youtube.com/@propicked',
     ],
     contactPoint: {
       '@type': 'ContactPoint',

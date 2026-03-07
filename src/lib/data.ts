@@ -435,7 +435,7 @@ function mapBlogRow(row: any): BlogPost {
     excerpt: row.excerpt || '',
     content: row.content || '',
     categorySlug: row.category_slug || null,
-    author: row.author || 'ToolPilot Team',
+    author: row.author || 'ProPicked Team',
     publishedAt: row.published_at || '',
     updatedAt: row.updated_at || '',
     metaTitle: row.meta_title || row.title,
