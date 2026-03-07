@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 
 interface SearchTool {
   slug: string;
@@ -27,11 +27,38 @@ const CATEGORY_LABELS: Record<string, { label: string; color: string }> = {
 };
 
 export function SearchClient({ tools }: { tools: SearchTool[] }) {
-  const [query, setQuery] = useState('');
-  const [priceFilter, setPriceFilter] = useState<'all' | 'free' | 'paid'>('all');
-  const [ratingFilter, setRatingFilter] = useState<number>(0);
-  const [categoryFilter, setCategoryFilter] = useState<string>('all');
+  // Read initial query from URL params (e.g. /search?q=chatgpt&cat=ai-tools)
+  const [query, setQuery] = useState(() => {
+    if (typeof window === 'undefined') return '';
+    return new URLSearchParams(window.location.search).get('q') || '';
+  });
+  const [priceFilter, setPriceFilter] = useState<'all' | 'free' | 'paid'>(() => {
+    if (typeof window === 'undefined') return 'all';
+    const p = new URLSearchParams(window.location.search).get('price');
+    return (p === 'free' || p === 'paid') ? p : 'all';
+  });
+  const [ratingFilter, setRatingFilter] = useState<number>(() => {
+    if (typeof window === 'undefined') return 0;
+    const r = parseInt(new URLSearchParams(window.location.search).get('rating') || '0');
+    return [0, 7, 8, 9].includes(r) ? r : 0;
+  });
+  const [categoryFilter, setCategoryFilter] = useState<string>(() => {
+    if (typeof window === 'undefined') return 'all';
+    return new URLSearchParams(window.location.search).get('cat') || 'all';
+  });
   const [sortBy, setSortBy] = useState<'rating' | 'name' | 'price'>('rating');
+
+  // Sync state to URL params (debounced)
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (query) params.set('q', query);
+    if (priceFilter !== 'all') params.set('price', priceFilter);
+    if (ratingFilter > 0) params.set('rating', String(ratingFilter));
+    if (categoryFilter !== 'all') params.set('cat', categoryFilter);
+    const qs = params.toString();
+    const url = qs ? `${window.location.pathname}?${qs}` : window.location.pathname;
+    window.history.replaceState(null, '', url);
+  }, [query, priceFilter, ratingFilter, categoryFilter]);
 
   const categories = useMemo(() => {
     const counts: Record<string, number> = {};

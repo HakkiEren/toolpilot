@@ -147,6 +147,15 @@ export default async function BlogIndexPage() {
                       {featured.excerpt}
                     </p>
                     <div className="flex items-center gap-4 text-sm text-gray-400">
+                      <div className="flex items-center gap-2">
+                        <div className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+                          {(featured.author || 'T')[0]}
+                        </div>
+                        <span className="text-gray-600 dark:text-gray-300 font-medium">
+                          {featured.author || 'ToolPilot Team'}
+                        </span>
+                      </div>
+                      <span className="w-1 h-1 bg-gray-300 rounded-full" />
                       <time dateTime={featured.publishedAt}>
                         {new Date(featured.publishedAt).toLocaleDateString('en-US', {
                           year: 'numeric',
@@ -154,7 +163,7 @@ export default async function BlogIndexPage() {
                           day: 'numeric',
                         })}
                       </time>
-                      <span className="text-blue-600 font-medium group-hover:underline">
+                      <span className="ml-auto text-blue-600 font-medium group-hover:underline">
                         Read Article &rarr;
                       </span>
                     </div>
@@ -198,20 +207,27 @@ export default async function BlogIndexPage() {
                         {post.excerpt}
                       </p>
 
-                      {/* Footer: Date + Read More */}
-                      <div className="mt-4 flex items-center justify-between text-sm">
+                      {/* Footer: Author + Date */}
+                      <div className="mt-4 flex items-center gap-3 text-sm">
+                        <div className="flex items-center gap-2 flex-1 min-w-0">
+                          <div className="w-6 h-6 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0">
+                            {(post.author || 'T')[0]}
+                          </div>
+                          <span className="text-gray-500 dark:text-gray-400 truncate text-xs">
+                            {post.author || 'ToolPilot Team'}
+                          </span>
+                        </div>
                         <time
                           dateTime={post.publishedAt}
-                          className="text-gray-400 dark:text-gray-500"
+                          className="text-gray-400 dark:text-gray-500 text-xs flex-shrink-0"
                         >
                           {new Date(post.publishedAt).toLocaleDateString('en-US', {
-                            year: 'numeric',
                             month: 'short',
                             day: 'numeric',
                           })}
                         </time>
-                        <span className="text-blue-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-                          Read &rarr;
+                        <span className="text-blue-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
+                          &rarr;
                         </span>
                       </div>
                     </div>
