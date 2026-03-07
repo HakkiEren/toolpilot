@@ -173,15 +173,28 @@ export async function getRelatedLinks(
     });
   }
 
-  // 2. Same-category siblings (top-rated tools)
-  const { data: siblings } = await supabase
-    .from('tools')
-    .select('slug, name, category_slug')
-    .eq('category_slug', tool.categorySlug)
-    .eq('status', 'published')
-    .neq('id', tool.id)
-    .order('ratings_overall', { ascending: false })
-    .limit(3);
+  // 2-4. Parallel fetch: siblings, comparisons, cross-category links
+  const [{ data: siblings }, { data: comparisons }, { data: crossLinks }] = await Promise.all([
+    supabase
+      .from('tools')
+      .select('slug, name, category_slug')
+      .eq('category_slug', tool.categorySlug)
+      .eq('status', 'published')
+      .neq('id', tool.id)
+      .order('ratings_overall', { ascending: false })
+      .limit(3),
+    supabase
+      .from('comparisons')
+      .select('slug, category_slug')
+      .or(`tool_a_id.eq.${tool.id},tool_b_id.eq.${tool.id}`)
+      .limit(3),
+    supabase
+      .from('tools')
+      .select('slug, name, category_slug')
+      .neq('category_slug', tool.categorySlug)
+      .eq('status', 'published')
+      .limit(2),
+  ]);
 
   if (siblings) {
     for (const s of siblings) {
@@ -193,13 +206,6 @@ export async function getRelatedLinks(
     }
   }
 
-  // 3. Comparisons featuring this tool
-  const { data: comparisons } = await supabase
-    .from('comparisons')
-    .select('slug, category_slug')
-    .or(`tool_a_id.eq.${tool.id},tool_b_id.eq.${tool.id}`)
-    .limit(3);
-
   if (comparisons) {
     for (const c of comparisons) {
       links.push({
@@ -209,14 +215,6 @@ export async function getRelatedLinks(
       });
     }
   }
-
-  // 4. Cross-category links (tools with shared subcategory keywords)
-  const { data: crossLinks } = await supabase
-    .from('tools')
-    .select('slug, name, category_slug')
-    .neq('category_slug', tool.categorySlug)
-    .eq('status', 'published')
-    .limit(2);
 
   if (crossLinks) {
     for (const l of crossLinks) {
