@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getComparisonsByCategory, getCategoryStats } from '@/lib/data';
-import { generateBreadcrumbSchema, generateComparisonHubSchema } from '@/lib/schema';
-import { CATEGORIES, CATEGORY_LIST, SITE_URL } from '@/lib/constants';
+import { generateBreadcrumbSchema, generateComparisonHubSchema, generateFAQSchema } from '@/lib/schema';
+import { CATEGORIES, CATEGORY_LIST, SITE_URL, SITE_NAME } from '@/lib/constants';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { AdBanner, AdInArticle } from '@/components/ads/AdSlot';
 import { ToolLogo } from '@/components/common/ToolLogo';
@@ -82,10 +82,30 @@ export default async function ComparisonHubPage({ params }: PageProps) {
     .sort((a, b) => b.count - a.count)
     .slice(0, 8);
 
+  // Generate comparison hub FAQs (after topComparedTools is computed)
+  const hubFaqs = [
+    {
+      question: `How many ${cat.name.toLowerCase()} comparisons are available?`,
+      answer: `We currently have ${comparisons.length} detailed ${cat.name.toLowerCase()} comparisons covering ${stats.toolCount} tools. Each comparison includes feature analysis, pricing breakdowns, and expert verdicts.`,
+    },
+    {
+      question: `How are ${cat.name.toLowerCase()} compared on ${SITE_NAME}?`,
+      answer: `Each comparison evaluates tools across five dimensions: features, ease of use, value for money, customer support, and overall performance. Tools are rated on a 10-point scale based on hands-on testing and user feedback.`,
+    },
+    {
+      question: `Which is the most compared ${cat.name.toLowerCase().replace(/tools?$/i, 'tool')}?`,
+      answer: topComparedTools.length > 0
+        ? `${topComparedTools[0].name} is the most frequently compared tool with ${topComparedTools[0].count} comparisons available.`
+        : `Browse our full comparison directory above to find the most relevant matchups.`,
+    },
+  ];
+  const faqSchema = generateFAQSchema(hubFaqs);
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(hubSchema) }} />
+      {faqSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />}
 
       <div className="max-w-7xl mx-auto px-4 py-8">
         <Breadcrumbs items={[
@@ -268,10 +288,40 @@ export default async function ComparisonHubPage({ params }: PageProps) {
           </div>
         </section>
 
-        {/* Freshness */}
-        <div className="text-sm text-gray-400 mt-6 flex items-center gap-2">
-          <span>&#128197;</span>
-          Last updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+        {/* FAQ Section */}
+        <section className="mt-10 mb-8">
+          <h2 className="text-xl font-bold mb-4">Frequently Asked Questions</h2>
+          <div className="space-y-3">
+            {hubFaqs.map((faq, i) => (
+              <details key={i} className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl group" open={i === 0}>
+                <summary className="flex items-center justify-between px-5 py-4 cursor-pointer font-semibold text-sm text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                  {faq.question}
+                  <span className="text-gray-400 dark:text-gray-500 group-open:rotate-180 transition-transform ml-2">&#9660;</span>
+                </summary>
+                <div className="px-5 pb-4 text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                  {faq.answer}
+                </div>
+              </details>
+            ))}
+          </div>
+        </section>
+
+        {/* Freshness Signal */}
+        <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-gray-400 border-t border-gray-200 dark:border-gray-800 pt-6">
+          <div className="flex items-center gap-2">
+            <span>📅</span>
+            <span>Last updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+          </div>
+          <div className="w-1 h-1 bg-gray-300 dark:bg-gray-600 rounded-full" />
+          <div className="flex items-center gap-2">
+            <span>📊</span>
+            <span>{comparisons.length} comparisons reviewed</span>
+          </div>
+          <div className="w-1 h-1 bg-gray-300 dark:bg-gray-600 rounded-full" />
+          <div className="flex items-center gap-2">
+            <span>✅</span>
+            <span>Independent analysis by {SITE_NAME}</span>
+          </div>
         </div>
       </div>
     </>
