@@ -8,7 +8,7 @@ import { SITE_URL } from '@/lib/constants';
 // ============================================================
 
 const INDEXNOW_KEY = process.env.INDEXNOW_API_KEY || '84d9f83f717bec0c6979844cdf5d2186';
-const INDEXNOW_ENDPOINT = 'https://api.indexnow.org/IndexNow';
+const INDEXNOW_ENDPOINT = 'https://www.bing.com/indexnow';
 const MAX_URLS_PER_REQUEST = 10_000;
 
 // Simple bearer token for protecting the endpoint

@@ -5,7 +5,7 @@ import { SITE_URL } from './constants';
 // Can be called from: API routes, server actions, cron jobs
 // ============================================================
 const INDEXNOW_KEY = process.env.INDEXNOW_API_KEY || '84d9f83f717bec0c6979844cdf5d2186';
-const INDEXNOW_ENDPOINT = 'https://api.indexnow.org/IndexNow';
+const INDEXNOW_ENDPOINT = 'https://www.bing.com/indexnow';
 
 /**
  * Submit URLs to IndexNow for instant indexing by Bing, Yandex, etc.
