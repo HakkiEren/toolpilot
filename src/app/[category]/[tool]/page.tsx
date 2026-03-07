@@ -218,7 +218,7 @@ export default async function ToolPage({ params }: PageProps) {
             <span className="text-sm font-bold text-blue-700 dark:text-blue-400 uppercase tracking-wider">TL;DR</span>
             <div className="flex-1 h-px bg-blue-200/50 dark:bg-blue-800/30" />
           </div>
-          <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+          <p data-speakable="true" className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
             {tool.name} is {tool.ratings.overall >= 8 ? 'a top-rated' : tool.ratings.overall >= 6 ? 'a solid' : 'an'} {cat?.name?.toLowerCase() || 'digital'} tool rated {tool.ratings.overall.toFixed(1)}/10.{' '}
             {tool.pricing.hasFreeplan ? 'It offers a free plan, making it accessible for individuals and small teams.' : tool.pricing.startingPrice ? `Plans start at $${tool.pricing.startingPrice}/mo.` : 'Contact sales for pricing.'}{' '}
             Key strengths: features ({tool.ratings.features.toFixed(1)}/10) and ease of use ({tool.ratings.easeOfUse.toFixed(1)}/10).{' '}
