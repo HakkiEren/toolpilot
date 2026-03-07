@@ -1,12 +1,20 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SITE_NAME, SITE_URL } from '@/lib/constants';
+import { generateBreadcrumbSchema } from '@/lib/schema';
 import ContactForm from './contact-form';
 
 export const metadata: Metadata = {
   title: `Contact Us — Get in Touch | ${SITE_NAME}`,
   description: `Contact the ${SITE_NAME} team. Submit tool suggestions, report inaccuracies, partnership inquiries, or ask questions. We typically respond within 24-48 hours.`,
   alternates: { canonical: `${SITE_URL}/contact` },
+  openGraph: {
+    title: `Contact Us — Get in Touch | ${SITE_NAME}`,
+    description: `Contact the ${SITE_NAME} team. Submit tool suggestions, report inaccuracies, partnership inquiries, or ask questions.`,
+    url: `${SITE_URL}/contact`,
+    siteName: SITE_NAME,
+    type: 'website',
+  },
 };
 
 const CONTACT_REASONS = [
@@ -68,8 +76,28 @@ const FAQ_ITEMS = [
 ];
 
 export default function ContactPage() {
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: '/' },
+    { name: 'Contact', url: '/contact' },
+  ]);
+
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: FAQ_ITEMS.map((faq) => ({
+      '@type': 'Question',
+      name: faq.q,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.a,
+      },
+    })),
+  };
+
   return (
     <div className="max-w-5xl mx-auto px-4 py-12">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       {/* Hero — Premium glassmorphism */}
       <div className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-emerald-50/30 to-cyan-50/40 dark:from-gray-900 dark:via-emerald-950/10 dark:to-cyan-950/10 rounded-3xl border border-gray-200/60 dark:border-gray-800/60 p-8 md:p-12 mb-12 text-center">
         <div className="absolute -top-24 -right-24 w-72 h-72 bg-emerald-400/10 dark:bg-emerald-400/5 rounded-full blur-3xl pointer-events-none" />

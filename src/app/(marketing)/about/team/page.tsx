@@ -15,6 +15,13 @@ export const metadata: Metadata = {
   title: `Our Team — The Experts Behind ${SITE_NAME}`,
   description: `Meet the ${SITE_NAME} editorial team. Our software analysts, tech writers, and industry experts review and compare 400+ digital tools across AI, SaaS, marketing, hosting, and more.`,
   alternates: { canonical: `${SITE_URL}/about/team` },
+  openGraph: {
+    title: `Our Team — The Experts Behind ${SITE_NAME}`,
+    description: `Meet the ${SITE_NAME} editorial team. Our software analysts, tech writers, and industry experts review and compare 400+ digital tools across AI, SaaS, marketing, hosting, and more.`,
+    url: `${SITE_URL}/about/team`,
+    siteName: SITE_NAME,
+    type: 'website',
+  },
 };
 
 export default function TeamPage() {
