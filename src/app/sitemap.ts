@@ -11,39 +11,44 @@ import { SITE_URL, CATEGORY_LIST, SUBCATEGORIES, LIMITS } from '@/lib/constants'
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const entries: MetadataRoute.Sitemap = [];
 
-  // 1. Static pages
+  // 1. Static pages — use stable dates for proper Googlebot cache signaling
+  const now = new Date();
+  const weeklyDate = new Date(now.getFullYear(), now.getMonth(), now.getDate()); // today at midnight
+  const monthlyDate = new Date(now.getFullYear(), now.getMonth(), 1); // first of month
+
   entries.push(
-    { url: SITE_URL, lastModified: new Date(), changeFrequency: 'daily', priority: 1.0 },
-    { url: `${SITE_URL}/blog`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
-    { url: `${SITE_URL}/search`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
-    { url: `${SITE_URL}/about`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.4 },
-    { url: `${SITE_URL}/contact`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.4 },
-    { url: `${SITE_URL}/privacy`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.2 },
-    { url: `${SITE_URL}/terms`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.2 },
-    { url: `${SITE_URL}/sitemap-html`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.5 },
+    { url: SITE_URL, lastModified: weeklyDate, changeFrequency: 'daily', priority: 1.0 },
+    { url: `${SITE_URL}/blog`, lastModified: weeklyDate, changeFrequency: 'weekly', priority: 0.8 },
+    { url: `${SITE_URL}/search`, lastModified: monthlyDate, changeFrequency: 'weekly', priority: 0.7 },
+    { url: `${SITE_URL}/about`, lastModified: monthlyDate, changeFrequency: 'monthly', priority: 0.4 },
+    { url: `${SITE_URL}/contact`, lastModified: monthlyDate, changeFrequency: 'monthly', priority: 0.4 },
+    { url: `${SITE_URL}/privacy`, lastModified: monthlyDate, changeFrequency: 'yearly', priority: 0.2 },
+    { url: `${SITE_URL}/terms`, lastModified: monthlyDate, changeFrequency: 'yearly', priority: 0.2 },
+    { url: `${SITE_URL}/sitemap-html`, lastModified: weeklyDate, changeFrequency: 'weekly', priority: 0.5 },
     // Calculator pages
-    { url: `${SITE_URL}/calculators/roi`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
-    { url: `${SITE_URL}/calculators/email-marketing-roi`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
-    { url: `${SITE_URL}/calculators/hosting-cost`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
-    { url: `${SITE_URL}/calculators/ecommerce-profit`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
-    { url: `${SITE_URL}/calculators/ai-cost`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
-    { url: `${SITE_URL}/calculators/team-productivity`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
-    { url: `${SITE_URL}/glossary`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
-    { url: `${SITE_URL}/about/team`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
-    { url: `${SITE_URL}/changelog`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.5 },
+    { url: `${SITE_URL}/calculators/roi`, lastModified: monthlyDate, changeFrequency: 'monthly', priority: 0.6 },
+    { url: `${SITE_URL}/calculators/email-marketing-roi`, lastModified: monthlyDate, changeFrequency: 'monthly', priority: 0.6 },
+    { url: `${SITE_URL}/calculators/hosting-cost`, lastModified: monthlyDate, changeFrequency: 'monthly', priority: 0.6 },
+    { url: `${SITE_URL}/calculators/ecommerce-profit`, lastModified: monthlyDate, changeFrequency: 'monthly', priority: 0.6 },
+    { url: `${SITE_URL}/calculators/ai-cost`, lastModified: monthlyDate, changeFrequency: 'monthly', priority: 0.6 },
+    { url: `${SITE_URL}/calculators/team-productivity`, lastModified: monthlyDate, changeFrequency: 'monthly', priority: 0.6 },
+    { url: `${SITE_URL}/glossary`, lastModified: monthlyDate, changeFrequency: 'monthly', priority: 0.6 },
+    { url: `${SITE_URL}/about/team`, lastModified: monthlyDate, changeFrequency: 'monthly', priority: 0.5 },
+    { url: `${SITE_URL}/changelog`, lastModified: weeklyDate, changeFrequency: 'weekly', priority: 0.5 },
+    { url: `${SITE_URL}/feed.xml`, lastModified: weeklyDate, changeFrequency: 'weekly', priority: 0.3 },
   );
 
   // 2. Category pages + comparison hub pages
   for (const cat of CATEGORY_LIST) {
     entries.push({
       url: `${SITE_URL}/${cat.slug}`,
-      lastModified: new Date(),
+      lastModified: weeklyDate,
       changeFrequency: 'weekly',
       priority: 0.9,
     });
     entries.push({
       url: `${SITE_URL}/${cat.slug}/compare`,
-      lastModified: new Date(),
+      lastModified: weeklyDate,
       changeFrequency: 'weekly',
       priority: 0.85,
     });
@@ -52,7 +57,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // 3. Best-of index + subcategory pages
   entries.push({
     url: `${SITE_URL}/best`,
-    lastModified: new Date(),
+    lastModified: weeklyDate,
     changeFrequency: 'weekly',
     priority: 0.85,
   });
@@ -60,7 +65,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     for (const sub of subs) {
       entries.push({
         url: `${SITE_URL}/best/${sub.slug}`,
-        lastModified: new Date(),
+        lastModified: weeklyDate,
         changeFrequency: 'weekly',
         priority: 0.8,
       });
