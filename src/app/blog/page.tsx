@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getBlogPosts } from '@/lib/data';
 import { generateBreadcrumbSchema } from '@/lib/schema';
-import { SITE_URL, SEO, SITE_NAME } from '@/lib/constants';
+import { SITE_URL, SITE_NAME } from '@/lib/constants';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { AdBanner, AdMultiplex } from '@/components/ads/AdSlot';
 
@@ -60,11 +60,39 @@ export default async function BlogIndexPage() {
   const featured = posts[0];
   const restPosts = posts.slice(1);
 
+  // CollectionPage + ItemList schema for blog index
+  const blogCollectionSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: `${SITE_NAME} Blog`,
+    description: `Expert guides, tool reviews, and industry insights from the ${SITE_NAME} team.`,
+    url: `${SITE_URL}/blog`,
+    publisher: {
+      '@type': 'Organization',
+      name: SITE_NAME,
+      url: SITE_URL,
+    },
+    mainEntity: {
+      '@type': 'ItemList',
+      numberOfItems: posts.length,
+      itemListElement: posts.slice(0, 20).map((post, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        url: `${SITE_URL}/blog/${post.slug}`,
+        name: post.title,
+      })),
+    },
+  };
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogCollectionSchema) }}
       />
 
       <div className="max-w-7xl mx-auto px-4 py-8">

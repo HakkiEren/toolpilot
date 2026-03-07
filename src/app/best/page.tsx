@@ -45,12 +45,43 @@ export default async function BestOfIndexPage() {
     { name: 'Best Tools', url: '/best' },
   ];
 
+  // CollectionPage schema for best-of index
+  const allSubcategories = Object.entries(SUBCATEGORIES).flatMap(([, subs]) => subs);
+  const bestOfCollectionSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: `Best Tools by Category (${year})`,
+    description: `Browse curated best-of lists across AI, SaaS, E-commerce, Marketing, Hosting & Business tools for ${year}.`,
+    url: `${SITE_URL}/best`,
+    publisher: {
+      '@type': 'Organization',
+      name: SITE_NAME,
+      url: SITE_URL,
+    },
+    mainEntity: {
+      '@type': 'ItemList',
+      numberOfItems: allSubcategories.length,
+      itemListElement: allSubcategories.map((sub, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        url: `${SITE_URL}/best/${sub.slug}`,
+        name: `Best ${sub.name}`,
+      })),
+    },
+  };
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(generateBreadcrumbSchema(breadcrumbs)),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(bestOfCollectionSchema),
         }}
       />
 
