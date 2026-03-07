@@ -39,6 +39,22 @@ const CHANGELOG: {
   entries: { type: 'added' | 'updated' | 'improved' | 'launched'; text: string; link?: string }[];
 }[] = [
   {
+    date: '2026-03-13',
+    version: '2.9',
+    entries: [
+      { type: 'launched', text: 'Complete rebrand: ToolPilot → ProPicked across entire codebase (23 files)' },
+      { type: 'improved', text: 'Updated favicon, apple icon, header/footer logo letter to "P"' },
+      { type: 'improved', text: 'Updated all OG images (blog, tool, comparison, best-of) with new brand' },
+      { type: 'improved', text: 'Updated social links (Twitter, YouTube, LinkedIn) to @propicked' },
+      { type: 'launched', text: 'Related Articles section added to pricing pages (433+ pages)', link: '/ai-tools/chatgpt/pricing' },
+      { type: 'launched', text: 'Related Articles section added to alternatives pages (433+ pages)' },
+      { type: 'launched', text: 'Related Articles section added to best-of ranking pages (46+ pages)' },
+      { type: 'improved', text: 'PriceCompare component: raw img tag replaced with optimized ToolLogo (Next.js Image)' },
+      { type: 'launched', text: 'Supabase migration script for subscribers and contact_submissions tables' },
+      { type: 'improved', text: 'Internal linking: blog cross-links now on 1,400+ additional pages for SEO link equity' },
+    ],
+  },
+  {
     date: '2026-03-11',
     version: '2.8',
     entries: [
