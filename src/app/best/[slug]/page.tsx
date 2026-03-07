@@ -7,6 +7,7 @@ import { generateBreadcrumbSchema, generateCollectionSchema, generateBestOfItemL
 import { ToolLogo } from '@/components/common/ToolLogo';
 import { RatingStars } from '@/components/common/RatingStars';
 import { AdBanner, AdInArticle, AdMultiplex } from '@/components/ads/AdSlot';
+import { ShareButtons } from '@/components/common/ShareButtons';
 import type { Tool } from '@/types';
 
 // Award badges — calculated from tool data
@@ -250,6 +251,37 @@ export default async function BestOfPage({ params }: { params: Promise<{ slug: s
           </div>
         </div>
 
+        {/* TL;DR Quick Verdict — AI Overview + Featured Snippet optimized */}
+        {allTools.length >= 3 && (
+          <div className="mb-10 p-5 bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-950/30 dark:to-purple-950/30 rounded-2xl border border-indigo-200/60 dark:border-indigo-800/30">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-sm font-bold text-indigo-700 dark:text-indigo-400 uppercase tracking-wider">Quick Verdict</span>
+              <div className="flex-1 h-px bg-indigo-200/50 dark:bg-indigo-800/30" />
+            </div>
+            <p data-speakable="true" className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+              Our top 3 picks for {sub.name.toLowerCase()} in {year}:{' '}
+              <strong>{allTools[0].name}</strong> ({allTools[0].ratings.overall}/10) takes the top spot with {allTools[0].ratings.features >= 8.5 ? 'exceptional features' : allTools[0].ratings.easeOfUse >= 8.5 ? 'outstanding ease of use' : 'strong overall performance'},{' '}
+              <strong>{allTools[1].name}</strong> ({allTools[1].ratings.overall}/10) is the runner-up{allTools[1].pricing.hasFreeplan ? ' with a free plan available' : ''}, and{' '}
+              <strong>{allTools[2].name}</strong> ({allTools[2].ratings.overall}/10) rounds out the top three
+              {allTools[2].ratings.valueForMoney >= 8 ? ' with excellent value for money' : ''}.{' '}
+              {allTools.filter(t => t.pricing.hasFreeplan).length > 0
+                ? `${allTools.filter(t => t.pricing.hasFreeplan).length} of ${allTools.length} tools offer free plans.`
+                : `Prices start from $${Math.min(...allTools.filter(t => t.pricing.startingPrice).map(t => t.pricing.startingPrice!))}/mo.`
+              }
+            </p>
+            <div className="mt-3 flex items-center justify-between">
+              <span className="text-xs text-gray-400">
+                Last updated: {new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+              </span>
+              <ShareButtons
+                url={`${SITE_URL}/best/${slug}`}
+                title={`Best ${sub.name} in ${year}`}
+                description={`Compare the best ${sub.name.toLowerCase()} side by side with expert ratings and pricing.`}
+              />
+            </div>
+          </div>
+        )}
+
         {/* Quick Summary Table */}
         {allTools.length > 0 && (
           <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl overflow-hidden mb-10 shadow-sm">
@@ -470,6 +502,38 @@ export default async function BestOfPage({ params }: { params: Promise<{ slug: s
             <Link href={`/${sub.categorySlug}`} className="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">
               Browse all {sub.categoryName} &#8594;
             </Link>
+          </div>
+        )}
+
+        {/* Compare Top Picks — Internal linking to comparison pages */}
+        {allTools.length >= 2 && (
+          <div className="mb-12">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Compare Top Picks</h2>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
+              See how the top-ranked {sub.name.toLowerCase()} stack up against each other in detailed side-by-side comparisons.
+            </p>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              {allTools.slice(0, 4).flatMap((toolA, i) =>
+                allTools.slice(i + 1, Math.min(i + 3, 4)).map((toolB) => {
+                  const compSlug = [toolA.slug, toolB.slug].sort().join('-vs-');
+                  return (
+                    <Link
+                      key={compSlug}
+                      href={`/${sub.categorySlug}/compare/${compSlug}`}
+                      className="group hover-lift flex items-center gap-3 p-4 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl hover:border-indigo-300 dark:hover:border-indigo-700 transition-all"
+                    >
+                      <ToolLogo logoUrl={toolA.logoUrl} name={toolA.name} size={28} />
+                      <span className="px-2 py-0.5 bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 rounded text-[10px] font-extrabold">VS</span>
+                      <ToolLogo logoUrl={toolB.logoUrl} name={toolB.name} size={28} />
+                      <span className="flex-1 text-sm font-medium text-gray-700 dark:text-gray-300 truncate group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                        {toolA.name} vs {toolB.name}
+                      </span>
+                      <span className="text-indigo-500 text-sm group-hover:translate-x-1 transition-transform">&#8594;</span>
+                    </Link>
+                  );
+                })
+              )}
+            </div>
           </div>
         )}
 

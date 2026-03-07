@@ -248,6 +248,7 @@ export default async function CategoryPage({ params }: PageProps) {
             }))}
             categorySlug={category}
             categoryName={cat.name}
+            subcategories={subcategories.map(s => ({ slug: s.slug, name: s.name }))}
           />
         ) : (
           <div className="text-center py-20 text-gray-400">

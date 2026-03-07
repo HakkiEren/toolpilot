@@ -6,6 +6,7 @@ import { generateOrganizationSchema, generateWebSiteSchema } from '@/lib/schema'
 import { MobileMenu } from '@/components/layout/MobileMenu';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { NewsletterPopup } from '@/components/ui/NewsletterPopup';
+import { BackToTop } from '@/components/common/BackToTop';
 import { Footer } from '@/components/layout/Footer';
 import Link from 'next/link';
 
@@ -210,6 +211,9 @@ export default function RootLayout({
 
         {/* Newsletter Popup */}
         <NewsletterPopup />
+
+        {/* Back to Top Button */}
+        <BackToTop />
 
         {/* Footer */}
         <Footer />
