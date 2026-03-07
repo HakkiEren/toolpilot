@@ -7,6 +7,7 @@ import { SITE_URL, SEO, SITE_NAME, CATEGORIES } from '@/lib/constants';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { RelatedLinks } from '@/components/common/RelatedLinks';
 import { AdBanner, AdInArticle, AdSidebar } from '@/components/ads/AdSlot';
+import { ShareButtons } from '@/components/common/ShareButtons';
 import type { InternalLink } from '@/types';
 
 // ============================================================
@@ -204,6 +205,14 @@ export default async function BlogPostPage({ params }: PageProps) {
                   </span>
                 )}
               </div>
+
+              {/* Share buttons — below meta info */}
+              <ShareButtons
+                url={`${SITE_URL}/blog/${slug}`}
+                title={post.title}
+                description={post.excerpt}
+                className="mt-4"
+              />
             </header>
 
             {/* Ad: Before Article Body */}
@@ -219,6 +228,16 @@ export default async function BlogPostPage({ params }: PageProps) {
                 prose-blockquote:border-blue-500 prose-blockquote:bg-blue-50/50 dark:prose-blockquote:bg-blue-900/10 prose-blockquote:rounded-r-lg prose-blockquote:py-1"
               dangerouslySetInnerHTML={{ __html: post.content }}
             />
+
+            {/* Share buttons — after article body */}
+            <div className="mt-8 mb-6 p-5 bg-gray-50 dark:bg-gray-800/50 rounded-2xl border border-gray-200/50 dark:border-gray-800/50">
+              <p className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Found this article helpful? Share it!</p>
+              <ShareButtons
+                url={`${SITE_URL}/blog/${slug}`}
+                title={post.title}
+                description={post.excerpt}
+              />
+            </div>
 
             {/* Ad: After Article Body */}
             <AdInArticle />

@@ -15,6 +15,7 @@ import { RelatedLinks } from '@/components/common/RelatedLinks';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { AdBanner, AdInArticle, AdMultiplex, AdNative } from '@/components/ads/AdSlot';
 import { ToolLogo } from '@/components/common/ToolLogo';
+import { ShareButtons } from '@/components/common/ShareButtons';
 
 // ============================================================
 // COMPARISON PAGE — ENHANCED with winner banner, nav, tool cards
@@ -525,25 +526,32 @@ export default async function ComparisonPage({ params }: PageProps) {
         </section>
 
         {/* Freshness Signal — Enhanced trust badge */}
-        <div className="mt-10 flex flex-wrap items-center gap-4 text-sm text-gray-400 border-t border-gray-200 dark:border-gray-800 pt-6">
-          <div className="flex items-center gap-2">
-            <span>📅</span>
-            <span>Last updated: {new Date(comparison.lastUpdated).toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-            })}</span>
+        <div className="mt-10 flex flex-wrap items-center justify-between gap-4 text-sm text-gray-400 border-t border-gray-200 dark:border-gray-800 pt-6">
+          <div className="flex flex-wrap items-center gap-4">
+            <div className="flex items-center gap-2">
+              <span>📅</span>
+              <span>Last updated: {new Date(comparison.lastUpdated).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}</span>
+            </div>
+            <div className="w-1 h-1 bg-gray-300 dark:bg-gray-600 rounded-full" />
+            <div className="flex items-center gap-2">
+              <span>✅</span>
+              <span>Prices verified</span>
+            </div>
+            <div className="w-1 h-1 bg-gray-300 dark:bg-gray-600 rounded-full" />
+            <div className="flex items-center gap-2">
+              <span>📊</span>
+              <span>Independent review</span>
+            </div>
           </div>
-          <div className="w-1 h-1 bg-gray-300 dark:bg-gray-600 rounded-full" />
-          <div className="flex items-center gap-2">
-            <span>✅</span>
-            <span>Prices verified</span>
-          </div>
-          <div className="w-1 h-1 bg-gray-300 dark:bg-gray-600 rounded-full" />
-          <div className="flex items-center gap-2">
-            <span>📊</span>
-            <span>Independent review</span>
-          </div>
+          <ShareButtons
+            url={`${SITE_URL}/${category}/compare/${slug}`}
+            title={`${comparison.toolA.name} vs ${comparison.toolB.name} — Honest Comparison`}
+            description={`Compare ${comparison.toolA.name} and ${comparison.toolB.name} side by side.`}
+          />
         </div>
       </article>
     </>
