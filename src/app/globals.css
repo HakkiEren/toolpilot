@@ -509,9 +509,21 @@ img {
 }
 
 /* Content-visibility for below-fold sections (CWV: reduce rendering work) */
-section:nth-child(n+4) {
+article > section:nth-child(n+4),
+main section:nth-child(n+4) {
   content-visibility: auto;
   contain-intrinsic-size: auto 500px;
+}
+
+/* ============================================================
+   STREAMING SSR DEFENSE
+   React streaming SSR uses hidden containers ($RC) to resolve
+   Suspense boundaries. In rare cases (browser extensions, hydration
+   edge cases), orphaned content can appear after the footer.
+   This defensive rule ensures it stays invisible.
+   ============================================================ */
+body > footer ~ *:not(script):not(template):not([hidden]) {
+  display: none !important;
 }
 
 /* ============================================================
