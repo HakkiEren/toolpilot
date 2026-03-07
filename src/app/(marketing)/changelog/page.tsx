@@ -39,6 +39,24 @@ const CHANGELOG: {
   entries: { type: 'added' | 'updated' | 'improved' | 'launched'; text: string; link?: string }[];
 }[] = [
   {
+    date: '2026-03-08',
+    version: '2.5',
+    entries: [
+      { type: 'improved', text: 'Homepage SEO: Added dedicated metadata with OpenGraph and Twitter cards' },
+      { type: 'improved', text: 'Category, Glossary, Changelog pages now have full OpenGraph + Twitter metadata' },
+      { type: 'launched', text: 'Reading progress bar on all content pages (blog, tool reviews, comparisons, pricing, alternatives)' },
+      { type: 'launched', text: 'Copy link button with clipboard API for easy URL sharing' },
+      { type: 'launched', text: 'Table of Contents with scroll-aware active section highlighting' },
+      { type: 'improved', text: 'Pricing and Alternatives pages upgraded with TOC, ShareButtons, ReadingProgress, CopyLinkButton' },
+      { type: 'improved', text: 'robots.txt: Allow Google to render JavaScript assets from /_next/static/' },
+      { type: 'improved', text: 'XML Sitemap: Removed noindexed /sitemap-html page for cleaner crawl signals' },
+      { type: 'improved', text: 'CDN edge caching: Added Cache-Control s-maxage + stale-while-revalidate headers' },
+      { type: 'added', text: 'Subcategory filter tabs on category pages for easy tool browsing' },
+      { type: 'launched', text: 'Back to Top button for improved navigation on long pages' },
+      { type: 'improved', text: 'Best-of pages: Quick Verdict TL;DR box with top 3 picks summary' },
+    ],
+  },
+  {
     date: '2026-03-07',
     version: '2.4',
     entries: [

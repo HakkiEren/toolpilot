@@ -1,13 +1,30 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { SITE_NAME, SITE_URL, CATEGORY_LIST } from '@/lib/constants';
+import { SITE_NAME, SITE_URL, CATEGORY_LIST, SEO } from '@/lib/constants';
 import { supabase } from '@/lib/supabase';
 import { generateBreadcrumbSchema } from '@/lib/schema';
 
+const aboutTitle = `About Us — Our Mission & Methodology | ${SITE_NAME}`;
+const aboutDescription = `Learn about ${SITE_NAME} — our mission to help businesses find the right digital tools through unbiased, data-driven comparisons and honest reviews across 6 categories.`;
+
 export const metadata: Metadata = {
-  title: `About Us — Our Mission & Methodology | ${SITE_NAME}`,
-  description: `Learn about ${SITE_NAME} — our mission to help businesses find the right digital tools through unbiased, data-driven comparisons and honest reviews across 6 categories.`,
+  title: aboutTitle,
+  description: aboutDescription,
   alternates: { canonical: `${SITE_URL}/about` },
+  openGraph: {
+    title: aboutTitle,
+    description: aboutDescription,
+    url: `${SITE_URL}/about`,
+    siteName: SITE_NAME,
+    type: 'website',
+    locale: SEO.locale,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    site: SEO.twitterHandle,
+    title: aboutTitle,
+    description: aboutDescription,
+  },
 };
 
 export const revalidate = 3600;

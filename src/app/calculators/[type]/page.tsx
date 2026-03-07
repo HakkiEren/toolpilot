@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { SITE_NAME, SITE_URL } from '@/lib/constants';
+import { SITE_NAME, SITE_URL, SEO } from '@/lib/constants';
 import { generateCalculatorHowToSchema, generateBreadcrumbSchema } from '@/lib/schema';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { AdBanner, AdInArticle } from '@/components/ads/AdSlot';
@@ -118,6 +118,20 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title: calc.metaTitle,
     description: calc.metaDescription,
     alternates: { canonical: `${SITE_URL}/calculators/${type}` },
+    openGraph: {
+      title: calc.metaTitle,
+      description: calc.metaDescription,
+      url: `${SITE_URL}/calculators/${type}`,
+      siteName: SITE_NAME,
+      type: 'website',
+      locale: SEO.locale,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      site: SEO.twitterHandle,
+      title: calc.metaTitle,
+      description: calc.metaDescription,
+    },
   };
 }
 
