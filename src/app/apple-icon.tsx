@@ -4,7 +4,7 @@ import { ImageResponse } from 'next/og';
 export const size = { width: 180, height: 180 };
 export const contentType = 'image/png';
 
-// Apple Touch Icon — gradient "T" logo
+// Apple Touch Icon — gradient "P" logo
 export default function AppleIcon() {
   return new ImageResponse(
     (
@@ -27,7 +27,7 @@ export default function AppleIcon() {
             lineHeight: 1,
           }}
         >
-          T
+          P
         </span>
       </div>
     ),

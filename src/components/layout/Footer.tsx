@@ -73,7 +73,7 @@ export function Footer() {
           <div className="col-span-2 md:col-span-3 lg:col-span-2">
             <Link href="/" className="inline-flex items-center gap-2 mb-4">
               <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">T</span>
+                <span className="text-white font-bold text-sm">P</span>
               </div>
               <span className="text-xl font-bold text-gray-900 dark:text-white">{SITE_NAME}</span>
             </Link>

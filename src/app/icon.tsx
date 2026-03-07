@@ -4,7 +4,7 @@ import { ImageResponse } from 'next/og';
 export const size = { width: 32, height: 32 };
 export const contentType = 'image/png';
 
-// Favicon — gradient "T" logo matching the header
+// Favicon — gradient "P" logo matching the header
 export default function Icon() {
   return new ImageResponse(
     (
@@ -27,7 +27,7 @@ export default function Icon() {
             lineHeight: 1,
           }}
         >
-          T
+          P
         </span>
       </div>
     ),

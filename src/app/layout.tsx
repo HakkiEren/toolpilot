@@ -128,7 +128,7 @@ export default function RootLayout({
           <nav className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between" aria-label="Primary navigation">
             <Link href="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity" aria-label={`${SITE_NAME} homepage`}>
               <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center shadow-md shadow-blue-500/20">
-                <span className="text-white font-bold text-sm">T</span>
+                <span className="text-white font-bold text-sm">P</span>
               </div>
               <span className="text-xl font-extrabold gradient-text">{SITE_NAME}</span>
             </Link>
