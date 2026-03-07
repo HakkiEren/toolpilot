@@ -1,13 +1,14 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 // ============================================================
 // Google AdSense Ad Slot System — Premium Placement Strategy
 // Maximum RPM with optimal UX balance
+// Only renders when AdSense is actually configured & loaded
 // ============================================================
 
-const ADSENSE_PUB_ID = process.env.NEXT_PUBLIC_ADSENSE_ID || 'ca-pub-XXXXXXXXXX';
+const ADSENSE_PUB_ID = process.env.NEXT_PUBLIC_ADSENSE_ID || '';
 
 interface AdSlotProps {
   slot: string;
@@ -21,29 +22,41 @@ interface AdSlotProps {
 export function AdSlot({ slot, format = 'auto', layoutKey, className = '', inArticle = false, responsive = true }: AdSlotProps) {
   const adRef = useRef<HTMLModElement>(null);
   const pushed = useRef(false);
+  const [adLoaded, setAdLoaded] = useState(false);
 
   useEffect(() => {
+    // Don't render anything if AdSense is not configured
+    if (!ADSENSE_PUB_ID || ADSENSE_PUB_ID === 'ca-pub-XXXXXXXXXX') return;
+
     if (pushed.current) return;
     try {
       // @ts-expect-error - AdSense global
       (window.adsbygoogle = window.adsbygoogle || []).push({});
       pushed.current = true;
+      setAdLoaded(true);
     } catch {
       // AdSense not loaded yet
     }
   }, []);
+
+  // Don't render ad slot at all if AdSense is not configured
+  if (!ADSENSE_PUB_ID || ADSENSE_PUB_ID === 'ca-pub-XXXXXXXXXX') {
+    return null;
+  }
 
   // CLS prevention: reserve space for ad before it loads
   const minHeight = format === 'horizontal' ? 90 : format === 'vertical' ? 250 : inArticle ? 100 : 100;
 
   return (
     <div className={`ad-slot ${className}`} role="complementary" aria-label="Advertisement">
-      <div className="text-center mb-1">
-        <span className="text-[10px] text-gray-400/60 uppercase tracking-[0.2em]">Sponsored</span>
-      </div>
+      {adLoaded && (
+        <div className="text-center mb-1">
+          <span className="text-[10px] text-gray-400/60 uppercase tracking-[0.2em]">Sponsored</span>
+        </div>
+      )}
       <ins
         className="adsbygoogle"
-        style={{ display: 'block', textAlign: 'center', minHeight }}
+        style={{ display: 'block', textAlign: 'center', minHeight: adLoaded ? minHeight : 0 }}
         data-ad-client={ADSENSE_PUB_ID}
         data-ad-slot={slot}
         data-ad-format={inArticle ? 'fluid' : format}

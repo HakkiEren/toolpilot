@@ -211,7 +211,7 @@ export function Footer() {
               &copy; {year} {SITE_NAME}. All rights reserved. All trademarks are the property of their respective owners.
             </p>
             <div className="flex items-center gap-4 text-xs text-gray-400">
-              <span>Made with data, not ads</span>
+              <span>Independent reviews since 2025</span>
               <span className="w-1 h-1 bg-gray-300 dark:bg-gray-600 rounded-full" />
               <span>{year} Edition</span>
             </div>

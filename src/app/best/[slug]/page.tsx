@@ -74,7 +74,7 @@ function generateBestOfFAQs(tools: Tool[], subcategoryName: string): { question:
   if (topTool) {
     faqs.push({
       question: `What is the best ${subcategoryName.toLowerCase().replace(/tools?$/i, 'tool')} in ${year}?`,
-      answer: `Based on our analysis, ${topTool.name} is the top-rated ${subcategoryName.toLowerCase().replace(/tools?$/i, 'tool')} in ${year} with a score of ${topTool.ratings.overall}/10. It stands out for its ${topTool.ratings.easeOfUse >= 8 ? 'ease of use' : 'feature set'} and ${topTool.pricing.hasFreeplan ? 'offers a free plan' : `starts at $${topTool.pricing.startingPrice}/month`}.`,
+      answer: `Based on our analysis, ${topTool.name} is the top-rated ${subcategoryName.toLowerCase().replace(/tools?$/i, 'tool')} in ${year} with a score of ${topTool.ratings.overall}/10. It stands out for its ${topTool.ratings.easeOfUse >= 8 ? 'ease of use' : 'feature set'} and ${topTool.pricing.hasFreeplan ? 'offers a free plan' : topTool.pricing.startingPrice != null ? `starts at $${topTool.pricing.startingPrice}/month` : 'offers competitive pricing'}.`,
     });
   }
 

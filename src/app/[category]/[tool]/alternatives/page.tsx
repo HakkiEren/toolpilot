@@ -180,7 +180,7 @@ export default async function AlternativesPage({ params }: PageProps) {
                 <span className="text-yellow-500">&#9733;</span> <strong>{tool.ratings.overall.toFixed(1)}</strong>/10
               </div>
               <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-full px-4 py-2 border border-gray-200/50 dark:border-gray-700/50 shadow-sm">
-                {tool.pricing.hasFreeplan ? '\u2713 Free plan' : `From $${tool.pricing.startingPrice}/mo`}
+                {tool.pricing.hasFreeplan ? '\u2713 Free plan' : tool.pricing.startingPrice != null ? `From $${tool.pricing.startingPrice}/mo` : 'Contact for pricing'}
               </div>
               <Link
                 href={`/${category}/${toolSlug}`}

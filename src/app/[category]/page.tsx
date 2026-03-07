@@ -40,7 +40,7 @@ export default async function CategoryPage({ params }: PageProps) {
   if (!cat) notFound();
 
   const [tools, stats, comparisons, allPosts] = await Promise.all([
-    getToolsByCategory(category, 50),
+    getToolsByCategory(category, 200),
     getCategoryStats(category),
     getComparisonsByCategory(category, 6),
     getBlogPosts(50),
@@ -205,7 +205,7 @@ export default async function CategoryPage({ params }: PageProps) {
 
                     <div className="mt-4 flex items-center justify-between text-sm">
                       <span className="text-gray-400">
-                        {tool.pricing.hasFreeplan ? '\u2713 Free plan' : `From $${tool.pricing.startingPrice}/mo`}
+                        {tool.pricing.hasFreeplan ? '\u2713 Free plan' : tool.pricing.startingPrice != null ? `From $${tool.pricing.startingPrice}/mo` : 'Contact for pricing'}
                       </span>
                       <span className="text-blue-600 font-medium group-hover:translate-x-1 transition-transform">
                         Review &#8594;
