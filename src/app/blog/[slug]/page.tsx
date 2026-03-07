@@ -8,6 +8,8 @@ import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { RelatedLinks } from '@/components/common/RelatedLinks';
 import { AdBanner, AdInArticle, AdSidebar } from '@/components/ads/AdSlot';
 import { ShareButtons } from '@/components/common/ShareButtons';
+import { CopyLinkButton } from '@/components/common/CopyLinkButton';
+import { ReadingProgress } from '@/components/common/ReadingProgress';
 import type { InternalLink } from '@/types';
 
 // ============================================================
@@ -124,6 +126,7 @@ export default async function BlogPostPage({ params }: PageProps) {
 
   return (
     <>
+      <ReadingProgress />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSchema) }}
@@ -207,12 +210,14 @@ export default async function BlogPostPage({ params }: PageProps) {
               </div>
 
               {/* Share buttons — below meta info */}
-              <ShareButtons
-                url={`${SITE_URL}/blog/${slug}`}
-                title={post.title}
-                description={post.excerpt}
-                className="mt-4"
-              />
+              <div className="mt-4 flex items-center gap-2">
+                <ShareButtons
+                  url={`${SITE_URL}/blog/${slug}`}
+                  title={post.title}
+                  description={post.excerpt}
+                />
+                <CopyLinkButton url={`${SITE_URL}/blog/${slug}`} />
+              </div>
             </header>
 
             {/* Ad: Before Article Body */}

@@ -11,6 +11,8 @@ import { RelatedLinks } from '@/components/common/RelatedLinks';
 import { AdBanner, AdInArticle, AdMultiplex, AdSidebar } from '@/components/ads/AdSlot';
 import { ToolLogo } from '@/components/common/ToolLogo';
 import { ShareButtons } from '@/components/common/ShareButtons';
+import { CopyLinkButton } from '@/components/common/CopyLinkButton';
+import { ReadingProgress } from '@/components/common/ReadingProgress';
 import { TableOfContents } from '@/components/common/TableOfContents';
 
 // ============================================================
@@ -102,6 +104,7 @@ export default async function ToolPage({ params }: PageProps) {
 
   return (
     <>
+      <ReadingProgress />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(toolSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       {faqSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />}
@@ -699,11 +702,14 @@ export default async function ToolPage({ params }: PageProps) {
               <span>Independent review by <Link href="/about/team" className="hover:text-blue-500 transition-colors">{SITE_NAME} Team</Link></span>
             </div>
           </div>
-          <ShareButtons
-            url={`${SITE_URL}/${category}/${toolSlug}`}
-            title={`${tool.name} Review — Features, Pricing & Alternatives`}
-            description={tool.tagline}
-          />
+          <div className="flex items-center gap-2">
+            <ShareButtons
+              url={`${SITE_URL}/${category}/${toolSlug}`}
+              title={`${tool.name} Review — Features, Pricing & Alternatives`}
+              description={tool.tagline}
+            />
+            <CopyLinkButton url={`${SITE_URL}/${category}/${toolSlug}`} />
+          </div>
         </div>
       </article>
     </>

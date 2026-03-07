@@ -16,6 +16,8 @@ import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { AdBanner, AdInArticle, AdMultiplex, AdNative } from '@/components/ads/AdSlot';
 import { ToolLogo } from '@/components/common/ToolLogo';
 import { ShareButtons } from '@/components/common/ShareButtons';
+import { CopyLinkButton } from '@/components/common/CopyLinkButton';
+import { ReadingProgress } from '@/components/common/ReadingProgress';
 
 // ============================================================
 // COMPARISON PAGE — ENHANCED with winner banner, nav, tool cards
@@ -97,6 +99,7 @@ export default async function ComparisonPage({ params }: PageProps) {
 
   return (
     <>
+      <ReadingProgress />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
       {faqSchema && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
@@ -547,11 +550,14 @@ export default async function ComparisonPage({ params }: PageProps) {
               <span>Independent review</span>
             </div>
           </div>
-          <ShareButtons
-            url={`${SITE_URL}/${category}/compare/${slug}`}
-            title={`${comparison.toolA.name} vs ${comparison.toolB.name} — Honest Comparison`}
-            description={`Compare ${comparison.toolA.name} and ${comparison.toolB.name} side by side.`}
-          />
+          <div className="flex items-center gap-2">
+            <ShareButtons
+              url={`${SITE_URL}/${category}/compare/${slug}`}
+              title={`${comparison.toolA.name} vs ${comparison.toolB.name} — Honest Comparison`}
+              description={`Compare ${comparison.toolA.name} and ${comparison.toolB.name} side by side.`}
+            />
+            <CopyLinkButton url={`${SITE_URL}/${category}/compare/${slug}`} />
+          </div>
         </div>
       </article>
     </>
