@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { SITE_NAME, SITE_DESCRIPTION, SITE_URL, SEO, CATEGORY_LIST } from '@/lib/constants';
@@ -39,6 +39,23 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
+  // PWA & Mobile meta
+  other: {
+    'mobile-web-app-capable': 'yes',
+    'apple-mobile-web-app-capable': 'yes',
+    'apple-mobile-web-app-status-bar-style': 'default',
+    'apple-mobile-web-app-title': SITE_NAME,
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#030712' },
+  ],
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
 };
 
 export default function RootLayout({
