@@ -11,6 +11,7 @@ import { RelatedLinks } from '@/components/common/RelatedLinks';
 import { AdBanner, AdInArticle, AdMultiplex, AdSidebar } from '@/components/ads/AdSlot';
 import { ToolLogo } from '@/components/common/ToolLogo';
 import { ShareButtons } from '@/components/common/ShareButtons';
+import { TableOfContents } from '@/components/common/TableOfContents';
 
 // ============================================================
 // TOOL PROFILE PAGE — Individual tool review (ENHANCED)
@@ -213,8 +214,25 @@ export default async function ToolPage({ params }: PageProps) {
           </div>
         </div>
 
+        {/* ========== TABLE OF CONTENTS — Desktop sidebar + mobile inline ========== */}
+        <div className="mb-8 lg:hidden">
+          <TableOfContents
+            items={[
+              { id: 'tldr', label: 'TL;DR Summary', icon: '⚡' },
+              { id: 'rating', label: 'Our Rating', icon: '⭐' },
+              { id: 'about', label: `What is ${tool.name}?`, icon: '📖' },
+              ...(featureEntries.length > 0 ? [{ id: 'features', label: 'Key Features', icon: '⚙️' }] : []),
+              ...(tool.prosConsContent ? [{ id: 'pros-cons', label: 'Pros & Cons', icon: '⚖️' }] : []),
+              { id: 'pricing', label: 'Pricing', icon: '💰' },
+              ...(comparisons.length > 0 ? [{ id: 'competitors', label: 'vs Competitors', icon: '🥊' }] : []),
+              { id: 'verdict', label: 'Expert Verdict', icon: '🏆' },
+              ...(toolFAQs.length > 0 ? [{ id: 'faq', label: 'FAQ', icon: '❓' }] : []),
+            ]}
+          />
+        </div>
+
         {/* ========== TL;DR SUMMARY BOX — AI Overview + Passage Ranking optimized ========== */}
-        <div className="mb-10 p-5 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 rounded-2xl border border-blue-200/60 dark:border-blue-800/30">
+        <div id="tldr" className="mb-10 p-5 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 rounded-2xl border border-blue-200/60 dark:border-blue-800/30 scroll-mt-24">
           <div className="flex items-center gap-2 mb-3">
             <span className="text-sm font-bold text-blue-700 dark:text-blue-400 uppercase tracking-wider">TL;DR</span>
             <div className="flex-1 h-px bg-blue-200/50 dark:bg-blue-800/30" />
@@ -228,7 +246,7 @@ export default async function ToolPage({ params }: PageProps) {
         </div>
 
         {/* ========== RATING DASHBOARD — Premium donut + gradient bars ========== */}
-        <section className="mb-12">
+        <section id="rating" className="mb-12 scroll-mt-24">
           <h2 className="text-2xl font-bold mb-6">Our Rating</h2>
           <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm">
             {/* Overall Score Header — Donut chart */}
@@ -299,7 +317,7 @@ export default async function ToolPage({ params }: PageProps) {
         </section>
 
         {/* ========== WHAT IS {TOOL} ========== */}
-        <section className="mb-12">
+        <section id="about" className="mb-12 scroll-mt-24">
           <h2 className="text-2xl font-bold mb-4">What is {tool.name}?</h2>
           <div className="prose dark:prose-invert max-w-none text-gray-600 dark:text-gray-300 leading-relaxed">
             <p>{tool.description}</p>
@@ -311,7 +329,7 @@ export default async function ToolPage({ params }: PageProps) {
 
         {/* ========== KEY FEATURES TABLE — Premium card grid ========== */}
         {featureEntries.length > 0 && (
-          <section className="mb-12">
+          <section id="features" className="mb-12 scroll-mt-24">
             <h2 className="text-2xl font-bold mb-6">{tool.name} Key Features</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {featureEntries.map(([key, value], idx) => {
@@ -355,7 +373,7 @@ export default async function ToolPage({ params }: PageProps) {
 
         {/* ========== PROS & CONS (Enhanced) ========== */}
         {tool.prosConsContent && (
-          <section className="mb-12">
+          <section id="pros-cons" className="mb-12 scroll-mt-24">
             <h2 className="text-2xl font-bold mb-6">Pros &amp; Cons</h2>
             <div className="grid md:grid-cols-2 gap-6">
               <div className="bg-green-50 dark:bg-green-900/10 rounded-2xl p-6 border border-green-200 dark:border-green-800/30">
@@ -394,7 +412,7 @@ export default async function ToolPage({ params }: PageProps) {
         )}
 
         {/* ========== PRICING OVERVIEW ========== */}
-        <section className="mb-12">
+        <section id="pricing" className="mb-12 scroll-mt-24">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold">{tool.name} Pricing</h2>
             <Link
@@ -453,7 +471,7 @@ export default async function ToolPage({ params }: PageProps) {
 
         {/* ========== VS COMPETITORS — With real logos ========== */}
         {comparisons.length > 0 && (
-          <section className="mb-12">
+          <section id="competitors" className="mb-12 scroll-mt-24">
             <h2 className="text-2xl font-bold mb-6">{tool.name} vs Competitors</h2>
             <div className="grid md:grid-cols-2 gap-4">
               {comparisons.map((comp) => {
@@ -523,7 +541,7 @@ export default async function ToolPage({ params }: PageProps) {
         </section>
 
         {/* ========== EXPERT VERDICT — Dark premium card ========== */}
-        <section className="mb-12">
+        <section id="verdict" className="mb-12 scroll-mt-24">
           <h2 className="text-2xl font-bold mb-6">Expert Verdict</h2>
           <div className="relative overflow-hidden bg-gradient-to-br from-gray-900 via-slate-900 to-indigo-950 rounded-2xl p-6 md:p-8 text-white shadow-xl">
             {/* Decorative elements */}
@@ -646,7 +664,7 @@ export default async function ToolPage({ params }: PageProps) {
 
         {/* ========== FAQ SECTION ========== */}
         {toolFAQs.length > 0 && (
-          <section className="mb-12">
+          <section id="faq" className="mb-12 scroll-mt-24">
             <h2 className="text-2xl font-bold mb-6">{tool.name} FAQ</h2>
             <FAQSection faqs={toolFAQs} />
           </section>
