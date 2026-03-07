@@ -54,6 +54,8 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://www.google.com" />
         <link rel="preconnect" href="https://logo.clearbit.com" />
         <link rel="dns-prefetch" href="https://logo.clearbit.com" />
+        <link rel="preconnect" href="https://gqqgbfoniyfbpbognnks.supabase.co" />
+        <link rel="dns-prefetch" href="https://gqqgbfoniyfbpbognnks.supabase.co" />
         <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
         {/* Google Analytics (GA4) */}
         {process.env.NEXT_PUBLIC_GA_ID && (

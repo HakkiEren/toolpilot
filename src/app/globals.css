@@ -446,8 +446,10 @@ table tbody tr:hover {
   color: inherit;
 }
 
-/* Smooth dark mode */
-*, *::before, *::after {
+/* Smooth dark mode — scoped to interactive elements only (perf: avoid * selector) */
+a, button, input, select, textarea,
+[class*="hover-"], [class*="card"], [class*="glass"],
+nav, header, .vs-divider, .skip-link {
   transition-property: background-color, border-color, color;
   transition-duration: 0.15s;
   transition-timing-function: ease;
@@ -457,18 +459,15 @@ table tbody tr:hover {
   transition-property: transform, box-shadow, background-color, border-color, color;
 }
 
-/* Image loading */
+/* Image loading — avoid CLS by not hiding lazy images */
 img {
-  transition: opacity 0.3s ease;
+  content-visibility: auto;
 }
 
-img[loading="lazy"] {
-  opacity: 0;
-}
-
-img[loading="lazy"].loaded,
-img[loading="lazy"][src] {
-  opacity: 1;
+/* Content-visibility for below-fold sections (CWV: reduce rendering work) */
+section:nth-child(n+4) {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 500px;
 }
 
 /* ============================================================
