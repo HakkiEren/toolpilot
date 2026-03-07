@@ -12,18 +12,42 @@ CREATE TABLE IF NOT EXISTS public.subscribers (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Create index for fast lookups
 CREATE INDEX IF NOT EXISTS idx_subscribers_email ON public.subscribers (email);
 CREATE INDEX IF NOT EXISTS idx_subscribers_active ON public.subscribers (is_active) WHERE is_active = TRUE;
 
--- Enable Row Level Security
 ALTER TABLE public.subscribers ENABLE ROW LEVEL SECURITY;
 
--- Policy: Service role can do everything (API routes use service role key)
 CREATE POLICY "Service role full access" ON public.subscribers
   FOR ALL
   USING (true)
   WITH CHECK (true);
 
--- Comment
 COMMENT ON TABLE public.subscribers IS 'Newsletter subscribers collected from footer and popup forms';
+
+
+-- ============================================================
+-- CONTACT SUBMISSIONS TABLE — Contact form data storage
+-- ============================================================
+
+CREATE TABLE IF NOT EXISTS public.contact_submissions (
+  id BIGSERIAL PRIMARY KEY,
+  name TEXT NOT NULL,
+  email TEXT NOT NULL,
+  category TEXT DEFAULT 'General question',
+  message TEXT NOT NULL,
+  ip_address TEXT,
+  status TEXT DEFAULT 'new' CHECK (status IN ('new', 'read', 'replied', 'archived')),
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_contact_status ON public.contact_submissions (status);
+CREATE INDEX IF NOT EXISTS idx_contact_created ON public.contact_submissions (created_at DESC);
+
+ALTER TABLE public.contact_submissions ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Service role full access" ON public.contact_submissions
+  FOR ALL
+  USING (true)
+  WITH CHECK (true);
+
+COMMENT ON TABLE public.contact_submissions IS 'Contact form submissions from /contact page';

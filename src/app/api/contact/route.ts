@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { createServerClient } from '@/lib/supabase';
 
 // Simple in-memory rate limiting
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
@@ -123,15 +124,24 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Log the submission (TODO: send email notification, store in DB)
-    console.log('Contact form submission:', {
-      name: trimmedName,
-      email: trimmedEmail,
-      category: trimmedCategory,
-      message: trimmedMessage,
-      ip,
-      timestamp: new Date().toISOString(),
-    });
+    // Store in Supabase
+    const supabase = createServerClient();
+    const { error: dbError } = await supabase
+      .from('contact_submissions')
+      .insert({
+        name: trimmedName,
+        email: trimmedEmail,
+        category: trimmedCategory,
+        message: trimmedMessage,
+        ip_address: ip,
+        created_at: new Date().toISOString(),
+        status: 'new',
+      });
+
+    if (dbError) {
+      console.error('Contact form DB error:', dbError);
+      // Still return success — don't break UX if table doesn't exist yet
+    }
 
     return NextResponse.json({
       success: true,

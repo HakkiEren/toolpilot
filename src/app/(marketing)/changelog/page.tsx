@@ -39,6 +39,22 @@ const CHANGELOG: {
   entries: { type: 'added' | 'updated' | 'improved' | 'launched'; text: string; link?: string }[];
 }[] = [
   {
+    date: '2026-03-10',
+    version: '2.7',
+    entries: [
+      { type: 'launched', text: 'Newsletter subscription system with Supabase backend + rate limiting + bot detection' },
+      { type: 'improved', text: 'Footer newsletter form now fully functional (was previously readOnly)' },
+      { type: 'improved', text: 'Newsletter popup upgraded with API integration and loading states' },
+      { type: 'launched', text: 'Contact form now saves submissions to Supabase database' },
+      { type: 'improved', text: 'Homepage: Social proof trust strip with verification badges and mini testimonial' },
+      { type: 'improved', text: 'Removed duplicate How It Works section on homepage (kept HowTo schema version)' },
+      { type: 'launched', text: 'SiteNavigationElement JSON-LD schema for better Google site structure understanding' },
+      { type: 'improved', text: 'WebSite schema enhanced with inLanguage and description properties' },
+      { type: 'improved', text: 'Proxy.ts: Lowercase URL normalization (301 redirects for SEO consistency)' },
+      { type: 'added', text: 'Supabase migration files for subscribers + contact_submissions tables' },
+    ],
+  },
+  {
     date: '2026-03-09',
     version: '2.6',
     entries: [

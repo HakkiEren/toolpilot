@@ -465,6 +465,8 @@ export function generateWebSiteSchema() {
     '@type': 'WebSite',
     name: SITE_NAME,
     url: SITE_URL,
+    description: 'Compare the best digital tools across AI, SaaS, E-commerce, Marketing, Hosting & Business.',
+    inLanguage: 'en-US',
     potentialAction: {
       '@type': 'SearchAction',
       target: {
@@ -473,5 +475,25 @@ export function generateWebSiteSchema() {
       },
       'query-input': 'required name=search_term_string',
     },
+  };
+}
+
+// --- SITE NAVIGATION SCHEMA (helps Google understand site structure) ---
+export function generateSiteNavigationSchema() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'SiteNavigationElement',
+    name: 'Main Navigation',
+    hasPart: [
+      { '@type': 'SiteNavigationElement', name: 'AI Tools', url: `${SITE_URL}/ai-tools` },
+      { '@type': 'SiteNavigationElement', name: 'SaaS', url: `${SITE_URL}/saas` },
+      { '@type': 'SiteNavigationElement', name: 'E-commerce', url: `${SITE_URL}/ecommerce` },
+      { '@type': 'SiteNavigationElement', name: 'Marketing', url: `${SITE_URL}/marketing` },
+      { '@type': 'SiteNavigationElement', name: 'Hosting', url: `${SITE_URL}/hosting` },
+      { '@type': 'SiteNavigationElement', name: 'Business', url: `${SITE_URL}/business` },
+      { '@type': 'SiteNavigationElement', name: 'Blog', url: `${SITE_URL}/blog` },
+      { '@type': 'SiteNavigationElement', name: 'Best Of', url: `${SITE_URL}/best` },
+      { '@type': 'SiteNavigationElement', name: 'Search', url: `${SITE_URL}/search` },
+    ],
   };
 }

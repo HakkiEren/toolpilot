@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { SITE_NAME, SITE_DESCRIPTION, SITE_URL, SEO, CATEGORY_LIST, SUBCATEGORIES } from '@/lib/constants';
-import { generateOrganizationSchema, generateWebSiteSchema } from '@/lib/schema';
+import { generateOrganizationSchema, generateWebSiteSchema, generateSiteNavigationSchema } from '@/lib/schema';
 import { MobileMenu } from '@/components/layout/MobileMenu';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { NewsletterPopup } from '@/components/ui/NewsletterPopup';
@@ -106,6 +106,12 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(generateWebSiteSchema()),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(generateSiteNavigationSchema()),
           }}
         />
       </head>
