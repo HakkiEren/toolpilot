@@ -11,6 +11,7 @@ import { AdBanner, AdInArticle, AdSidebar } from '@/components/ads/AdSlot';
 import { ShareButtons } from '@/components/common/ShareButtons';
 import { CopyLinkButton } from '@/components/common/CopyLinkButton';
 import { ReadingProgress } from '@/components/common/ReadingProgress';
+import { InlineNewsletterCTA } from '@/components/ui/InlineNewsletterCTA';
 import type { InternalLink } from '@/types';
 
 // ============================================================
@@ -259,6 +260,9 @@ export default async function BlogPostPage({ params }: PageProps) {
 
             {/* Ad: After Article Body */}
             <AdInArticle />
+
+            {/* Inline Newsletter CTA — Blog subscriber conversion */}
+            <InlineNewsletterCTA />
 
             {/* Related Tools & Comparisons */}
             {relatedLinks.length > 0 && (
