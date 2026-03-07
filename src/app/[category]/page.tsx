@@ -8,6 +8,7 @@ import { CATEGORIES, CATEGORY_LIST, SITE_URL, SUBCATEGORIES } from '@/lib/consta
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { FAQSection } from '@/components/common/FAQSection';
 import { AdBanner, AdInArticle, AdMultiplex } from '@/components/ads/AdSlot';
+import { ToolGrid } from '@/components/category/ToolGrid';
 import { getCategoryContent } from '@/lib/category-content';
 
 // ============================================================
@@ -231,59 +232,24 @@ export default async function CategoryPage({ params }: PageProps) {
         {/* ========== AD: AFTER TOP 3 ========== */}
         <AdBanner />
 
-        {/* ========== ALL TOOLS GRID ========== */}
-        <section>
-          <h2 className="text-xl font-bold mb-6">
-            All {cat.name} ({tools.length} reviewed)
-          </h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {tools.map((tool, idx) => (
-              <Link
-                key={tool.id}
-                href={`/${category}/${tool.slug}`}
-                className="group hover-lift flex items-start gap-4 p-5 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-600 transition-all bg-white dark:bg-gray-900 card-animate"
-                style={{ animationDelay: `${idx * 40}ms` }}
-              >
-                {/* Rank */}
-                <span className="text-sm font-bold text-gray-300 dark:text-gray-600 w-6 text-right mt-1">
-                  {idx + 1}
-                </span>
-
-                {/* Logo */}
-                <ToolLogo logoUrl={tool.logoUrl} name={tool.name} size={40} />
-
-                {/* Info */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <h3 className="font-semibold group-hover:text-blue-600 transition-colors truncate">
-                      {tool.name}
-                    </h3>
-                    <span className="flex items-center gap-0.5 text-sm flex-shrink-0">
-                      <span className="text-yellow-500">&#9733;</span>
-                      <span className="font-medium">{tool.ratings.overall.toFixed(1)}</span>
-                    </span>
-                  </div>
-                  <p className="text-xs text-gray-500 line-clamp-1 mt-0.5">{tool.tagline}</p>
-                  <div className="mt-2 flex items-center gap-2 text-xs">
-                    {tool.pricing.hasFreeplan && (
-                      <span className="px-2 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded font-medium">
-                        Free
-                      </span>
-                    )}
-                    {tool.pricing.startingPrice && (
-                      <span className="text-gray-400">
-                        From ${tool.pricing.startingPrice}/mo
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </section>
-
-        {/* Empty State */}
-        {tools.length === 0 && (
+        {/* ========== ALL TOOLS GRID — Interactive sort & filter ========== */}
+        {tools.length > 0 ? (
+          <ToolGrid
+            tools={tools.map(t => ({
+              id: t.id,
+              name: t.name,
+              slug: t.slug,
+              categorySlug: t.categorySlug,
+              tagline: t.tagline,
+              logoUrl: t.logoUrl,
+              subcategorySlug: t.subcategorySlug,
+              ratings: t.ratings,
+              pricing: { hasFreeplan: t.pricing.hasFreeplan, startingPrice: t.pricing.startingPrice },
+            }))}
+            categorySlug={category}
+            categoryName={cat.name}
+          />
+        ) : (
           <div className="text-center py-20 text-gray-400">
             <p className="text-lg mb-2">No tools listed yet in {cat.name}</p>
             <p className="text-sm">We are currently adding tools to this category. Check back soon!</p>
