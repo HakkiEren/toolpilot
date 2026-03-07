@@ -39,6 +39,18 @@ const CHANGELOG: {
   entries: { type: 'added' | 'updated' | 'improved' | 'launched'; text: string; link?: string }[];
 }[] = [
   {
+    date: '2026-03-14',
+    version: '3.0',
+    entries: [
+      { type: 'launched', text: 'Domain launched: propicked.com is now live with SSL certificates' },
+      { type: 'launched', text: 'Auto-generated comparison FAQs — 5 FAQ rich snippet questions per comparison page (327+ pages)' },
+      { type: 'improved', text: 'Homepage FAQ expanded from 6 to 10 questions targeting long-tail keywords' },
+      { type: 'launched', text: 'Google Search Console & Bing Webmaster verification meta tag support via environment variables' },
+      { type: 'improved', text: 'RSS feed: Upgraded to application/rss+xml Content-Type with Dublin Core namespace' },
+      { type: 'improved', text: 'Environment variables documented: GA_ID, ADSENSE_ID, GSC_ID, BING_ID in .env.local.example' },
+    ],
+  },
+  {
     date: '2026-03-13',
     version: '2.9',
     entries: [
