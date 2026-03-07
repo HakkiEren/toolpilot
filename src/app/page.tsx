@@ -39,6 +39,7 @@ export default async function HomePage() {
     { data: allTools },
     { data: latestComparisons },
     { data: latestPosts },
+    { data: recentlyUpdated },
     { count: toolCount },
     { count: comparisonCount },
   ] = await Promise.all([
@@ -72,12 +73,19 @@ export default async function HomePage() {
       .eq('status', 'published')
       .order('published_at', { ascending: false })
       .limit(3),
-    // 5. Tool count
+    // 5. Recently updated tools — freshness signal
+    supabase
+      .from('tools')
+      .select('slug, name, category_slug, tagline, ratings_overall, logo_url, last_updated')
+      .eq('status', 'published')
+      .order('last_updated', { ascending: false })
+      .limit(6),
+    // 6. Tool count
     supabase
       .from('tools')
       .select('*', { count: 'exact', head: true })
       .eq('status', 'published'),
-    // 6. Comparison count
+    // 7. Comparison count
     supabase
       .from('comparisons')
       .select('*', { count: 'exact', head: true }),
@@ -298,7 +306,71 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ========== AD: AFTER TRENDING TOOLS ========== */}
+      {/* ============================================================ */}
+      {/* RECENTLY UPDATED — Freshness signal for Google & users */}
+      {/* ============================================================ */}
+      {recentlyUpdated && recentlyUpdated.length > 0 && (
+        <section className="bg-gradient-to-r from-emerald-50/50 via-white to-teal-50/50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 py-14 border-y border-gray-200/60 dark:border-gray-800/60">
+          <div className="max-w-7xl mx-auto px-4">
+            <div className="flex items-center justify-between mb-8">
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75" />
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-green-600" />
+                  </span>
+                  <span className="text-xs font-bold text-green-600 dark:text-green-400 uppercase tracking-wider">Fresh Data</span>
+                </div>
+                <h2 className="text-2xl md:text-3xl font-bold">Recently Updated</h2>
+                <p className="text-gray-500 mt-1">Reviews refreshed with the latest pricing and feature data</p>
+              </div>
+              <Link href="/changelog" className="text-green-600 font-medium hover:underline text-sm">
+                View changelog →
+              </Link>
+            </div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {recentlyUpdated.map((tool, idx) => {
+                const catInfo = CATEGORIES[tool.category_slug];
+                const updatedDate = new Date(tool.last_updated);
+                const daysAgo = Math.floor((Date.now() - updatedDate.getTime()) / (1000 * 60 * 60 * 24));
+                const freshnessLabel = daysAgo === 0 ? 'Today' : daysAgo === 1 ? 'Yesterday' : daysAgo <= 7 ? `${daysAgo}d ago` : updatedDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                return (
+                  <Link
+                    key={tool.slug}
+                    href={`/${tool.category_slug}/${tool.slug}`}
+                    className="group hover-lift flex items-start gap-4 p-5 border border-gray-200/80 dark:border-gray-800 rounded-2xl hover:border-green-300 dark:hover:border-green-700 transition-all duration-200 bg-white dark:bg-gray-900 card-animate"
+                    style={{ animationDelay: `${idx * 60}ms` }}
+                  >
+                    <ToolLogo logoUrl={tool.logo_url} name={tool.name} size={44} />
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1">
+                        <h3 className="font-bold text-sm group-hover:text-green-600 transition-colors truncate">{tool.name}</h3>
+                        <span className="flex-shrink-0 text-[10px] px-2 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-full font-semibold">
+                          {freshnessLabel}
+                        </span>
+                      </div>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-1">{tool.tagline}</p>
+                      <div className="flex items-center gap-3 mt-2">
+                        <span className="flex items-center gap-1 text-xs">
+                          <span className="text-yellow-500">&#9733;</span>
+                          <span className="font-semibold">{tool.ratings_overall.toFixed(1)}</span>
+                        </span>
+                        {catInfo && (
+                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 font-medium">
+                            {catInfo.name}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ========== AD: AFTER RECENTLY UPDATED ========== */}
       <div className="max-w-7xl mx-auto px-4">
         <AdBanner />
       </div>
