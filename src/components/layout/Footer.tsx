@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { SITE_NAME, CATEGORY_LIST } from '@/lib/constants';
 import { AdFooter } from '@/components/ads/AdSlot';
+import { FooterNewsletter } from '@/components/ui/FooterNewsletter';
 
 // ============================================================
 // Professional Footer — Multi-column mega footer
@@ -60,17 +61,7 @@ export function Footer() {
                 Get weekly tool reviews, comparison guides, and exclusive deals in your inbox.
               </p>
             </div>
-            <div className="flex w-full md:w-auto gap-2">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 md:w-72 px-4 py-2.5 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 text-white placeholder-white/30 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/40"
-                readOnly
-              />
-              <button className="px-6 py-2.5 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl text-sm font-semibold hover:shadow-lg hover:shadow-blue-500/20 transition-all flex-shrink-0">
-                Subscribe
-              </button>
-            </div>
+            <FooterNewsletter />
           </div>
         </div>
       </div>
