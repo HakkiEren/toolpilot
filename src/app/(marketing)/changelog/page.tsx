@@ -1,0 +1,223 @@
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import { SITE_NAME, SITE_URL, CATEGORY_LIST } from '@/lib/constants';
+import { generateBreadcrumbSchema } from '@/lib/schema';
+import { Breadcrumbs } from '@/components/common/Breadcrumbs';
+
+// ============================================================
+// CHANGELOG PAGE — Freshness signal for E-E-A-T
+// Shows recent tool additions, rating updates, feature launches
+// ============================================================
+
+export const metadata: Metadata = {
+  title: `Changelog — What's New at ${SITE_NAME}`,
+  description: `See the latest updates to ${SITE_NAME}: new tool reviews, comparison updates, feature releases, and database expansions. Updated weekly.`,
+  alternates: { canonical: `${SITE_URL}/changelog` },
+};
+
+// Changelog entries — most recent first
+const CHANGELOG: {
+  date: string;
+  version?: string;
+  entries: { type: 'added' | 'updated' | 'improved' | 'launched'; text: string; link?: string }[];
+}[] = [
+  {
+    date: '2026-03-07',
+    version: '2.4',
+    entries: [
+      { type: 'launched', text: 'Team & Authors page for editorial transparency', link: '/about/team' },
+      { type: 'improved', text: 'Enhanced Review schema with Pros/Cons rich snippets for Google' },
+      { type: 'improved', text: 'Person author schema for blog posts and comparisons (E-E-A-T)' },
+      { type: 'launched', text: 'HowTo schema on category Buyer\'s Guide sections' },
+      { type: 'improved', text: 'Security headers: HSTS, Permissions-Policy, strict referrer' },
+      { type: 'launched', text: 'Changelog page for freshness signals' },
+    ],
+  },
+  {
+    date: '2026-03-06',
+    version: '2.3',
+    entries: [
+      { type: 'launched', text: 'Premium 404 page with category quick-links' },
+      { type: 'improved', text: 'Blog post pages: author avatars, reading time estimates' },
+      { type: 'improved', text: 'Shareable search URLs with query parameters (?q=, &cat=, &price=)' },
+      { type: 'launched', text: 'HTML Sitemap with all page categories', link: '/sitemap-html' },
+      { type: 'added', text: 'Voice search optimization with SpeakableSpecification schema' },
+    ],
+  },
+  {
+    date: '2026-03-05',
+    version: '2.2',
+    entries: [
+      { type: 'launched', text: '6 interactive calculators: ROI, TCO, SaaS savings, and more', link: '/calculators/roi' },
+      { type: 'launched', text: 'Glossary with 80+ technology terms', link: '/glossary' },
+      { type: 'added', text: 'Newsletter popup for email subscriptions' },
+      { type: 'improved', text: 'AdSense integration with 6 placement types across all pages' },
+    ],
+  },
+  {
+    date: '2026-03-04',
+    version: '2.1',
+    entries: [
+      { type: 'added', text: 'Best-of subcategory pages with ranking carousels', link: '/best' },
+      { type: 'improved', text: 'Tool pricing pages with plan comparison tables' },
+      { type: 'improved', text: 'Alternatives pages with unique recommendation paragraphs' },
+      { type: 'added', text: 'Category-specific FAQ sections with dynamic content' },
+    ],
+  },
+  {
+    date: '2026-03-03',
+    version: '2.0',
+    entries: [
+      { type: 'launched', text: 'ToolPilot 2.0 — Complete redesign with glassmorphism UI' },
+      { type: 'added', text: '433 tools across 6 categories: AI, SaaS, E-commerce, Marketing, Hosting, Business' },
+      { type: 'added', text: '327 head-to-head comparisons with feature matrices' },
+      { type: 'added', text: '128 blog posts with expert analysis' },
+      { type: 'launched', text: 'Dark mode with system preference detection' },
+      { type: 'improved', text: 'Mobile-first responsive design across all 1,880+ pages' },
+    ],
+  },
+];
+
+const TYPE_CONFIG = {
+  added: { label: 'Added', color: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' },
+  updated: { label: 'Updated', color: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' },
+  improved: { label: 'Improved', color: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400' },
+  launched: { label: 'Launched', color: 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400' },
+};
+
+export default function ChangelogPage() {
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: '/' },
+    { name: 'Changelog', url: '/changelog' },
+  ]);
+
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+
+      <div className="max-w-4xl mx-auto px-4 py-12">
+        <Breadcrumbs items={[
+          { name: 'Home', url: '/' },
+          { name: 'Changelog', url: '' },
+        ]} />
+
+        {/* Hero */}
+        <div className="mt-6 mb-12">
+          <div className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-green-50/30 to-emerald-50/30 dark:from-gray-900 dark:via-green-950/10 dark:to-emerald-950/10 rounded-3xl border border-gray-200/60 dark:border-gray-800/60 p-8 md:p-10">
+            <div className="absolute -top-24 -right-24 w-72 h-72 bg-green-400/10 dark:bg-green-400/5 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute -bottom-20 -left-20 w-56 h-56 bg-emerald-400/10 dark:bg-emerald-400/5 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.02]" style={{ backgroundImage: 'radial-gradient(circle, currentColor 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
+
+            <div className="relative">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-sm border border-gray-200/50 dark:border-gray-700/50 text-xs font-semibold text-green-600 dark:text-green-400 mb-4">
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                Continuously Updated
+              </div>
+              <h1 className="text-3xl md:text-4xl font-extrabold mb-3">
+                What&apos;s New at <span className="gradient-text">{SITE_NAME}</span>
+              </h1>
+              <p className="text-gray-600 dark:text-gray-300 max-w-2xl">
+                We continuously improve our platform with new tool reviews, comparison updates, and feature releases.
+                See what we&apos;ve been working on below.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Timeline */}
+        <div className="relative">
+          {/* Vertical line */}
+          <div className="absolute left-[19px] top-2 bottom-2 w-0.5 bg-gradient-to-b from-green-300 via-blue-300 to-purple-300 dark:from-green-700 dark:via-blue-700 dark:to-purple-700" />
+
+          <div className="space-y-10">
+            {CHANGELOG.map((release) => (
+              <div key={release.date} className="relative pl-12">
+                {/* Timeline dot */}
+                <div className="absolute left-2.5 top-1 w-4 h-4 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 border-4 border-white dark:border-gray-950 shadow-md" />
+
+                {/* Date + version header */}
+                <div className="flex items-center gap-3 mb-4">
+                  <time dateTime={release.date} className="text-sm font-bold text-gray-900 dark:text-gray-100">
+                    {new Date(release.date).toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                    })}
+                  </time>
+                  {release.version && (
+                    <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-gray-700">
+                      v{release.version}
+                    </span>
+                  )}
+                </div>
+
+                {/* Entries */}
+                <div className="space-y-2.5">
+                  {release.entries.map((entry, idx) => {
+                    const config = TYPE_CONFIG[entry.type];
+                    return (
+                      <div
+                        key={idx}
+                        className="flex items-start gap-3 p-3 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700 transition-colors"
+                      >
+                        <span className={`flex-shrink-0 text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider ${config.color}`}>
+                          {config.label}
+                        </span>
+                        <span className="text-sm text-gray-700 dark:text-gray-300">
+                          {entry.link ? (
+                            <Link href={entry.link} className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                              {entry.text} <span className="text-blue-500">&#8594;</span>
+                            </Link>
+                          ) : (
+                            entry.text
+                          )}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* CTA */}
+        <div className="mt-16 text-center">
+          <div className="inline-flex flex-col items-center gap-3 p-6 rounded-2xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800">
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              Have a suggestion or found an issue?
+            </p>
+            <Link
+              href="/contact"
+              className="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl text-sm font-bold hover:from-blue-700 hover:to-indigo-700 transition-all shadow-lg shadow-blue-600/20"
+            >
+              Send Feedback
+            </Link>
+          </div>
+        </div>
+
+        {/* Browse */}
+        <div className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-800">
+          <h2 className="text-lg font-bold mb-4">Explore {SITE_NAME}</h2>
+          <div className="flex flex-wrap gap-2">
+            {CATEGORY_LIST.map((cat) => (
+              <Link
+                key={cat.slug}
+                href={`/${cat.slug}`}
+                className="px-3.5 py-1.5 bg-white dark:bg-gray-900 rounded-lg text-xs font-medium text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 border border-gray-200 dark:border-gray-700 hover:border-blue-300 transition-colors"
+              >
+                {cat.name}
+              </Link>
+            ))}
+            <Link href="/best" className="px-3.5 py-1.5 bg-white dark:bg-gray-900 rounded-lg text-xs font-medium text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 border border-gray-200 dark:border-gray-700 hover:border-blue-300 transition-colors">
+              Best Of
+            </Link>
+            <Link href="/blog" className="px-3.5 py-1.5 bg-white dark:bg-gray-900 rounded-lg text-xs font-medium text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 border border-gray-200 dark:border-gray-700 hover:border-blue-300 transition-colors">
+              Blog
+            </Link>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}

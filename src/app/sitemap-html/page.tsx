@@ -132,6 +132,7 @@ export default async function SitemapPage() {
             { href: '/about', label: 'About Us' },
             { href: '/about/team', label: 'Our Team' },
             { href: '/contact', label: 'Contact' },
+            { href: '/changelog', label: 'Changelog' },
             { href: '/calculators/roi', label: 'ROI Calculator' },
             { href: '/calculators/email-marketing-roi', label: 'Email Marketing ROI' },
             { href: '/calculators/hosting-cost', label: 'Hosting Cost Calculator' },
