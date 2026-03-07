@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getToolBySlug, getAllToolSlugs, getRelatedLinks } from '@/lib/data';
-import { generateToolSchema, generateBreadcrumbSchema, generateFAQSchema } from '@/lib/schema';
+import { generatePricingSchema, generateBreadcrumbSchema, generateFAQSchema } from '@/lib/schema';
 import { CATEGORIES, SITE_URL, SEO } from '@/lib/constants';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { RelatedLinks } from '@/components/common/RelatedLinks';
@@ -124,7 +124,7 @@ export default async function PricingPage({ params }: PageProps) {
     { name: tool.name, url: `/${category}/${toolSlug}` },
     { name: 'Pricing', url: `/${category}/${toolSlug}/pricing` },
   ]);
-  const toolSchema = generateToolSchema(tool, cat?.name || category);
+  const toolSchema = generatePricingSchema(tool, cat?.name || category);
   const faqSchema = generateFAQSchema(faqs);
 
   return (

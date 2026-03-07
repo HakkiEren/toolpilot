@@ -318,6 +318,50 @@ export function generateComparisonHubSchema(
   };
 }
 
+// --- PRICING PAGE SCHEMA (SoftwareApplication with detailed Offers) ---
+export function generatePricingSchema(
+  tool: { name: string; tagline: string; categorySlug: string; slug: string; logoUrl?: string; websiteUrl?: string; ratings: { overall: number; reviewCount?: number }; pricing: { hasFreeplan: boolean; startingPrice: number | null; currency?: string; plans?: { name: string; price: number | null; billingCycle?: string }[] } },
+  categoryName: string,
+) {
+  const plans = tool.pricing.plans || [];
+  const paidPlans = plans.filter((p) => p.price != null && p.price > 0);
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: tool.name,
+    description: tool.tagline,
+    url: `${SITE_URL}/${tool.categorySlug}/${tool.slug}/pricing`,
+    applicationCategory: categoryName,
+    operatingSystem: 'Web, iOS, Android',
+    ...(tool.logoUrl && { image: tool.logoUrl }),
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: tool.ratings.overall,
+      bestRating: 10,
+      worstRating: 0,
+      ratingCount: tool.ratings.reviewCount || 1,
+    },
+    ...(paidPlans.length > 0 && {
+      offers: {
+        '@type': 'AggregateOffer',
+        lowPrice: tool.pricing.hasFreeplan ? 0 : Math.min(...paidPlans.map((p) => p.price!)),
+        highPrice: Math.max(...paidPlans.map((p) => p.price!)),
+        priceCurrency: tool.pricing.currency || 'USD',
+        offerCount: plans.length,
+        offers: plans.map((plan) => ({
+          '@type': 'Offer',
+          name: plan.name,
+          price: plan.price ?? 0,
+          priceCurrency: tool.pricing.currency || 'USD',
+          availability: 'https://schema.org/InStock',
+          url: tool.websiteUrl || `${SITE_URL}/${tool.categorySlug}/${tool.slug}/pricing`,
+        })),
+      },
+    }),
+  };
+}
+
 // --- BUYER'S GUIDE SCHEMA (HowTo for category pages) ---
 export function generateBuyersGuideSchema(
   categoryName: string,
