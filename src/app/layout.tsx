@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import { SITE_NAME, SITE_DESCRIPTION, SITE_URL, SEO, CATEGORY_LIST } from '@/lib/constants';
+import { SITE_NAME, SITE_DESCRIPTION, SITE_URL, SEO, CATEGORY_LIST, SUBCATEGORIES } from '@/lib/constants';
 import { generateOrganizationSchema, generateWebSiteSchema } from '@/lib/schema';
 import { MobileMenu } from '@/components/layout/MobileMenu';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
@@ -123,16 +123,60 @@ export default function RootLayout({
               </div>
               <span className="text-xl font-extrabold gradient-text">{SITE_NAME}</span>
             </Link>
-            <div className="hidden md:flex items-center gap-1 text-sm font-medium">
-              {CATEGORY_LIST.map((cat) => (
-                <Link
-                  key={cat.slug}
-                  href={`/${cat.slug}`}
-                  className="px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-blue-600 transition-all"
-                >
-                  {cat.name}
-                </Link>
-              ))}
+            <div className="hidden md:flex items-center gap-0.5 text-sm font-medium">
+              {CATEGORY_LIST.map((cat) => {
+                const subs = SUBCATEGORIES[cat.slug] || [];
+                return (
+                  <div key={cat.slug} className="relative group/nav">
+                    <Link
+                      href={`/${cat.slug}`}
+                      className="px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-blue-600 transition-all inline-flex items-center gap-1"
+                    >
+                      {cat.name}
+                      {subs.length > 0 && (
+                        <svg className="w-3 h-3 text-gray-400 group-hover/nav:text-blue-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      )}
+                    </Link>
+                    {/* Mega dropdown — CSS-only hover */}
+                    {subs.length > 0 && (
+                      <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 opacity-0 invisible group-hover/nav:opacity-100 group-hover/nav:visible transition-all duration-200 z-50">
+                        <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl shadow-xl shadow-black/10 p-4 min-w-[280px]">
+                          <div className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2 px-1">
+                            Browse {cat.name}
+                          </div>
+                          <div className="grid gap-0.5">
+                            {subs.slice(0, 8).map((sub) => (
+                              <Link
+                                key={sub.slug}
+                                href={`/best/${sub.slug}`}
+                                className="px-3 py-2 rounded-lg text-sm text-gray-600 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                              >
+                                {sub.name}
+                              </Link>
+                            ))}
+                          </div>
+                          <div className="border-t border-gray-100 dark:border-gray-800 mt-2 pt-2 flex gap-2">
+                            <Link
+                              href={`/${cat.slug}`}
+                              className="flex-1 text-center px-3 py-1.5 text-xs font-semibold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors"
+                            >
+                              All {cat.name}
+                            </Link>
+                            <Link
+                              href={`/${cat.slug}/compare`}
+                              className="flex-1 text-center px-3 py-1.5 text-xs font-semibold text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/20 rounded-lg hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-colors"
+                            >
+                              Comparisons
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
               <div className="w-px h-5 bg-gray-200 dark:bg-gray-800 mx-1" />
               <Link
                 href="/best"
