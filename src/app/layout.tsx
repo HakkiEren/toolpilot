@@ -49,6 +49,8 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.className}>
       <head>
+        {/* RSS Feed auto-discovery */}
+        <link rel="alternate" type="application/rss+xml" title="ToolPilot RSS Feed" href="/feed.xml" />
         {/* Preconnect to critical third-party origins */}
         <link rel="preconnect" href="https://www.google.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://www.google.com" />
