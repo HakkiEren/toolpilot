@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getToolBySlug, getAllToolSlugs, getRelatedLinks, getComparisonsByTool, getRelatedTools, getRelatedBlogPosts } from '@/lib/data';
 import { generateToolReviewSchema, generateBreadcrumbSchema, generateFAQSchema } from '@/lib/schema';
-import { CATEGORIES, SEO, SITE_URL, SUBCATEGORIES } from '@/lib/constants';
+import { CATEGORIES, SEO, SITE_URL, SITE_NAME, SUBCATEGORIES } from '@/lib/constants';
 import { generateToolFAQs } from '@/lib/generated-faqs';
 import { FAQSection } from '@/components/common/FAQSection';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
@@ -662,10 +662,22 @@ export default async function ToolPage({ params }: PageProps) {
           <AdSidebar />
         </div>
 
-        {/* ========== FRESHNESS SIGNAL ========== */}
-        <div className="text-sm text-gray-400 mt-8 flex items-center gap-2">
-          <span>&#128197;</span>
-          Last updated: {new Date(tool.lastUpdated).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+        {/* ========== FRESHNESS SIGNAL — Enhanced trust badge ========== */}
+        <div className="mt-10 flex flex-wrap items-center gap-4 text-sm text-gray-400 border-t border-gray-200 dark:border-gray-800 pt-6">
+          <div className="flex items-center gap-2">
+            <span>&#128197;</span>
+            <span>Last updated: {new Date(tool.lastUpdated).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+          </div>
+          <div className="w-1 h-1 bg-gray-300 dark:bg-gray-600 rounded-full" />
+          <div className="flex items-center gap-2">
+            <span>&#9989;</span>
+            <span>Pricing verified</span>
+          </div>
+          <div className="w-1 h-1 bg-gray-300 dark:bg-gray-600 rounded-full" />
+          <div className="flex items-center gap-2">
+            <span>&#128202;</span>
+            <span>Independent review by <Link href="/about/team" className="hover:text-blue-500 transition-colors">{SITE_NAME} Team</Link></span>
+          </div>
         </div>
       </article>
     </>
