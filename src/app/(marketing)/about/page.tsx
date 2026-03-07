@@ -198,7 +198,12 @@ export default async function AboutPage() {
       <section className="mb-16">
         <div className="text-center mb-8">
           <h2 className="text-2xl md:text-3xl font-bold tracking-tight">Meet the Team</h2>
-          <p className="text-gray-500 dark:text-gray-400 mt-2">The humans behind every review</p>
+          <p className="text-gray-500 dark:text-gray-400 mt-2">
+            The humans behind every review.{' '}
+            <Link href="/about/team" className="text-blue-600 hover:underline font-medium">
+              View full team &rarr;
+            </Link>
+          </p>
         </div>
         <div className="grid md:grid-cols-2 gap-4">
           {TEAM.map((member, idx) => (
