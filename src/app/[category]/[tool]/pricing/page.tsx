@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getToolBySlug, getAllToolSlugs, getRelatedLinks } from '@/lib/data';
+import { getToolBySlug, getAllToolSlugs, getRelatedLinks, getRelatedBlogPosts } from '@/lib/data';
 import { generatePricingSchema, generateBreadcrumbSchema, generateFAQSchema } from '@/lib/schema';
 import { CATEGORIES, SITE_URL, SEO, SITE_NAME } from '@/lib/constants';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
@@ -69,7 +69,10 @@ export default async function PricingPage({ params }: PageProps) {
 
   const cat = CATEGORIES[category];
   const year = new Date().getFullYear();
-  const relatedLinks = await getRelatedLinks(tool);
+  const [relatedLinks, relatedPosts] = await Promise.all([
+    getRelatedLinks(tool),
+    getRelatedBlogPosts(category, toolSlug, 3),
+  ]);
 
   const { pricing } = tool;
   const plans = pricing.plans || [];
@@ -564,6 +567,37 @@ export default async function PricingPage({ params }: PageProps) {
             </div>
           </div>
         </section>
+
+        {/* ========== RELATED ARTICLES — Internal linking for SEO ========== */}
+        {relatedPosts.length > 0 && (
+          <section className="mb-14">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold">Related Articles</h2>
+              <Link href="/blog" className="text-blue-600 hover:text-blue-700 text-sm font-medium">
+                All articles &#8594;
+              </Link>
+            </div>
+            <div className="grid md:grid-cols-3 gap-4">
+              {relatedPosts.map((post) => (
+                <Link
+                  key={post.slug}
+                  href={`/blog/${post.slug}`}
+                  className="group hover-lift bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700 transition-all overflow-hidden"
+                >
+                  <div className="p-5">
+                    {post.categorySlug && (
+                      <span className="inline-block px-2.5 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 text-[10px] font-semibold rounded-full mb-3 uppercase tracking-wide">
+                        {CATEGORIES[post.categorySlug]?.name || post.categorySlug}
+                      </span>
+                    )}
+                    <h3 className="font-semibold text-sm group-hover:text-blue-600 transition-colors line-clamp-2 mb-2">{post.title}</h3>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-2">{post.excerpt}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* ========== AD: BEFORE FAQ ========== */}
         <AdInArticle />

@@ -1,4 +1,5 @@
 import type { Tool } from '@/types';
+import { ToolLogo } from '@/components/common/ToolLogo';
 
 interface Props {
   toolA: Tool;
@@ -110,13 +111,7 @@ function PricingCard({ tool, accentColor }: { tool: Tool; accentColor: 'blue' | 
     <div className={`bg-white dark:bg-gray-900 rounded-2xl border ${borderClass} overflow-hidden`}>
       <div className={`${headerBg} px-5 py-3`}>
         <div className="flex items-center gap-3">
-          {tool.logoUrl ? (
-            <img src={tool.logoUrl} alt={`${tool.name} logo`} className="w-8 h-8 rounded" loading="lazy" />
-          ) : (
-            <div className={`w-8 h-8 rounded flex items-center justify-center text-sm font-bold ${textColor} bg-white dark:bg-gray-800`}>
-              {tool.name[0]}
-            </div>
-          )}
+          <ToolLogo logoUrl={tool.logoUrl} name={tool.name} size={32} />
           <h3 className={`text-lg font-semibold ${textColor}`}>{tool.name} Plans</h3>
         </div>
       </div>
