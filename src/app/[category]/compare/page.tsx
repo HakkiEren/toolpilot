@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getComparisonsByCategory, getCategoryStats } from '@/lib/data';
-import { generateBreadcrumbSchema, generateCollectionSchema } from '@/lib/schema';
+import { generateBreadcrumbSchema, generateComparisonHubSchema } from '@/lib/schema';
 import { CATEGORIES, CATEGORY_LIST, SITE_URL } from '@/lib/constants';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { AdBanner, AdInArticle } from '@/components/ads/AdSlot';
@@ -58,6 +58,8 @@ export default async function ComparisonHubPage({ params }: PageProps) {
     { name: 'Comparisons', url: `/${cat.slug}/compare` },
   ]);
 
+  const hubSchema = generateComparisonHubSchema(cat.name, cat.slug, comparisons);
+
   // Group comparisons by first tool letter for A-Z browsing
   const grouped = comparisons.reduce<Record<string, typeof comparisons>>((acc, comp) => {
     const letter = comp.toolA.name[0].toUpperCase();
@@ -83,6 +85,7 @@ export default async function ComparisonHubPage({ params }: PageProps) {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(hubSchema) }} />
 
       <div className="max-w-7xl mx-auto px-4 py-8">
         <Breadcrumbs items={[

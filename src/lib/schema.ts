@@ -120,7 +120,7 @@ export function generateToolSchema(tool: Tool, categoryName: string) {
   };
 }
 
-// --- COMPARISON SCHEMA (Article with datePublished) ---
+// --- COMPARISON SCHEMA (Article with datePublished + Person author for E-E-A-T) ---
 export function generateComparisonSchema(comparison: Comparison) {
   return {
     '@context': 'https://schema.org',
@@ -131,14 +131,18 @@ export function generateComparisonSchema(comparison: Comparison) {
     datePublished: comparison.lastUpdated,
     dateModified: comparison.lastUpdated,
     author: {
-      '@type': 'Organization',
-      name: SITE_NAME,
-      url: SITE_URL,
+      '@type': 'Person',
+      name: 'ToolPilot Editorial Team',
+      url: `${SITE_URL}/about/team`,
     },
     publisher: {
       '@type': 'Organization',
       name: SITE_NAME,
       url: SITE_URL,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${SITE_URL}/opengraph-image`,
+      },
     },
     mainEntityOfPage: {
       '@type': 'WebPage',
@@ -206,12 +210,16 @@ export function generateBlogSchema(post: BlogPost) {
     author: {
       '@type': 'Person',
       name: post.author || 'ToolPilot Editorial Team',
-      url: `${SITE_URL}/about`,
+      url: `${SITE_URL}/about/team`,
     },
     publisher: {
       '@type': 'Organization',
       name: SITE_NAME,
       url: SITE_URL,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${SITE_URL}/opengraph-image`,
+      },
     },
     mainEntityOfPage: {
       '@type': 'WebPage',
@@ -282,6 +290,52 @@ export function generateBestOfItemListSchema(
           worstRating: 0,
         },
       },
+    })),
+  };
+}
+
+// --- COMPARISON HUB SCHEMA (ItemList of comparisons for a category) ---
+export function generateComparisonHubSchema(
+  categoryName: string,
+  categorySlug: string,
+  comparisons: { slug: string; toolA: { name: string }; toolB: { name: string } }[]
+) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: `${categoryName} Comparisons — Side-by-Side Tool Reviews`,
+    url: `${SITE_URL}/${categorySlug}/compare`,
+    mainEntity: {
+      '@type': 'ItemList',
+      numberOfItems: comparisons.length,
+      itemListElement: comparisons.slice(0, 20).map((comp, idx) => ({
+        '@type': 'ListItem',
+        position: idx + 1,
+        name: `${comp.toolA.name} vs ${comp.toolB.name}`,
+        url: `${SITE_URL}/${categorySlug}/compare/${comp.slug}`,
+      })),
+    },
+  };
+}
+
+// --- BUYER'S GUIDE SCHEMA (HowTo for category pages) ---
+export function generateBuyersGuideSchema(
+  categoryName: string,
+  categorySlug: string,
+  steps: { title: string; text: string }[]
+) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: `How to Choose the Best ${categoryName} (${new Date().getFullYear()})`,
+    description: `Step-by-step guide to selecting the right ${categoryName.toLowerCase()} for your needs.`,
+    url: `${SITE_URL}/${categorySlug}`,
+    totalTime: 'PT5M',
+    step: steps.map((s, idx) => ({
+      '@type': 'HowToStep',
+      position: idx + 1,
+      name: s.title,
+      text: s.text,
     })),
   };
 }

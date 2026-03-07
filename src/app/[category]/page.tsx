@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getToolsByCategory, getCategoryStats, getComparisonsByCategory, getBlogPosts } from '@/lib/data';
-import { generateBreadcrumbSchema, generateFAQSchema, generateCollectionSchema } from '@/lib/schema';
+import { generateBreadcrumbSchema, generateFAQSchema, generateCollectionSchema, generateBuyersGuideSchema } from '@/lib/schema';
 import { ToolLogo } from '@/components/common/ToolLogo';
 import { CATEGORIES, CATEGORY_LIST, SITE_URL, SUBCATEGORIES } from '@/lib/constants';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
@@ -72,11 +72,17 @@ export default async function CategoryPage({ params }: PageProps) {
     : '0';
   const freeCount = tools.filter(t => t.pricing.hasFreeplan).length;
 
+  // Buyer's guide HowTo schema
+  const buyersGuideSchema = categoryContent?.buyersGuide
+    ? generateBuyersGuideSchema(cat.name, cat.slug, categoryContent.buyersGuide)
+    : null;
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }} />
       {faqSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />}
+      {buyersGuideSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buyersGuideSchema) }} />}
 
       <div className="max-w-7xl mx-auto px-4 py-8">
         <Breadcrumbs items={[
