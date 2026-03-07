@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server';
-import { SITE_URL as _SITE_URL } from '@/lib/constants';
-
-const SITE_URL = _SITE_URL.trim();
+import { SITE_URL } from '@/lib/constants';
 
 // ============================================================
 // IndexNow API — Instant URL indexing for Bing, Yandex & others

@@ -5,7 +5,7 @@ import type { Category } from '@/types';
 // ============================================================
 
 export const SITE_NAME = 'ProPicked';
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://propicked.com';
+export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://propicked.com').trim();
 export const SITE_DESCRIPTION = 'Compare the best digital tools across AI, SaaS, E-commerce, Marketing, Hosting & Business. Unbiased reviews, real pricing, and honest comparisons.';
 
 // ============================================================
