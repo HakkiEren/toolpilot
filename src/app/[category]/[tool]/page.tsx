@@ -50,6 +50,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       type: 'article',
       publishedTime: tool.createdAt,
       modifiedTime: tool.lastUpdated,
+      authors: [`${SITE_NAME} Editorial Team`],
+      section: CATEGORIES[category]?.name || category,
     },
   };
 }

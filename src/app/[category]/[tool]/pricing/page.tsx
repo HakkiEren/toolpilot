@@ -57,6 +57,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       type: 'article',
       publishedTime: tool.createdAt,
       modifiedTime: tool.lastUpdated,
+      authors: ['ToolPilot Editorial Team'],
     },
   };
 }

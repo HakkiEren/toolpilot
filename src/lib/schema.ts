@@ -9,6 +9,8 @@ import { getAuthor, getAuthorUrl } from './authors';
 
 // --- TOOL REVIEW SCHEMA (enables star ratings in Google SERPs) ---
 export function generateToolReviewSchema(tool: Tool, categoryName: string) {
+  const editorialTeam = getAuthor('ToolPilot Editorial Team');
+
   return {
     '@context': 'https://schema.org',
     '@type': 'Review',
@@ -17,10 +19,12 @@ export function generateToolReviewSchema(tool: Tool, categoryName: string) {
     datePublished: tool.createdAt,
     dateModified: tool.lastUpdated,
     url: `${SITE_URL}/${tool.categorySlug}/${tool.slug}`,
+    inLanguage: 'en-US',
     author: {
       '@type': 'Organization',
       name: SITE_NAME,
       url: SITE_URL,
+      sameAs: editorialTeam.sameAs,
     },
     publisher: {
       '@type': 'Organization',

@@ -92,7 +92,8 @@ export async function generateMetadata(
       description,
       url: `${SITE_URL}/best/${slug}`,
       siteName: SITE_NAME,
-      type: 'website',
+      type: 'article',
+      authors: ['ToolPilot Editorial Team'],
     },
   };
 }
