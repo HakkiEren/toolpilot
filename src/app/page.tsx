@@ -9,20 +9,55 @@ import { AdBanner, AdInArticle, AdMultiplex, AdNative } from '@/components/ads/A
 export const revalidate = 3600;
 
 export default async function HomePage() {
-  // Fetch trending tools across ALL categories
-  const { data: trendingTools } = await supabase
-    .from('tools')
-    .select('slug, name, category_slug, tagline, ratings_overall, logo_url, pricing')
-    .eq('status', 'published')
-    .order('ratings_overall', { ascending: false })
-    .limit(9);
-
-  // Fetch tools by category for "Popular by Category" section
-  const { data: allTools } = await supabase
-    .from('tools')
-    .select('slug, name, category_slug, tagline, ratings_overall, logo_url')
-    .eq('status', 'published')
-    .order('ratings_overall', { ascending: false });
+  // Parallel fetch all homepage data for maximum performance
+  const [
+    { data: trendingTools },
+    { data: allTools },
+    { data: latestComparisons },
+    { data: latestPosts },
+    { count: toolCount },
+    { count: comparisonCount },
+  ] = await Promise.all([
+    // 1. Trending tools across ALL categories
+    supabase
+      .from('tools')
+      .select('slug, name, category_slug, tagline, ratings_overall, logo_url, pricing')
+      .eq('status', 'published')
+      .order('ratings_overall', { ascending: false })
+      .limit(9),
+    // 2. All tools for "Popular by Category" section
+    supabase
+      .from('tools')
+      .select('slug, name, category_slug, tagline, ratings_overall, logo_url')
+      .eq('status', 'published')
+      .order('ratings_overall', { ascending: false }),
+    // 3. Latest comparisons
+    supabase
+      .from('comparisons')
+      .select(`
+        slug, category_slug, meta_title,
+        tool_a:tools!comparisons_tool_a_id_fkey(name, slug, logo_url, ratings_overall),
+        tool_b:tools!comparisons_tool_b_id_fkey(name, slug, logo_url, ratings_overall)
+      `)
+      .order('created_at', { ascending: false })
+      .limit(8),
+    // 4. Latest blog posts
+    supabase
+      .from('blog_posts')
+      .select('slug, title, excerpt, published_at')
+      .eq('status', 'published')
+      .order('published_at', { ascending: false })
+      .limit(3),
+    // 5. Tool count
+    supabase
+      .from('tools')
+      .select('*', { count: 'exact', head: true })
+      .eq('status', 'published'),
+    // 6. Comparison count
+    supabase
+      .from('comparisons')
+      .select('*', { count: 'exact', head: true }),
+  ]);
 
   // Group tools by category
   const toolsByCategory: Record<string, typeof allTools> = {};
@@ -32,35 +67,6 @@ export default async function HomePage() {
     }
     toolsByCategory[tool.category_slug]!.push(tool);
   });
-
-  // Fetch latest comparisons across ALL categories
-  const { data: latestComparisons } = await supabase
-    .from('comparisons')
-    .select(`
-      slug, category_slug, meta_title,
-      tool_a:tools!comparisons_tool_a_id_fkey(name, slug, logo_url, ratings_overall),
-      tool_b:tools!comparisons_tool_b_id_fkey(name, slug, logo_url, ratings_overall)
-    `)
-    .order('created_at', { ascending: false })
-    .limit(8);
-
-  // Fetch latest blog posts
-  const { data: latestPosts } = await supabase
-    .from('blog_posts')
-    .select('slug, title, excerpt, published_at')
-    .eq('status', 'published')
-    .order('published_at', { ascending: false })
-    .limit(3);
-
-  // Count totals for stats
-  const { count: toolCount } = await supabase
-    .from('tools')
-    .select('*', { count: 'exact', head: true })
-    .eq('status', 'published');
-
-  const { count: comparisonCount } = await supabase
-    .from('comparisons')
-    .select('*', { count: 'exact', head: true });
 
   // ItemList schema for trending tools — enables ranking carousel in SERPs
   const trendingItemListSchema = trendingTools && trendingTools.length > 0 ? {
