@@ -1,10 +1,11 @@
-import { SITE_URL } from './constants';
+import { SITE_URL as _SITE_URL } from './constants';
 
 // ============================================================
 // IndexNow — Submit URLs for instant indexing
 // Can be called from: API routes, server actions, cron jobs
 // ============================================================
 
+const SITE_URL = _SITE_URL.trim(); // Defensive: strip any trailing whitespace/newline from env
 const INDEXNOW_KEY = process.env.INDEXNOW_API_KEY || '84d9f83f717bec0c6979844cdf5d2186';
 const INDEXNOW_ENDPOINT = 'https://api.indexnow.org/IndexNow';
 
