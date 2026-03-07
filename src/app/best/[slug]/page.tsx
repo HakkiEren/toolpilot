@@ -435,11 +435,21 @@ export default async function BestOfPage({ params }: { params: Promise<{ slug: s
                     </span>
                   </div>
                   <div className="flex items-center gap-3 mt-2 md:mt-0">
+                    {tool.websiteUrl && (
+                      <a
+                        href={tool.websiteUrl}
+                        target="_blank"
+                        rel="noopener noreferrer nofollow sponsored"
+                        className="inline-flex items-center gap-1 px-3 py-1.5 bg-gradient-to-r from-indigo-600 to-blue-600 text-white rounded-lg text-xs font-bold hover:from-indigo-700 hover:to-blue-700 transition-all shadow-sm"
+                      >
+                        Visit &#8599;
+                      </a>
+                    )}
                     <Link
                       href={`/${tool.categorySlug}/${tool.slug}`}
                       className="text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300"
                     >
-                      Full Review &#8594;
+                      Review &#8594;
                     </Link>
                     <Link
                       href={`/${tool.categorySlug}/${tool.slug}/alternatives`}

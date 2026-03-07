@@ -150,6 +150,16 @@ export default async function ComparisonPage({ params }: PageProps) {
                     <span className="px-2.5 py-1 bg-white/80 dark:bg-gray-800 text-gray-600 dark:text-gray-300 rounded-full font-medium">From ${comparison.toolA.pricing.startingPrice}/mo</span>
                   )}
                 </div>
+                {comparison.toolA.websiteUrl && (
+                  <a
+                    href={comparison.toolA.websiteUrl}
+                    target="_blank"
+                    rel="noopener noreferrer nofollow sponsored"
+                    className="mt-3 inline-flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg text-xs font-bold hover:from-blue-700 hover:to-indigo-700 transition-all shadow-md shadow-blue-600/20"
+                  >
+                    Visit {comparison.toolA.name} &#8599;
+                  </a>
+                )}
               </div>
 
               {/* VS Divider */}
@@ -185,6 +195,16 @@ export default async function ComparisonPage({ params }: PageProps) {
                     <span className="px-2.5 py-1 bg-white/80 dark:bg-gray-800 text-gray-600 dark:text-gray-300 rounded-full font-medium">From ${comparison.toolB.pricing.startingPrice}/mo</span>
                   )}
                 </div>
+                {comparison.toolB.websiteUrl && (
+                  <a
+                    href={comparison.toolB.websiteUrl}
+                    target="_blank"
+                    rel="noopener noreferrer nofollow sponsored"
+                    className="mt-3 inline-flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg text-xs font-bold hover:from-purple-700 hover:to-indigo-700 transition-all shadow-md shadow-purple-600/20"
+                  >
+                    Visit {comparison.toolB.name} &#8599;
+                  </a>
+                )}
               </div>
             </div>
 
@@ -315,12 +335,24 @@ export default async function ComparisonPage({ params }: PageProps) {
                 </h3>
               </div>
               <div className="text-gray-600 dark:text-gray-300">{comparison.scenarioContent}</div>
-              <Link
-                href={`/${category}/${comparison.toolA.slug}`}
-                className="inline-flex items-center gap-1 text-sm text-blue-600 font-medium mt-4 hover:underline"
-              >
-                Read {comparison.toolA.name} Review &#8594;
-              </Link>
+              <div className="flex flex-wrap items-center gap-3 mt-4">
+                <Link
+                  href={`/${category}/${comparison.toolA.slug}`}
+                  className="inline-flex items-center gap-1 text-sm text-blue-600 font-medium hover:underline"
+                >
+                  Read Review &#8594;
+                </Link>
+                {comparison.toolA.websiteUrl && (
+                  <a
+                    href={comparison.toolA.websiteUrl}
+                    target="_blank"
+                    rel="noopener noreferrer nofollow sponsored"
+                    className="inline-flex items-center gap-1 px-3 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-bold hover:bg-blue-700 transition-colors"
+                  >
+                    Try Free &#8599;
+                  </a>
+                )}
+              </div>
             </div>
             <div className="hover-lift bg-white dark:bg-gray-900 rounded-2xl p-6 border border-purple-200 dark:border-purple-800/30">
               <div className="flex items-center gap-3 mb-4">
@@ -330,12 +362,24 @@ export default async function ComparisonPage({ params }: PageProps) {
                 </h3>
               </div>
               <div className="text-gray-600 dark:text-gray-300">{comparison.migrationContent}</div>
-              <Link
-                href={`/${category}/${comparison.toolB.slug}`}
-                className="inline-flex items-center gap-1 text-sm text-purple-600 font-medium mt-4 hover:underline"
-              >
-                Read {comparison.toolB.name} Review &#8594;
-              </Link>
+              <div className="flex flex-wrap items-center gap-3 mt-4">
+                <Link
+                  href={`/${category}/${comparison.toolB.slug}`}
+                  className="inline-flex items-center gap-1 text-sm text-purple-600 font-medium hover:underline"
+                >
+                  Read Review &#8594;
+                </Link>
+                {comparison.toolB.websiteUrl && (
+                  <a
+                    href={comparison.toolB.websiteUrl}
+                    target="_blank"
+                    rel="noopener noreferrer nofollow sponsored"
+                    className="inline-flex items-center gap-1 px-3 py-1.5 bg-purple-600 text-white rounded-lg text-xs font-bold hover:bg-purple-700 transition-colors"
+                  >
+                    Try Free &#8599;
+                  </a>
+                )}
+              </div>
             </div>
           </div>
 

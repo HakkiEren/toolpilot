@@ -188,6 +188,16 @@ export default async function AlternativesPage({ params }: PageProps) {
               >
                 Full Review &#8594;
               </Link>
+              {tool.websiteUrl && (
+                <a
+                  href={tool.websiteUrl}
+                  target="_blank"
+                  rel="noopener noreferrer nofollow sponsored"
+                  className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm text-gray-700 dark:text-gray-200 rounded-full px-5 py-2 font-medium hover:bg-white dark:hover:bg-gray-800 transition-all border border-gray-200/50 dark:border-gray-700/50"
+                >
+                  Visit Site &#8599;
+                </a>
+              )}
             </div>
           </div>
         </div>
@@ -353,6 +363,16 @@ export default async function AlternativesPage({ params }: PageProps) {
 
                   {/* Actions */}
                   <div className="px-6 pb-5 flex flex-wrap gap-3">
+                    {alt.websiteUrl && (
+                      <a
+                        href={alt.websiteUrl}
+                        target="_blank"
+                        rel="noopener noreferrer nofollow sponsored"
+                        className="inline-flex items-center gap-1 px-4 py-2 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg text-sm font-bold hover:from-green-700 hover:to-emerald-700 transition-all shadow-md shadow-green-600/20"
+                      >
+                        Try {alt.name} &#8599;
+                      </a>
+                    )}
                     <Link
                       href={`/${category}/${alt.slug}`}
                       className="inline-flex items-center gap-1 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
