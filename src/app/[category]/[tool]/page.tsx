@@ -214,8 +214,8 @@ export default async function ToolPage({ params }: PageProps) {
           </div>
         </div>
 
-        {/* ========== TABLE OF CONTENTS — Desktop sidebar + mobile inline ========== */}
-        <div className="mb-8 lg:hidden">
+        {/* ========== TABLE OF CONTENTS — Collapsible on mobile, always visible on desktop ========== */}
+        <div className="mb-8">
           <TableOfContents
             items={[
               { id: 'tldr', label: 'TL;DR Summary', icon: '⚡' },
