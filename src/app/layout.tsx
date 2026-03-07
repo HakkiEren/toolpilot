@@ -76,7 +76,9 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://logo.clearbit.com" />
         <link rel="preconnect" href="https://gqqgbfoniyfbpbognnks.supabase.co" />
         <link rel="dns-prefetch" href="https://gqqgbfoniyfbpbognnks.supabase.co" />
+        <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
+        <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
         {/* Google Analytics (GA4) */}
         {process.env.NEXT_PUBLIC_GA_ID && (
           <>

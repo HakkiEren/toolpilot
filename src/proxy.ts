@@ -38,6 +38,12 @@ export function proxy(request: NextRequest) {
   // Add server timing for performance monitoring
   response.headers.set('Server-Timing', `proxy;dur=0`);
 
+  // ─── Content-Language header for SEO ───
+  response.headers.set('Content-Language', 'en');
+
+  // ─── Vary header for proper CDN caching ───
+  response.headers.set('Vary', 'Accept-Encoding');
+
   // ─── Content Security Policy (Report-Only) ───
   // Loose CSP that allows Google services, Supabase, and common CDNs
   const cspDirectives = [
