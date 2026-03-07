@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { SITE_NAME, CATEGORY_LIST, CATEGORIES, SUBCATEGORIES } from '@/lib/constants';
+import { SITE_NAME, SITE_URL, CATEGORY_LIST, CATEGORIES, SUBCATEGORIES } from '@/lib/constants';
 import { supabase } from '@/lib/supabase';
 import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
 import { generateFAQSchema } from '@/lib/schema';
@@ -62,8 +62,45 @@ export default async function HomePage() {
     .from('comparisons')
     .select('*', { count: 'exact', head: true });
 
+  // ItemList schema for trending tools — enables ranking carousel in SERPs
+  const trendingItemListSchema = trendingTools && trendingTools.length > 0 ? {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Trending Digital Tools',
+    description: 'The highest rated digital tools across all categories, curated by ToolPilot experts.',
+    numberOfItems: trendingTools.length,
+    itemListElement: trendingTools.map((tool, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: tool.name,
+      url: `${SITE_URL}/${tool.category_slug}/${tool.slug}`,
+      item: {
+        '@type': 'SoftwareApplication',
+        name: tool.name,
+        description: tool.tagline,
+        applicationCategory: 'BusinessApplication',
+        ...(tool.logo_url && { image: tool.logo_url }),
+        aggregateRating: {
+          '@type': 'AggregateRating',
+          ratingValue: tool.ratings_overall,
+          bestRating: 10,
+          worstRating: 1,
+          ratingCount: 1,
+        },
+      },
+    })),
+  } : null;
+
   return (
     <>
+      {/* Trending Tools ItemList Schema */}
+      {trendingItemListSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(trendingItemListSchema) }}
+        />
+      )}
+
       {/* ============================================================ */}
       {/* HERO SECTION — Premium gradient with animated blobs */}
       {/* ============================================================ */}
