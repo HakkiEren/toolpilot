@@ -4,6 +4,7 @@ import { supabase } from '@/lib/supabase';
 import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
 import { generateFAQSchema } from '@/lib/schema';
 import { ToolLogo } from '@/components/common/ToolLogo';
+import { RatingStars } from '@/components/common/RatingStars';
 import { AdBanner, AdInArticle, AdMultiplex, AdNative } from '@/components/ads/AdSlot';
 
 export const revalidate = 3600;
@@ -474,21 +475,7 @@ export default async function HomePage() {
                           <div className="font-semibold text-sm group-hover:text-blue-600 transition-colors truncate">
                             {tool.name}
                           </div>
-                          <div className="flex items-center gap-1.5 mt-0.5">
-                            <div className="flex">
-                              {[...Array(5)].map((_, si) => (
-                                <svg
-                                  key={si}
-                                  className={`w-3 h-3 ${si < Math.round((tool.ratings_overall || 0) / 2) ? 'text-yellow-400' : 'text-gray-200 dark:text-gray-700'}`}
-                                  fill="currentColor"
-                                  viewBox="0 0 20 20"
-                                >
-                                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                </svg>
-                              ))}
-                            </div>
-                            <span className="text-xs text-gray-400">{tool.ratings_overall}</span>
-                          </div>
+                          <RatingStars score={tool.ratings_overall || 0} size="xs" showScore />
                         </div>
                         {i === 0 && (
                           <span className="text-[10px] px-1.5 py-0.5 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 rounded font-bold">
@@ -830,6 +817,146 @@ export default async function HomePage() {
       {/* FAQ SECTION — SEO-rich content with FAQ schema */}
       {/* ============================================================ */}
       <HomeFAQ toolCount={toolCount || 40} comparisonCount={comparisonCount || 30} />
+
+      {/* ============================================================ */}
+      {/* QUICK ACCESS — Deep links to all resources for max internal linking */}
+      {/* ============================================================ */}
+      <section className="py-16">
+        <div className="max-w-7xl mx-auto px-4">
+          <h2 className="text-2xl md:text-3xl font-bold text-center mb-4">
+            Free Tools & Resources
+          </h2>
+          <p className="text-gray-500 text-center mb-12 max-w-xl mx-auto">
+            Calculators, guides, and research tools to help you make smarter software decisions.
+          </p>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {/* Calculators */}
+            <Link
+              href="/calculators/roi"
+              className="group flex items-center gap-4 p-5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl hover:border-blue-300 hover:shadow-md transition-all"
+            >
+              <div className="w-11 h-11 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-xl flex-shrink-0">💰</div>
+              <div>
+                <h3 className="font-semibold text-sm group-hover:text-blue-600 transition-colors">ROI Calculator</h3>
+                <p className="text-xs text-gray-500 mt-0.5">Estimate return on your software investment</p>
+              </div>
+            </Link>
+            <Link
+              href="/calculators/email-marketing-roi"
+              className="group flex items-center gap-4 p-5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl hover:border-blue-300 hover:shadow-md transition-all"
+            >
+              <div className="w-11 h-11 rounded-xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-xl flex-shrink-0">📧</div>
+              <div>
+                <h3 className="font-semibold text-sm group-hover:text-blue-600 transition-colors">Email Marketing ROI</h3>
+                <p className="text-xs text-gray-500 mt-0.5">Calculate your email campaign profitability</p>
+              </div>
+            </Link>
+            <Link
+              href="/calculators/hosting-cost"
+              className="group flex items-center gap-4 p-5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl hover:border-blue-300 hover:shadow-md transition-all"
+            >
+              <div className="w-11 h-11 rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-xl flex-shrink-0">🖥️</div>
+              <div>
+                <h3 className="font-semibold text-sm group-hover:text-blue-600 transition-colors">Hosting Cost Calculator</h3>
+                <p className="text-xs text-gray-500 mt-0.5">Compare hosting plans by total cost</p>
+              </div>
+            </Link>
+            <Link
+              href="/calculators/ecommerce-profit"
+              className="group flex items-center gap-4 p-5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl hover:border-blue-300 hover:shadow-md transition-all"
+            >
+              <div className="w-11 h-11 rounded-xl bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-xl flex-shrink-0">🛒</div>
+              <div>
+                <h3 className="font-semibold text-sm group-hover:text-blue-600 transition-colors">E-commerce Profit Calculator</h3>
+                <p className="text-xs text-gray-500 mt-0.5">Project your online store profitability</p>
+              </div>
+            </Link>
+            <Link
+              href="/calculators/ai-cost"
+              className="group flex items-center gap-4 p-5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl hover:border-blue-300 hover:shadow-md transition-all"
+            >
+              <div className="w-11 h-11 rounded-xl bg-violet-100 dark:bg-violet-900/30 flex items-center justify-center text-xl flex-shrink-0">🤖</div>
+              <div>
+                <h3 className="font-semibold text-sm group-hover:text-blue-600 transition-colors">AI Cost Estimator</h3>
+                <p className="text-xs text-gray-500 mt-0.5">Estimate AI API and platform costs</p>
+              </div>
+            </Link>
+            <Link
+              href="/calculators/team-productivity"
+              className="group flex items-center gap-4 p-5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl hover:border-blue-300 hover:shadow-md transition-all"
+            >
+              <div className="w-11 h-11 rounded-xl bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center text-xl flex-shrink-0">📊</div>
+              <div>
+                <h3 className="font-semibold text-sm group-hover:text-blue-600 transition-colors">Team Productivity Calculator</h3>
+                <p className="text-xs text-gray-500 mt-0.5">Measure productivity gains from new tools</p>
+              </div>
+            </Link>
+          </div>
+
+          {/* Extra resource links */}
+          <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <Link
+              href="/best"
+              className="group flex items-center gap-3 p-4 bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/10 dark:to-orange-900/10 border border-yellow-200 dark:border-yellow-800/30 rounded-xl hover:shadow-md transition-all"
+            >
+              <span className="text-xl">🏆</span>
+              <div>
+                <h3 className="font-semibold text-sm group-hover:text-yellow-700 dark:group-hover:text-yellow-400 transition-colors">Best-Of Rankings</h3>
+                <p className="text-[11px] text-gray-500">Curated top picks by category</p>
+              </div>
+            </Link>
+            <Link
+              href="/glossary"
+              className="group flex items-center gap-3 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/10 dark:to-indigo-900/10 border border-blue-200 dark:border-blue-800/30 rounded-xl hover:shadow-md transition-all"
+            >
+              <span className="text-xl">📖</span>
+              <div>
+                <h3 className="font-semibold text-sm group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors">Glossary</h3>
+                <p className="text-[11px] text-gray-500">SaaS & tech terms explained</p>
+              </div>
+            </Link>
+            <Link
+              href="/blog"
+              className="group flex items-center gap-3 p-4 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/10 dark:to-emerald-900/10 border border-green-200 dark:border-green-800/30 rounded-xl hover:shadow-md transition-all"
+            >
+              <span className="text-xl">📝</span>
+              <div>
+                <h3 className="font-semibold text-sm group-hover:text-green-700 dark:group-hover:text-green-400 transition-colors">Blog & Guides</h3>
+                <p className="text-[11px] text-gray-500">Expert insights & how-tos</p>
+              </div>
+            </Link>
+            <Link
+              href="/changelog"
+              className="group flex items-center gap-3 p-4 bg-gradient-to-r from-purple-50 to-fuchsia-50 dark:from-purple-900/10 dark:to-fuchsia-900/10 border border-purple-200 dark:border-purple-800/30 rounded-xl hover:shadow-md transition-all"
+            >
+              <span className="text-xl">🔄</span>
+              <div>
+                <h3 className="font-semibold text-sm group-hover:text-purple-700 dark:group-hover:text-purple-400 transition-colors">Changelog</h3>
+                <p className="text-[11px] text-gray-500">Latest site updates</p>
+              </div>
+            </Link>
+          </div>
+
+          {/* Comparison hub links per category */}
+          <div className="mt-8 p-6 bg-gray-50 dark:bg-gray-900/50 rounded-2xl border border-gray-200 dark:border-gray-800">
+            <h3 className="font-semibold text-sm uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-4">
+              Comparison Hubs
+            </h3>
+            <div className="flex flex-wrap gap-2">
+              {CATEGORY_LIST.map((cat) => (
+                <Link
+                  key={cat.slug}
+                  href={`/${cat.slug}/compare`}
+                  className="px-3 py-1.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm hover:border-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all"
+                >
+                  {cat.name} Comparisons
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* ============================================================ */}
       {/* CTA SECTION */}

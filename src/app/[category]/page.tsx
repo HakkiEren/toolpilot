@@ -138,16 +138,26 @@ export default async function CategoryPage({ params }: PageProps) {
           <section className="mb-12">
             <h2 className="text-xl font-bold mb-4">Browse by Type</h2>
             <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-              {subcategories.map((sub) => (
-                <Link
-                  key={sub.slug}
-                  href={`/best/${sub.slug}`}
-                  className="group hover-lift p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 hover:bg-gradient-to-br hover:from-blue-50 hover:to-purple-50 dark:hover:from-gray-800 dark:hover:to-gray-700 transition-all"
-                >
-                  <h3 className="font-medium text-sm group-hover:text-blue-600 transition-colors">{sub.name}</h3>
-                  <p className="text-xs text-gray-500 mt-1 line-clamp-2">{sub.description}</p>
-                </Link>
-              ))}
+              {subcategories.map((sub) => {
+                const subToolCount = tools.filter(t => t.subcategorySlug === sub.slug).length;
+                return (
+                  <Link
+                    key={sub.slug}
+                    href={`/best/${sub.slug}`}
+                    className="group hover-lift p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 hover:bg-gradient-to-br hover:from-blue-50 hover:to-purple-50 dark:hover:from-gray-800 dark:hover:to-gray-700 transition-all"
+                  >
+                    <div className="flex items-center justify-between mb-1">
+                      <h3 className="font-medium text-sm group-hover:text-blue-600 transition-colors">{sub.name}</h3>
+                      {subToolCount > 0 && (
+                        <span className="text-[10px] bg-gray-100 dark:bg-gray-800 text-gray-500 px-2 py-0.5 rounded-full font-medium">
+                          {subToolCount} tools
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-xs text-gray-500 mt-1 line-clamp-2">{sub.description}</p>
+                  </Link>
+                );
+              })}
             </div>
           </section>
         )}

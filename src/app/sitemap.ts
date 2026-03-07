@@ -19,7 +19,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   entries.push(
     { url: SITE_URL, lastModified: weeklyDate, changeFrequency: 'daily', priority: 1.0 },
     { url: `${SITE_URL}/blog`, lastModified: weeklyDate, changeFrequency: 'weekly', priority: 0.8 },
-    { url: `${SITE_URL}/search`, lastModified: monthlyDate, changeFrequency: 'weekly', priority: 0.7 },
+    // /search excluded — blocked in robots.txt, no need in sitemap
     { url: `${SITE_URL}/about`, lastModified: monthlyDate, changeFrequency: 'monthly', priority: 0.4 },
     { url: `${SITE_URL}/contact`, lastModified: monthlyDate, changeFrequency: 'monthly', priority: 0.4 },
     { url: `${SITE_URL}/privacy`, lastModified: monthlyDate, changeFrequency: 'yearly', priority: 0.2 },

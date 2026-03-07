@@ -5,8 +5,43 @@ import { getToolsBySubcategory, getToolsByCategory } from '@/lib/data';
 import { CATEGORIES, SUBCATEGORIES, SITE_URL, SITE_NAME } from '@/lib/constants';
 import { generateBreadcrumbSchema, generateCollectionSchema, generateBestOfItemListSchema, generateFAQSchema } from '@/lib/schema';
 import { ToolLogo } from '@/components/common/ToolLogo';
+import { RatingStars } from '@/components/common/RatingStars';
 import { AdBanner, AdInArticle, AdMultiplex } from '@/components/ads/AdSlot';
 import type { Tool } from '@/types';
+
+// Award badges — calculated from tool data
+function getAwardBadges(tools: Tool[]): Record<string, string[]> {
+  const badges: Record<string, string[]> = {};
+  if (tools.length < 2) return badges;
+
+  // Editor's Choice — top overall rating (always #1)
+  badges[tools[0].id] = ['🏆 Editor\'s Choice'];
+
+  // Best Value — highest value for money (if not already #1)
+  const bestValue = [...tools].sort((a, b) => b.ratings.valueForMoney - a.ratings.valueForMoney)[0];
+  if (bestValue && bestValue.id !== tools[0].id) {
+    if (!badges[bestValue.id]) badges[bestValue.id] = [];
+    badges[bestValue.id].push('💎 Best Value');
+  }
+
+  // Most User-Friendly — highest ease of use (if not already awarded)
+  const easiest = [...tools].sort((a, b) => b.ratings.easeOfUse - a.ratings.easeOfUse)[0];
+  if (easiest && !badges[easiest.id]?.length) {
+    if (!badges[easiest.id]) badges[easiest.id] = [];
+    badges[easiest.id].push('✨ Most User-Friendly');
+  }
+
+  // Best for Budget — cheapest paid option with good rating
+  const budgetPicks = tools
+    .filter(t => t.pricing.startingPrice && t.pricing.startingPrice > 0 && t.ratings.overall >= 7)
+    .sort((a, b) => (a.pricing.startingPrice || 999) - (b.pricing.startingPrice || 999));
+  if (budgetPicks.length > 0 && !badges[budgetPicks[0].id]?.length) {
+    if (!badges[budgetPicks[0].id]) badges[budgetPicks[0].id] = [];
+    badges[budgetPicks[0].id].push('🏷️ Budget Pick');
+  }
+
+  return badges;
+}
 
 export const revalidate = 3600;
 export const dynamicParams = true;
@@ -121,6 +156,7 @@ export default async function BestOfPage({ params }: { params: Promise<{ slug: s
   }
 
   const faqs = generateBestOfFAQs(allTools, sub.name);
+  const awardBadges = getAwardBadges(allTools);
 
   const breadcrumbs = [
     { name: 'Home', url: '/' },
@@ -270,10 +306,16 @@ export default async function BestOfPage({ params }: { params: Promise<{ slug: s
                             : <span className="text-gray-400">N/A</span>
                           }
                         </td>
-                        <td className="py-4 px-4 text-center text-xs text-gray-600 max-w-[140px] line-clamp-1">
-                          {tool.ratings.easeOfUse >= 8.5 ? 'Beginners' :
-                           tool.ratings.features >= 8.5 ? 'Power Users' :
-                           tool.ratings.valueForMoney >= 8.5 ? 'Budget-Friendly' : 'General Use'}
+                        <td className="py-4 px-4 text-center text-xs text-gray-600 max-w-[160px]">
+                          {awardBadges[tool.id]?.length ? (
+                            <span className="font-semibold text-indigo-600 dark:text-indigo-400">
+                              {awardBadges[tool.id][0].replace(/^[^\s]+\s/, '')}
+                            </span>
+                          ) : (
+                            tool.ratings.easeOfUse >= 8.5 ? 'Beginners' :
+                            tool.ratings.features >= 8.5 ? 'Power Users' :
+                            tool.ratings.valueForMoney >= 8.5 ? 'Budget-Friendly' : 'General Use'
+                          )}
                         </td>
                         <td className="py-4 px-4 text-center">
                           <Link
@@ -333,6 +375,15 @@ export default async function BestOfPage({ params }: { params: Promise<{ slug: s
                             🥉 3RD PLACE
                           </span>
                         )}
+                        {/* Award badges */}
+                        {awardBadges[tool.id]?.map((badge) => (
+                          <span
+                            key={badge}
+                            className="bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-400 text-[10px] font-bold px-2.5 py-0.5 rounded-full"
+                          >
+                            {badge}
+                          </span>
+                        ))}
                       </div>
                       <p className="text-gray-600 dark:text-gray-400 text-sm">{tool.tagline}</p>
                     </div>
