@@ -203,6 +203,86 @@ export function generateToolFAQs(tool: ToolInput): FAQ[] {
 }
 
 // ---------------------------------------------------------------------------
+// generateComparisonFAQs — auto-generated FAQs for comparison pages
+// Targets search queries like "X vs Y", "which is better X or Y", etc.
+// ---------------------------------------------------------------------------
+
+export function generateComparisonFAQs(
+  toolA: ToolInput,
+  toolB: ToolInput,
+): FAQ[] {
+  const year = new Date().getFullYear();
+  const { name: nameA, pricing: pricingA, ratings: ratingsA } = toolA;
+  const { name: nameB, pricing: pricingB, ratings: ratingsB } = toolB;
+
+  const winner = ratingsA.overall > ratingsB.overall ? nameA : ratingsB.overall > ratingsA.overall ? nameB : null;
+  const winnerScore = Math.max(ratingsA.overall, ratingsB.overall);
+  const loserScore = Math.min(ratingsA.overall, ratingsB.overall);
+
+  // 1. "Which is better, X or Y?"
+  const betterAnswer = winner
+    ? `Based on our analysis, ${winner} has a slight edge with a ${winnerScore}/10 rating compared to ${loserScore}/10. However, the best choice depends on your specific needs, budget, and use case. We recommend trying both if possible — ${pricingA.hasFreeplan ? `${nameA} offers a free plan` : pricingA.freeTrialDays ? `${nameA} has a ${pricingA.freeTrialDays}-day free trial` : `${nameA} offers paid plans`} and ${pricingB.hasFreeplan ? `${nameB} offers a free plan` : pricingB.freeTrialDays ? `${nameB} has a ${pricingB.freeTrialDays}-day free trial` : `${nameB} offers paid plans`}.`
+    : `${nameA} and ${nameB} are very evenly matched with identical overall ratings of ${ratingsA.overall}/10. The best choice comes down to your specific priorities — pricing, specific features, or integration needs. We recommend reviewing the detailed feature comparison above and trying both tools.`;
+
+  // 2. "Is X cheaper than Y?"
+  const cheaperAnswer = (() => {
+    const priceA = pricingA.startingPrice;
+    const priceB = pricingB.startingPrice;
+    const freeA = pricingA.hasFreeplan;
+    const freeB = pricingB.hasFreeplan;
+
+    if (freeA && freeB) {
+      return `Both ${nameA} and ${nameB} offer free plans, making them accessible to start with no commitment. ${priceA && priceB ? `For paid plans, ${nameA} starts at $${priceA}/month while ${nameB} starts at $${priceB}/month.` : 'Check their respective pricing pages for paid plan details.'}`;
+    }
+    if (freeA && !freeB) {
+      return `${nameA} has an advantage here with a free plan available, while ${nameB} ${priceB ? `starts at $${priceB}/month` : 'requires a paid subscription'}. ${nameA} is the more budget-friendly option to get started.`;
+    }
+    if (!freeA && freeB) {
+      return `${nameB} has the edge on pricing with a free plan available, while ${nameA} ${priceA ? `starts at $${priceA}/month` : 'requires a paid subscription'}. ${nameB} is more accessible for budget-conscious users.`;
+    }
+    if (priceA && priceB) {
+      const cheaper = priceA < priceB ? nameA : priceB < priceA ? nameB : null;
+      return cheaper
+        ? `${cheaper} is more affordable, starting at $${Math.min(priceA, priceB)}/month compared to $${Math.max(priceA, priceB)}/month. However, pricing alone shouldn't drive your decision — compare the features included at each price point.`
+        : `Both tools start at similar price points around $${priceA}/month. The value difference comes down to which features matter most for your workflow.`;
+    }
+    return `Both ${nameA} and ${nameB} offer competitive pricing. Visit their official pricing pages for the most current plan details and any available discounts or annual billing savings.`;
+  })();
+
+  // 3. "Can I switch from X to Y?"
+  const switchAnswer = `Switching from ${nameA} to ${nameB} (or vice versa) is generally possible, though the process depends on the specific data and integrations involved. Most modern tools offer data export features (CSV, API, or native migration tools). Before switching, we recommend: (1) Export your data from the current tool, (2) Use the new tool's free trial or free plan to test the migration, (3) Run both tools in parallel during the transition period. Check both tools' documentation for specific migration guides.`;
+
+  // 4. "What are the main differences between X and Y?"
+  const differencesAnswer = `The key differences between ${nameA} and ${nameB} come down to their ratings, pricing, and target audience. ${nameA} scores ${ratingsA.overall}/10 overall while ${nameB} scores ${ratingsB.overall}/10. ${pricingA.hasFreeplan !== pricingB.hasFreeplan ? `On the pricing front, ${pricingA.hasFreeplan ? nameA : nameB} offers a free plan while ${pricingA.hasFreeplan ? nameB : nameA} does not.` : ''} See our detailed feature matrix and score comparison above for a complete breakdown of how they compare across specific capabilities.`;
+
+  // 5. Year-specific query
+  const yearAnswer = `In ${year}, both ${nameA} and ${nameB} remain actively maintained and competitive. ${winner ? `${winner} currently holds a higher overall rating (${winnerScore}/10 vs ${loserScore}/10), suggesting it may offer a slightly better overall experience.` : `Both tools are neck-and-neck with identical ratings.`} We update our comparisons regularly to reflect the latest features, pricing changes, and user feedback.`;
+
+  return [
+    {
+      question: `Which is better, ${nameA} or ${nameB}?`,
+      answer: betterAnswer,
+    },
+    {
+      question: `Is ${nameA} cheaper than ${nameB}?`,
+      answer: cheaperAnswer,
+    },
+    {
+      question: `Can I switch from ${nameA} to ${nameB}?`,
+      answer: switchAnswer,
+    },
+    {
+      question: `What are the main differences between ${nameA} and ${nameB}?`,
+      answer: differencesAnswer,
+    },
+    {
+      question: `${nameA} vs ${nameB}: Which should I choose in ${year}?`,
+      answer: yearAnswer,
+    },
+  ];
+}
+
+// ---------------------------------------------------------------------------
 // generateComparisonBottomLine
 // ---------------------------------------------------------------------------
 

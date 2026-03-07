@@ -40,6 +40,11 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
+  // Search engine verification tags (set via env vars)
+  verification: {
+    ...(process.env.NEXT_PUBLIC_GSC_ID ? { google: process.env.NEXT_PUBLIC_GSC_ID } : {}),
+    ...(process.env.NEXT_PUBLIC_BING_ID ? { other: { 'msvalidate.01': process.env.NEXT_PUBLIC_BING_ID } } : {}),
+  },
   // PWA & Mobile meta
   other: {
     'mobile-web-app-capable': 'yes',

@@ -1235,6 +1235,22 @@ const HOME_FAQS = [
     question: 'How do I find the best tool for my specific needs?',
     answer: 'Start with our Search page to find tools by name or feature. Then browse our Best Of lists for curated recommendations by subcategory. Use our comparison pages to do detailed side-by-side analysis between your top picks. Each tool review includes a "Best For" section to help match tools to specific use cases.',
   },
+  {
+    question: 'What is the best AI tool for beginners in 2026?',
+    answer: 'For beginners, we recommend starting with tools that offer free plans and intuitive interfaces. ChatGPT and Claude are top picks for general AI assistants, Canva for AI-powered design, and Jasper for AI writing. Visit our Best AI Tools page for the full ranking with beginner-friendly filters.',
+  },
+  {
+    question: 'How much does business software cost on average?',
+    answer: 'Business software pricing varies widely by category. CRM tools range from free (HubSpot CRM) to $150+/user/month (Salesforce Enterprise). Project management tools typically cost $5-30/user/month. Our pricing pages break down every plan tier, hidden fees, and annual vs monthly billing to help you find the best value.',
+  },
+  {
+    question: 'Does ProPicked offer free tools and calculators?',
+    answer: 'Yes! ProPicked offers six free calculators: ROI Calculator, Email Marketing ROI, Hosting Cost Calculator, E-commerce Profit Calculator, AI Cost Estimator, and Team Productivity Calculator. We also provide a comprehensive software glossary with 60+ terms explained and expert-written buying guides for every category.',
+  },
+  {
+    question: 'How do I switch from one tool to another without losing data?',
+    answer: 'Most modern SaaS tools offer data export features (CSV, API, native integrations). Our tool reviews include a "Migration" section when applicable, covering data portability, import/export options, and integration with popular platforms. Check the specific tool review for step-by-step migration guidance.',
+  },
 ];
 
 function HomeFAQ({ toolCount, comparisonCount }: { toolCount: number; comparisonCount: number }) {

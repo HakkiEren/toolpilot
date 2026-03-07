@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import { getComparison, getAllComparisonSlugs, getRelatedLinks, getRelatedComparisons, getRelatedBlogPosts } from '@/lib/data';
 import { generateComparisonSchema, generateFAQSchema, generateBreadcrumbSchema } from '@/lib/schema';
 import { CATEGORIES, LIMITS, SEO, SITE_URL, SITE_NAME } from '@/lib/constants';
-import { generateComparisonBottomLine, generateKeyDifferences } from '@/lib/generated-faqs';
+import { generateComparisonBottomLine, generateKeyDifferences, generateComparisonFAQs } from '@/lib/generated-faqs';
 // Components
 import { ScoreCompare } from '@/components/comparison/ScoreCompare';
 import { FeatureMatrix } from '@/components/comparison/FeatureMatrix';
@@ -91,9 +91,14 @@ export default async function ComparisonPage({ params }: PageProps) {
   const winnerName = winner === 'a' ? comparison.toolA.name : winner === 'b' ? comparison.toolB.name : null;
   const scoreDiff = Math.abs(aScore - bScore).toFixed(1);
 
+  // Auto-generate FAQs when DB doesn't have them (ensures FAQ rich snippets on all comparisons)
+  const compFaqs = comparison.faqs && comparison.faqs.length > 0
+    ? comparison.faqs
+    : generateComparisonFAQs(comparison.toolA, comparison.toolB);
+
   // Schema markup
   const articleSchema = generateComparisonSchema(comparison);
-  const faqSchema = generateFAQSchema(comparison.faqs);
+  const faqSchema = generateFAQSchema(compFaqs);
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: '/' },
     { name: cat?.name || category, url: `/${category}` },
@@ -440,10 +445,10 @@ export default async function ComparisonPage({ params }: PageProps) {
         <AdNative />
 
         {/* ========== FAQ ========== */}
-        {comparison.faqs && comparison.faqs.length > 0 && (
+        {compFaqs.length > 0 && (
           <section id="faq" className="mb-12 scroll-mt-32">
             <h2 className="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
-            <FAQSection faqs={comparison.faqs} />
+            <FAQSection faqs={compFaqs} />
           </section>
         )}
 
