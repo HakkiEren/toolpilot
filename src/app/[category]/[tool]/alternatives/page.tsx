@@ -1,9 +1,11 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getToolBySlug, getToolsByCategory, getToolsBySubcategory, getAllToolSlugs } from '@/lib/data';
-import { generateBreadcrumbSchema } from '@/lib/schema';
+import { getToolBySlug, getToolsByCategory, getToolsBySubcategory, getAllToolSlugs, getComparisonsByTool } from '@/lib/data';
+import { generateBreadcrumbSchema, generateBestOfItemListSchema, generateFAQSchema } from '@/lib/schema';
 import { CATEGORIES, SITE_URL, SEO } from '@/lib/constants';
+import { FAQSection } from '@/components/common/FAQSection';
+import type { FAQ } from '@/types';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { AdBanner, AdInArticle, AdMultiplex } from '@/components/ads/AdSlot';
 import { ToolLogo } from '@/components/common/ToolLogo';
@@ -55,7 +57,10 @@ export default async function AlternativesPage({ params }: PageProps) {
 
   const cat = CATEGORIES[category];
   const year = new Date().getFullYear();
-  const alternatives = await getToolsBySubcategory(category, tool.subcategorySlug, 20);
+  const [alternatives, comparisons] = await Promise.all([
+    getToolsBySubcategory(category, tool.subcategorySlug, 20),
+    getComparisonsByTool(tool.id),
+  ]);
   const filtered = alternatives.filter((t) => t.id !== tool.id);
 
   const breadcrumbSchema = generateBreadcrumbSchema([
@@ -65,9 +70,42 @@ export default async function AlternativesPage({ params }: PageProps) {
     { name: 'Alternatives', url: `/${category}/${toolSlug}/alternatives` },
   ]);
 
+  // ItemList schema for ranking rich snippets
+  const itemListSchema = filtered.length > 0 ? generateBestOfItemListSchema(
+    `Best ${tool.name} Alternatives (${year})`,
+    `/${category}/${toolSlug}/alternatives`,
+    filtered.map(t => ({ name: t.name, slug: t.slug, categorySlug: t.categorySlug, ratings: t.ratings, logoUrl: t.logoUrl }))
+  ) : null;
+
+  // Dynamic FAQs for alternatives page
+  const altFaqs: FAQ[] = [
+    {
+      question: `What is the best alternative to ${tool.name}?`,
+      answer: filtered.length > 0
+        ? `The top-rated alternative to ${tool.name} is ${filtered[0].name} with a score of ${filtered[0].ratings.overall.toFixed(1)}/10. ${filtered[0].pricing.hasFreeplan ? 'It offers a free plan, making it easy to try.' : filtered[0].pricing.startingPrice ? `Plans start at $${filtered[0].pricing.startingPrice}/mo.` : ''}`
+        : `We are currently evaluating alternatives to ${tool.name}. Check back soon for updated recommendations.`,
+    },
+    {
+      question: `Is there a free alternative to ${tool.name}?`,
+      answer: (() => {
+        const freeAlts = filtered.filter(a => a.pricing.hasFreeplan);
+        return freeAlts.length > 0
+          ? `Yes! ${freeAlts.length} free alternatives to ${tool.name} are available: ${freeAlts.slice(0, 3).map(a => `${a.name} (${a.ratings.overall.toFixed(1)}/10)`).join(', ')}. These offer free plans you can start using right away.`
+          : `Currently, none of the reviewed ${tool.name} alternatives offer a free plan. ${tool.pricing.hasFreeplan ? `However, ${tool.name} itself has a free plan you can use.` : `Consider looking at our full ${cat?.name || 'category'} reviews for budget-friendly options.`}`;
+      })(),
+    },
+    {
+      question: `How many alternatives to ${tool.name} are there?`,
+      answer: `We have reviewed and compared ${filtered.length} alternatives to ${tool.name} in the ${cat?.name || 'tools'} category. Each has been evaluated on features, ease of use, pricing, and customer support.`,
+    },
+  ];
+  const faqSchema = generateFAQSchema(altFaqs);
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      {itemListSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />}
+      {faqSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />}
 
       <article className="max-w-5xl mx-auto px-4 py-8">
         <Breadcrumbs items={[
@@ -392,6 +430,50 @@ export default async function AlternativesPage({ params }: PageProps) {
             </ul>
           </div>
         </section>
+
+        {/* ========== HEAD-TO-HEAD COMPARISONS ========== */}
+        {comparisons.length > 0 && (
+          <section className="mb-12">
+            <h2 className="text-2xl font-bold mb-6">{tool.name} Head-to-Head Comparisons</h2>
+            <div className="grid md:grid-cols-2 gap-4">
+              {comparisons.slice(0, 6).map((comp) => {
+                const otherTool = comp.toolA.id === tool.id ? comp.toolB : comp.toolA;
+                const thisScore = comp.toolA.id === tool.id ? comp.toolA.ratings.overall : comp.toolB.ratings.overall;
+                const otherScore = comp.toolA.id === tool.id ? comp.toolB.ratings.overall : comp.toolA.ratings.overall;
+                return (
+                  <Link
+                    key={comp.id}
+                    href={`/${category}/compare/${comp.slug}`}
+                    className="group hover-lift flex items-center gap-3 p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700 transition-all bg-white dark:bg-gray-900"
+                  >
+                    <ToolLogo logoUrl={tool.logoUrl} name={tool.name} size={32} />
+                    <span className="text-xs font-bold text-orange-500">VS</span>
+                    <ToolLogo logoUrl={otherTool.logoUrl} name={otherTool.name} size={32} />
+                    <div className="flex-1 min-w-0">
+                      <span className="font-semibold text-sm block truncate group-hover:text-blue-600 transition-colors">
+                        {tool.name} vs {otherTool.name}
+                      </span>
+                      <div className="flex items-center gap-2 text-xs text-gray-400 mt-0.5">
+                        <span className={`font-bold ${thisScore >= otherScore ? 'text-green-600' : 'text-gray-500'}`}>{thisScore.toFixed(1)}</span>
+                        <span>vs</span>
+                        <span className={`font-bold ${otherScore >= thisScore ? 'text-green-600' : 'text-gray-500'}`}>{otherScore.toFixed(1)}</span>
+                      </div>
+                    </div>
+                    <span className="text-blue-600 text-sm group-hover:translate-x-1 transition-transform">&#8594;</span>
+                  </Link>
+                );
+              })}
+            </div>
+          </section>
+        )}
+
+        {/* ========== ALTERNATIVES FAQ ========== */}
+        {altFaqs.length > 0 && (
+          <section className="mb-12">
+            <h2 className="text-2xl font-bold mb-6">{tool.name} Alternatives FAQ</h2>
+            <FAQSection faqs={altFaqs} />
+          </section>
+        )}
 
         {/* ========== AD: BEFORE FOOTER ========== */}
         <AdMultiplex />
