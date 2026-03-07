@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // ─── Trailing slash normalization (301 redirect) ───
@@ -28,7 +28,7 @@ export function middleware(request: NextRequest) {
   const response = NextResponse.next();
 
   // Add server timing for performance monitoring
-  response.headers.set('Server-Timing', `middleware;dur=0`);
+  response.headers.set('Server-Timing', `proxy;dur=0`);
 
   // ─── Content Security Policy (Report-Only) ───
   // Loose CSP that allows Google services, Supabase, and common CDNs
