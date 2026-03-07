@@ -51,7 +51,23 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title,
     description,
     alternates: { canonical: `${SITE_URL}/${category}/compare/${slug}` },
-    openGraph: { title, description, url: `${SITE_URL}/${category}/compare/${slug}`, type: 'article', publishedTime: comparison.lastUpdated, modifiedTime: comparison.lastUpdated },
+    openGraph: {
+      title,
+      description,
+      url: `${SITE_URL}/${category}/compare/${slug}`,
+      type: 'article',
+      publishedTime: comparison.lastUpdated,
+      modifiedTime: comparison.lastUpdated,
+      section: CATEGORIES[category]?.name || category,
+      authors: ['ToolPilot Editorial Team'],
+      tags: [comparison.toolA.name, comparison.toolB.name, 'comparison', CATEGORIES[category]?.name || category],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      site: SEO.twitterHandle,
+      title,
+      description,
+    },
   };
 }
 

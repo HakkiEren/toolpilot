@@ -9,6 +9,7 @@ import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { FAQSection } from '@/components/common/FAQSection';
 import { AdBanner, AdInArticle, AdMultiplex } from '@/components/ads/AdSlot';
 import { ToolGrid } from '@/components/category/ToolGrid';
+import { ReadingProgress } from '@/components/common/ReadingProgress';
 import { getCategoryContent } from '@/lib/category-content';
 
 // ============================================================
@@ -94,6 +95,7 @@ export default async function CategoryPage({ params }: PageProps) {
 
   return (
     <>
+      <ReadingProgress />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }} />
       {faqSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />}
