@@ -39,6 +39,22 @@ const CHANGELOG: {
   entries: { type: 'added' | 'updated' | 'improved' | 'launched'; text: string; link?: string }[];
 }[] = [
   {
+    date: '2026-03-11',
+    version: '2.8',
+    entries: [
+      { type: 'launched', text: 'Centralized author system with individual bios, social links, and expertise data (E-E-A-T)', link: '/about/team' },
+      { type: 'improved', text: 'Blog sidebar: Rich author profile with stats, social links (Twitter/LinkedIn/GitHub), and role' },
+      { type: 'launched', text: 'ProfilePage JSON-LD schema on team page (2026 SEO best practice)' },
+      { type: 'improved', text: 'Blog schema: wordCount, articleSection, inLanguage, author jobTitle/sameAs/knowsAbout' },
+      { type: 'improved', text: 'Comparison schema: Added speakable specification and inLanguage for voice search' },
+      { type: 'improved', text: 'Team page: Social links, specialization tags, anchor IDs for deep linking' },
+      { type: 'launched', text: 'Blog posts: Speakable excerpt for Google voice search optimization' },
+      { type: 'launched', text: 'Related blog posts section (3 category-matching articles) on blog detail pages' },
+      { type: 'improved', text: 'Blog header: Author-specific gradient avatar and link to team profile anchor' },
+      { type: 'improved', text: 'Performance: Compiler optimizations, Content-Language header, Vary header for CDN' },
+    ],
+  },
+  {
     date: '2026-03-10',
     version: '2.7',
     entries: [

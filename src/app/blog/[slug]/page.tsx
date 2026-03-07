@@ -167,14 +167,26 @@ export default async function BlogPostPage({ params }: PageProps) {
                 {post.title}
               </h1>
 
+              {/* Speakable excerpt for voice search */}
+              {post.excerpt && (
+                <p data-speakable="true" className="text-lg text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">
+                  {post.excerpt}
+                </p>
+              )}
+
               <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
-                {/* Author with avatar */}
-                <Link href="/about/team" className="flex items-center gap-2 hover:text-blue-600 transition-colors">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
-                    {(post.author || 'T')[0]}
-                  </div>
-                  <span className="font-medium">{post.author}</span>
-                </Link>
+                {/* Author with avatar — uses centralized author data */}
+                {(() => {
+                  const headerAuthor = getAuthor(post.author);
+                  return (
+                    <Link href={`/about/team#${headerAuthor.slug}`} className="flex items-center gap-2 hover:text-blue-600 transition-colors">
+                      <div className={`w-8 h-8 rounded-full bg-gradient-to-br ${headerAuthor.gradient} flex items-center justify-center text-white text-xs font-bold flex-shrink-0`}>
+                        {headerAuthor.initials}
+                      </div>
+                      <span className="font-medium">{post.author}</span>
+                    </Link>
+                  );
+                })()}
                 <span className="w-1 h-1 bg-gray-300 rounded-full" />
                 <span className="flex items-center gap-1.5">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -257,6 +269,48 @@ export default async function BlogPostPage({ params }: PageProps) {
                 <RelatedLinks links={relatedLinks} />
               </section>
             )}
+
+            {/* Related Blog Posts — Internal linking for SEO */}
+            {(() => {
+              const relatedPosts = allPosts
+                .filter((p) => p.slug !== slug)
+                .filter((p) => post.categorySlug ? p.categorySlug === post.categorySlug : true)
+                .slice(0, 3);
+              if (relatedPosts.length === 0) return null;
+              return (
+                <section className="mt-12">
+                  <h2 className="text-2xl font-bold mb-6">You Might Also Like</h2>
+                  <div className="grid sm:grid-cols-3 gap-4">
+                    {relatedPosts.map((rp) => (
+                      <Link
+                        key={rp.slug}
+                        href={`/blog/${rp.slug}`}
+                        className="group rounded-xl border border-gray-200 dark:border-gray-700 p-4 hover:border-blue-300 dark:hover:border-blue-600 hover:bg-blue-50/30 dark:hover:bg-blue-900/10 transition-all"
+                      >
+                        {rp.categorySlug && (
+                          <span className="inline-block px-2 py-0.5 rounded-md text-[10px] font-semibold bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 mb-2">
+                            {rp.categorySlug.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())}
+                          </span>
+                        )}
+                        <h3 className="font-semibold text-sm leading-snug group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2 mb-2">
+                          {rp.title}
+                        </h3>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-2">
+                          {rp.excerpt}
+                        </p>
+                        <div className="mt-3 flex items-center gap-2 text-[11px] text-gray-400">
+                          <span>{rp.author}</span>
+                          <span className="w-0.5 h-0.5 bg-gray-300 rounded-full" />
+                          <time dateTime={rp.publishedAt}>
+                            {new Date(rp.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                          </time>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </section>
+              );
+            })()}
 
             {/* Prev / Next Navigation */}
             <nav className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-800">
