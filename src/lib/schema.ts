@@ -1,5 +1,6 @@
 import type { Tool, Comparison, BlogPost, FAQ } from '@/types';
 import { SITE_NAME, SITE_URL } from './constants';
+import { getAuthor, getAuthorUrl } from './authors';
 
 // ============================================================
 // JSON-LD SCHEMA GENERATORS — Advanced SEO
@@ -120,8 +121,10 @@ export function generateToolSchema(tool: Tool, categoryName: string) {
   };
 }
 
-// --- COMPARISON SCHEMA (Article with datePublished + Person author for E-E-A-T) ---
+// --- COMPARISON SCHEMA (Article with datePublished + E-E-A-T author signals) ---
 export function generateComparisonSchema(comparison: Comparison) {
+  const editorialTeam = getAuthor('ToolPilot Editorial Team');
+
   return {
     '@context': 'https://schema.org',
     '@type': 'Article',
@@ -130,10 +133,12 @@ export function generateComparisonSchema(comparison: Comparison) {
     url: `${SITE_URL}/${comparison.categorySlug}/compare/${comparison.slug}`,
     datePublished: comparison.lastUpdated,
     dateModified: comparison.lastUpdated,
+    inLanguage: 'en-US',
     author: {
-      '@type': 'Person',
-      name: 'ToolPilot Editorial Team',
+      '@type': 'Organization',
+      name: editorialTeam.name,
       url: `${SITE_URL}/about/team`,
+      sameAs: editorialTeam.sameAs,
     },
     publisher: {
       '@type': 'Organization',
@@ -160,6 +165,10 @@ export function generateComparisonSchema(comparison: Comparison) {
         ...(comparison.toolB.logoUrl && { image: comparison.toolB.logoUrl }),
       },
     ],
+    speakable: {
+      '@type': 'SpeakableSpecification',
+      cssSelector: ['h1', '[data-speakable]'],
+    },
   };
 }
 
@@ -197,8 +206,13 @@ export function generateBreadcrumbSchema(
   };
 }
 
-// --- BLOG SCHEMA (Person author for E-E-A-T) ---
+// --- BLOG SCHEMA (Person author with E-E-A-T signals — sameAs, knowsAbout, jobTitle) ---
 export function generateBlogSchema(post: BlogPost) {
+  const authorData = getAuthor(post.author);
+
+  // Calculate word count for schema
+  const wordCount = (post.content || '').replace(/<[^>]*>/g, '').split(/\s+/).filter(Boolean).length;
+
   return {
     '@context': 'https://schema.org',
     '@type': 'Article',
@@ -207,10 +221,22 @@ export function generateBlogSchema(post: BlogPost) {
     url: `${SITE_URL}/blog/${post.slug}`,
     datePublished: post.publishedAt,
     dateModified: post.updatedAt || post.publishedAt,
+    wordCount,
+    inLanguage: 'en-US',
     author: {
-      '@type': 'Person',
-      name: post.author || 'ToolPilot Editorial Team',
-      url: `${SITE_URL}/about/team`,
+      '@type': authorData.slug === 'editorial-team' ? 'Organization' : 'Person',
+      name: authorData.name,
+      url: getAuthorUrl(post.author),
+      ...(authorData.slug !== 'editorial-team' && {
+        jobTitle: authorData.role,
+        knowsAbout: authorData.knowsAbout,
+        sameAs: authorData.sameAs,
+        worksFor: {
+          '@type': 'Organization',
+          name: SITE_NAME,
+          url: SITE_URL,
+        },
+      }),
     },
     publisher: {
       '@type': 'Organization',
@@ -229,6 +255,12 @@ export function generateBlogSchema(post: BlogPost) {
       '@type': 'SpeakableSpecification',
       cssSelector: ['h1', '[data-speakable]'],
     },
+    // Article categorization
+    ...(post.categorySlug && {
+      articleSection: post.categorySlug
+        .replace(/-/g, ' ')
+        .replace(/\b\w/g, (c: string) => c.toUpperCase()),
+    }),
   };
 }
 
@@ -454,6 +486,32 @@ export function generateGlossarySchema(
       '@type': 'DefinedTerm',
       name: t.term,
       description: t.definition,
+    })),
+  };
+}
+
+// --- PROFILE PAGE SCHEMA (for author/team pages — E-E-A-T) ---
+export function generateProfilePageSchema(
+  authors: { name: string; role: string; bio: string; sameAs: string[]; knowsAbout: string[]; slug: string }[]
+) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ProfilePage',
+    name: `${SITE_NAME} Editorial Team`,
+    url: `${SITE_URL}/about/team`,
+    mainEntity: authors.map((author) => ({
+      '@type': 'Person',
+      name: author.name,
+      jobTitle: author.role,
+      description: author.bio,
+      url: `${SITE_URL}/about/team#${author.slug}`,
+      sameAs: author.sameAs,
+      knowsAbout: author.knowsAbout,
+      worksFor: {
+        '@type': 'Organization',
+        name: SITE_NAME,
+        url: SITE_URL,
+      },
     })),
   };
 }

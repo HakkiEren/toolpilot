@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { getBlogBySlug, getBlogPosts, getToolBySlug } from '@/lib/data';
 import { generateBlogSchema, generateBreadcrumbSchema } from '@/lib/schema';
 import { SITE_URL, SEO, SITE_NAME, CATEGORIES } from '@/lib/constants';
+import { getAuthor, getAuthorUrl } from '@/lib/authors';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { RelatedLinks } from '@/components/common/RelatedLinks';
 import { AdBanner, AdInArticle, AdSidebar } from '@/components/ads/AdSlot';
@@ -320,27 +321,58 @@ export default async function BlogPostPage({ params }: PageProps) {
           {/* Sidebar — Premium with AdSidebar */}
           <aside className="hidden lg:block">
             <div className="sticky top-20 space-y-6">
-              {/* About the Author */}
-              <div className="glass p-6 rounded-2xl shadow-sm">
-                <h3 className="font-semibold mb-3 text-sm uppercase tracking-wider text-gray-500 dark:text-gray-400">About the Author</h3>
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-11 h-11 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-sm font-bold text-white shadow-md">
-                    {post.author
-                      .split(' ')
-                      .map((n) => n[0])
-                      .join('')
-                      .slice(0, 2)}
+              {/* About the Author — Enhanced E-E-A-T */}
+              {(() => {
+                const author = getAuthor(post.author);
+                return (
+                  <div className="glass p-6 rounded-2xl shadow-sm" id={author.slug}>
+                    <h3 className="font-semibold mb-3 text-sm uppercase tracking-wider text-gray-500 dark:text-gray-400">About the Author</h3>
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className={`w-11 h-11 rounded-full bg-gradient-to-br ${author.gradient} flex items-center justify-center text-sm font-bold text-white shadow-md`}>
+                        {author.initials}
+                      </div>
+                      <div>
+                        <Link href={`/about/team#${author.slug}`} className="font-semibold text-sm hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                          {author.name}
+                        </Link>
+                        <div className="text-xs text-gray-400">{author.role}</div>
+                      </div>
+                    </div>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mb-3">
+                      {author.shortBio}
+                    </p>
+                    {/* Author Stats */}
+                    <div className="flex gap-4 mb-3 py-2 border-t border-b border-gray-200/60 dark:border-gray-700/60">
+                      <div className="text-center">
+                        <div className="text-sm font-black text-blue-600">{author.articles}</div>
+                        <div className="text-[10px] text-gray-400">Articles</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-sm font-black text-purple-600">{author.reviews}</div>
+                        <div className="text-[10px] text-gray-400">Reviews</div>
+                      </div>
+                    </div>
+                    {/* Social Links */}
+                    <div className="flex gap-2">
+                      {author.social.twitter && (
+                        <a href={author.social.twitter} target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-500 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors" aria-label={`${author.name} on Twitter`}>
+                          <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                        </a>
+                      )}
+                      {author.social.linkedin && (
+                        <a href={author.social.linkedin} target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-500 hover:text-blue-700 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors" aria-label={`${author.name} on LinkedIn`}>
+                          <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg>
+                        </a>
+                      )}
+                      {author.social.github && (
+                        <a href={author.social.github} target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-500 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors" aria-label={`${author.name} on GitHub`}>
+                          <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+                        </a>
+                      )}
+                    </div>
                   </div>
-                  <div>
-                    <div className="font-semibold text-sm">{post.author}</div>
-                    <div className="text-xs text-gray-400">{SITE_NAME}</div>
-                  </div>
-                </div>
-                <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
-                  Our team rigorously tests and reviews tools to provide
-                  unbiased, data-driven recommendations.
-                </p>
-              </div>
+                );
+              })()}
 
               {/* Sidebar Ad */}
               <AdSidebar />

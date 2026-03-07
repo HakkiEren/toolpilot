@@ -1,12 +1,14 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SITE_NAME, SITE_URL, CATEGORY_LIST } from '@/lib/constants';
-import { generateBreadcrumbSchema } from '@/lib/schema';
+import { generateBreadcrumbSchema, generateProfilePageSchema } from '@/lib/schema';
+import { getTeamMembers } from '@/lib/authors';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 
 // ============================================================
 // TEAM / AUTHORS PAGE — E-E-A-T signals for Google
-// Demonstrates expertise, experience, authoritativeness
+// Uses centralized author data from @/lib/authors
+// ProfilePage schema for 2026 SEO best practices
 // ============================================================
 
 export const metadata: Metadata = {
@@ -15,77 +17,30 @@ export const metadata: Metadata = {
   alternates: { canonical: `${SITE_URL}/about/team` },
 };
 
-const TEAM_MEMBERS = [
-  {
-    name: 'Alex Chen',
-    role: 'Lead Software Analyst',
-    bio: 'Former engineering lead at a Fortune 500 tech company. Alex brings 12+ years of hands-on experience evaluating enterprise software, SaaS platforms, and AI tools. He leads our methodology and scoring framework.',
-    expertise: ['AI Tools', 'SaaS', 'Enterprise Software'],
-    initials: 'AC',
-    gradient: 'from-blue-500 to-indigo-600',
-    articles: 45,
-    reviews: 120,
-  },
-  {
-    name: 'Sarah Mitchell',
-    role: 'E-commerce & Marketing Editor',
-    bio: 'Digital marketing strategist with 8 years of experience managing e-commerce brands. Sarah specializes in marketing automation, SEO tools, and e-commerce platform comparisons.',
-    expertise: ['Marketing', 'E-commerce', 'SEO Tools'],
-    initials: 'SM',
-    gradient: 'from-purple-500 to-pink-600',
-    articles: 38,
-    reviews: 95,
-  },
-  {
-    name: 'James Rodriguez',
-    role: 'Cloud & Infrastructure Analyst',
-    bio: 'Certified cloud architect (AWS, Azure, GCP) with deep expertise in hosting, DevOps tools, and infrastructure software. James evaluates performance, security, and scalability.',
-    expertise: ['Hosting', 'Cloud', 'DevOps'],
-    initials: 'JR',
-    gradient: 'from-green-500 to-teal-600',
-    articles: 32,
-    reviews: 85,
-  },
-  {
-    name: 'Emily Nakamura',
-    role: 'Business Tools Researcher',
-    bio: 'Business operations consultant who has helped 200+ companies optimize their software stack. Emily focuses on productivity, collaboration, accounting, and business management tools.',
-    expertise: ['Business', 'Productivity', 'Collaboration'],
-    initials: 'EN',
-    gradient: 'from-orange-500 to-red-600',
-    articles: 28,
-    reviews: 75,
-  },
-];
-
 export default function TeamPage() {
+  const teamMembers = getTeamMembers();
+
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: '/' },
     { name: 'About', url: '/about' },
     { name: 'Our Team', url: '/about/team' },
   ]);
 
-  const teamSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'Organization',
-    name: SITE_NAME,
-    url: SITE_URL,
-    member: TEAM_MEMBERS.map((m) => ({
-      '@type': 'Person',
+  const profilePageSchema = generateProfilePageSchema(
+    teamMembers.map((m) => ({
       name: m.name,
-      jobTitle: m.role,
-      description: m.bio,
-      worksFor: {
-        '@type': 'Organization',
-        name: SITE_NAME,
-      },
-    })),
-  };
+      role: m.role,
+      bio: m.bio,
+      sameAs: m.sameAs,
+      knowsAbout: m.knowsAbout,
+      slug: m.slug,
+    }))
+  );
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(teamSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(profilePageSchema) }} />
 
       <div className="max-w-5xl mx-auto px-4 py-12">
         <Breadcrumbs items={[
@@ -104,7 +59,7 @@ export default function TeamPage() {
             <div className="relative">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-sm border border-gray-200/50 dark:border-gray-700/50 text-xs font-semibold text-blue-600 dark:text-blue-400 mb-4">
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
-                {TEAM_MEMBERS.length} Expert Analysts
+                {teamMembers.length} Expert Analysts
               </div>
               <h1 className="text-3xl md:text-4xl font-extrabold mb-4">
                 Meet Our <span className="gradient-text">Expert Team</span>
@@ -134,9 +89,10 @@ export default function TeamPage() {
 
         {/* Team Members */}
         <div className="space-y-8 mb-16">
-          {TEAM_MEMBERS.map((member, idx) => (
+          {teamMembers.map((member, idx) => (
             <div
               key={member.name}
+              id={member.slug}
               className="hover-lift bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden card-animate"
               style={{ animationDelay: `${idx * 100}ms` }}
             >
@@ -148,7 +104,7 @@ export default function TeamPage() {
                   </div>
                   <h2 className="text-lg font-bold">{member.name}</h2>
                   <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">{member.role}</p>
-                  <div className="flex gap-4 text-center">
+                  <div className="flex gap-4 text-center mb-4">
                     <div>
                       <div className="text-lg font-black text-blue-600">{member.articles}</div>
                       <div className="text-[10px] text-gray-400 uppercase tracking-wider">Articles</div>
@@ -158,6 +114,25 @@ export default function TeamPage() {
                       <div className="text-lg font-black text-purple-600">{member.reviews}</div>
                       <div className="text-[10px] text-gray-400 uppercase tracking-wider">Reviews</div>
                     </div>
+                  </div>
+
+                  {/* Social Links */}
+                  <div className="flex gap-2">
+                    {member.social.twitter && (
+                      <a href={member.social.twitter} target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-500 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors" aria-label={`${member.name} on Twitter`}>
+                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                      </a>
+                    )}
+                    {member.social.linkedin && (
+                      <a href={member.social.linkedin} target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-500 hover:text-blue-700 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors" aria-label={`${member.name} on LinkedIn`}>
+                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg>
+                      </a>
+                    )}
+                    {member.social.github && (
+                      <a href={member.social.github} target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-500 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors" aria-label={`${member.name} on GitHub`}>
+                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+                      </a>
+                    )}
                   </div>
                 </div>
 
@@ -181,6 +156,21 @@ export default function TeamPage() {
                           </Link>
                         );
                       })}
+                    </div>
+                  </div>
+
+                  {/* Knowledge Areas — SEO signal */}
+                  <div>
+                    <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Specializations</div>
+                    <div className="flex flex-wrap gap-1.5">
+                      {member.knowsAbout.map((topic) => (
+                        <span
+                          key={topic}
+                          className="px-2.5 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 rounded-md text-[11px] font-medium"
+                        >
+                          {topic}
+                        </span>
+                      ))}
                     </div>
                   </div>
                 </div>
