@@ -8,6 +8,8 @@ import { ToolLogo } from '@/components/common/ToolLogo';
 import { RatingStars } from '@/components/common/RatingStars';
 import { AdBanner, AdInArticle, AdMultiplex } from '@/components/ads/AdSlot';
 import { ShareButtons } from '@/components/common/ShareButtons';
+import { ReadingProgress } from '@/components/common/ReadingProgress';
+import { CopyLinkButton } from '@/components/common/CopyLinkButton';
 import type { Tool } from '@/types';
 
 // Award badges — calculated from tool data
@@ -167,6 +169,7 @@ export default async function BestOfPage({ params }: { params: Promise<{ slug: s
 
   return (
     <>
+      <ReadingProgress />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -273,11 +276,14 @@ export default async function BestOfPage({ params }: { params: Promise<{ slug: s
               <span className="text-xs text-gray-400">
                 Last updated: {new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
               </span>
-              <ShareButtons
-                url={`${SITE_URL}/best/${slug}`}
-                title={`Best ${sub.name} in ${year}`}
-                description={`Compare the best ${sub.name.toLowerCase()} side by side with expert ratings and pricing.`}
-              />
+              <div className="flex items-center gap-2">
+                <ShareButtons
+                  url={`${SITE_URL}/best/${slug}`}
+                  title={`Best ${sub.name} in ${year}`}
+                  description={`Compare the best ${sub.name.toLowerCase()} side by side with expert ratings and pricing.`}
+                />
+                <CopyLinkButton url={`${SITE_URL}/best/${slug}`} />
+              </div>
             </div>
           </div>
         )}
@@ -617,6 +623,21 @@ export default async function BestOfPage({ params }: { params: Promise<{ slug: s
                   Best {s.name} &#8594;
                 </Link>
               ))}
+          </div>
+        </div>
+
+        {/* Freshness Footer */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 py-6 mb-8 border-t border-gray-200 dark:border-gray-800">
+          <p className="text-xs text-gray-400 dark:text-gray-500">
+            Rankings last updated: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} · {allTools.length} tools reviewed
+          </p>
+          <div className="flex items-center gap-3">
+            <ShareButtons
+              url={`${SITE_URL}/best/${slug}`}
+              title={`Best ${sub.name} in ${year}`}
+              description={`Compare the best ${sub.name.toLowerCase()} side by side with expert ratings and pricing.`}
+            />
+            <CopyLinkButton url={`${SITE_URL}/best/${slug}`} />
           </div>
         </div>
 
