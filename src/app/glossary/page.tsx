@@ -123,6 +123,8 @@ function groupByCategory(terms: Term[]) {
 
 export default function GlossaryPage() {
   const byCategory = groupByCategory(GLOSSARY_TERMS);
+  const byLetter = groupByLetter(GLOSSARY_TERMS);
+  const letters = Object.keys(byLetter).sort();
   const categories = Object.keys(byCategory).sort();
 
   const breadcrumbSchema = generateBreadcrumbSchema([
@@ -162,6 +164,26 @@ export default function GlossaryPage() {
         </div>
       </div>
 
+      {/* A-Z Quick Navigation */}
+      <div className="flex flex-wrap justify-center gap-1 mb-6">
+        {'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map((letter) => {
+          const hasTerms = byLetter[letter];
+          return (
+            <a
+              key={letter}
+              href={hasTerms ? `#letter-${letter}` : undefined}
+              className={`w-9 h-9 flex items-center justify-center rounded-lg text-sm font-bold transition-all ${
+                hasTerms
+                  ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/30 cursor-pointer'
+                  : 'bg-gray-50 dark:bg-gray-800/50 text-gray-300 dark:text-gray-600 cursor-default'
+              }`}
+            >
+              {letter}
+            </a>
+          );
+        })}
+      </div>
+
       {/* Category quick links */}
       <div className="flex flex-wrap justify-center gap-2 mb-12">
         {categories.map((cat) => (
@@ -181,7 +203,7 @@ export default function GlossaryPage() {
       {/* Terms by category */}
       <div className="space-y-12">
         {categories.map((cat) => (
-          <section key={cat} id={cat.toLowerCase().replace(/\s+/g, '-')}>
+          <section key={cat} id={cat.toLowerCase().replace(/\s+/g, '-')} className="scroll-mt-24">
             <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
               <span className="w-2 h-8 bg-gradient-to-b from-blue-500 to-purple-600 rounded-full" />
               {cat}
@@ -190,7 +212,8 @@ export default function GlossaryPage() {
               {byCategory[cat].map((term) => (
                 <div
                   key={term.term}
-                  className="p-5 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-blue-200 transition-colors"
+                  id={`letter-${term.term[0].toUpperCase()}`}
+                  className="p-5 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-blue-200 transition-colors scroll-mt-24"
                 >
                   <h3 className="font-bold text-lg mb-2">{term.term}</h3>
                   <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
@@ -201,7 +224,7 @@ export default function GlossaryPage() {
                       href={term.relatedLink}
                       className="inline-flex items-center gap-1 mt-3 text-xs font-medium text-blue-600 hover:text-blue-700"
                     >
-                      {term.relatedLabel || 'Learn more'} →
+                      {term.relatedLabel || 'Learn more'} &#8594;
                     </Link>
                   )}
                 </div>
@@ -209,6 +232,39 @@ export default function GlossaryPage() {
             </div>
           </section>
         ))}
+      </div>
+
+      {/* Alphabetical Index — A-Z */}
+      <div className="mt-16 mb-8">
+        <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
+          <span className="w-2 h-8 bg-gradient-to-b from-cyan-500 to-blue-600 rounded-full" />
+          A-Z Index
+        </h2>
+        <div className="space-y-6">
+          {letters.map((letter) => (
+            <div key={letter} id={`letter-${letter}`} className="scroll-mt-24">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="w-10 h-10 flex items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-purple-600 text-white font-black text-lg shadow-md">
+                  {letter}
+                </span>
+                <div className="flex-1 h-px bg-gray-200 dark:bg-gray-800" />
+              </div>
+              <div className="grid md:grid-cols-2 gap-2">
+                {byLetter[letter].sort((a, b) => a.term.localeCompare(b.term)).map((term) => (
+                  <div key={term.term} className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                    <span className="text-xs px-2 py-0.5 rounded bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 font-medium">{term.category}</span>
+                    <span className="text-sm font-medium">{term.term}</span>
+                    {term.relatedLink && (
+                      <Link href={term.relatedLink} className="ml-auto text-blue-600 text-xs hover:underline">
+                        &#8594;
+                      </Link>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Ad: Before CTA */}
