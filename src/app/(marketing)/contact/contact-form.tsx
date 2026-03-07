@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, type FormEvent } from 'react';
+import { useState, useRef, type FormEvent } from 'react';
 
 type FormStatus = 'idle' | 'submitting' | 'success' | 'error';
 
@@ -11,6 +11,10 @@ export default function ContactForm() {
   const [message, setMessage] = useState('');
   const [status, setStatus] = useState<FormStatus>('idle');
   const [responseMessage, setResponseMessage] = useState('');
+  // Honeypot field — invisible to real users, bots will fill it
+  const [website, setWebsite] = useState('');
+  // Timestamp to detect instant bot submissions
+  const loadedAt = useRef(Date.now());
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -21,7 +25,14 @@ export default function ContactForm() {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, category, message }),
+        body: JSON.stringify({
+          name,
+          email,
+          category,
+          message,
+          website, // honeypot
+          _t: loadedAt.current, // timing check
+        }),
       });
 
       const data = await res.json();
@@ -62,6 +73,19 @@ export default function ContactForm() {
       )}
 
       <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Honeypot field — hidden from real users, bots will fill it */}
+        <div className="absolute -left-[9999px] opacity-0 h-0 overflow-hidden" aria-hidden="true" tabIndex={-1}>
+          <label htmlFor="website">Website</label>
+          <input
+            type="text"
+            id="website"
+            name="website"
+            value={website}
+            onChange={(e) => setWebsite(e.target.value)}
+            autoComplete="off"
+            tabIndex={-1}
+          />
+        </div>
         <div className="grid md:grid-cols-2 gap-4">
           <div>
             <label htmlFor="name" className="block text-sm font-medium mb-1">

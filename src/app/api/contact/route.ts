@@ -34,7 +34,29 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { name, email, category, message } = body;
+    const { name, email, category, message, website, _t } = body;
+
+    // ─── Honeypot check ───
+    // If the hidden "website" field is filled, it's a bot
+    if (website) {
+      // Return success to fool the bot, but don't process
+      return NextResponse.json({
+        success: true,
+        message: 'Thank you! We will get back to you within 48 hours.',
+      });
+    }
+
+    // ─── Timing check ───
+    // If form was submitted too quickly (< 3 seconds), likely a bot
+    if (_t && typeof _t === 'number') {
+      const elapsed = Date.now() - _t;
+      if (elapsed < 3000) {
+        return NextResponse.json({
+          success: true,
+          message: 'Thank you! We will get back to you within 48 hours.',
+        });
+      }
+    }
 
     // Validate required fields
     if (!name || !email || !message) {
