@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getToolsBySubcategory, getToolsByCategory } from '@/lib/data';
+import { getToolsBySubcategory, getToolsByCategory, getBlogPosts } from '@/lib/data';
 import { CATEGORIES, SUBCATEGORIES, SITE_URL, SITE_NAME } from '@/lib/constants';
 import { generateBreadcrumbSchema, generateCollectionSchema, generateBestOfItemListSchema, generateFAQSchema } from '@/lib/schema';
 import { ToolLogo } from '@/components/common/ToolLogo';
@@ -158,6 +158,10 @@ export default async function BestOfPage({ params }: { params: Promise<{ slug: s
     // Filter by checking if subcategory_slug starts with the slug pattern
     allTools = categoryTools.length > tools.length ? categoryTools : tools;
   }
+
+  // Fetch related blog posts for cross-linking
+  const allPosts = await getBlogPosts(50);
+  const categoryPosts = allPosts.filter(p => p.categorySlug === sub.categorySlug).slice(0, 3);
 
   const faqs = generateBestOfFAQs(allTools, sub.name);
   const awardBadges = getAwardBadges(allTools);
@@ -542,6 +546,35 @@ export default async function BestOfPage({ params }: { params: Promise<{ slug: s
               )}
             </div>
           </div>
+        )}
+
+        {/* ========== RELATED ARTICLES — Internal cross-linking for SEO ========== */}
+        {categoryPosts.length > 0 && (
+          <section className="mb-12">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-bold">Related {sub.categoryName} Articles</h2>
+              <Link href="/blog" className="text-blue-600 hover:text-blue-700 text-sm font-medium">
+                All articles &#8594;
+              </Link>
+            </div>
+            <div className="grid md:grid-cols-3 gap-4">
+              {categoryPosts.map((post) => (
+                <Link
+                  key={post.slug}
+                  href={`/blog/${post.slug}`}
+                  className="group hover-lift bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700 transition-all overflow-hidden"
+                >
+                  <div className="p-5">
+                    <span className="inline-block px-2.5 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 text-[10px] font-semibold rounded-full mb-3 uppercase tracking-wide">
+                      {sub.categoryName}
+                    </span>
+                    <h3 className="font-semibold text-sm group-hover:text-blue-600 transition-colors line-clamp-2 mb-2">{post.title}</h3>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-2">{post.excerpt}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
         )}
 
         {/* Ad: Before FAQ */}
