@@ -12,6 +12,14 @@ export function proxy(request: NextRequest) {
     return NextResponse.redirect(url, 301);
   }
 
+  // ─── Lowercase URL normalization (301 redirect) ───
+  // Redirect uppercase URLs to lowercase for SEO consistency
+  if (pathname !== pathname.toLowerCase()) {
+    const url = request.nextUrl.clone();
+    url.pathname = pathname.toLowerCase();
+    return NextResponse.redirect(url, 301);
+  }
+
   // ─── Block common exploit paths ───
   const blockedPaths = [
     '/wp-admin', '/wp-login', '/wp-content', '/wp-includes',
