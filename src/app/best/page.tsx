@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { CATEGORIES, SUBCATEGORIES, SITE_URL, SITE_NAME } from '@/lib/constants';
 import { getCategoryStats } from '@/lib/data';
 import { generateBreadcrumbSchema } from '@/lib/schema';
+import { ReadingProgress } from '@/components/common/ReadingProgress';
+import { AdBanner, AdInArticle } from '@/components/ads/AdSlot';
 
 export const revalidate = 3600;
 
@@ -72,6 +74,7 @@ export default async function BestOfIndexPage() {
 
   return (
     <>
+      <ReadingProgress />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -90,7 +93,7 @@ export default async function BestOfIndexPage() {
         <nav className="flex items-center gap-2 text-sm text-gray-500 mb-8">
           <Link href="/" className="hover:text-gray-700">Home</Link>
           <span>/</span>
-          <span className="text-gray-900 font-medium">Best Tools</span>
+          <span className="text-gray-900 dark:text-white font-medium">Best Tools</span>
         </nav>
 
         {/* Hero — Premium glassmorphism */}
@@ -131,8 +134,8 @@ export default async function BestOfIndexPage() {
                       dangerouslySetInnerHTML={{ __html: CATEGORY_ICONS[catSlug] || '&#128295;' }}
                     />
                     <div>
-                      <h2 className="text-xl font-bold text-gray-900">{cat.name}</h2>
-                      <p className="text-sm text-gray-500">{stats.toolCount} tools reviewed</p>
+                      <h2 className="text-xl font-bold text-gray-900 dark:text-white">{cat.name}</h2>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">{stats.toolCount} tools reviewed</p>
                     </div>
                   </div>
                   <Link
@@ -147,12 +150,12 @@ export default async function BestOfIndexPage() {
                     <Link
                       key={sub.slug}
                       href={`/best/${sub.slug}`}
-                      className="group bg-white border border-gray-200 rounded-xl p-4 hover:border-indigo-300 hover:shadow-md transition-all"
+                      className="group hover-lift bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl p-4 hover:border-indigo-300 dark:hover:border-indigo-700 hover:shadow-md transition-all"
                     >
-                      <h3 className="font-semibold text-gray-900 group-hover:text-indigo-600 mb-1">
+                      <h3 className="font-semibold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 mb-1">
                         Best {sub.name}
                       </h3>
-                      <p className="text-xs text-gray-500 line-clamp-2">{sub.description}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-2">{sub.description}</p>
                     </Link>
                   ))}
                 </div>
@@ -161,12 +164,15 @@ export default async function BestOfIndexPage() {
           })}
         </div>
 
+        {/* Ad: After categories */}
+        <AdBanner />
+
         {/* SEO Bottom Section */}
-        <div className="mt-16 bg-gray-50 rounded-xl p-8">
-          <h2 className="text-xl font-bold text-gray-900 mb-4">
+        <div className="mt-10 bg-gray-50 dark:bg-gray-900/50 rounded-2xl p-8 border border-gray-200/50 dark:border-gray-800">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
             How Our Best-of Rankings Work
           </h2>
-          <div className="text-gray-600 text-sm leading-relaxed space-y-3">
+          <div className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed space-y-3">
             <p>
               Every tool in our rankings goes through a thorough evaluation across four key dimensions:
               ease of use, feature set, value for money, and customer support. We assign each tool
@@ -179,6 +185,9 @@ export default async function BestOfIndexPage() {
             </p>
           </div>
         </div>
+
+        {/* Ad: After SEO text */}
+        <AdInArticle />
       </div>
     </>
   );

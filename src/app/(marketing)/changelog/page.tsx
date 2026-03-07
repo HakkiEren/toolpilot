@@ -39,6 +39,22 @@ const CHANGELOG: {
   entries: { type: 'added' | 'updated' | 'improved' | 'launched'; text: string; link?: string }[];
 }[] = [
   {
+    date: '2026-03-09',
+    version: '2.6',
+    entries: [
+      { type: 'launched', text: 'CopyLinkButton + freshness footer on Best-of ranking pages' },
+      { type: 'improved', text: 'ReadingProgress bar added to category hub and comparison hub pages' },
+      { type: 'improved', text: 'Comparison pages: Full OpenGraph article metadata with section, tags, and Twitter cards' },
+      { type: 'launched', text: 'AdSense ads on search results page for revenue optimization' },
+      { type: 'launched', text: 'AdMultiplex ad unit on comparison hub pages' },
+      { type: 'improved', text: 'CSS micro-interactions: Button press feedback, gradient hover effects, link underline animations' },
+      { type: 'improved', text: 'Recently Updated section on homepage with real-time freshness badges' },
+      { type: 'launched', text: 'Premium VerdictSection redesign with trophy winner banner and per-category analysis' },
+      { type: 'launched', text: 'Glossary A-Z alphabetical navigation with letter chip filtering' },
+      { type: 'improved', text: 'About and Calculator pages: Added full OpenGraph + Twitter card metadata' },
+    ],
+  },
+  {
     date: '2026-03-08',
     version: '2.5',
     entries: [
