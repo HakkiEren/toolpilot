@@ -9,6 +9,10 @@ import { RelatedLinks } from '@/components/common/RelatedLinks';
 import { FAQSection } from '@/components/common/FAQSection';
 import { AdBanner, AdInArticle, AdMultiplex } from '@/components/ads/AdSlot';
 import { ToolLogo } from '@/components/common/ToolLogo';
+import { ShareButtons } from '@/components/common/ShareButtons';
+import { ReadingProgress } from '@/components/common/ReadingProgress';
+import { CopyLinkButton } from '@/components/common/CopyLinkButton';
+import { TableOfContents } from '@/components/common/TableOfContents';
 import type { FAQ } from '@/types';
 
 // ============================================================
@@ -127,8 +131,19 @@ export default async function PricingPage({ params }: PageProps) {
   const toolSchema = generatePricingSchema(tool, cat?.name || category);
   const faqSchema = generateFAQSchema(faqs);
 
+  // TOC items for navigation
+  const tocItems = [
+    ...(plans.length > 0 ? [{ id: 'plans', label: 'Plans Comparison', icon: '\uD83D\uDCCB' }] : []),
+    ...(plans.length >= 2 ? [{ id: 'feature-comparison', label: 'Feature Comparison', icon: '\u2696\uFE0F' }] : []),
+    { id: 'pricing-summary', label: 'Pricing Summary', icon: '\uD83D\uDCCA' },
+    { id: 'hidden-costs', label: 'Hidden Costs', icon: '\u26A0\uFE0F' },
+    { id: 'pricing-context', label: 'Price Comparison', icon: '\uD83D\uDCB0' },
+    { id: 'pricing-faq', label: 'FAQ', icon: '\u2753' },
+  ];
+
   return (
     <>
+      <ReadingProgress />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(toolSchema) }} />
       {faqSchema && (
@@ -208,6 +223,11 @@ export default async function PricingPage({ params }: PageProps) {
           </div>
         </div>
 
+        {/* ========== TABLE OF CONTENTS ========== */}
+        <div className="mb-8">
+          <TableOfContents items={tocItems} title="Pricing Guide" />
+        </div>
+
         {/* ========== VALUE FOR MONEY METER ========== */}
         <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 mb-10">
           <div className="flex flex-col md:flex-row items-center gap-6">
@@ -250,7 +270,7 @@ export default async function PricingPage({ params }: PageProps) {
 
         {/* ========== PRICING CARDS ========== */}
         {plans.length > 0 ? (
-          <section className="mb-14">
+          <section id="plans" className="mb-14 scroll-mt-24">
             <h2 className="text-2xl font-bold mb-6">{tool.name} Plans Comparison</h2>
             <div className={`grid gap-6 ${plans.length === 1 ? 'md:grid-cols-1 max-w-md mx-auto' : plans.length === 2 ? 'md:grid-cols-2' : plans.length >= 4 ? 'md:grid-cols-2 lg:grid-cols-4' : 'md:grid-cols-3'}`}>
               {plans.map((plan, idx) => (
@@ -337,7 +357,7 @@ export default async function PricingPage({ params }: PageProps) {
 
         {/* ========== PLAN COMPARISON TABLE ========== */}
         {plans.length >= 2 && (
-          <section className="mb-14">
+          <section id="feature-comparison" className="mb-14 scroll-mt-24">
             <h2 className="text-2xl font-bold mb-6">Plan Feature Comparison</h2>
             <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-x-auto">
               <table className="w-full text-sm">
@@ -377,7 +397,7 @@ export default async function PricingPage({ params }: PageProps) {
         )}
 
         {/* ========== PRICING SUMMARY BOX ========== */}
-        <section className="mb-14">
+        <section id="pricing-summary" className="mb-14 scroll-mt-24">
           <h2 className="text-2xl font-bold mb-6">{tool.name} Pricing Summary</h2>
           <div className="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-800 dark:to-gray-800 rounded-2xl p-6 border border-blue-100 dark:border-gray-700">
             <div className="grid md:grid-cols-2 gap-6">
@@ -439,7 +459,7 @@ export default async function PricingPage({ params }: PageProps) {
         <AdBanner />
 
         {/* ========== HIDDEN COSTS TO WATCH ========== */}
-        <section className="mb-14">
+        <section id="hidden-costs" className="mb-14 scroll-mt-24">
           <h2 className="text-2xl font-bold mb-6">Hidden Costs to Watch</h2>
           <div className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-gray-800 dark:to-gray-800 rounded-2xl border border-amber-200 dark:border-gray-700 p-6">
             <p className="text-sm text-gray-600 dark:text-gray-300 mb-5">
@@ -481,7 +501,7 @@ export default async function PricingPage({ params }: PageProps) {
         </section>
 
         {/* ========== PRICING CONTEXT ========== */}
-        <section className="mb-14">
+        <section id="pricing-context" className="mb-14 scroll-mt-24">
           <h2 className="text-2xl font-bold mb-6">How Does {tool.name} Pricing Compare?</h2>
           <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 p-6">
             <div className="space-y-4">
@@ -548,7 +568,7 @@ export default async function PricingPage({ params }: PageProps) {
         <AdInArticle />
 
         {/* ========== PRICING FAQ ========== */}
-        <section className="mb-14">
+        <section id="pricing-faq" className="mb-14 scroll-mt-24">
           <h2 className="text-2xl font-bold mb-6">{tool.name} Pricing FAQ</h2>
           <FAQSection faqs={faqs} />
         </section>
@@ -605,20 +625,30 @@ export default async function PricingPage({ params }: PageProps) {
         )}
 
         {/* Freshness Signal — Enhanced trust badge */}
-        <div className="mt-10 flex flex-wrap items-center gap-4 text-sm text-gray-400 border-t border-gray-200 dark:border-gray-800 pt-6">
-          <div className="flex items-center gap-2">
-            <span>&#128197;</span>
-            <span>Last updated: {new Date(tool.lastUpdated).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+        <div className="mt-10 flex flex-wrap items-center justify-between gap-4 text-sm text-gray-400 border-t border-gray-200 dark:border-gray-800 pt-6">
+          <div className="flex flex-wrap items-center gap-4">
+            <div className="flex items-center gap-2">
+              <span>&#128197;</span>
+              <span>Last updated: {new Date(tool.lastUpdated).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+            </div>
+            <div className="w-1 h-1 bg-gray-300 dark:bg-gray-600 rounded-full" />
+            <div className="flex items-center gap-2">
+              <span>&#9989;</span>
+              <span>Pricing verified</span>
+            </div>
+            <div className="w-1 h-1 bg-gray-300 dark:bg-gray-600 rounded-full" />
+            <div className="flex items-center gap-2">
+              <span>&#128176;</span>
+              <span>All prices in USD</span>
+            </div>
           </div>
-          <div className="w-1 h-1 bg-gray-300 dark:bg-gray-600 rounded-full" />
           <div className="flex items-center gap-2">
-            <span>&#9989;</span>
-            <span>Pricing verified</span>
-          </div>
-          <div className="w-1 h-1 bg-gray-300 dark:bg-gray-600 rounded-full" />
-          <div className="flex items-center gap-2">
-            <span>&#128176;</span>
-            <span>All prices in USD</span>
+            <ShareButtons
+              url={`${SITE_URL}/${category}/${toolSlug}/pricing`}
+              title={`${tool.name} Pricing Plans & Costs (${year})`}
+              description={`Complete pricing breakdown for ${tool.name}`}
+            />
+            <CopyLinkButton url={`${SITE_URL}/${category}/${toolSlug}/pricing`} />
           </div>
         </div>
       </article>

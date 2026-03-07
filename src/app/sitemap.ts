@@ -24,7 +24,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/contact`, lastModified: monthlyDate, changeFrequency: 'monthly', priority: 0.4 },
     { url: `${SITE_URL}/privacy`, lastModified: monthlyDate, changeFrequency: 'yearly', priority: 0.2 },
     { url: `${SITE_URL}/terms`, lastModified: monthlyDate, changeFrequency: 'yearly', priority: 0.2 },
-    { url: `${SITE_URL}/sitemap-html`, lastModified: weeklyDate, changeFrequency: 'weekly', priority: 0.5 },
+    // /sitemap-html excluded — noindexed via X-Robots-Tag, should not be in XML sitemap
     // Calculator pages
     { url: `${SITE_URL}/calculators/roi`, lastModified: monthlyDate, changeFrequency: 'monthly', priority: 0.6 },
     { url: `${SITE_URL}/calculators/email-marketing-roi`, lastModified: monthlyDate, changeFrequency: 'monthly', priority: 0.6 },

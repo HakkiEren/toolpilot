@@ -55,6 +55,16 @@ const nextConfig: NextConfig = {
           { key: 'X-Robots-Tag', value: 'noindex, follow' },
         ],
       },
+      {
+        // CDN edge caching for HTML pages — ISR-compatible stale-while-revalidate
+        source: '/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, s-maxage=3600, stale-while-revalidate=86400',
+          },
+        ],
+      },
     ];
   },
 

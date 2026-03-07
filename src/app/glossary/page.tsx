@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { SITE_NAME, SITE_URL } from '@/lib/constants';
+import { SITE_NAME, SITE_URL, SEO } from '@/lib/constants';
 import { AdBanner, AdInArticle } from '@/components/ads/AdSlot';
 import { generateBreadcrumbSchema, generateGlossarySchema } from '@/lib/schema';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
@@ -10,10 +10,27 @@ import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 // Generates unique indexable content with internal links
 // ============================================================
 
+const glossaryTitle = `Software & Tech Glossary — Key Terms Explained | ${SITE_NAME}`;
+const glossaryDescription = 'Comprehensive glossary of software, SaaS, AI, e-commerce, hosting, and marketing terms. Clear definitions for business and technology concepts.';
+
 export const metadata: Metadata = {
-  title: `Software & Tech Glossary — Key Terms Explained | ${SITE_NAME}`,
-  description: 'Comprehensive glossary of software, SaaS, AI, e-commerce, hosting, and marketing terms. Clear definitions for business and technology concepts.',
+  title: glossaryTitle,
+  description: glossaryDescription,
   alternates: { canonical: `${SITE_URL}/glossary` },
+  openGraph: {
+    title: glossaryTitle,
+    description: glossaryDescription,
+    url: `${SITE_URL}/glossary`,
+    siteName: SITE_NAME,
+    type: 'article',
+    locale: SEO.locale,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    site: SEO.twitterHandle,
+    title: glossaryTitle,
+    description: glossaryDescription,
+  },
 };
 
 interface Term {

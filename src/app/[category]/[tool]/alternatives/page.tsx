@@ -9,6 +9,10 @@ import type { FAQ } from '@/types';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { AdBanner, AdInArticle, AdMultiplex } from '@/components/ads/AdSlot';
 import { ToolLogo } from '@/components/common/ToolLogo';
+import { ShareButtons } from '@/components/common/ShareButtons';
+import { ReadingProgress } from '@/components/common/ReadingProgress';
+import { CopyLinkButton } from '@/components/common/CopyLinkButton';
+import { TableOfContents } from '@/components/common/TableOfContents';
 
 // ============================================================
 // ALTERNATIVES PAGE — ENHANCED with comparison table
@@ -109,8 +113,19 @@ export default async function AlternativesPage({ params }: PageProps) {
   ];
   const faqSchema = generateFAQSchema(altFaqs);
 
+  // TOC items for navigation
+  const tocItems = [
+    ...(filtered.length > 0 ? [{ id: 'comparison-table', label: 'Quick Comparison', icon: '\uD83D\uDCCA' }] : []),
+    ...(filtered.length > 0 ? [{ id: 'detailed-reviews', label: 'Detailed Reviews', icon: '\uD83D\uDD0D' }] : []),
+    ...(filtered.length > 0 ? [{ id: 'why-switch', label: 'Why People Switch', icon: '\uD83D\uDCA1' }] : []),
+    { id: 'switching-checklist', label: 'Before You Switch', icon: '\u2705' },
+    ...(comparisons.length > 0 ? [{ id: 'head-to-head', label: 'Head-to-Head', icon: '\u2694\uFE0F' }] : []),
+    { id: 'alternatives-faq', label: 'FAQ', icon: '\u2753' },
+  ];
+
   return (
     <>
+      <ReadingProgress />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       {itemListSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />}
       {faqSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />}
@@ -202,9 +217,14 @@ export default async function AlternativesPage({ params }: PageProps) {
           </div>
         </div>
 
+        {/* ========== TABLE OF CONTENTS ========== */}
+        <div className="mb-8">
+          <TableOfContents items={tocItems} title="Alternatives Guide" />
+        </div>
+
         {/* Quick Comparison Table — With logos */}
         {filtered.length > 0 && (
-          <section className="mb-12">
+          <section id="comparison-table" className="mb-12 scroll-mt-24">
             <h2 className="text-2xl font-bold mb-6">{tool.name} vs Alternatives at a Glance</h2>
             <div className="overflow-x-auto rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm">
               <table className="w-full text-sm">
@@ -282,7 +302,7 @@ export default async function AlternativesPage({ params }: PageProps) {
         <AdBanner />
 
         {/* Detailed Alternative Cards */}
-        <section className="mb-12">
+        <section id="detailed-reviews" className="mb-12 scroll-mt-24">
           <h2 className="text-2xl font-bold mb-6">Detailed Alternative Reviews</h2>
           <div className="space-y-5">
             {filtered.map((alt, idx) => {
@@ -406,7 +426,7 @@ export default async function AlternativesPage({ params }: PageProps) {
 
         {/* ========== WHY PEOPLE SWITCH ========== */}
         {filtered.length > 0 && (
-          <section className="mb-12">
+          <section id="why-switch" className="mb-12 scroll-mt-24">
             <h2 className="text-2xl font-bold mb-6">Why People Look for {tool.name} Alternatives</h2>
             <div className="bg-gradient-to-r from-orange-50 to-red-50 dark:from-gray-800 dark:to-gray-800 rounded-2xl p-6 border border-orange-100 dark:border-gray-700">
               <div className="grid md:grid-cols-3 gap-4">
@@ -439,7 +459,7 @@ export default async function AlternativesPage({ params }: PageProps) {
         )}
 
         {/* ========== SWITCHING CHECKLIST ========== */}
-        <section className="mb-12">
+        <section id="switching-checklist" className="mb-12 scroll-mt-24">
           <h2 className="text-xl font-bold mb-4">Before You Switch: Key Considerations</h2>
           <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 p-6">
             <ul className="space-y-3">
@@ -461,7 +481,7 @@ export default async function AlternativesPage({ params }: PageProps) {
 
         {/* ========== HEAD-TO-HEAD COMPARISONS ========== */}
         {comparisons.length > 0 && (
-          <section className="mb-12">
+          <section id="head-to-head" className="mb-12 scroll-mt-24">
             <h2 className="text-2xl font-bold mb-6">{tool.name} Head-to-Head Comparisons</h2>
             <div className="grid md:grid-cols-2 gap-4">
               {comparisons.slice(0, 6).map((comp) => {
@@ -497,7 +517,7 @@ export default async function AlternativesPage({ params }: PageProps) {
 
         {/* ========== ALTERNATIVES FAQ ========== */}
         {altFaqs.length > 0 && (
-          <section className="mb-12">
+          <section id="alternatives-faq" className="mb-12 scroll-mt-24">
             <h2 className="text-2xl font-bold mb-6">{tool.name} Alternatives FAQ</h2>
             <FAQSection faqs={altFaqs} />
           </section>
@@ -507,20 +527,30 @@ export default async function AlternativesPage({ params }: PageProps) {
         <AdMultiplex />
 
         {/* Freshness Signal — Enhanced trust badge */}
-        <div className="mt-10 flex flex-wrap items-center gap-4 text-sm text-gray-400 border-t border-gray-200 dark:border-gray-800 pt-6">
-          <div className="flex items-center gap-2">
-            <span>&#128197;</span>
-            <span>Last updated: {new Date(tool.lastUpdated).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+        <div className="mt-10 flex flex-wrap items-center justify-between gap-4 text-sm text-gray-400 border-t border-gray-200 dark:border-gray-800 pt-6">
+          <div className="flex flex-wrap items-center gap-4">
+            <div className="flex items-center gap-2">
+              <span>&#128197;</span>
+              <span>Last updated: {new Date(tool.lastUpdated).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+            </div>
+            <div className="w-1 h-1 bg-gray-300 dark:bg-gray-600 rounded-full" />
+            <div className="flex items-center gap-2">
+              <span>&#9989;</span>
+              <span>Pricing verified</span>
+            </div>
+            <div className="w-1 h-1 bg-gray-300 dark:bg-gray-600 rounded-full" />
+            <div className="flex items-center gap-2">
+              <span>&#128202;</span>
+              <span>Independent review by {SITE_NAME}</span>
+            </div>
           </div>
-          <div className="w-1 h-1 bg-gray-300 dark:bg-gray-600 rounded-full" />
           <div className="flex items-center gap-2">
-            <span>&#9989;</span>
-            <span>Pricing verified</span>
-          </div>
-          <div className="w-1 h-1 bg-gray-300 dark:bg-gray-600 rounded-full" />
-          <div className="flex items-center gap-2">
-            <span>&#128202;</span>
-            <span>Independent review by {SITE_NAME}</span>
+            <ShareButtons
+              url={`${SITE_URL}/${category}/${toolSlug}/alternatives`}
+              title={`Best ${tool.name} Alternatives in ${year}`}
+              description={`Compare the top ${tool.name} competitors`}
+            />
+            <CopyLinkButton url={`${SITE_URL}/${category}/${toolSlug}/alternatives`} />
           </div>
         </div>
       </article>

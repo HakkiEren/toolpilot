@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { SITE_NAME, SITE_URL, CATEGORY_LIST } from '@/lib/constants';
+import { SITE_NAME, SITE_URL, CATEGORY_LIST, SEO } from '@/lib/constants';
 import { generateBreadcrumbSchema } from '@/lib/schema';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 
@@ -9,10 +9,27 @@ import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 // Shows recent tool additions, rating updates, feature launches
 // ============================================================
 
+const changelogTitle = `Changelog — What's New at ${SITE_NAME}`;
+const changelogDescription = `See the latest updates to ${SITE_NAME}: new tool reviews, comparison updates, feature releases, and database expansions. Updated weekly.`;
+
 export const metadata: Metadata = {
-  title: `Changelog — What's New at ${SITE_NAME}`,
-  description: `See the latest updates to ${SITE_NAME}: new tool reviews, comparison updates, feature releases, and database expansions. Updated weekly.`,
+  title: changelogTitle,
+  description: changelogDescription,
   alternates: { canonical: `${SITE_URL}/changelog` },
+  openGraph: {
+    title: changelogTitle,
+    description: changelogDescription,
+    url: `${SITE_URL}/changelog`,
+    siteName: SITE_NAME,
+    type: 'article',
+    locale: SEO.locale,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    site: SEO.twitterHandle,
+    title: changelogTitle,
+    description: changelogDescription,
+  },
 };
 
 // Changelog entries — most recent first

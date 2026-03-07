@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import { getToolsByCategory, getCategoryStats, getComparisonsByCategory, getBlogPosts } from '@/lib/data';
 import { generateBreadcrumbSchema, generateFAQSchema, generateCollectionSchema, generateBuyersGuideSchema } from '@/lib/schema';
 import { ToolLogo } from '@/components/common/ToolLogo';
-import { CATEGORIES, CATEGORY_LIST, SITE_URL, SUBCATEGORIES } from '@/lib/constants';
+import { CATEGORIES, CATEGORY_LIST, SITE_URL, SUBCATEGORIES, SITE_NAME, SEO } from '@/lib/constants';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { FAQSection } from '@/components/common/FAQSection';
 import { AdBanner, AdInArticle, AdMultiplex } from '@/components/ads/AdSlot';
@@ -32,6 +32,20 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title: cat.metaTitle,
     description: cat.metaDescription,
     alternates: { canonical: `${SITE_URL}/${cat.slug}` },
+    openGraph: {
+      title: cat.metaTitle,
+      description: cat.metaDescription,
+      url: `${SITE_URL}/${cat.slug}`,
+      siteName: SITE_NAME,
+      type: 'website',
+      locale: SEO.locale,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      site: SEO.twitterHandle,
+      title: cat.metaTitle,
+      description: cat.metaDescription,
+    },
   };
 }
 

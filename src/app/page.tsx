@@ -1,5 +1,6 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
-import { SITE_NAME, SITE_URL, CATEGORY_LIST, CATEGORIES, SUBCATEGORIES } from '@/lib/constants';
+import { SITE_NAME, SITE_URL, SITE_DESCRIPTION, CATEGORY_LIST, CATEGORIES, SUBCATEGORIES, SEO } from '@/lib/constants';
 import { supabase } from '@/lib/supabase';
 import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
 import { generateFAQSchema } from '@/lib/schema';
@@ -8,6 +9,28 @@ import { RatingStars } from '@/components/common/RatingStars';
 import { AdBanner, AdInArticle, AdMultiplex, AdNative } from '@/components/ads/AdSlot';
 
 export const revalidate = 3600;
+
+const year = new Date().getFullYear();
+
+export const metadata: Metadata = {
+  title: `${SITE_NAME} — Compare the Best Digital Tools in ${year}`,
+  description: SITE_DESCRIPTION,
+  alternates: { canonical: SITE_URL },
+  openGraph: {
+    title: `${SITE_NAME} — Compare the Best Digital Tools in ${year}`,
+    description: SITE_DESCRIPTION,
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    type: 'website',
+    locale: SEO.locale,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    site: SEO.twitterHandle,
+    title: `${SITE_NAME} — Compare the Best Digital Tools in ${year}`,
+    description: SITE_DESCRIPTION,
+  },
+};
 
 export default async function HomePage() {
   // Parallel fetch all homepage data for maximum performance
