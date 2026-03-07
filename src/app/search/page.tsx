@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { supabase } from '@/lib/supabase';
 import { SearchClient } from './search-client';
+import { AdBanner, AdMultiplex } from '@/components/ads/AdSlot';
 
 export const revalidate = 3600;
 
@@ -17,5 +18,15 @@ export default async function SearchPage() {
     .eq('status', 'published')
     .order('ratings_overall', { ascending: false });
 
-  return <SearchClient tools={tools || []} />;
+  return (
+    <>
+      <SearchClient tools={tools || []} />
+      <div className="max-w-7xl mx-auto px-4 pb-8">
+        <AdBanner />
+        <div className="mt-8">
+          <AdMultiplex />
+        </div>
+      </div>
+    </>
+  );
 }

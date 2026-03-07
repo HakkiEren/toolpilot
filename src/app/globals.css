@@ -438,6 +438,50 @@ table tbody tr:hover {
 }
 
 /* ============================================================
+   MICRO-INTERACTIONS — Button press, link hover, smooth feedback
+   ============================================================ */
+
+/* Button press feedback — tactile feel */
+button:active:not(:disabled),
+a[class*="bg-"]:active,
+[role="button"]:active {
+  transform: scale(0.97);
+  transition-duration: 0.1s;
+}
+
+/* CTA buttons — gradient hover shift */
+a[class*="bg-gradient"]:hover,
+button[class*="bg-gradient"]:hover {
+  filter: brightness(1.05);
+}
+
+/* Link smooth underline animation */
+.link-animated {
+  position: relative;
+  text-decoration: none;
+}
+
+.link-animated::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background: currentColor;
+  transition: width 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.link-animated:hover::after {
+  width: 100%;
+}
+
+/* Checkbox/toggle enhanced states */
+input[type="checkbox"]:checked {
+  animation: scaleIn 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ============================================================
    SELECTION & MISC
    ============================================================ */
 
