@@ -1054,6 +1054,102 @@ export default async function HomePage() {
       </section>
 
       {/* ============================================================ */}
+      {/* HOW IT WORKS — HowTo schema for rich snippets */}
+      {/* ============================================================ */}
+      <section className="py-16 bg-gradient-to-b from-white to-blue-50/30 dark:from-gray-950 dark:to-blue-950/10">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'HowTo',
+              name: `How to Find the Best Software with ${SITE_NAME}`,
+              description: `Use ${SITE_NAME} to compare digital tools across AI, SaaS, E-commerce, Marketing, Hosting & Business in 3 simple steps.`,
+              url: SITE_URL,
+              totalTime: 'PT3M',
+              step: [
+                { '@type': 'HowToStep', position: 1, name: 'Search & Browse', text: 'Search by name or browse by category to discover tools that match your needs.' },
+                { '@type': 'HowToStep', position: 2, name: 'Compare Side-by-Side', text: 'Use our comparison pages to evaluate features, pricing, and ratings between your top picks.' },
+                { '@type': 'HowToStep', position: 3, name: 'Make Your Decision', text: 'Read expert reviews with pros, cons, and verdict to choose the perfect tool confidently.' },
+              ],
+            }),
+          }}
+        />
+        <div className="max-w-5xl mx-auto px-4">
+          <div className="text-center mb-12">
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 text-xs font-bold uppercase tracking-wider mb-4">
+              3 Simple Steps
+            </span>
+            <h2 className="text-2xl md:text-3xl font-bold mb-3">How {SITE_NAME} Works</h2>
+            <p className="text-gray-500 dark:text-gray-400 max-w-xl mx-auto">
+              Finding the perfect tool shouldn&apos;t be hard. Here&apos;s how we make it easy.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                step: '01',
+                title: 'Search & Browse',
+                description: 'Search by name or browse by category to discover tools that match your needs.',
+                icon: '🔍',
+                gradient: 'from-blue-500 to-cyan-400',
+                link: '/search',
+                cta: 'Start Searching',
+              },
+              {
+                step: '02',
+                title: 'Compare Side-by-Side',
+                description: 'Use our comparison pages to evaluate features, pricing, and ratings between your top picks.',
+                icon: '⚖️',
+                gradient: 'from-purple-500 to-indigo-400',
+                link: '/ai-tools/compare',
+                cta: 'See Comparisons',
+              },
+              {
+                step: '03',
+                title: 'Make Your Decision',
+                description: 'Read expert reviews with pros, cons, and verdict to choose the perfect tool confidently.',
+                icon: '✅',
+                gradient: 'from-green-500 to-emerald-400',
+                link: '/best',
+                cta: 'View Best-of Lists',
+              },
+            ].map((item, idx) => (
+              <div
+                key={item.step}
+                className="relative bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 text-center hover-lift card-animate"
+                style={{ animationDelay: `${idx * 100}ms` }}
+              >
+                {/* Step number connector line */}
+                {idx < 2 && (
+                  <div className="hidden md:block absolute top-12 -right-4 w-8 h-0.5 bg-gray-200 dark:bg-gray-700 z-10" />
+                )}
+                {/* Step icon */}
+                <div className={`w-14 h-14 mx-auto mb-4 rounded-2xl bg-gradient-to-br ${item.gradient} flex items-center justify-center text-2xl shadow-lg`}>
+                  {item.icon}
+                </div>
+                {/* Step number */}
+                <div className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-2">
+                  Step {item.step}
+                </div>
+                <h3 className="text-lg font-bold mb-2">{item.title}</h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-4 leading-relaxed">
+                  {item.description}
+                </p>
+                <Link
+                  href={item.link}
+                  className="text-sm font-semibold text-blue-600 dark:text-blue-400 hover:underline"
+                >
+                  {item.cta} &#8594;
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================================ */}
       {/* CTA SECTION */}
       {/* ============================================================ */}
       <section className="max-w-7xl mx-auto px-4 py-16">
