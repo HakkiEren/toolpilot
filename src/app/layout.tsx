@@ -70,7 +70,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={inter.className}>
+    <html lang="en" className={inter.className} suppressHydrationWarning>
       <head>
         {/* RSS Feed auto-discovery */}
         <link rel="alternate" type="application/rss+xml" title="ProPicked RSS Feed" href="/feed.xml" />
@@ -122,7 +122,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 antialiased">
+      <body className="bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 antialiased" suppressHydrationWarning>
         {/* Accessibility: Skip to main content */}
         <a href="#main-content" className="skip-link">
           Skip to main content
