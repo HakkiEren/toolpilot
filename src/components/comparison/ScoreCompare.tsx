@@ -112,7 +112,7 @@ export function ScoreCompare({ toolA, toolB }: Props) {
                     <span className="text-xs text-gray-400 font-medium">=</span>
                   ) : (
                     <span className={`text-xs font-bold ${winner === 'a' ? 'text-blue-500' : 'text-purple-500'}`}>
-                      {winner === 'a' ? '&#9664;' : '&#9654;'}
+                      {winner === 'a' ? '\u25C0' : '\u25B6'}
                     </span>
                   )}
                 </div>
