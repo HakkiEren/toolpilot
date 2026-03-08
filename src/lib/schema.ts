@@ -608,6 +608,61 @@ export function generateWebSiteSchema() {
   };
 }
 
+// --- HOW-TO SCHEMA for Category Evaluation (rich snippet — "How to choose the best X") ---
+export function generateEvaluationHowToSchema(categoryName: string, categorySlug: string) {
+  const year = new Date().getFullYear();
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: `How to Choose the Best ${categoryName} in ${year}`,
+    description: `A step-by-step guide to evaluating and selecting the right ${categoryName.toLowerCase()} for your needs, based on ${SITE_NAME}'s expert methodology.`,
+    url: `${SITE_URL}/${categorySlug}`,
+    totalTime: 'PT10M',
+    step: [
+      {
+        '@type': 'HowToStep',
+        position: 1,
+        name: 'Define your requirements',
+        text: `Start by listing your must-have features and budget constraints. Consider team size, use case complexity, and integration needs with your existing ${categoryName.toLowerCase()} stack.`,
+        url: `${SITE_URL}/${categorySlug}#requirements`,
+      },
+      {
+        '@type': 'HowToStep',
+        position: 2,
+        name: 'Compare features and ratings',
+        text: `Use our feature comparison tables and expert ratings across four dimensions: ease of use, feature completeness, value for money, and customer support quality. Each tool is scored on a 0-10 scale.`,
+        url: `${SITE_URL}/${categorySlug}#features`,
+      },
+      {
+        '@type': 'HowToStep',
+        position: 3,
+        name: 'Evaluate pricing and free plans',
+        text: 'Compare pricing tiers across tools. Many offer free plans or trials — take advantage of these to test before committing. Consider total cost of ownership including add-ons and scaling costs.',
+        url: `${SITE_URL}/${categorySlug}#pricing`,
+      },
+      {
+        '@type': 'HowToStep',
+        position: 4,
+        name: 'Read head-to-head comparisons',
+        text: `Browse our detailed side-by-side comparisons to see exactly how your top picks stack up against each other on features, pricing, ease of use, and support.`,
+        url: `${SITE_URL}/${categorySlug}/compare`,
+      },
+      {
+        '@type': 'HowToStep',
+        position: 5,
+        name: 'Start a free trial or free plan',
+        text: 'Once you\'ve narrowed your options, sign up for a free trial or free plan. Test the tool with your actual workflow before making a purchase decision.',
+        url: `${SITE_URL}/${categorySlug}`,
+      },
+    ],
+    publisher: {
+      '@type': 'Organization',
+      name: SITE_NAME,
+      url: SITE_URL,
+    },
+  };
+}
+
 // --- SITE NAVIGATION SCHEMA (helps Google understand site structure) ---
 export function generateSiteNavigationSchema() {
   return {

@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getToolsByCategory, getCategoryStats, getComparisonsByCategory, getBlogPosts } from '@/lib/data';
-import { generateBreadcrumbSchema, generateFAQSchema, generateCollectionSchema, generateBuyersGuideSchema } from '@/lib/schema';
+import { generateBreadcrumbSchema, generateFAQSchema, generateCollectionSchema, generateBuyersGuideSchema, generateEvaluationHowToSchema } from '@/lib/schema';
 import { ToolLogo } from '@/components/common/ToolLogo';
 import { CATEGORIES, CATEGORY_LIST, SITE_URL, SUBCATEGORIES, SITE_NAME, SEO } from '@/lib/constants';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
@@ -93,6 +93,9 @@ export default async function CategoryPage({ params }: PageProps) {
     ? generateBuyersGuideSchema(cat.name, cat.slug, categoryContent.buyersGuide)
     : null;
 
+  // "How to choose" HowTo schema — triggers rich snippets for "how to choose best X" queries
+  const evaluationHowToSchema = generateEvaluationHowToSchema(cat.name, cat.slug);
+
   return (
     <>
       <ReadingProgress />
@@ -100,6 +103,7 @@ export default async function CategoryPage({ params }: PageProps) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }} />
       {faqSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />}
       {buyersGuideSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buyersGuideSchema) }} />}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(evaluationHowToSchema) }} />
 
       <div className="max-w-7xl mx-auto px-4 py-8">
         <Breadcrumbs items={[
