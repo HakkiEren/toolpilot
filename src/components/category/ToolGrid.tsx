@@ -214,47 +214,76 @@ export function ToolGrid({ tools, categorySlug, categoryName, subcategories = []
 
       {/* Tool Grid */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {sortedAndFiltered.map((tool, idx) => (
-          <Link
-            key={tool.id}
-            href={`/${categorySlug}/${tool.slug}`}
-            className="group hover-lift flex items-start gap-4 p-5 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-600 transition-all bg-white dark:bg-gray-900"
-          >
-            {/* Rank */}
-            <span className="text-sm font-bold text-gray-300 dark:text-gray-600 w-6 text-right mt-1">
-              {idx + 1}
-            </span>
+        {sortedAndFiltered.map((tool, idx) => {
+          const score = tool.ratings.overall;
+          const scoreColor = score >= 8 ? 'text-green-600 dark:text-green-400' : score >= 6 ? 'text-yellow-600 dark:text-yellow-400' : 'text-red-500';
+          const scoreBg = score >= 8 ? 'bg-green-100 dark:bg-green-900/30' : score >= 6 ? 'bg-yellow-100 dark:bg-yellow-900/30' : 'bg-red-100 dark:bg-red-900/30';
 
-            {/* Logo */}
-            <ToolLogo logoUrl={tool.logoUrl} name={tool.name} size={40} />
+          return (
+            <Link
+              key={tool.id}
+              href={`/${categorySlug}/${tool.slug}`}
+              className="group hover-lift flex flex-col p-5 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-600 transition-all bg-white dark:bg-gray-900"
+            >
+              {/* Top row: rank, logo, name, score */}
+              <div className="flex items-center gap-3 mb-3">
+                <span className="text-sm font-bold text-gray-300 dark:text-gray-600 w-5 text-right flex-shrink-0">
+                  {idx + 1}
+                </span>
+                <ToolLogo logoUrl={tool.logoUrl} name={tool.name} size={40} />
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-semibold group-hover:text-blue-600 transition-colors truncate">
+                    {tool.name}
+                  </h3>
+                  <p className="text-xs text-gray-500 line-clamp-1 mt-0.5">{tool.tagline}</p>
+                </div>
+                <div className={`flex-shrink-0 ${scoreBg} ${scoreColor} px-2 py-1 rounded-lg text-center`}>
+                  <div className="text-lg font-extrabold leading-none">{score.toFixed(1)}</div>
+                  <div className="text-[9px] opacity-60">/10</div>
+                </div>
+              </div>
 
-            {/* Info */}
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2">
-                <h3 className="font-semibold group-hover:text-blue-600 transition-colors truncate">
-                  {tool.name}
-                </h3>
-                <span className="flex items-center gap-0.5 text-sm flex-shrink-0">
-                  <span className="text-yellow-500">&#9733;</span>
-                  <span className="font-medium">{tool.ratings.overall.toFixed(1)}</span>
+              {/* Mini rating bars */}
+              <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 mb-3">
+                {[
+                  { label: 'Features', val: tool.ratings.features },
+                  { label: 'Ease', val: tool.ratings.easeOfUse },
+                  { label: 'Value', val: tool.ratings.valueForMoney },
+                  { label: 'Support', val: tool.ratings.support },
+                ].map(({ label, val }) => (
+                  <div key={label} className="flex items-center gap-1.5 text-[11px]">
+                    <span className="w-12 text-gray-400 truncate">{label}</span>
+                    <div className="flex-1 h-1 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                      <div
+                        className={`h-full rounded-full ${val >= 8 ? 'bg-green-500' : val >= 6 ? 'bg-yellow-500' : 'bg-red-400'}`}
+                        style={{ width: `${(val / 10) * 100}%` }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Bottom: pricing + CTA */}
+              <div className="flex items-center justify-between mt-auto pt-3 border-t border-gray-100 dark:border-gray-800">
+                <div className="flex items-center gap-2 text-xs">
+                  {tool.pricing.hasFreeplan && (
+                    <span className="px-2 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded font-medium">
+                      Free
+                    </span>
+                  )}
+                  {tool.pricing.startingPrice != null && (
+                    <span className="text-gray-400">
+                      From ${tool.pricing.startingPrice}/mo
+                    </span>
+                  )}
+                </div>
+                <span className="text-xs text-blue-600 dark:text-blue-400 font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                  View review &#8594;
                 </span>
               </div>
-              <p className="text-xs text-gray-500 line-clamp-1 mt-0.5">{tool.tagline}</p>
-              <div className="mt-2 flex items-center gap-2 text-xs">
-                {tool.pricing.hasFreeplan && (
-                  <span className="px-2 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded font-medium">
-                    Free
-                  </span>
-                )}
-                {tool.pricing.startingPrice != null && (
-                  <span className="text-gray-400">
-                    From ${tool.pricing.startingPrice}/mo
-                  </span>
-                )}
-              </div>
-            </div>
-          </Link>
-        ))}
+            </Link>
+          );
+        })}
       </div>
 
       {/* Empty State */}
