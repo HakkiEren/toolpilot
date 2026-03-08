@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import type { Tool } from '@/types';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getToolBySlug, getAllToolSlugs, getRelatedLinks, getComparisonsByTool, getRelatedTools, getRelatedBlogPosts } from '@/lib/data';
@@ -520,26 +521,73 @@ export default async function ToolPage({ params }: PageProps) {
           </section>
         )}
 
-        {/* ========== AT A GLANCE — Info card grid ========== */}
+        {/* ========== RATING BREAKDOWN — Detailed scoring insights ========== */}
         <section className="mb-12">
-          <h2 className="text-2xl font-bold mb-6">{tool.name} at a Glance</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+          <h2 className="text-2xl font-bold mb-6">Why We Rated {tool.name} {tool.ratings.overall.toFixed(1)}/10</h2>
+          <div className="grid md:grid-cols-2 gap-4">
             {[
-              { label: 'Category', value: cat?.name || category, icon: '📂' },
-              { label: 'Rating', value: `${tool.ratings.overall.toFixed(1)}/10`, icon: '⭐' },
-              { label: 'Free Plan', value: tool.pricing.hasFreeplan ? 'Yes ✓' : 'No', icon: '🆓' },
-              { label: 'From', value: tool.pricing.startingPrice ? `$${tool.pricing.startingPrice}/mo` : 'N/A', icon: '💵' },
-              { label: 'Trial', value: tool.pricing.freeTrialDays ? `${tool.pricing.freeTrialDays} days` : 'N/A', icon: '⏱️' },
-              { label: 'Ease of Use', value: `${tool.ratings.easeOfUse.toFixed(1)}/10`, icon: '🎯' },
-              { label: 'Features', value: `${tool.ratings.features.toFixed(1)}/10`, icon: '⚙️' },
-              { label: 'Value', value: `${tool.ratings.valueForMoney.toFixed(1)}/10`, icon: '💰' },
-              { label: 'Support', value: `${tool.ratings.support.toFixed(1)}/10`, icon: '💬' },
-              { label: 'Updated', value: new Date(tool.lastUpdated).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }), icon: '📅' },
-            ].map(({ label, value, icon }) => (
-              <div key={label} className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-3.5 text-center hover:border-blue-200 dark:hover:border-blue-800/50 transition-colors">
-                <div className="text-lg mb-1">{icon}</div>
-                <div className="text-sm font-bold text-gray-900 dark:text-white">{value}</div>
-                <div className="text-[11px] text-gray-400 mt-0.5">{label}</div>
+              {
+                label: 'Ease of Use',
+                score: tool.ratings.easeOfUse,
+                emoji: '🎯',
+                insight: tool.ratings.easeOfUse >= 8.5
+                  ? `Exceptionally intuitive — most users get productive within minutes without training.`
+                  : tool.ratings.easeOfUse >= 7
+                    ? `Well-designed interface with a manageable learning curve for most users.`
+                    : `Steeper learning curve — plan for some onboarding time to get the most value.`,
+                color: 'from-blue-500 to-blue-600',
+              },
+              {
+                label: 'Features',
+                score: tool.ratings.features,
+                emoji: '⚙️',
+                insight: tool.ratings.features >= 8.5
+                  ? `Industry-leading feature set that covers advanced use cases competitors miss.`
+                  : tool.ratings.features >= 7
+                    ? `Solid feature set covering core needs with some standout capabilities.`
+                    : `Covers the basics well, but may require integrations for advanced workflows.`,
+                color: 'from-purple-500 to-purple-600',
+              },
+              {
+                label: 'Value for Money',
+                score: tool.ratings.valueForMoney,
+                emoji: '💰',
+                insight: tool.ratings.valueForMoney >= 8.5
+                  ? `Excellent value — features-to-price ratio is among the best in the category.`
+                  : tool.ratings.valueForMoney >= 7
+                    ? `Fair pricing for what you get. ${tool.pricing.hasFreeplan ? 'The free tier makes it easy to start.' : 'Consider the free trial to evaluate.'}`
+                    : `Premium pricing — best suited for teams that will fully utilize the feature set.`,
+                color: 'from-green-500 to-green-600',
+              },
+              {
+                label: 'Customer Support',
+                score: tool.ratings.support,
+                emoji: '💬',
+                insight: tool.ratings.support >= 8.5
+                  ? `Outstanding support with fast response times and knowledgeable agents.`
+                  : tool.ratings.support >= 7
+                    ? `Reliable support through standard channels. Documentation is well-maintained.`
+                    : `Support can be slow at times. Community forums may be more helpful for quick answers.`,
+                color: 'from-orange-500 to-orange-600',
+              },
+            ].map(({ label, score, emoji, insight, color }) => (
+              <div key={label} className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-5 hover:border-blue-200 dark:hover:border-blue-800/50 transition-colors">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg">{emoji}</span>
+                    <span className="font-semibold text-sm">{label}</span>
+                  </div>
+                  <div className={`text-lg font-black ${score >= 8 ? 'text-green-500' : score >= 6 ? 'text-yellow-500' : 'text-red-500'}`}>
+                    {score.toFixed(1)}
+                  </div>
+                </div>
+                <div className="w-full bg-gray-100 dark:bg-gray-800 rounded-full h-2 mb-3">
+                  <div
+                    className={`h-2 rounded-full bg-gradient-to-r ${color}`}
+                    style={{ width: `${(score / 10) * 100}%` }}
+                  />
+                </div>
+                <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{insight}</p>
               </div>
             ))}
           </div>
@@ -573,14 +621,16 @@ export default async function ToolPage({ params }: PageProps) {
                 <h3 className="text-xl font-bold mb-2">
                   {tool.name} — {ratingLabel}
                 </h3>
-                <p className="text-gray-300 leading-relaxed text-sm">
-                  {tool.ratings.overall >= 8
-                    ? `${tool.name} stands out as one of the strongest options in the ${cat?.name || 'tools'} category. With excellent scores across features (${tool.ratings.features.toFixed(1)}/10) and ease of use (${tool.ratings.easeOfUse.toFixed(1)}/10), it delivers genuine value for ${tool.pricing.hasFreeplan ? 'teams of all sizes, especially with its free plan' : `organizations willing to invest from $${tool.pricing.startingPrice}/mo`}. We recommend it for users who prioritize reliability and a mature feature set.`
-                    : tool.ratings.overall >= 6
-                      ? `${tool.name} is a solid contender in the ${cat?.name || 'tools'} space with room for growth. It scores well on features (${tool.ratings.features.toFixed(1)}/10) but could improve in some areas. ${tool.pricing.hasFreeplan ? 'The free plan makes it easy to evaluate before committing.' : `At $${tool.pricing.startingPrice}/mo, it offers reasonable value for what you get.`} Worth considering if its strengths align with your specific needs.`
-                      : `${tool.name} offers a basic set of capabilities in the ${cat?.name || 'tools'} category. While it may work for specific use cases, there are stronger alternatives available. We recommend comparing it against top-rated competitors before committing.`
-                  }
+                <p className="text-gray-300 leading-relaxed text-sm mb-3">
+                  {generateExpertVerdict(tool, cat?.name || category)}
                 </p>
+                <div className="flex flex-wrap gap-2 mt-3">
+                  {getVerdictHighlights(tool).map((h, i) => (
+                    <span key={i} className={`text-xs px-2.5 py-1 rounded-full border ${h.positive ? 'border-green-500/30 text-green-400 bg-green-500/10' : 'border-yellow-500/30 text-yellow-400 bg-yellow-500/10'}`}>
+                      {h.positive ? '✓' : '△'} {h.text}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
             <div className="relative grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -744,4 +794,76 @@ function extractCons(html: string): string {
   if (uls && uls.length >= 2) return uls[1];
 
   return '';
+}
+
+// ============================================================
+// HELPERS — Expert verdict & highlight generation
+// ============================================================
+
+function generateExpertVerdict(tool: Tool, categoryName: string): string {
+  const { ratings, pricing, name } = tool;
+  const parts: string[] = [];
+
+  // Opening — strength-based
+  const bestMetric = [
+    { name: 'features', score: ratings.features },
+    { name: 'ease of use', score: ratings.easeOfUse },
+    { name: 'value for money', score: ratings.valueForMoney },
+    { name: 'customer support', score: ratings.support },
+  ].sort((a, b) => b.score - a.score);
+
+  const strongest = bestMetric[0];
+  const weakest = bestMetric[bestMetric.length - 1];
+
+  if (ratings.overall >= 8.5) {
+    parts.push(`${name} earns a top-tier rating in the ${categoryName} category, excelling particularly in ${strongest.name} (${strongest.score.toFixed(1)}/10).`);
+  } else if (ratings.overall >= 7.5) {
+    parts.push(`${name} is a strong performer in the ${categoryName} space, with its greatest strength in ${strongest.name} (${strongest.score.toFixed(1)}/10).`);
+  } else if (ratings.overall >= 6) {
+    parts.push(`${name} delivers a capable experience in the ${categoryName} category, scoring best in ${strongest.name} (${strongest.score.toFixed(1)}/10).`);
+  } else {
+    parts.push(`${name} provides basic ${categoryName} functionality but faces stiff competition from higher-rated alternatives.`);
+  }
+
+  // Pricing context
+  if (pricing.hasFreeplan && pricing.startingPrice) {
+    parts.push(`With a free plan and paid tiers from $${pricing.startingPrice}/mo, it accommodates both individual users and growing teams.`);
+  } else if (pricing.hasFreeplan) {
+    parts.push(`The free plan lets you evaluate it risk-free before committing to a paid tier.`);
+  } else if (pricing.startingPrice) {
+    parts.push(`Starting at $${pricing.startingPrice}/mo, it targets ${pricing.startingPrice > 50 ? 'teams and organizations' : 'individual users and small teams'} looking for professional-grade tools.`);
+  }
+
+  // Weakness callout (constructive)
+  if (weakest.score < 7 && weakest.score < strongest.score - 1.5) {
+    parts.push(`Its ${weakest.name} score (${weakest.score.toFixed(1)}/10) leaves room for improvement, so factor that into your decision if ${weakest.name} is a priority.`);
+  }
+
+  // Closing recommendation
+  if (ratings.overall >= 7.5) {
+    parts.push(`Overall, we confidently recommend ${name} for users who need a ${ratings.easeOfUse >= 8 ? 'user-friendly' : 'feature-rich'} ${categoryName} solution.`);
+  } else {
+    parts.push(`We recommend comparing ${name} against top alternatives before making your final choice.`);
+  }
+
+  return parts.join(' ');
+}
+
+function getVerdictHighlights(tool: Tool): Array<{ text: string; positive: boolean }> {
+  const highlights: Array<{ text: string; positive: boolean }> = [];
+
+  if (tool.ratings.overall >= 8) highlights.push({ text: 'Top Rated', positive: true });
+  if (tool.ratings.easeOfUse >= 8.5) highlights.push({ text: 'Very Easy to Use', positive: true });
+  if (tool.ratings.features >= 8.5) highlights.push({ text: 'Feature-Rich', positive: true });
+  if (tool.ratings.valueForMoney >= 8.5) highlights.push({ text: 'Great Value', positive: true });
+  if (tool.ratings.support >= 8.5) highlights.push({ text: 'Excellent Support', positive: true });
+  if (tool.pricing.hasFreeplan) highlights.push({ text: 'Free Plan Available', positive: true });
+  if (tool.pricing.freeTrialDays) highlights.push({ text: `${tool.pricing.freeTrialDays}-Day Trial`, positive: true });
+
+  // Constructive warnings
+  if (tool.ratings.support < 6.5) highlights.push({ text: 'Limited Support', positive: false });
+  if (tool.ratings.easeOfUse < 6.5) highlights.push({ text: 'Steep Learning Curve', positive: false });
+  if (tool.pricing.startingPrice && tool.pricing.startingPrice > 100) highlights.push({ text: 'Premium Pricing', positive: false });
+
+  return highlights.slice(0, 5);
 }
