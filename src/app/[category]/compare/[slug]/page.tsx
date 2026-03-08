@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getComparison, getAllComparisonSlugs, getRelatedLinks, getRelatedComparisons, getRelatedBlogPosts } from '@/lib/data';
 import { generateComparisonSchema, generateComparisonItemListSchema, generateFAQSchema, generateBreadcrumbSchema } from '@/lib/schema';
-import { CATEGORIES, LIMITS, SEO, SITE_URL, SITE_NAME } from '@/lib/constants';
+import { CATEGORIES, SUBCATEGORIES, LIMITS, SEO, SITE_URL, SITE_NAME } from '@/lib/constants';
 import { generateComparisonBottomLine, generateKeyDifferences, generateComparisonFAQs } from '@/lib/generated-faqs';
 // Components
 import { ScoreCompare } from '@/components/comparison/ScoreCompare';
@@ -19,6 +19,7 @@ import { ShareButtons } from '@/components/common/ShareButtons';
 import { CopyLinkButton } from '@/components/common/CopyLinkButton';
 import { ReadingProgress } from '@/components/common/ReadingProgress';
 import { HtmlContent, stripHtml } from '@/components/common/HtmlContent';
+import { RecordToolView } from '@/components/common/RecentlyViewed';
 
 // ============================================================
 // COMPARISON PAGE — ENHANCED with winner banner, nav, tool cards
@@ -173,6 +174,25 @@ export default async function ComparisonPage({ params }: PageProps) {
 
   return (
     <>
+      {/* Track both compared tools in Recently Viewed */}
+      <RecordToolView tool={{
+        slug: comparison.toolA.slug,
+        categorySlug: comparison.toolA.categorySlug,
+        name: comparison.toolA.name,
+        logoUrl: comparison.toolA.logoUrl,
+        rating: comparison.toolA.ratings.overall,
+        tagline: comparison.toolA.tagline,
+        hasFree: comparison.toolA.pricing.hasFreeplan,
+      }} />
+      <RecordToolView tool={{
+        slug: comparison.toolB.slug,
+        categorySlug: comparison.toolB.categorySlug,
+        name: comparison.toolB.name,
+        logoUrl: comparison.toolB.logoUrl,
+        rating: comparison.toolB.ratings.overall,
+        tagline: comparison.toolB.tagline,
+        hasFree: comparison.toolB.pricing.hasFreeplan,
+      }} />
       <ReadingProgress />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
@@ -647,6 +667,42 @@ export default async function ComparisonPage({ params }: PageProps) {
             </div>
           </section>
         )}
+
+        {/* ========== BEST-OF RANKINGS — Cross-link to best-of pages ========== */}
+        {(() => {
+          const subs = (SUBCATEGORIES[category] || []).slice(0, 4);
+          if (subs.length === 0) return null;
+          return (
+            <section className="mb-12">
+              <h2 className="text-2xl font-bold mb-2">Best {cat?.name || category} Rankings</h2>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-5">
+                Explore expert-curated rankings beyond just these two tools
+              </p>
+              <div className="grid sm:grid-cols-2 gap-3">
+                {subs.map((sub) => (
+                  <Link
+                    key={sub.slug}
+                    href={`/best/${sub.slug}`}
+                    className="group flex items-center gap-3 p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-green-300 dark:hover:border-green-700 hover:bg-green-50/30 dark:hover:bg-green-900/10 transition-all"
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-100 to-orange-100 dark:from-amber-900/30 dark:to-orange-900/30 flex items-center justify-center text-lg flex-shrink-0">
+                      🏆
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-semibold text-sm group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors truncate">
+                        Best {sub.name}
+                      </h3>
+                      <p className="text-[11px] text-gray-400 mt-0.5 line-clamp-1">{sub.description}</p>
+                    </div>
+                    <svg className="w-4 h-4 text-gray-300 group-hover:text-green-400 transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          );
+        })()}
 
         {/* ========== BOTTOM LINE — Ultra-premium dark gradient ========== */}
         <section className="mb-12">
