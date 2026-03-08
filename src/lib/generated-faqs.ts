@@ -379,13 +379,22 @@ export function generateKeyDifferences(
   // Sort descending by impact, take top 3 (skip negative scores).
   scored.sort((a, b) => b.impactScore - a.impactScore);
 
+  // Helper to format boolean/raw values into human-readable text
+  const formatValue = (val: string | boolean | number): string => {
+    if (typeof val === 'boolean') return val ? 'Yes' : 'No';
+    const str = String(val).toLowerCase();
+    if (str === 'true') return 'Yes';
+    if (str === 'false') return 'No';
+    return String(val);
+  };
+
   return scored
     .filter(({ impactScore }) => impactScore >= 0)
     .slice(0, 3)
     .map(({ row }) => ({
       area: row.feature,
-      toolAPoint: `${toolAName}: ${row.toolAValue}`,
-      toolBPoint: `${toolBName}: ${row.toolBValue}`,
+      toolAPoint: `${toolAName}: ${formatValue(row.toolAValue)}`,
+      toolBPoint: `${toolBName}: ${formatValue(row.toolBValue)}`,
       winner: row.winner,
     }));
 }

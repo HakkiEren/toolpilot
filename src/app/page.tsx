@@ -355,7 +355,7 @@ export default async function HomePage() {
                         Free plan
                       </span>
                     )}
-                    {tool.pricing?.startingPrice && (
+                    {tool.pricing?.startingPrice != null && tool.pricing.startingPrice > 0 && (
                       <span className="text-[10px] text-gray-400">
                         From ${tool.pricing.startingPrice}/mo
                       </span>
@@ -1237,11 +1237,11 @@ function CategoryIcon({ icon, color }: { icon: string; color: string }) {
 const HOME_FAQS = [
   {
     question: 'How does ProPicked compare and rate tools?',
-    answer: 'We evaluate every tool across four key dimensions: Features (30%), Ease of Use (25%), Value for Money (25%), and Customer Support (20%). Our team tests each product hands-on, aggregates verified user reviews, and updates scores monthly to ensure accuracy.',
+    answer: 'We evaluate every tool across five key dimensions, each weighted equally at 20%: Features & Functionality, Ease of Use, Pricing & Plans, Customer Support, and Value for Money. Our team tests each product hands-on, aggregates verified user reviews, and updates scores monthly to ensure accuracy. Read our full editorial policy for details.',
   },
   {
     question: 'Is ProPicked really independent and unbiased?',
-    answer: 'Yes. ProPicked does not accept sponsored placements or paid reviews. Our revenue comes from advertising, not from the tools we review. This ensures our ratings and recommendations remain 100% independent and data-driven.',
+    answer: 'Yes. ProPicked does not accept sponsored placements or paid reviews. Our revenue comes from display advertising and affiliate partnerships — we may earn a commission when you click through and purchase a tool, but this never influences our ratings or rankings. Every tool is scored using the same methodology. Read our editorial policy for full transparency.',
   },
   {
     question: 'How often are tool reviews updated?',

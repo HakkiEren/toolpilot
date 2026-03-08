@@ -107,7 +107,7 @@ export default async function OGImage({
                   ✓ Free Plan
                 </div>
               )}
-              {tool.pricing.startingPrice && (
+              {tool.pricing.startingPrice != null && tool.pricing.startingPrice > 0 && (
                 <div style={{ background: 'rgba(59,130,246,0.15)', color: '#60a5fa', padding: '8px 16px', borderRadius: '10px', fontSize: '15px', fontWeight: 600, border: '1px solid rgba(59,130,246,0.2)', display: 'flex' }}>
                   From ${tool.pricing.startingPrice}/mo
                 </div>

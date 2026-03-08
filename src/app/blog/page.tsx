@@ -187,7 +187,7 @@ export default async function BlogIndexPage() {
                     <div className="flex items-center gap-4 text-sm text-gray-400">
                       <div className="flex items-center gap-2">
                         <div className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
-                          {(featured.author || 'T')[0]}
+                          {(featured.author || `${SITE_NAME} Team`)[0]}
                         </div>
                         <span className="text-gray-600 dark:text-gray-300 font-medium">
                           {featured.author || `${SITE_NAME} Team`}
@@ -249,7 +249,7 @@ export default async function BlogIndexPage() {
                       <div className="mt-4 flex items-center gap-3 text-sm">
                         <div className="flex items-center gap-2 flex-1 min-w-0">
                           <div className="w-6 h-6 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0">
-                            {(post.author || 'T')[0]}
+                            {(post.author || `${SITE_NAME} Team`)[0]}
                           </div>
                           <span className="text-gray-500 dark:text-gray-400 truncate text-xs">
                             {post.author || `${SITE_NAME} Team`}

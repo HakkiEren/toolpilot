@@ -39,7 +39,7 @@ const CHANGELOG: {
   entries: { type: 'added' | 'updated' | 'improved' | 'launched'; text: string; link?: string }[];
 }[] = [
   {
-    date: '2026-03-14',
+    date: '2026-03-08',
     version: '3.0',
     entries: [
       { type: 'launched', text: 'Domain launched: propicked.com is now live with SSL certificates' },
@@ -51,7 +51,7 @@ const CHANGELOG: {
     ],
   },
   {
-    date: '2026-03-13',
+    date: '2026-03-07',
     version: '2.9',
     entries: [
       { type: 'launched', text: 'Complete rebrand: ToolPilot → ProPicked across entire codebase (23 files)' },
@@ -67,7 +67,7 @@ const CHANGELOG: {
     ],
   },
   {
-    date: '2026-03-11',
+    date: '2026-03-06',
     version: '2.8',
     entries: [
       { type: 'launched', text: 'Centralized author system with individual bios, social links, and expertise data (E-E-A-T)', link: '/about/team' },
@@ -83,7 +83,7 @@ const CHANGELOG: {
     ],
   },
   {
-    date: '2026-03-10',
+    date: '2026-03-05',
     version: '2.7',
     entries: [
       { type: 'launched', text: 'Newsletter subscription system with Supabase backend + rate limiting + bot detection' },
@@ -99,7 +99,7 @@ const CHANGELOG: {
     ],
   },
   {
-    date: '2026-03-09',
+    date: '2026-03-04',
     version: '2.6',
     entries: [
       { type: 'launched', text: 'CopyLinkButton + freshness footer on Best-of ranking pages' },
@@ -115,7 +115,7 @@ const CHANGELOG: {
     ],
   },
   {
-    date: '2026-03-08',
+    date: '2026-03-03',
     version: '2.5',
     entries: [
       { type: 'improved', text: 'Homepage SEO: Added dedicated metadata with OpenGraph and Twitter cards' },
@@ -133,7 +133,7 @@ const CHANGELOG: {
     ],
   },
   {
-    date: '2026-03-07',
+    date: '2026-03-02',
     version: '2.4',
     entries: [
       { type: 'launched', text: 'Team & Authors page for editorial transparency', link: '/about/team' },
@@ -145,7 +145,7 @@ const CHANGELOG: {
     ],
   },
   {
-    date: '2026-03-06',
+    date: '2026-03-01',
     version: '2.3',
     entries: [
       { type: 'launched', text: 'Premium 404 page with category quick-links' },
@@ -156,7 +156,7 @@ const CHANGELOG: {
     ],
   },
   {
-    date: '2026-03-05',
+    date: '2026-02-28',
     version: '2.2',
     entries: [
       { type: 'launched', text: '6 interactive calculators: ROI, TCO, SaaS savings, and more', link: '/calculators/roi' },
@@ -166,7 +166,7 @@ const CHANGELOG: {
     ],
   },
   {
-    date: '2026-03-04',
+    date: '2026-02-27',
     version: '2.1',
     entries: [
       { type: 'added', text: 'Best-of subcategory pages with ranking carousels', link: '/best' },
@@ -176,7 +176,7 @@ const CHANGELOG: {
     ],
   },
   {
-    date: '2026-03-03',
+    date: '2026-02-26',
     version: '2.0',
     entries: [
       { type: 'launched', text: 'ProPicked 2.0 — Complete redesign with glassmorphism UI' },

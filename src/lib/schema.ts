@@ -215,7 +215,7 @@ export function generateToolSchema(tool: Tool, categoryName: string) {
     applicationCategory: categoryName,
     operatingSystem: 'Web',
     ...(tool.logoUrl && { image: tool.logoUrl }),
-    ...(tool.pricing.startingPrice && {
+    ...(tool.pricing.startingPrice != null && tool.pricing.startingPrice > 0 && {
       offers: {
         '@type': 'Offer',
         price: tool.pricing.startingPrice,

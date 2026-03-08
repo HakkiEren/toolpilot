@@ -15,11 +15,15 @@ export function AnimatedCounter({
   suffix = '',
   prefix = '',
 }: AnimatedCounterProps) {
-  const [count, setCount] = useState(0);
+  // Initialize with `end` so SSR/crawlers see the real value (not 0)
+  const [count, setCount] = useState(end);
   const ref = useRef<HTMLSpanElement>(null);
   const started = useRef(false);
 
   useEffect(() => {
+    // Client-side: reset to 0 so animation can play from zero → end
+    setCount(0);
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && !started.current) {
@@ -49,7 +53,7 @@ export function AnimatedCounter({
   }, [end, duration]);
 
   return (
-    <span ref={ref}>
+    <span ref={ref} suppressHydrationWarning>
       {prefix}
       {count.toLocaleString()}
       {suffix}

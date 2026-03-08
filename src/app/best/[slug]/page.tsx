@@ -605,7 +605,7 @@ export default async function BestOfPage({ params }: { params: Promise<{ slug: s
                         ✓ Free Plan
                       </span>
                     )}
-                    {tool.pricing.startingPrice && (
+                    {tool.pricing.startingPrice != null && tool.pricing.startingPrice > 0 && (
                       <span className="bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 text-xs font-medium px-2.5 py-1 rounded-full">
                         From ${tool.pricing.startingPrice}/mo
                       </span>

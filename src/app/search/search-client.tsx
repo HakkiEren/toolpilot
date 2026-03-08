@@ -391,7 +391,7 @@ export function SearchClient({ tools }: { tools: SearchTool[] }) {
                     Free plan
                   </span>
                 )}
-                {tool.pricing?.startingPrice && (
+                {tool.pricing?.startingPrice != null && tool.pricing.startingPrice > 0 && (
                   <span className="text-xs px-2.5 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded-full font-medium">
                     From ${tool.pricing.startingPrice}/mo
                   </span>
