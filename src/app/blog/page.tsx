@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getBlogPosts } from '@/lib/data';
 import { generateBreadcrumbSchema } from '@/lib/schema';
-import { SITE_URL, SITE_NAME } from '@/lib/constants';
+import { SITE_URL, SITE_NAME, SEO } from '@/lib/constants';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { AdBanner, AdMultiplex } from '@/components/ads/AdSlot';
 
@@ -21,6 +21,14 @@ export const metadata: Metadata = {
     description: `Read expert guides, in-depth tool reviews, and industry insights from the ${SITE_NAME} team.`,
     url: `${SITE_URL}/blog`,
     type: 'website',
+    siteName: SITE_NAME,
+    locale: SEO.locale,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    site: SEO.twitterHandle,
+    title: `Blog — Expert Guides & Tool Reviews | ${SITE_NAME}`,
+    description: `Read expert guides, in-depth tool reviews, and industry insights from the ${SITE_NAME} team.`,
   },
 };
 

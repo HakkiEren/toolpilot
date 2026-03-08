@@ -199,6 +199,9 @@ export default async function ToolPage({ params }: PageProps) {
                       {tool.pricing.freeTrialDays}-Day Trial
                     </span>
                   )}
+                  <time dateTime={tool.lastUpdated} className="inline-flex items-center px-3.5 py-2 bg-gray-100/80 dark:bg-gray-800/80 text-gray-600 dark:text-gray-400 rounded-full text-xs font-medium backdrop-blur-sm">
+                    Updated {new Date(tool.lastUpdated).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
+                  </time>
                 </div>
 
                 {/* Best-of Badges — Shows which rankings this tool appears in */}

@@ -212,9 +212,19 @@ export default async function ComparisonPage({ params }: PageProps) {
 
         {/* ========== HERO — Dramatic battle card with gradient ========== */}
         <div className="mt-6 mb-8">
-          <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-6">
-            {comparison.toolA.name} vs {comparison.toolB.name}: Honest Comparison ({year})
-          </h1>
+          <div className="flex flex-wrap items-center gap-3 mb-2">
+            <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">
+              {comparison.toolA.name} vs {comparison.toolB.name}: Honest Comparison ({year})
+            </h1>
+          </div>
+          <div className="flex flex-wrap items-center gap-3 mb-6 text-sm">
+            <time dateTime={comparison.lastUpdated} className="inline-flex items-center gap-1.5 text-gray-500 dark:text-gray-400">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+              Updated {new Date(comparison.lastUpdated).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+            </time>
+            <span className="w-1 h-1 bg-gray-300 rounded-full" />
+            <span className="text-gray-500 dark:text-gray-400">By {SITE_NAME} Editorial Team</span>
+          </div>
 
           {/* Battle Arena — Side by side with VS divider */}
           <div className="relative bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/30 dark:from-gray-900 dark:via-blue-950/10 dark:to-purple-950/10 rounded-3xl border border-gray-200/60 dark:border-gray-800/60 overflow-hidden mb-6">
@@ -335,6 +345,61 @@ export default async function ComparisonPage({ params }: PageProps) {
                     : ''}
               Choose {comparison.toolA.name} for {comparison.toolA.ratings.easeOfUse > comparison.toolB.ratings.easeOfUse ? 'ease of use' : 'features'}, or {comparison.toolB.name} for {comparison.toolB.ratings.valueForMoney > comparison.toolA.ratings.valueForMoney ? 'better value' : 'its strengths'}.
             </p>
+          </div>
+
+          {/* Quick Comparison Summary Table — Optimized for Google featured snippets */}
+          <div className="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-700 mb-6">
+            <table className="w-full text-sm border-collapse" role="table">
+              <caption className="sr-only">{comparison.toolA.name} vs {comparison.toolB.name} Quick Comparison</caption>
+              <thead>
+                <tr className="bg-gray-50 dark:bg-gray-800">
+                  <th scope="col" className="py-3 px-4 text-left font-semibold text-gray-600 dark:text-gray-300">Feature</th>
+                  <th scope="col" className="py-3 px-4 text-center font-semibold text-blue-700 dark:text-blue-400">{comparison.toolA.name}</th>
+                  <th scope="col" className="py-3 px-4 text-center font-semibold text-purple-700 dark:text-purple-400">{comparison.toolB.name}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="border-t border-gray-100 dark:border-gray-800">
+                  <td className="py-2.5 px-4 font-medium text-gray-700 dark:text-gray-300">Overall Rating</td>
+                  <td className="py-2.5 px-4 text-center font-bold">{comparison.toolA.ratings.overall.toFixed(1)}/10</td>
+                  <td className="py-2.5 px-4 text-center font-bold">{comparison.toolB.ratings.overall.toFixed(1)}/10</td>
+                </tr>
+                <tr className="border-t border-gray-100 dark:border-gray-800">
+                  <td className="py-2.5 px-4 font-medium text-gray-700 dark:text-gray-300">Ease of Use</td>
+                  <td className="py-2.5 px-4 text-center">{comparison.toolA.ratings.easeOfUse.toFixed(1)}/10</td>
+                  <td className="py-2.5 px-4 text-center">{comparison.toolB.ratings.easeOfUse.toFixed(1)}/10</td>
+                </tr>
+                <tr className="border-t border-gray-100 dark:border-gray-800">
+                  <td className="py-2.5 px-4 font-medium text-gray-700 dark:text-gray-300">Features</td>
+                  <td className="py-2.5 px-4 text-center">{comparison.toolA.ratings.features.toFixed(1)}/10</td>
+                  <td className="py-2.5 px-4 text-center">{comparison.toolB.ratings.features.toFixed(1)}/10</td>
+                </tr>
+                <tr className="border-t border-gray-100 dark:border-gray-800">
+                  <td className="py-2.5 px-4 font-medium text-gray-700 dark:text-gray-300">Value for Money</td>
+                  <td className="py-2.5 px-4 text-center">{comparison.toolA.ratings.valueForMoney.toFixed(1)}/10</td>
+                  <td className="py-2.5 px-4 text-center">{comparison.toolB.ratings.valueForMoney.toFixed(1)}/10</td>
+                </tr>
+                <tr className="border-t border-gray-100 dark:border-gray-800">
+                  <td className="py-2.5 px-4 font-medium text-gray-700 dark:text-gray-300">Customer Support</td>
+                  <td className="py-2.5 px-4 text-center">{comparison.toolA.ratings.support.toFixed(1)}/10</td>
+                  <td className="py-2.5 px-4 text-center">{comparison.toolB.ratings.support.toFixed(1)}/10</td>
+                </tr>
+                <tr className="border-t border-gray-100 dark:border-gray-800">
+                  <td className="py-2.5 px-4 font-medium text-gray-700 dark:text-gray-300">Free Plan</td>
+                  <td className="py-2.5 px-4 text-center">{comparison.toolA.pricing.hasFreeplan ? 'Yes ✓' : 'No'}</td>
+                  <td className="py-2.5 px-4 text-center">{comparison.toolB.pricing.hasFreeplan ? 'Yes ✓' : 'No'}</td>
+                </tr>
+                <tr className="border-t border-gray-100 dark:border-gray-800">
+                  <td className="py-2.5 px-4 font-medium text-gray-700 dark:text-gray-300">Starting Price</td>
+                  <td className="py-2.5 px-4 text-center">{comparison.toolA.pricing.startingPrice ? `$${comparison.toolA.pricing.startingPrice}/mo` : 'N/A'}</td>
+                  <td className="py-2.5 px-4 text-center">{comparison.toolB.pricing.startingPrice ? `$${comparison.toolB.pricing.startingPrice}/mo` : 'N/A'}</td>
+                </tr>
+                <tr className="border-t border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800/30">
+                  <td className="py-2.5 px-4 font-bold text-gray-900 dark:text-white">Winner</td>
+                  <td colSpan={2} className="py-2.5 px-4 text-center font-bold text-green-600 dark:text-green-400">{winnerName ? `${winnerName} (${(winner === 'a' ? aScore : bScore).toFixed(1)}/10)` : `Tie (${aScore.toFixed(1)}/10)`}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
 
           {/* Intro Content */}

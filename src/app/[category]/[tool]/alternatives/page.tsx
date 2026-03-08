@@ -173,7 +173,7 @@ export default async function AlternativesPage({ params }: PageProps) {
                     : ` There are several stronger alternatives worth considering for better features and value.`
                 }
               </p>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
                 We compared {filtered.length} {cat?.name.toLowerCase() || 'tools'} alternatives below, ranked by overall score.
                 {filtered.length > 0 && filtered[0].ratings.overall > tool.ratings.overall
                   ? ` ${filtered[0].name} leads with ${filtered[0].ratings.overall.toFixed(1)}/10.`
@@ -182,6 +182,10 @@ export default async function AlternativesPage({ params }: PageProps) {
                     : ''
                 }
               </p>
+              <time dateTime={tool.lastUpdated} className="inline-flex items-center gap-1.5 text-xs text-gray-400 dark:text-gray-500">
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                Updated {new Date(tool.lastUpdated).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+              </time>
             </div>
           </div>
         </div>
