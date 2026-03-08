@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getComparison, getAllComparisonSlugs, getRelatedLinks, getRelatedComparisons, getRelatedBlogPosts } from '@/lib/data';
-import { generateComparisonSchema, generateFAQSchema, generateBreadcrumbSchema } from '@/lib/schema';
+import { generateComparisonSchema, generateComparisonItemListSchema, generateFAQSchema, generateBreadcrumbSchema } from '@/lib/schema';
 import { CATEGORIES, LIMITS, SEO, SITE_URL, SITE_NAME } from '@/lib/constants';
 import { generateComparisonBottomLine, generateKeyDifferences, generateComparisonFAQs } from '@/lib/generated-faqs';
 // Components
@@ -149,6 +149,7 @@ export default async function ComparisonPage({ params }: PageProps) {
 
   // Schema markup
   const articleSchema = generateComparisonSchema(comparison);
+  const itemListSchema = generateComparisonItemListSchema(comparison);
   const faqSchema = generateFAQSchema(compFaqs);
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: '/' },
@@ -174,6 +175,7 @@ export default async function ComparisonPage({ params }: PageProps) {
     <>
       <ReadingProgress />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
       {faqSchema && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       )}

@@ -161,18 +161,71 @@ export function generateComparisonSchema(comparison: Comparison) {
       {
         '@type': 'SoftwareApplication',
         name: comparison.toolA.name,
+        url: comparison.toolA.websiteUrl,
         ...(comparison.toolA.logoUrl && { image: comparison.toolA.logoUrl }),
+        aggregateRating: {
+          '@type': 'AggregateRating',
+          ratingValue: comparison.toolA.ratings.overall,
+          bestRating: 10,
+          worstRating: 0,
+          ratingCount: comparison.toolA.ratings.reviewCount || 1,
+        },
       },
       {
         '@type': 'SoftwareApplication',
         name: comparison.toolB.name,
+        url: comparison.toolB.websiteUrl,
         ...(comparison.toolB.logoUrl && { image: comparison.toolB.logoUrl }),
+        aggregateRating: {
+          '@type': 'AggregateRating',
+          ratingValue: comparison.toolB.ratings.overall,
+          bestRating: 10,
+          worstRating: 0,
+          ratingCount: comparison.toolB.ratings.reviewCount || 1,
+        },
       },
     ],
     speakable: {
       '@type': 'SpeakableSpecification',
       cssSelector: ['h1', '[data-speakable]'],
     },
+  };
+}
+
+// --- COMPARISON ITEM LIST SCHEMA (enables ranking carousel for compared tools) ---
+export function generateComparisonItemListSchema(comparison: Comparison) {
+  const aScore = comparison.toolA.ratings.overall;
+  const bScore = comparison.toolB.ratings.overall;
+  const tools = aScore >= bScore
+    ? [comparison.toolA, comparison.toolB]
+    : [comparison.toolB, comparison.toolA];
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: `${comparison.toolA.name} vs ${comparison.toolB.name} — Ranked by Score`,
+    url: `${SITE_URL}/${comparison.categorySlug}/compare/${comparison.slug}`,
+    numberOfItems: 2,
+    itemListOrder: 'https://schema.org/ItemListOrderDescending',
+    itemListElement: tools.map((tool, idx) => ({
+      '@type': 'ListItem',
+      position: idx + 1,
+      name: tool.name,
+      url: `${SITE_URL}/${tool.categorySlug}/${tool.slug}`,
+      item: {
+        '@type': 'SoftwareApplication',
+        name: tool.name,
+        url: `${SITE_URL}/${tool.categorySlug}/${tool.slug}`,
+        ...(tool.logoUrl && { image: tool.logoUrl }),
+        aggregateRating: {
+          '@type': 'AggregateRating',
+          ratingValue: tool.ratings.overall,
+          bestRating: 10,
+          worstRating: 0,
+          ratingCount: tool.ratings.reviewCount || 1,
+        },
+      },
+    })),
   };
 }
 
