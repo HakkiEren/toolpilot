@@ -56,6 +56,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description: tool.tagline,
       url: `${SITE_URL}/${category}/${toolSlug}`,
       type: 'article',
+      siteName: SITE_NAME,
+      locale: SEO.locale,
       publishedTime: tool.createdAt,
       modifiedTime: tool.lastUpdated,
       authors: [`${SITE_NAME} Editorial Team`],

@@ -108,6 +108,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description,
       url: `${SITE_URL}/${category}/compare/${slug}`,
       type: 'article',
+      siteName: SITE_NAME,
+      locale: SEO.locale,
       publishedTime: comparison.lastUpdated,
       modifiedTime: comparison.lastUpdated,
       section: CATEGORIES[category]?.name || category,

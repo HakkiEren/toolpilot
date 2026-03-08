@@ -21,6 +21,12 @@ export const metadata: Metadata = {
     url: `${SITE_URL}/about/team`,
     siteName: SITE_NAME,
     type: 'website',
+    locale: 'en_US',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `Our Team — The Experts Behind ${SITE_NAME}`,
+    description: `Meet the ${SITE_NAME} editorial team — software analysts, tech writers, and industry experts behind 400+ tool reviews.`,
   },
 };
 

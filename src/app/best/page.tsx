@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { CATEGORIES, SUBCATEGORIES, SITE_URL, SITE_NAME } from '@/lib/constants';
+import { CATEGORIES, SUBCATEGORIES, SITE_URL, SITE_NAME, SEO } from '@/lib/constants';
 import { getCategoryStats } from '@/lib/data';
 import { generateBreadcrumbSchema } from '@/lib/schema';
 import { ReadingProgress } from '@/components/common/ReadingProgress';
@@ -18,6 +18,13 @@ export const metadata: Metadata = {
     url: `${SITE_URL}/best`,
     siteName: SITE_NAME,
     type: 'website',
+    locale: SEO.locale,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    site: SEO.twitterHandle,
+    title: `Best Tools by Category (${new Date().getFullYear()}) — Expert Rankings`,
+    description: `Browse curated best-of lists across AI, SaaS, E-commerce, Marketing, Hosting & Business tools with expert ratings for ${new Date().getFullYear()}.`,
   },
 };
 

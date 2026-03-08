@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getComparisonsByCategory, getCategoryStats } from '@/lib/data';
 import { generateBreadcrumbSchema, generateComparisonHubSchema, generateFAQSchema } from '@/lib/schema';
-import { CATEGORIES, CATEGORY_LIST, SUBCATEGORIES, SITE_URL, SITE_NAME } from '@/lib/constants';
+import { CATEGORIES, CATEGORY_LIST, SUBCATEGORIES, SITE_URL, SITE_NAME, SEO } from '@/lib/constants';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { AdBanner, AdInArticle, AdMultiplex, AdSidebar } from '@/components/ads/AdSlot';
 import { ToolLogo } from '@/components/common/ToolLogo';
@@ -42,9 +42,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       url: `${SITE_URL}/${cat.slug}/compare`,
       type: 'website',
       siteName: SITE_NAME,
+      locale: SEO.locale,
     },
     twitter: {
       card: 'summary_large_image',
+      site: SEO.twitterHandle,
       title,
       description,
     },

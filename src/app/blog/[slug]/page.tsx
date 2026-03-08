@@ -44,6 +44,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description: post.metaDescription || post.excerpt,
       url: `${SITE_URL}/blog/${slug}`,
       type: 'article',
+      siteName: SITE_NAME,
+      locale: SEO.locale,
       publishedTime: post.publishedAt,
       modifiedTime: post.updatedAt || post.publishedAt,
       authors: [post.author],
@@ -51,6 +53,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         ? post.categorySlug.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase())
         : 'Technology',
       tags: post.relatedToolSlugs?.map(s => s.split('/').pop()).filter(Boolean) as string[] || [],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      site: SEO.twitterHandle,
+      title: post.metaTitle || post.title,
+      description: post.metaDescription || post.excerpt,
     },
   };
 }
