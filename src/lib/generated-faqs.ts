@@ -168,7 +168,7 @@ export function generateToolFAQs(tool: ToolInput): FAQ[] {
             ? `Starting at ${formatPrice(pricing.startingPrice)}/month, it provides reasonable value for its feature set.`
             : `You can check their website for the latest pricing and plan details.`;
 
-    return `With a ${ratingLabel} ${ratings.overall}/5 user rating, ${name} remains a competitive choice in ${year}. ${valueNote} Most users find it delivers good value relative to comparable tools in the market.`;
+    return `With a ${ratingLabel} ${ratings.overall}/10 user rating, ${name} remains a competitive choice in ${year}. ${valueNote} Most users find it delivers good value relative to comparable tools in the market.`;
   })();
 
   // 2. "Does {tool.name} have a free plan?"

@@ -923,8 +923,18 @@ export default async function ToolPage({ params }: PageProps) {
 // ============================================================
 
 function extractPros(html: string): string {
-  // Try to find content between Pros header and Cons header
-  const prosMatch = html.match(/<h3[^>]*>.*?Pros.*?<\/h3>([\s\S]*?)(?=<h3|$)/i);
+  // Plain text format: "Pros: X, Y. Cons: Z."
+  if (!html.includes('<') || !html.includes('>')) {
+    const prosMatch = html.match(/Pros:\s*([\s\S]*?)(?=\s*Cons:|$)/i);
+    if (prosMatch) {
+      const items = prosMatch[1].split(/[.,;]/).map(s => s.trim()).filter(Boolean);
+      return `<ul>${items.map(item => `<li>${item}</li>`).join('')}</ul>`;
+    }
+    return `<ul><li>${html}</li></ul>`;
+  }
+
+  // HTML format: find content between Pros header and Cons header
+  const prosMatch = html.match(/<h3[^>]*>.*?Pros.*?<\/h3>([\s\S]*?)(?=<h3|<\/div>\s*<div|$)/i);
   if (prosMatch) return prosMatch[1];
 
   // Fallback: first <ul> is pros
@@ -935,8 +945,18 @@ function extractPros(html: string): string {
 }
 
 function extractCons(html: string): string {
-  // Try to find content after Cons header
-  const consMatch = html.match(/<h3[^>]*>.*?Cons.*?<\/h3>([\s\S]*?)$/i);
+  // Plain text format: "Pros: X, Y. Cons: Z."
+  if (!html.includes('<') || !html.includes('>')) {
+    const consMatch = html.match(/Cons:\s*([\s\S]*?)$/i);
+    if (consMatch) {
+      const items = consMatch[1].split(/[.,;]/).map(s => s.trim()).filter(Boolean);
+      return `<ul>${items.map(item => `<li>${item}</li>`).join('')}</ul>`;
+    }
+    return '';
+  }
+
+  // HTML format: find content after Cons header
+  const consMatch = html.match(/<h3[^>]*>.*?Cons.*?<\/h3>([\s\S]*?)(?=<\/div>\s*<\/div>|$)/i);
   if (consMatch) return consMatch[1];
 
   // Fallback: second <ul> is cons
