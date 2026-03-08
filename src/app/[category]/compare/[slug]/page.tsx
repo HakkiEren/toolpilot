@@ -324,6 +324,9 @@ export default async function ComparisonPage({ params }: PageProps) {
                 {winnerName} wins with {(winner === 'a' ? aScore : bScore).toFixed(1)}/10 — leading by {scoreDiff} points
               </div>
             )}
+            <p className="text-[10px] text-gray-400/70 dark:text-gray-500/70 text-center py-2">
+              We may earn a commission through links on this page · <Link href="/editorial-policy" className="underline hover:text-gray-500 transition-colors">Editorial policy</Link>
+            </p>
           </div>
 
           {/* TL;DR Summary — AI Overview optimized */}

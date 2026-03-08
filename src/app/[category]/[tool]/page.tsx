@@ -243,6 +243,9 @@ export default async function ToolPage({ params }: PageProps) {
                 >
                   See Alternatives
                 </Link>
+                <p className="text-[10px] text-gray-400/70 dark:text-gray-500/70 text-center mt-1 leading-tight">
+                  We may earn a commission · <Link href="/editorial-policy" className="underline hover:text-gray-500 transition-colors">Editorial policy</Link>
+                </p>
               </div>
             </div>
           </div>

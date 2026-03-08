@@ -671,6 +671,9 @@ export default async function PricingPage({ params }: PageProps) {
                   Full Review
                 </Link>
               </div>
+              <p className="text-[10px] text-white/40 text-center mt-3">
+                We may earn a commission through links on this page · <Link href="/editorial-policy" className="underline hover:text-white/60 transition-colors">Editorial policy</Link>
+              </p>
             </div>
           </div>
         </section>

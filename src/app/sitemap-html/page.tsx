@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 import { CATEGORIES, CATEGORY_LIST, SUBCATEGORIES, SITE_URL, SITE_NAME } from '@/lib/constants';
+import { GLOSSARY_TERMS, groupTermsByCategory } from '@/lib/glossary-data';
 
 // ============================================================
 // HTML SITEMAP PAGE — Full site map for users & crawlers
@@ -110,6 +111,9 @@ export default async function SitemapPage() {
         <a href="#blog" className="px-4 py-2 bg-green-50 dark:bg-green-900/20 text-green-600 rounded-full text-sm font-medium hover:bg-green-100 transition-colors">
           📝 Blog Posts
         </a>
+        <a href="#glossary" className="px-4 py-2 bg-cyan-50 dark:bg-cyan-900/20 text-cyan-600 rounded-full text-sm font-medium hover:bg-cyan-100 transition-colors">
+          📖 Glossary
+        </a>
         <a href="#pages" className="px-4 py-2 bg-gray-50 dark:bg-gray-800 text-gray-600 rounded-full text-sm font-medium hover:bg-gray-100 transition-colors">
           📄 Other Pages
         </a>
@@ -129,6 +133,7 @@ export default async function SitemapPage() {
             { href: '/blog', label: 'Blog' },
             { href: '/best', label: 'Best Of Hub' },
             { href: '/glossary', label: 'Tech Glossary' },
+            { href: '/calculators', label: 'Calculators Hub' },
             { href: '/about', label: 'About Us' },
             { href: '/about/team', label: 'Our Team' },
             { href: '/contact', label: 'Contact' },
@@ -139,6 +144,7 @@ export default async function SitemapPage() {
             { href: '/calculators/saas-metrics', label: 'SaaS Metrics Calculator' },
             { href: '/calculators/social-media-roi', label: 'Social Media ROI' },
             { href: '/calculators/ab-testing', label: 'A/B Testing Calculator' },
+            { href: '/editorial-policy', label: 'Editorial Policy' },
             { href: '/privacy', label: 'Privacy Policy' },
             { href: '/terms', label: 'Terms of Service' },
             { href: '/sitemap-html', label: 'Sitemap' },
@@ -311,6 +317,38 @@ export default async function SitemapPage() {
             >
               {post.title}
             </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* ============================================================ */}
+      {/* GLOSSARY TERMS */}
+      {/* ============================================================ */}
+      <section id="glossary" className="mb-16">
+        <h2 className="text-2xl font-bold mb-8 flex items-center gap-2">
+          <span className="text-xl">📖</span> Glossary Terms ({GLOSSARY_TERMS.length})
+        </h2>
+
+        <div className="space-y-8">
+          {Object.entries(groupTermsByCategory(GLOSSARY_TERMS)).map(([category, terms]) => (
+            <div key={category}>
+              <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
+                <span className="w-3 h-3 rounded-full bg-cyan-500" />
+                {category}
+                <span className="text-sm font-normal text-gray-400">({terms.length})</span>
+              </h3>
+              <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+                {terms.map((term) => (
+                  <Link
+                    key={term.slug}
+                    href={`/glossary/${term.slug}`}
+                    className="px-3 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-cyan-600 hover:bg-cyan-50 dark:hover:bg-cyan-900/20 rounded-lg transition-colors"
+                  >
+                    {term.term}
+                  </Link>
+                ))}
+              </div>
+            </div>
           ))}
         </div>
       </section>

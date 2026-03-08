@@ -436,16 +436,17 @@ export default async function BestOfPage({ params }: { params: Promise<{ slug: s
               <h2 className="text-lg font-bold text-gray-900 dark:text-white">Quick Comparison</h2>
             </div>
             <div className="overflow-x-auto">
-              <table className="w-full text-sm">
+              <table className="w-full text-sm" role="table">
+                <caption className="sr-only">Best {sub.name} ranked by expert score — {year} comparison</caption>
                 <thead>
                   <tr className="border-b bg-gray-50/50">
-                    <th className="text-left py-3 px-4 font-semibold text-gray-600">#</th>
-                    <th className="text-left py-3 px-4 font-semibold text-gray-600">Tool</th>
-                    <th className="text-center py-3 px-4 font-semibold text-gray-600">Rating</th>
-                    <th className="text-center py-3 px-4 font-semibold text-gray-600">Free Plan</th>
-                    <th className="text-center py-3 px-4 font-semibold text-gray-600">From</th>
-                    <th className="text-center py-3 px-4 font-semibold text-gray-600">Best For</th>
-                    <th className="text-center py-3 px-4 font-semibold text-gray-600"></th>
+                    <th scope="col" className="text-left py-3 px-4 font-semibold text-gray-600">#</th>
+                    <th scope="col" className="text-left py-3 px-4 font-semibold text-gray-600">Tool</th>
+                    <th scope="col" className="text-center py-3 px-4 font-semibold text-gray-600">Rating</th>
+                    <th scope="col" className="text-center py-3 px-4 font-semibold text-gray-600">Free Plan</th>
+                    <th scope="col" className="text-center py-3 px-4 font-semibold text-gray-600">Starting Price</th>
+                    <th scope="col" className="text-center py-3 px-4 font-semibold text-gray-600">Best For</th>
+                    <th scope="col" className="text-center py-3 px-4 font-semibold text-gray-600"></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -837,7 +838,7 @@ export default async function BestOfPage({ params }: { params: Promise<{ slug: s
         {/* Freshness Footer */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 py-6 mb-8 border-t border-gray-200 dark:border-gray-800">
           <p className="text-xs text-gray-400 dark:text-gray-500">
-            Rankings last updated: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} · {allTools.length} tools reviewed
+            Rankings last updated: <time dateTime={new Date().toISOString().split('T')[0]}>{new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</time> · {allTools.length} tools reviewed
           </p>
           <div className="flex items-center gap-3">
             <ShareButtons

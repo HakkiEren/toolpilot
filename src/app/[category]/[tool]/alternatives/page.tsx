@@ -230,6 +230,9 @@ export default async function AlternativesPage({ params }: PageProps) {
                 </a>
               )}
             </div>
+            <p className="text-[10px] text-gray-400/70 dark:text-gray-500/70 text-center mt-2">
+              We may earn a commission through links on this page · <Link href="/editorial-policy" className="underline hover:text-gray-500 transition-colors">Editorial policy</Link>
+            </p>
           </div>
         </div>
 
