@@ -40,6 +40,23 @@ const CHANGELOG: {
 }[] = [
   {
     date: '2026-03-08',
+    version: '3.1',
+    entries: [
+      { type: 'launched', text: 'Award Badges page — embeddable SVG badges for SaaS companies rated 7.0+ with one-click embed codes', link: '/badges' },
+      { type: 'launched', text: 'Editorial Policy page — full review methodology, rating system, and monetization transparency', link: '/editorial-policy' },
+      { type: 'improved', text: 'Homepage: Popular Alternatives section targeting "[Tool] alternatives" search queries' },
+      { type: 'improved', text: 'Homepage FAQ: Methodology aligned to 5 dimensions at 20% each, revenue messaging updated' },
+      { type: 'improved', text: 'AnimatedCounter SSR fix — counters now show real values for crawlers instead of 0+' },
+      { type: 'improved', text: 'Comparison key differences: boolean values formatted as Yes/No instead of raw true/false' },
+      { type: 'improved', text: 'Fixed $0 pricing display bug on tools with free-only plans (React {0 && ...} gotcha)' },
+      { type: 'improved', text: 'Inline affiliate disclosures added near CTAs on tool, comparison, pricing, and alternatives pages' },
+      { type: 'improved', text: 'OpenGraph + Twitter Card meta consistency across all 12+ page types' },
+      { type: 'improved', text: 'Security: Updated Permissions-Policy header, added X-Permitted-Cross-Domain-Policies' },
+      { type: 'improved', text: 'Database: Fixed encoding artifacts (ÔÇö → em dash) and completed ToolPilot → ProPicked rebrand in 128 blog posts' },
+    ],
+  },
+  {
+    date: '2026-03-08',
     version: '3.0',
     entries: [
       { type: 'launched', text: 'Domain launched: propicked.com is now live with SSL certificates' },
