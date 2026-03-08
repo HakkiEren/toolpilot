@@ -163,6 +163,7 @@ export default async function ComparisonPage({ params }: PageProps) {
   // Section IDs for navigation
   const sections = [
     { id: 'scores', label: 'Scores' },
+    { id: 'strengths', label: 'Strengths' },
     { id: 'features', label: 'Features' },
     { id: 'pricing', label: 'Pricing' },
     { id: 'verdict', label: 'Verdict' },
@@ -378,6 +379,75 @@ export default async function ComparisonPage({ params }: PageProps) {
           <ScoreCompare toolA={comparison.toolA} toolB={comparison.toolB} />
         </section>
 
+        {/* ========== STRENGTHS & WEAKNESSES BREAKDOWN ========== */}
+        <section id="strengths" className="mb-12 scroll-mt-32">
+          <h2 className="text-2xl font-bold mb-6">Strengths &amp; Weaknesses</h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Tool A */}
+            <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+              <div className="p-4 bg-blue-50/50 dark:bg-blue-900/10 border-b border-gray-200 dark:border-gray-700 flex items-center gap-3">
+                <ToolLogo logoUrl={comparison.toolA.logoUrl} name={comparison.toolA.name} size={28} />
+                <span className="font-bold text-sm">{comparison.toolA.name}</span>
+              </div>
+              <div className="p-5 space-y-4">
+                {[
+                  { label: 'Ease of Use', scoreA: comparison.toolA.ratings.easeOfUse, scoreB: comparison.toolB.ratings.easeOfUse, icon: '🎯', gradient: 'from-blue-500 to-cyan-400' },
+                  { label: 'Features', scoreA: comparison.toolA.ratings.features, scoreB: comparison.toolB.ratings.features, icon: '⚙️', gradient: 'from-purple-500 to-indigo-400' },
+                  { label: 'Value for Money', scoreA: comparison.toolA.ratings.valueForMoney, scoreB: comparison.toolB.ratings.valueForMoney, icon: '💰', gradient: 'from-green-500 to-emerald-400' },
+                  { label: 'Support', scoreA: comparison.toolA.ratings.support, scoreB: comparison.toolB.ratings.support, icon: '💬', gradient: 'from-orange-500 to-amber-400' },
+                ].map(({ label, scoreA, scoreB, icon, gradient }) => (
+                  <div key={label}>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <div className="flex items-center gap-1.5 text-sm">
+                        <span>{icon}</span>
+                        <span className="font-medium text-gray-600 dark:text-gray-400">{label}</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <span className={`text-sm font-black ${scoreA > scoreB ? 'text-green-500' : scoreA < scoreB ? 'text-gray-400' : 'text-yellow-500'}`}>{scoreA.toFixed(1)}</span>
+                        {scoreA > scoreB && <span className="text-[10px] px-1.5 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded font-bold">WINS</span>}
+                      </div>
+                    </div>
+                    <div className="h-2 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                      <div className={`h-full rounded-full bg-gradient-to-r ${gradient}`} style={{ width: `${(scoreA / 10) * 100}%` }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            {/* Tool B */}
+            <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+              <div className="p-4 bg-purple-50/50 dark:bg-purple-900/10 border-b border-gray-200 dark:border-gray-700 flex items-center gap-3">
+                <ToolLogo logoUrl={comparison.toolB.logoUrl} name={comparison.toolB.name} size={28} />
+                <span className="font-bold text-sm">{comparison.toolB.name}</span>
+              </div>
+              <div className="p-5 space-y-4">
+                {[
+                  { label: 'Ease of Use', scoreA: comparison.toolA.ratings.easeOfUse, scoreB: comparison.toolB.ratings.easeOfUse, icon: '🎯', gradient: 'from-blue-500 to-cyan-400' },
+                  { label: 'Features', scoreA: comparison.toolA.ratings.features, scoreB: comparison.toolB.ratings.features, icon: '⚙️', gradient: 'from-purple-500 to-indigo-400' },
+                  { label: 'Value for Money', scoreA: comparison.toolA.ratings.valueForMoney, scoreB: comparison.toolB.ratings.valueForMoney, icon: '💰', gradient: 'from-green-500 to-emerald-400' },
+                  { label: 'Support', scoreA: comparison.toolA.ratings.support, scoreB: comparison.toolB.ratings.support, icon: '💬', gradient: 'from-orange-500 to-amber-400' },
+                ].map(({ label, scoreA, scoreB, icon, gradient }) => (
+                  <div key={label}>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <div className="flex items-center gap-1.5 text-sm">
+                        <span>{icon}</span>
+                        <span className="font-medium text-gray-600 dark:text-gray-400">{label}</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <span className={`text-sm font-black ${scoreB > scoreA ? 'text-green-500' : scoreB < scoreA ? 'text-gray-400' : 'text-yellow-500'}`}>{scoreB.toFixed(1)}</span>
+                        {scoreB > scoreA && <span className="text-[10px] px-1.5 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded font-bold">WINS</span>}
+                      </div>
+                    </div>
+                    <div className="h-2 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                      <div className={`h-full rounded-full bg-gradient-to-r ${gradient}`} style={{ width: `${(scoreB / 10) * 100}%` }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* ========== AD: AFTER SCORES ========== */}
         <AdBanner />
 
@@ -460,35 +530,53 @@ export default async function ComparisonPage({ params }: PageProps) {
             </div>
           </div>
 
-          {/* CTA Box */}
-          <div className="mt-8 bg-gray-50 dark:bg-gray-800/50 rounded-2xl p-6 text-center">
-            <h3 className="font-bold mb-2">Still not sure?</h3>
-            <p className="text-sm text-gray-500 mb-4">Explore alternatives and pricing for both tools.</p>
-            <div className="flex flex-wrap items-center justify-center gap-3">
-              <Link
-                href={`/${category}/${comparison.toolA.slug}/alternatives`}
-                className="px-4 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded-lg text-sm font-semibold hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors"
-              >
-                {comparison.toolA.name} Alternatives
-              </Link>
-              <Link
-                href={`/${category}/${comparison.toolB.slug}/alternatives`}
-                className="px-4 py-2 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 rounded-lg text-sm font-semibold hover:bg-purple-200 dark:hover:bg-purple-900/50 transition-colors"
-              >
-                {comparison.toolB.name} Alternatives
-              </Link>
-              <Link
-                href={`/${category}/${comparison.toolA.slug}/pricing`}
-                className="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-semibold hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
-              >
-                {comparison.toolA.name} Pricing
-              </Link>
-              <Link
-                href={`/${category}/${comparison.toolB.slug}/pricing`}
-                className="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-semibold hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
-              >
-                {comparison.toolB.name} Pricing
-              </Link>
+          {/* Quick Buyer's Guide */}
+          <div className="mt-8 bg-gradient-to-br from-slate-50 to-gray-50 dark:from-gray-800/50 dark:to-gray-800/30 rounded-2xl border border-gray-200/60 dark:border-gray-700/60 overflow-hidden">
+            <div className="p-5 border-b border-gray-200/60 dark:border-gray-700/60">
+              <h3 className="font-bold text-lg">Quick Buyer&apos;s Guide</h3>
+              <p className="text-sm text-gray-500 mt-1">Based on our analysis, here&apos;s who each tool is best suited for</p>
+            </div>
+            <div className="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-gray-200/60 dark:divide-gray-700/60">
+              {/* Tool A buyer profile */}
+              <div className="p-5">
+                <div className="flex items-center gap-2 mb-3">
+                  <ToolLogo logoUrl={comparison.toolA.logoUrl} name={comparison.toolA.name} size={24} />
+                  <span className="font-semibold text-sm">{comparison.toolA.name} is best for:</span>
+                </div>
+                <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-300 mb-4">
+                  {generateBuyerProfile(comparison.toolA, comparison.toolB).map((item, i) => (
+                    <li key={i} className="flex items-start gap-2">
+                      <span className="text-blue-500 mt-0.5 flex-shrink-0">&#10003;</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+                <div className="flex flex-wrap gap-2">
+                  <Link href={`/${category}/${comparison.toolA.slug}`} className="text-xs text-blue-600 font-medium hover:underline">Full Review &#8594;</Link>
+                  <Link href={`/${category}/${comparison.toolA.slug}/pricing`} className="text-xs text-gray-500 font-medium hover:text-blue-600 hover:underline">Pricing &#8594;</Link>
+                  <Link href={`/${category}/${comparison.toolA.slug}/alternatives`} className="text-xs text-gray-500 font-medium hover:text-blue-600 hover:underline">Alternatives &#8594;</Link>
+                </div>
+              </div>
+              {/* Tool B buyer profile */}
+              <div className="p-5">
+                <div className="flex items-center gap-2 mb-3">
+                  <ToolLogo logoUrl={comparison.toolB.logoUrl} name={comparison.toolB.name} size={24} />
+                  <span className="font-semibold text-sm">{comparison.toolB.name} is best for:</span>
+                </div>
+                <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-300 mb-4">
+                  {generateBuyerProfile(comparison.toolB, comparison.toolA).map((item, i) => (
+                    <li key={i} className="flex items-start gap-2">
+                      <span className="text-purple-500 mt-0.5 flex-shrink-0">&#10003;</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+                <div className="flex flex-wrap gap-2">
+                  <Link href={`/${category}/${comparison.toolB.slug}`} className="text-xs text-purple-600 font-medium hover:underline">Full Review &#8594;</Link>
+                  <Link href={`/${category}/${comparison.toolB.slug}/pricing`} className="text-xs text-gray-500 font-medium hover:text-purple-600 hover:underline">Pricing &#8594;</Link>
+                  <Link href={`/${category}/${comparison.toolB.slug}/alternatives`} className="text-xs text-gray-500 font-medium hover:text-purple-600 hover:underline">Alternatives &#8594;</Link>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -635,4 +723,42 @@ export default async function ComparisonPage({ params }: PageProps) {
       </article>
     </>
   );
+}
+
+// ============================================================
+// HELPER — Generate buyer profile for comparison page
+// ============================================================
+import type { Tool } from '@/types';
+
+function generateBuyerProfile(tool: Tool, competitor: Tool): string[] {
+  const items: string[] = [];
+
+  // Where this tool beats the competitor
+  if (tool.ratings.easeOfUse > competitor.ratings.easeOfUse) {
+    items.push(`Users who prioritize ease of use (${tool.ratings.easeOfUse.toFixed(1)} vs ${competitor.ratings.easeOfUse.toFixed(1)})`);
+  }
+  if (tool.ratings.features > competitor.ratings.features) {
+    items.push(`Teams that need a more feature-rich platform (${tool.ratings.features.toFixed(1)} vs ${competitor.ratings.features.toFixed(1)})`);
+  }
+  if (tool.ratings.valueForMoney > competitor.ratings.valueForMoney) {
+    items.push(`Budget-conscious buyers seeking better value (${tool.ratings.valueForMoney.toFixed(1)} vs ${competitor.ratings.valueForMoney.toFixed(1)})`);
+  }
+  if (tool.ratings.support > competitor.ratings.support) {
+    items.push(`Users who need responsive customer support (${tool.ratings.support.toFixed(1)} vs ${competitor.ratings.support.toFixed(1)})`);
+  }
+
+  // Pricing advantages
+  if (tool.pricing.hasFreeplan && !competitor.pricing.hasFreeplan) {
+    items.push('Users who want a free plan to start with');
+  }
+  if (tool.pricing.startingPrice && competitor.pricing.startingPrice && tool.pricing.startingPrice < competitor.pricing.startingPrice) {
+    items.push(`Teams with tighter budgets ($${tool.pricing.startingPrice}/mo vs $${competitor.pricing.startingPrice}/mo)`);
+  }
+
+  // Ensure at least 2 items
+  if (items.length < 2) {
+    items.push(`Users looking for a ${tool.ratings.overall >= 8 ? 'top-rated' : 'solid'} option in this category`);
+  }
+
+  return items.slice(0, 4);
 }
