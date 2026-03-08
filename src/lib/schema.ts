@@ -89,6 +89,121 @@ export function generateToolReviewSchema(tool: Tool, categoryName: string) {
   };
 }
 
+// --- PRODUCT SCHEMA (enables pricing rich snippets in Google SERPs) ---
+export function generateProductSchema(tool: Tool, categoryName: string) {
+  // Build individual offers from pricing plans
+  const offers: Record<string, unknown>[] = [];
+
+  // Add free plan offer if available
+  if (tool.pricing.hasFreeplan) {
+    offers.push({
+      '@type': 'Offer',
+      name: 'Free Plan',
+      price: 0,
+      priceCurrency: tool.pricing.currency || 'USD',
+      availability: 'https://schema.org/InStock',
+      url: tool.websiteUrl,
+      description: 'Free plan with limited features',
+    });
+  }
+
+  // Add individual plan offers
+  if (tool.pricing.plans && tool.pricing.plans.length > 0) {
+    for (const plan of tool.pricing.plans) {
+      if (plan.price != null) {
+        offers.push({
+          '@type': 'Offer',
+          name: plan.name,
+          price: plan.price,
+          priceCurrency: tool.pricing.currency || 'USD',
+          availability: 'https://schema.org/InStock',
+          url: tool.websiteUrl,
+          ...(plan.billingCycle === 'monthly' && {
+            priceSpecification: {
+              '@type': 'UnitPriceSpecification',
+              price: plan.price,
+              priceCurrency: tool.pricing.currency || 'USD',
+              unitText: 'MONTH',
+              referenceQuantity: { '@type': 'QuantitativeValue', value: 1, unitCode: 'MON' },
+            },
+          }),
+          ...(plan.billingCycle === 'yearly' && {
+            priceSpecification: {
+              '@type': 'UnitPriceSpecification',
+              price: plan.price,
+              priceCurrency: tool.pricing.currency || 'USD',
+              unitText: 'YEAR',
+              referenceQuantity: { '@type': 'QuantitativeValue', value: 1, unitCode: 'ANN' },
+            },
+          }),
+        });
+      }
+    }
+  } else if (tool.pricing.startingPrice != null) {
+    // Fallback: use startingPrice when no detailed plans exist
+    offers.push({
+      '@type': 'Offer',
+      name: 'Paid Plan',
+      price: tool.pricing.startingPrice,
+      priceCurrency: tool.pricing.currency || 'USD',
+      availability: 'https://schema.org/InStock',
+      url: tool.websiteUrl,
+      priceSpecification: {
+        '@type': 'UnitPriceSpecification',
+        price: tool.pricing.startingPrice,
+        priceCurrency: tool.pricing.currency || 'USD',
+        unitText: 'MONTH',
+        referenceQuantity: { '@type': 'QuantitativeValue', value: 1, unitCode: 'MON' },
+      },
+    });
+  }
+
+  // Free trial offer
+  if (tool.pricing.freeTrialDays) {
+    offers.push({
+      '@type': 'Offer',
+      name: `${tool.pricing.freeTrialDays}-Day Free Trial`,
+      price: 0,
+      priceCurrency: tool.pricing.currency || 'USD',
+      availability: 'https://schema.org/InStock',
+      url: tool.websiteUrl,
+      description: `${tool.pricing.freeTrialDays}-day free trial available`,
+    });
+  }
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: tool.name,
+    description: tool.tagline,
+    url: `${SITE_URL}/${tool.categorySlug}/${tool.slug}`,
+    ...(tool.logoUrl && { image: tool.logoUrl }),
+    brand: {
+      '@type': 'Brand',
+      name: tool.name,
+    },
+    category: categoryName,
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: tool.ratings.overall,
+      bestRating: 10,
+      worstRating: 0,
+      ratingCount: tool.ratings.reviewCount || 1,
+    },
+    ...(offers.length === 1 && { offers: offers[0] }),
+    ...(offers.length > 1 && {
+      offers: {
+        '@type': 'AggregateOffer',
+        lowPrice: Math.min(...offers.map((o) => Number(o.price) || 0)),
+        highPrice: Math.max(...offers.map((o) => Number(o.price) || 0)),
+        priceCurrency: tool.pricing.currency || 'USD',
+        offerCount: offers.length,
+        offers,
+      },
+    }),
+  };
+}
+
 // --- Legacy tool schema (kept for category pages) ---
 export function generateToolSchema(tool: Tool, categoryName: string) {
   return {

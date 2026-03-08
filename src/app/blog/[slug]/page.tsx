@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getBlogBySlug, getBlogPosts, getToolBySlug } from '@/lib/data';
+import { getBlogBySlug, getBlogPosts, getToolBySlug, getComparisonsByCategory } from '@/lib/data';
 import { generateBlogSchema, generateBreadcrumbSchema } from '@/lib/schema';
-import { SITE_URL, SEO, SITE_NAME, CATEGORIES } from '@/lib/constants';
+import { SITE_URL, SEO, SITE_NAME, CATEGORIES, SUBCATEGORIES } from '@/lib/constants';
 import { getAuthor, getAuthorUrl } from '@/lib/authors';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { RelatedLinks } from '@/components/common/RelatedLinks';
@@ -113,6 +113,21 @@ export default async function BlogPostPage({ params }: PageProps) {
       });
     }
   }
+
+  // Fetch category comparisons for cross-linking
+  const categoryComparisons = post.categorySlug
+    ? await getComparisonsByCategory(post.categorySlug, 6)
+    : [];
+
+  // Get subcategories for best-of linking
+  const categorySubcategories = post.categorySlug
+    ? (SUBCATEGORIES[post.categorySlug] || []).slice(0, 6)
+    : [];
+
+  // Get cross-category suggestions (exclude current category)
+  const crossCategories = Object.values(CATEGORIES)
+    .filter((c) => c.slug !== post.categorySlug)
+    .slice(0, 4);
 
   // Reading time estimate (avg 200 words/min)
   const wordCount = (post.content || '').replace(/<[^>]*>/g, '').split(/\s+/).filter(Boolean).length;
@@ -271,6 +286,115 @@ export default async function BlogPostPage({ params }: PageProps) {
                   Related Tools & Comparisons
                 </h2>
                 <RelatedLinks links={relatedLinks} />
+              </section>
+            )}
+
+            {/* Popular Comparisons — Cross-link to comparison pages */}
+            {categoryComparisons.length > 0 && (
+              <section className="mt-12">
+                <h2 className="text-2xl font-bold mb-2">Popular Comparisons</h2>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-5">
+                  See how top {CATEGORIES[post.categorySlug!]?.name || 'tools'} stack up against each other
+                </p>
+                <div className="grid sm:grid-cols-2 gap-3">
+                  {categoryComparisons.map((comp) => (
+                    <Link
+                      key={comp.slug}
+                      href={`/${comp.categorySlug}/compare/${comp.slug}`}
+                      className="group flex items-center gap-3 p-3.5 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 hover:bg-blue-50/30 dark:hover:bg-blue-900/10 transition-all"
+                    >
+                      <div className="flex -space-x-2 flex-shrink-0">
+                        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-[10px] font-bold ring-2 ring-white dark:ring-gray-900 z-10">
+                          {comp.toolA?.name?.[0] || 'A'}
+                        </div>
+                        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center text-white text-[10px] font-bold ring-2 ring-white dark:ring-gray-900">
+                          {comp.toolB?.name?.[0] || 'B'}
+                        </div>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="font-semibold text-sm group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors truncate">
+                          {comp.toolA?.name || 'Tool A'} vs {comp.toolB?.name || 'Tool B'}
+                        </div>
+                        <div className="text-[11px] text-gray-400 mt-0.5">Side-by-side comparison</div>
+                      </div>
+                      <svg className="w-4 h-4 text-gray-300 group-hover:text-blue-400 transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </Link>
+                  ))}
+                </div>
+                {post.categorySlug && (
+                  <div className="mt-3 text-center">
+                    <Link
+                      href={`/${post.categorySlug}/compare`}
+                      className="inline-flex items-center gap-1.5 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
+                    >
+                      View all {CATEGORIES[post.categorySlug]?.name} comparisons
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                      </svg>
+                    </Link>
+                  </div>
+                )}
+              </section>
+            )}
+
+            {/* Best Tools — Link to best-of pages for subcategories */}
+            {categorySubcategories.length > 0 && (
+              <section className="mt-12">
+                <h2 className="text-2xl font-bold mb-2">Best Tools by Category</h2>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-5">
+                  Expert-curated rankings to help you find the right tool
+                </p>
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {categorySubcategories.map((sub) => (
+                    <Link
+                      key={sub.slug}
+                      href={`/best/${sub.slug}`}
+                      className="group p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-green-300 dark:hover:border-green-600 hover:bg-green-50/30 dark:hover:bg-green-900/10 transition-all"
+                    >
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="text-amber-500 text-sm">🏆</span>
+                        <h3 className="font-semibold text-sm group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">
+                          Best {sub.name}
+                        </h3>
+                      </div>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-2 leading-relaxed">
+                        {sub.description}
+                      </p>
+                    </Link>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* Explore More Categories — Cross-category internal links */}
+            {crossCategories.length > 0 && (
+              <section className="mt-12">
+                <h2 className="text-2xl font-bold mb-2">Explore More Categories</h2>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-5">
+                  Discover top-rated tools across different verticals
+                </p>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  {crossCategories.map((cat) => (
+                    <Link
+                      key={cat.slug}
+                      href={`/${cat.slug}`}
+                      className="group text-center p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-indigo-300 dark:hover:border-indigo-600 hover:bg-indigo-50/30 dark:hover:bg-indigo-900/10 transition-all"
+                    >
+                      <div
+                        className="w-10 h-10 rounded-xl mx-auto mb-2 flex items-center justify-center text-lg"
+                        style={{ backgroundColor: `${cat.color}15` }}
+                      >
+                        {cat.icon === 'brain' ? '🧠' : cat.icon === 'cloud' ? '☁️' : cat.icon === 'shopping-cart' ? '🛒' : cat.icon === 'megaphone' ? '📢' : cat.icon === 'server' ? '🖥️' : cat.icon === 'briefcase' ? '💼' : '🔧'}
+                      </div>
+                      <h3 className="font-semibold text-sm group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                        {cat.name}
+                      </h3>
+                      <p className="text-[11px] text-gray-400 mt-1">{cat.toolCount}+ tools</p>
+                    </Link>
+                  ))}
+                </div>
               </section>
             )}
 
@@ -458,7 +582,26 @@ export default async function BlogPostPage({ params }: PageProps) {
                 </div>
               )}
 
-              {/* Browse More */}
+              {/* Best-of Picks (sidebar) */}
+              {categorySubcategories.length > 0 && (
+                <div className="p-5 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900/80">
+                  <h3 className="font-semibold mb-4 text-sm">🏆 Best-of Rankings</h3>
+                  <div className="space-y-2">
+                    {categorySubcategories.slice(0, 5).map((sub) => (
+                      <Link
+                        key={sub.slug}
+                        href={`/best/${sub.slug}`}
+                        className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400 transition-colors py-1"
+                      >
+                        <span className="w-1.5 h-1.5 bg-green-500 rounded-full flex-shrink-0" />
+                        Best {sub.name}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Browse Categories */}
               <div className="p-5 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900/80">
                 <h3 className="font-semibold mb-4 text-sm">Browse Categories</h3>
                 <div className="space-y-1.5">
@@ -466,9 +609,10 @@ export default async function BlogPostPage({ params }: PageProps) {
                     <Link
                       key={cat.slug}
                       href={`/${cat.slug}`}
-                      className="block text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors py-1"
+                      className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors py-1"
                     >
-                      {cat.name}
+                      <span>{cat.name}</span>
+                      <span className="text-[10px] text-gray-400">{cat.toolCount}</span>
                     </Link>
                   ))}
                 </div>

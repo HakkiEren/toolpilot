@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getToolBySlug, getAllToolSlugs, getRelatedLinks, getRelatedBlogPosts } from '@/lib/data';
-import { generatePricingSchema, generateBreadcrumbSchema, generateFAQSchema } from '@/lib/schema';
+import { generatePricingSchema, generateProductSchema, generateBreadcrumbSchema, generateFAQSchema } from '@/lib/schema';
 import { CATEGORIES, SITE_URL, SEO, SITE_NAME } from '@/lib/constants';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { RelatedLinks } from '@/components/common/RelatedLinks';
@@ -133,6 +133,7 @@ export default async function PricingPage({ params }: PageProps) {
     { name: 'Pricing', url: `/${category}/${toolSlug}/pricing` },
   ]);
   const toolSchema = generatePricingSchema(tool, cat?.name || category);
+  const productSchema = generateProductSchema(tool, cat?.name || category);
   const faqSchema = generateFAQSchema(faqs);
 
   // TOC items for navigation
@@ -150,6 +151,7 @@ export default async function PricingPage({ params }: PageProps) {
       <ReadingProgress />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(toolSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />
       {faqSchema && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       )}

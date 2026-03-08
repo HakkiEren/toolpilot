@@ -3,7 +3,7 @@ import type { Tool } from '@/types';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getToolBySlug, getAllToolSlugs, getRelatedLinks, getComparisonsByTool, getRelatedTools, getRelatedBlogPosts } from '@/lib/data';
-import { generateToolReviewSchema, generateBreadcrumbSchema, generateFAQSchema } from '@/lib/schema';
+import { generateToolReviewSchema, generateProductSchema, generateBreadcrumbSchema, generateFAQSchema } from '@/lib/schema';
 import { CATEGORIES, SEO, SITE_URL, SITE_NAME, SUBCATEGORIES } from '@/lib/constants';
 import { generateToolFAQs } from '@/lib/generated-faqs';
 import { FAQSection } from '@/components/common/FAQSection';
@@ -80,6 +80,7 @@ export default async function ToolPage({ params }: PageProps) {
   );
 
   const toolSchema = generateToolReviewSchema(tool, cat?.name || category);
+  const productSchema = generateProductSchema(tool, cat?.name || category);
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: '/' },
     { name: cat?.name || category, url: `/${category}` },
@@ -121,6 +122,7 @@ export default async function ToolPage({ params }: PageProps) {
       }} />
       <ReadingProgress />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(toolSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       {faqSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />}
 
