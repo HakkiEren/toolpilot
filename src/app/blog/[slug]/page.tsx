@@ -617,6 +617,40 @@ export default async function BlogPostPage({ params }: PageProps) {
                   ))}
                 </div>
               </div>
+
+              {/* Free Tools */}
+              <div className="p-5 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900/80">
+                <h3 className="font-semibold mb-4 text-sm">&#129518; Free Tools</h3>
+                <div className="space-y-1.5">
+                  {(() => {
+                    const calcLinks = [
+                      { slug: 'roi', name: 'SaaS ROI Calculator' },
+                      { slug: 'email-marketing-roi', name: 'Email Marketing ROI' },
+                      { slug: 'hosting-cost', name: 'Hosting Cost Calculator' },
+                      { slug: 'ecommerce-profit', name: 'E-commerce Profit Calc' },
+                      { slug: 'ai-cost', name: 'AI Cost Estimator' },
+                      { slug: 'team-productivity', name: 'Team Productivity Calc' },
+                    ];
+                    return calcLinks.map((calc) => (
+                      <Link
+                        key={calc.slug}
+                        href={`/calculators/${calc.slug}`}
+                        className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors py-1"
+                      >
+                        <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full flex-shrink-0" />
+                        {calc.name}
+                      </Link>
+                    ));
+                  })()}
+                  <Link
+                    href="/glossary"
+                    className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors py-1 mt-2 pt-2 border-t border-gray-100 dark:border-gray-800"
+                  >
+                    <span className="w-1.5 h-1.5 bg-cyan-500 rounded-full flex-shrink-0" />
+                    Tech Glossary
+                  </Link>
+                </div>
+              </div>
             </div>
           </aside>
         </div>
