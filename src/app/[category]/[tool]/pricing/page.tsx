@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getToolBySlug, getAllToolSlugs, getRelatedLinks, getRelatedBlogPosts } from '@/lib/data';
 import { generatePricingSchema, generateProductSchema, generateBreadcrumbSchema, generateFAQSchema } from '@/lib/schema';
-import { CATEGORIES, SITE_URL, SEO, SITE_NAME } from '@/lib/constants';
+import { CATEGORIES, SUBCATEGORIES, SITE_URL, SEO, SITE_NAME } from '@/lib/constants';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { RelatedLinks } from '@/components/common/RelatedLinks';
 import { FAQSection } from '@/components/common/FAQSection';
@@ -73,6 +73,17 @@ export default async function PricingPage({ params }: PageProps) {
     getRelatedLinks(tool),
     getRelatedBlogPosts(category, toolSlug, 3),
   ]);
+
+  const subcategories = SUBCATEGORIES[category] || [];
+  const calculatorMap: Record<string, { slug: string; title: string }> = {
+    'ai-tools': { slug: 'ai-cost', title: 'AI Cost Estimator' },
+    'saas': { slug: 'roi', title: 'SaaS ROI Calculator' },
+    'ecommerce': { slug: 'ecommerce-profit', title: 'Profit Margin Calculator' },
+    'marketing': { slug: 'email-marketing-roi', title: 'Email Marketing ROI Calculator' },
+    'hosting': { slug: 'hosting-cost', title: 'Hosting Cost Calculator' },
+    'business': { slug: 'team-productivity', title: 'Team Productivity Calculator' },
+  };
+  const calculator = calculatorMap[category];
 
   const { pricing } = tool;
   const plans = pricing.plans || [];
@@ -647,6 +658,52 @@ export default async function PricingPage({ params }: PageProps) {
                 </Link>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* ========== EXPLORE MORE — Hub-and-spoke internal links ========== */}
+        <section className="mb-14">
+          <h2 className="text-xl font-bold mb-4">Explore More</h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {calculator && (
+              <Link href={`/calculators/${calculator.slug}`} className="group flex items-center gap-3 p-4 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:border-emerald-300 dark:hover:border-emerald-700 transition-all hover:shadow-md">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-100 to-teal-100 dark:from-emerald-900/40 dark:to-teal-900/40 flex items-center justify-center text-lg">&#129518;</div>
+                <div className="min-w-0">
+                  <h3 className="font-medium text-sm group-hover:text-emerald-600 transition-colors truncate">{calculator.title}</h3>
+                  <p className="text-[11px] text-gray-400">Free cost calculator</p>
+                </div>
+              </Link>
+            )}
+            <Link href={`/${category}`} className="group flex items-center gap-3 p-4 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-700 transition-all hover:shadow-md">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-blue-900/40 dark:to-indigo-900/40 flex items-center justify-center text-lg">&#128202;</div>
+              <div className="min-w-0">
+                <h3 className="font-medium text-sm group-hover:text-blue-600 transition-colors truncate">All {cat?.name || category}</h3>
+                <p className="text-[11px] text-gray-400">Browse all tools &amp; reviews</p>
+              </div>
+            </Link>
+            <Link href={`/${category}/compare`} className="group flex items-center gap-3 p-4 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:border-purple-300 dark:hover:border-purple-700 transition-all hover:shadow-md">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900/40 dark:to-pink-900/40 flex items-center justify-center text-lg">&#9878;</div>
+              <div className="min-w-0">
+                <h3 className="font-medium text-sm group-hover:text-purple-600 transition-colors truncate">{cat?.name || category} Comparisons</h3>
+                <p className="text-[11px] text-gray-400">Side-by-side analysis</p>
+              </div>
+            </Link>
+            {subcategories.slice(0, 2).map((sub) => (
+              <Link key={sub.slug} href={`/best/${sub.slug}`} className="group flex items-center gap-3 p-4 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:border-amber-300 dark:hover:border-amber-700 transition-all hover:shadow-md">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-100 to-orange-100 dark:from-amber-900/40 dark:to-orange-900/40 flex items-center justify-center text-lg">&#127942;</div>
+                <div className="min-w-0">
+                  <h3 className="font-medium text-sm group-hover:text-amber-600 transition-colors truncate">Best {sub.name}</h3>
+                  <p className="text-[11px] text-gray-400">Top-ranked picks</p>
+                </div>
+              </Link>
+            ))}
+            <Link href="/glossary" className="group flex items-center gap-3 p-4 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:border-cyan-300 dark:hover:border-cyan-700 transition-all hover:shadow-md">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-100 to-blue-100 dark:from-cyan-900/40 dark:to-blue-900/40 flex items-center justify-center text-lg">&#128214;</div>
+              <div className="min-w-0">
+                <h3 className="font-medium text-sm group-hover:text-cyan-600 transition-colors truncate">Tech Glossary</h3>
+                <p className="text-[11px] text-gray-400">Key terms explained</p>
+              </div>
+            </Link>
           </div>
         </section>
 

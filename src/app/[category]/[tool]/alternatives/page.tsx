@@ -592,6 +592,36 @@ export default async function AlternativesPage({ params }: PageProps) {
           );
         })()}
 
+        {/* ========== HELPFUL RESOURCES — Calculator + Glossary ========== */}
+        {(() => {
+          const calcMap: Record<string, { slug: string; title: string }> = {
+            'ai-tools': { slug: 'ai-cost', title: 'AI Cost Estimator' },
+            'saas': { slug: 'roi', title: 'SaaS ROI Calculator' },
+            'ecommerce': { slug: 'ecommerce-profit', title: 'Profit Margin Calculator' },
+            'marketing': { slug: 'email-marketing-roi', title: 'Email Marketing ROI Calculator' },
+            'hosting': { slug: 'hosting-cost', title: 'Hosting Cost Calculator' },
+            'business': { slug: 'team-productivity', title: 'Team Productivity Calculator' },
+          };
+          const calc = calcMap[category];
+          return (
+            <section className="mb-12">
+              <div className="flex flex-wrap gap-2">
+                {calc && (
+                  <Link href={`/calculators/${calc.slug}`} className="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-600 hover:text-emerald-800 bg-emerald-50 dark:bg-emerald-900/20 px-3 py-2 rounded-lg transition-colors border border-emerald-200/50 dark:border-emerald-800/50">
+                    <span>&#129518;</span> {calc.title}
+                  </Link>
+                )}
+                <Link href="/glossary" className="inline-flex items-center gap-1.5 text-xs font-medium text-cyan-600 hover:text-cyan-800 bg-cyan-50 dark:bg-cyan-900/20 px-3 py-2 rounded-lg transition-colors border border-cyan-200/50 dark:border-cyan-800/50">
+                  <span>&#128214;</span> Tech Glossary
+                </Link>
+                <Link href={`/${category}`} className="inline-flex items-center gap-1.5 text-xs font-medium text-blue-600 hover:text-blue-800 bg-blue-50 dark:bg-blue-900/20 px-3 py-2 rounded-lg transition-colors border border-blue-200/50 dark:border-blue-800/50">
+                  <span>&#128202;</span> All {cat?.name || category}
+                </Link>
+              </div>
+            </section>
+          );
+        })()}
+
         {/* ========== AD: BEFORE FOOTER ========== */}
         <AdMultiplex />
 
