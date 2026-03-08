@@ -282,7 +282,10 @@ export default async function AboutPage() {
             </div>
             <p className="text-sm text-gray-400 dark:text-gray-500 italic">
               We clearly disclose affiliate relationships wherever they exist. Our editorial team
-              operates independently from our business team.
+              operates independently from our business team. Read our full{' '}
+              <Link href="/editorial-policy" className="text-blue-500 hover:underline">
+                editorial policy &amp; review guidelines
+              </Link>.
             </p>
           </div>
         </div>
