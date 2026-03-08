@@ -2,6 +2,17 @@
 // Dynamically generates FAQ content, comparison bottom lines, and key differences
 // from structured tool data for pSEO pages.
 
+/** Strip HTML tags and return plain text */
+function stripHtmlTags(html: string): string {
+  if (!html) return '';
+  return html
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"').replace(/&#039;/g, "'").replace(/&nbsp;/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
@@ -52,6 +63,20 @@ export interface FeatureMatrixRow {
   toolAValue: string | number | boolean;
   toolBValue: string | number | boolean;
   winner: string;
+  // Some DB rows use snake_case instead of camelCase
+  tool_a?: string | number | boolean;
+  tool_b?: string | number | boolean;
+  category?: string;
+}
+
+// Normalize a feature matrix row to handle both DB formats
+function normalizeRow(raw: FeatureMatrixRow): FeatureMatrixRow {
+  return {
+    ...raw,
+    toolAValue: raw.toolAValue ?? raw.tool_a ?? 'N/A',
+    toolBValue: raw.toolBValue ?? raw.tool_b ?? 'N/A',
+    winner: raw.winner || 'tie',
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -302,8 +327,9 @@ export function generateComparisonBottomLine(
   const closeness =
     diff < 0.3 ? "a very close call" : diff < 1 ? "a moderate edge" : "a clear advantage";
 
-  const headline = `${winner} edges out ${loser} with a ${winnerScore}/5 vs ${loserScore}/5 rating — ${closeness}.`;
-  const summary = `${verdictContent} Ultimately, ${winner} offers ${closeness} overall, but ${loser} may still be the better pick depending on your specific priorities and budget.`;
+  const headline = `${winner} edges out ${loser} with a ${winnerScore}/10 vs ${loserScore}/10 rating — ${closeness}.`;
+  const cleanVerdict = stripHtmlTags(verdictContent);
+  const summary = `${cleanVerdict} Ultimately, ${winner} offers ${closeness} overall, but ${loser} may still be the better pick depending on your specific priorities and budget.`;
 
   return { headline, summary };
 }
@@ -317,9 +343,12 @@ export function generateKeyDifferences(
   toolBName: string,
   featureMatrix: FeatureMatrixRow[]
 ): KeyDifference[] {
+  // Normalize all rows to handle both DB formats (toolAValue vs tool_a)
+  const normalizedMatrix = featureMatrix.map(normalizeRow);
+
   // Rank features by how different the two tools are.
   // A clear winner (not "tie") and distinct values score higher.
-  const scored = featureMatrix.map((row) => {
+  const scored = normalizedMatrix.map((row) => {
     let impactScore = 0;
 
     // Having a declared winner is the strongest signal.
@@ -330,6 +359,12 @@ export function generateKeyDifferences(
     // Longer, more descriptive values hint at a meaningful distinction.
     const aStr = String(row.toolAValue);
     const bStr = String(row.toolBValue);
+
+    // Skip rows with N/A or undefined values
+    if (aStr === 'N/A' || aStr === 'undefined' || bStr === 'N/A' || bStr === 'undefined') {
+      return { row, impactScore: -1 };
+    }
+
     const avgLength = (aStr.length + bStr.length) / 2;
     if (avgLength > 10) impactScore += 1;
 
@@ -341,13 +376,16 @@ export function generateKeyDifferences(
     return { row, impactScore };
   });
 
-  // Sort descending by impact, take top 3.
+  // Sort descending by impact, take top 3 (skip negative scores).
   scored.sort((a, b) => b.impactScore - a.impactScore);
 
-  return scored.slice(0, 3).map(({ row }) => ({
-    area: row.feature,
-    toolAPoint: `${toolAName}: ${row.toolAValue}`,
-    toolBPoint: `${toolBName}: ${row.toolBValue}`,
-    winner: row.winner,
-  }));
+  return scored
+    .filter(({ impactScore }) => impactScore >= 0)
+    .slice(0, 3)
+    .map(({ row }) => ({
+      area: row.feature,
+      toolAPoint: `${toolAName}: ${row.toolAValue}`,
+      toolBPoint: `${toolBName}: ${row.toolBValue}`,
+      winner: row.winner,
+    }));
 }

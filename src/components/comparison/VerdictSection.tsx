@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import type { Tool } from '@/types';
 import { ToolLogo } from '@/components/common/ToolLogo';
+import { HtmlContent } from '@/components/common/HtmlContent';
 
 interface Props {
   toolA: Tool;
@@ -143,9 +144,7 @@ export function VerdictSection({ toolA, toolB, verdictContent }: Props) {
           <div className="flex items-center gap-2 mb-3 text-sm font-bold text-gray-500 uppercase tracking-wider">
             <span>{'\uD83D\uDCDD'}</span> Bottom Line
           </div>
-          <p className="text-gray-700 dark:text-gray-200 leading-relaxed" data-speakable="true">
-            {verdictContent}
-          </p>
+          <HtmlContent html={verdictContent} className="text-gray-700 dark:text-gray-200 leading-relaxed [&>p]:mb-3 [&>p:last-child]:mb-0" />
         </div>
 
         {/* Quick Action Links */}

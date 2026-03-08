@@ -18,10 +18,61 @@ import { ToolLogo } from '@/components/common/ToolLogo';
 import { ShareButtons } from '@/components/common/ShareButtons';
 import { CopyLinkButton } from '@/components/common/CopyLinkButton';
 import { ReadingProgress } from '@/components/common/ReadingProgress';
+import { HtmlContent, stripHtml } from '@/components/common/HtmlContent';
 
 // ============================================================
 // COMPARISON PAGE — ENHANCED with winner banner, nav, tool cards
 // ============================================================
+
+/**
+ * Parse scenario content for a specific tool.
+ * Some DB records put both tools' scenarios in scenarioContent with h3 headers,
+ * while migrationContent is empty. This splits them intelligently.
+ */
+function parseScenarioForTool(scenarioContent: string, migrationContent: string, tool: 'a' | 'b'): string {
+  // If both fields have content, use them directly
+  if (scenarioContent && migrationContent) {
+    return tool === 'a' ? scenarioContent : migrationContent;
+  }
+
+  // If only one field has content, try to split it by "Choose Tool B" header
+  if (scenarioContent && !migrationContent) {
+    // Look for a split point: second h3, or "Choose Tool B" pattern
+    const toolBPatterns = [
+      /<h3[^>]*>Choose Tool B/i,
+      /<h3[^>]*>.*?Tool B/i,
+      /<h3[^>]*>.*?if you (?:are|want|need|prefer).*?<\/h3>/i,
+    ];
+
+    for (const pattern of toolBPatterns) {
+      const match = scenarioContent.search(pattern);
+      if (match > 0) {
+        const partA = scenarioContent.substring(0, match).replace(/<h3[^>]*>.*?<\/h3>/i, '').trim();
+        const partB = scenarioContent.substring(match).replace(/<h3[^>]*>.*?<\/h3>/i, '').trim();
+        return tool === 'a' ? partA : partB;
+      }
+    }
+
+    // Fallback: try splitting by the second <h3> tag
+    const h3Parts = scenarioContent.split(/<h3[^>]*>/i).filter(Boolean);
+    if (h3Parts.length >= 2) {
+      const cleanPart = (p: string) => p.replace(/<\/h3>/i, '').trim();
+      return tool === 'a' ? cleanPart(h3Parts[0]) : cleanPart(h3Parts[1]);
+    }
+
+    // Last resort: try splitting by <ul> blocks
+    const ulParts = scenarioContent.split(/<\/ul>/i).filter(p => p.includes('<ul'));
+    if (ulParts.length >= 2) {
+      return tool === 'a'
+        ? ulParts[0].replace(/<h3[^>]*>.*?<\/h3>/gi, '').trim() + '</ul>'
+        : ulParts[1].replace(/<h3[^>]*>.*?<\/h3>/gi, '').trim() + '</ul>';
+    }
+  }
+
+  // If nothing works, return what we have or empty
+  if (tool === 'a') return scenarioContent || '';
+  return migrationContent || scenarioContent || '';
+}
 
 export const revalidate = 3600;
 export const dynamicParams = true;
@@ -264,9 +315,10 @@ export default async function ComparisonPage({ params }: PageProps) {
           </div>
 
           {/* Intro Content */}
-          <div className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
-            {comparison.introContent}
-          </div>
+          <HtmlContent
+            html={comparison.introContent}
+            className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed [&>p]:mb-4 [&>p:last-child]:mb-0"
+          />
         </div>
 
         {/* ========== KEY DIFFERENCES AT A GLANCE ========== */}
@@ -317,7 +369,7 @@ export default async function ComparisonPage({ params }: PageProps) {
         {/* ========== QUICK VERDICT ========== */}
         <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl p-6 mb-10">
           <h2 className="text-xl font-semibold mb-3">Quick Verdict</h2>
-          <div className="text-gray-700 dark:text-gray-200">{comparison.verdictContent}</div>
+          <HtmlContent html={comparison.verdictContent} className="text-gray-700 dark:text-gray-200 [&>p]:mb-3 [&>p:last-child]:mb-0" />
         </div>
 
         {/* ========== SCORES ========== */}
@@ -359,7 +411,7 @@ export default async function ComparisonPage({ params }: PageProps) {
                   Choose {comparison.toolA.name} if...
                 </h3>
               </div>
-              <div className="text-gray-600 dark:text-gray-300">{comparison.scenarioContent}</div>
+              <HtmlContent html={parseScenarioForTool(comparison.scenarioContent, comparison.migrationContent, 'a')} className="text-gray-600 dark:text-gray-300 [&>ul]:list-disc [&>ul]:pl-5 [&>ul]:space-y-1 [&>li]:text-sm [&>p]:mb-2" />
               <div className="flex flex-wrap items-center gap-3 mt-4">
                 <Link
                   href={`/${category}/${comparison.toolA.slug}`}
@@ -386,7 +438,7 @@ export default async function ComparisonPage({ params }: PageProps) {
                   Choose {comparison.toolB.name} if...
                 </h3>
               </div>
-              <div className="text-gray-600 dark:text-gray-300">{comparison.migrationContent}</div>
+              <HtmlContent html={parseScenarioForTool(comparison.scenarioContent, comparison.migrationContent, 'b')} className="text-gray-600 dark:text-gray-300 [&>ul]:list-disc [&>ul]:pl-5 [&>ul]:space-y-1 [&>li]:text-sm [&>p]:mb-2" />
               <div className="flex flex-wrap items-center gap-3 mt-4">
                 <Link
                   href={`/${category}/${comparison.toolB.slug}`}

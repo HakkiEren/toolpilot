@@ -6,14 +6,35 @@ interface Props {
   toolBName: string;
 }
 
+// Normalize feature matrix rows from different DB formats
+// Some rows use toolAValue/toolBValue, others use tool_a/tool_b
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function normalizeFeature(raw: any): FeatureComparison {
+  const aVal = raw.toolAValue !== undefined ? raw.toolAValue : raw.tool_a;
+  const bVal = raw.toolBValue !== undefined ? raw.toolBValue : raw.tool_b;
+  return {
+    feature: String(raw.feature || raw.name || 'Unknown'),
+    category: String(raw.category || 'General'),
+    toolAValue: aVal !== undefined && aVal !== null ? aVal : 'N/A',
+    toolBValue: bVal !== undefined && bVal !== null ? bVal : 'N/A',
+    winner: (raw.winner as 'a' | 'b' | 'tie') || 'tie',
+  };
+}
+
 export function FeatureMatrix({ features, toolAName, toolBName }: Props) {
+  // Normalize all features to handle both DB formats
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const normalized = (features || []).map((f) => normalizeFeature(f as any));
+
   // Group features by category
-  const grouped = features.reduce<Record<string, FeatureComparison[]>>((acc, f) => {
+  const grouped = normalized.reduce<Record<string, FeatureComparison[]>>((acc, f) => {
     const cat = f.category || 'General';
     if (!acc[cat]) acc[cat] = [];
     acc[cat].push(f);
     return acc;
   }, {});
+
+  if (normalized.length === 0) return null;
 
   return (
     <div className="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-700">
@@ -80,9 +101,24 @@ function FeatureValue({ value, isWinner }: { value: string | boolean | number; i
     );
   }
 
+  const str = String(value);
+
+  // Handle null/undefined that slipped through
+  if (str === 'undefined' || str === 'null' || str === '') {
+    return <span className="text-gray-400 italic">N/A</span>;
+  }
+
+  // Handle Yes/No/True/False strings
+  if (str.toLowerCase() === 'yes' || str.toLowerCase() === 'true') {
+    return <span className={`text-green-600 ${isWinner ? 'font-semibold' : ''}`}>✓ Yes</span>;
+  }
+  if (str.toLowerCase() === 'no' || str.toLowerCase() === 'false' || str.toLowerCase() === 'not available') {
+    return <span className="text-red-400">✗ No</span>;
+  }
+
   return (
     <span className={isWinner ? 'font-semibold text-green-600' : ''}>
-      {String(value)}
+      {str}
     </span>
   );
 }
