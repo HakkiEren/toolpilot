@@ -369,6 +369,29 @@ export default async function HomePage() {
       </section>
 
       {/* ============================================================ */}
+      {/* POPULAR ALTERNATIVES — Target "[Tool] alternatives" search queries */}
+      {/* ============================================================ */}
+      <section className="max-w-7xl mx-auto px-4 pb-4">
+        <div className="flex items-center gap-2 mb-3">
+          <svg className="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+          </svg>
+          <h2 className="text-sm font-bold text-gray-700 dark:text-gray-300">Popular Alternatives</h2>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {(trendingTools || []).slice(0, 8).map((tool) => (
+            <Link
+              key={`alt-${tool.slug}`}
+              href={`/${tool.category_slug}/${tool.slug}/alternatives`}
+              className="px-3 py-1.5 text-xs font-medium rounded-lg bg-orange-50 dark:bg-orange-900/20 text-orange-700 dark:text-orange-400 hover:bg-orange-100 dark:hover:bg-orange-900/40 transition-colors border border-transparent hover:border-orange-200 dark:hover:border-orange-800"
+            >
+              {tool.name} Alternatives
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* ============================================================ */}
       {/* RECENTLY UPDATED — Freshness signal for Google & users */}
       {/* ============================================================ */}
       {recentlyUpdated && recentlyUpdated.length > 0 && (

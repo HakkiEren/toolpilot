@@ -145,6 +145,7 @@ export default async function SitemapPage() {
             { href: '/calculators/social-media-roi', label: 'Social Media ROI' },
             { href: '/calculators/ab-testing', label: 'A/B Testing Calculator' },
             { href: '/editorial-policy', label: 'Editorial Policy' },
+            { href: '/badges', label: 'Award Badges' },
             { href: '/privacy', label: 'Privacy Policy' },
             { href: '/terms', label: 'Terms of Service' },
             { href: '/sitemap-html', label: 'Sitemap' },

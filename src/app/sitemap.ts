@@ -43,6 +43,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.5,
     })),
     { url: `${SITE_URL}/editorial-policy`, lastModified: monthlyDate, changeFrequency: 'monthly', priority: 0.5 },
+    { url: `${SITE_URL}/badges`, lastModified: monthlyDate, changeFrequency: 'monthly', priority: 0.5 },
     { url: `${SITE_URL}/about/team`, lastModified: monthlyDate, changeFrequency: 'monthly', priority: 0.5 },
     { url: `${SITE_URL}/changelog`, lastModified: weeklyDate, changeFrequency: 'weekly', priority: 0.5 },
     // feed.xml excluded — RSS feeds are not HTML pages, auto-discovered via <link rel="alternate">
