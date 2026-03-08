@@ -2,8 +2,9 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { SITE_NAME, SITE_URL, SEO, CATEGORIES, SUBCATEGORIES } from '@/lib/constants';
-import { generateCalculatorHowToSchema, generateBreadcrumbSchema, generateWebApplicationSchema } from '@/lib/schema';
+import { generateCalculatorHowToSchema, generateBreadcrumbSchema, generateWebApplicationSchema, generateFAQSchema } from '@/lib/schema';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
+import { FAQSection } from '@/components/common/FAQSection';
 import { AdBanner, AdInArticle } from '@/components/ads/AdSlot';
 import { CalculatorClient } from './calculator-client';
 
@@ -20,6 +21,7 @@ const CALCULATORS: Record<string, {
   metaDescription: string;
   category: string;
   howToSteps: { name: string; text: string }[];
+  faqs: { question: string; answer: string }[];
 }> = {
   'roi': {
     title: 'SaaS ROI Calculator',
@@ -32,6 +34,11 @@ const CALCULATORS: Record<string, {
       { name: 'Add the new tool cost', text: 'Enter the monthly cost of the SaaS tool you are considering switching to.' },
       { name: 'Estimate time savings', text: 'Input the estimated hours saved per week with the new tool.' },
       { name: 'Review your ROI results', text: 'The calculator shows your projected annual savings, payback period, and ROI percentage.' },
+    ],
+    faqs: [
+      { question: 'What is a good ROI for SaaS tools?', answer: 'A good SaaS ROI is typically 3:1 or higher, meaning you get $3 in value for every $1 spent. Most successful SaaS investments deliver 5:1 to 10:1 ROI within 12 months through time savings, increased productivity, and reduced manual errors.' },
+      { question: 'How do I calculate SaaS ROI?', answer: 'SaaS ROI = ((Gains from Investment - Cost of Investment) / Cost of Investment) x 100. Include monthly subscription costs, implementation time, training costs, and measure gains from time saved, efficiency improvements, and error reduction.' },
+      { question: 'Should I include implementation costs in ROI?', answer: 'Yes, always include implementation costs such as data migration time, employee training hours, and any productivity loss during the transition period. These one-time costs significantly affect your payback period calculation.' },
     ],
   },
   'email-marketing-roi': {
@@ -46,6 +53,11 @@ const CALCULATORS: Record<string, {
       { name: 'Add conversion rate and value', text: 'Input your average conversion rate and the value per conversion.' },
       { name: 'Review campaign ROI', text: 'See your projected revenue, ROI percentage, and revenue per subscriber.' },
     ],
+    faqs: [
+      { question: 'What is a good email marketing ROI?', answer: 'Email marketing averages a $36 return for every $1 spent, making it one of the highest-ROI marketing channels. Top performers achieve $40-$45 per dollar by combining strong segmentation, personalized content, and optimized send times.' },
+      { question: 'What email open rate should I expect?', answer: 'Average email open rates range from 15-25% depending on your industry. B2B emails typically see 20-25% open rates, while e-commerce averages 15-20%. Rates above 25% indicate strong list engagement and relevant content.' },
+      { question: 'How do I improve email marketing ROI?', answer: 'Focus on list quality over quantity, segment your audience, personalize subject lines and content, optimize send timing through A/B testing, and clean your list regularly to remove inactive subscribers.' },
+    ],
   },
   'hosting-cost': {
     title: 'Web Hosting Cost Calculator',
@@ -58,6 +70,11 @@ const CALCULATORS: Record<string, {
       { name: 'Enter traffic estimates', text: 'Input your expected monthly visitors and page views.' },
       { name: 'Specify storage and features', text: 'Select the storage space, bandwidth, and features you need.' },
       { name: 'Compare hosting costs', text: 'Review the estimated monthly and annual costs across different hosting types.' },
+    ],
+    faqs: [
+      { question: 'How much does web hosting cost per month?', answer: 'Shared hosting costs $3-$15/month, VPS hosting $20-$80/month, cloud hosting $10-$200/month depending on usage, and dedicated servers $80-$500+/month. Always calculate based on renewal pricing, not introductory rates.' },
+      { question: 'What hosting type is best for my website?', answer: 'Blogs and small sites work well on shared hosting. Growing businesses should use VPS for consistent performance. High-traffic sites and web apps benefit from cloud hosting. Choose managed WordPress hosting if you run WordPress and want hassle-free maintenance.' },
+      { question: 'Do I need to pay for SSL separately?', answer: 'Most modern hosting providers include free SSL certificates through Let\'s Encrypt. If your host charges extra for SSL, consider switching — free SSL is an industry standard and paid SSL only adds value for e-commerce sites needing extended validation certificates.' },
     ],
   },
   'ecommerce-profit': {
@@ -72,6 +89,11 @@ const CALCULATORS: Record<string, {
       { name: 'Include shipping and marketing', text: 'Add average shipping cost per order and marketing cost per acquisition.' },
       { name: 'See your true margins', text: 'Review your net profit per unit, profit margin percentage, and break-even point.' },
     ],
+    faqs: [
+      { question: 'What is a good profit margin for e-commerce?', answer: 'A healthy e-commerce profit margin is 20-30% net after all costs. Luxury goods can achieve 40-60%, while commodity products may only reach 5-15%. The key is accurately calculating total costs including platform fees, shipping, returns, and marketing spend.' },
+      { question: 'How do platform fees affect my margins?', answer: 'Platform fees typically range from 0% (self-hosted) to 2-5% per transaction (hosted platforms). A 2% platform fee on $100K annual revenue costs $2,000/year. Factor in payment processing fees (2.4-2.9% + $0.30/transaction) which apply regardless of platform.' },
+      { question: 'Should I factor in return rates?', answer: 'Yes, returns directly impact profitability. E-commerce return rates average 20-30% for apparel and 5-15% for electronics. Include return shipping costs, restocking labor, and unsellable inventory in your margin calculations for accurate projections.' },
+    ],
   },
   'ai-cost': {
     title: 'AI Tool Cost Estimator',
@@ -85,6 +107,11 @@ const CALCULATORS: Record<string, {
       { name: 'Select pricing tier', text: 'Choose between free tier, pro subscription, or enterprise API pricing.' },
       { name: 'Review cost breakdown', text: 'See your estimated monthly cost, cost per request, and annual projection.' },
     ],
+    faqs: [
+      { question: 'How much do AI tools cost per month?', answer: 'AI tool costs vary widely: free tiers are common for basic use, individual pro plans run $20-$100/month, and API-based pricing can range from $0.001 to $0.06 per 1K tokens. Enterprise plans with dedicated capacity typically start at $500/month.' },
+      { question: 'Is API pricing or subscription pricing cheaper?', answer: 'For light to moderate use (under 100K API calls/month), subscriptions are usually cheaper since they include a fixed allocation. For heavy or variable usage, API pay-per-use can be more cost-effective as you only pay for what you consume.' },
+      { question: 'How do I reduce AI tool costs?', answer: 'Use smaller, faster models for simple tasks and reserve premium models for complex work. Implement caching for repeated queries, batch API calls where possible, and monitor usage dashboards weekly. Switching to open-source models for non-critical workflows can cut costs by 50-80%.' },
+    ],
   },
   'team-productivity': {
     title: 'Team Productivity Savings Calculator',
@@ -97,6 +124,11 @@ const CALCULATORS: Record<string, {
       { name: 'Estimate time spent on tasks', text: 'Enter hours spent weekly on repetitive tasks that could be automated.' },
       { name: 'Set efficiency improvement', text: 'Estimate the percentage of time savings from better tools (typically 20-40%).' },
       { name: 'Review productivity savings', text: 'See your projected annual time savings, cost savings, and productivity ROI.' },
+    ],
+    faqs: [
+      { question: 'How much time can better tools save my team?', answer: 'Teams using optimized tool stacks report saving 5-15 hours per person per week on average. The biggest gains come from automating data entry, streamlining communication, and eliminating duplicate work across disconnected systems.' },
+      { question: 'What is the average ROI of business automation?', answer: 'Business process automation delivers an average ROI of 200-400% within the first year. Common high-ROI targets include invoice processing (60-80% time reduction), report generation (70-90% faster), and customer onboarding (40-60% faster).' },
+      { question: 'How do I measure productivity improvements?', answer: 'Track time-to-completion for key workflows before and after tool adoption, monitor error rates, and measure employee satisfaction scores. Use the tool\'s built-in analytics where available, and survey team members quarterly about time saved on routine tasks.' },
     ],
   },
 };
@@ -165,12 +197,14 @@ export default async function CalculatorPage({ params }: PageProps) {
     type,
     catName
   );
+  const faqSchema = generateFAQSchema(calc.faqs);
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <Breadcrumbs items={[
         { name: 'Home', url: '/' },
         { name: catName, url: `/${calc.category}` },
@@ -204,7 +238,15 @@ export default async function CalculatorPage({ params }: PageProps) {
         <CalculatorClient type={type} />
       </div>
 
-      {/* Ad: After Calculator */}
+      {/* FAQ Section — FAQPage schema for rich snippets */}
+      {calc.faqs.length > 0 && (
+        <section className="mb-12">
+          <h2 className="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
+          <FAQSection faqs={calc.faqs} />
+        </section>
+      )}
+
+      {/* Ad: After FAQ */}
       <AdBanner />
 
       {/* Other Calculators */}
