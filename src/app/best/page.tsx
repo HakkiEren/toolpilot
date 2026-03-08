@@ -186,6 +186,44 @@ export default async function BestOfIndexPage() {
           </div>
         </div>
 
+        {/* Cross-links — Calculators, Comparisons, Glossary */}
+        <section className="mt-10">
+          <h2 className="text-xl font-bold mb-4">Free Tools &amp; Resources</h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {[
+              { href: '/calculators/roi', icon: '&#129518;', title: 'SaaS ROI Calculator', desc: 'Calculate software investment returns' },
+              { href: '/calculators/email-marketing-roi', icon: '&#128231;', title: 'Email Marketing ROI', desc: 'Measure campaign performance' },
+              { href: '/calculators/hosting-cost', icon: '&#128421;', title: 'Hosting Cost Calculator', desc: 'Compare hosting plan pricing' },
+              { href: '/calculators/ecommerce-profit', icon: '&#128722;', title: 'E-commerce Profit Calc', desc: 'Know your true margins' },
+              { href: '/calculators/ai-cost', icon: '&#129302;', title: 'AI Cost Estimator', desc: 'Estimate AI tool spending' },
+              { href: '/calculators/team-productivity', icon: '&#128200;', title: 'Team Productivity Calc', desc: 'Measure efficiency gains' },
+            ].map((calc) => (
+              <Link
+                key={calc.href}
+                href={calc.href}
+                className="group flex items-center gap-3 p-4 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl hover:border-emerald-300 dark:hover:border-emerald-700 transition-all hover:shadow-md"
+              >
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-100 to-teal-100 dark:from-emerald-900/40 dark:to-teal-900/40 flex items-center justify-center text-lg" dangerouslySetInnerHTML={{ __html: calc.icon }} />
+                <div className="min-w-0">
+                  <h3 className="font-medium text-sm group-hover:text-emerald-600 transition-colors truncate">{calc.title}</h3>
+                  <p className="text-[11px] text-gray-400 truncate">{calc.desc}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          <div className="mt-4 flex flex-wrap gap-3">
+            <Link href="/glossary" className="inline-flex items-center gap-1.5 text-xs font-medium text-cyan-600 hover:text-cyan-800 bg-cyan-50 dark:bg-cyan-900/20 px-3.5 py-2 rounded-lg transition-colors border border-cyan-200/50 dark:border-cyan-800/50">
+              <span>&#128214;</span> Tech Glossary &mdash; Key terms explained
+            </Link>
+            {Object.entries(CATEGORIES).slice(0, 6).map(([slug, cat]) => (
+              <Link key={slug} href={`/${slug}/compare`} className="inline-flex items-center gap-1.5 text-xs font-medium text-purple-600 hover:text-purple-800 bg-purple-50 dark:bg-purple-900/20 px-3 py-2 rounded-lg transition-colors border border-purple-200/50 dark:border-purple-800/50">
+                <span>&#9878;</span> {cat.name} Comparisons
+              </Link>
+            ))}
+          </div>
+        </section>
+
         {/* Ad: After SEO text */}
         <AdInArticle />
       </div>
