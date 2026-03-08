@@ -900,6 +900,56 @@ export default async function ToolPage({ params }: PageProps) {
           <RelatedLinks links={relatedLinks} />
         </section>
 
+        {/* ========== BEST-OF RANKINGS — Cross-link to best-of pages ========== */}
+        {toolSubcategories.length > 0 && (
+          <section className="mb-12">
+            <h2 className="text-2xl font-bold mb-2">See the Full Rankings</h2>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-5">
+              Compare {tool.name} against all competitors in expert-curated rankings
+            </p>
+            <div className="grid sm:grid-cols-2 gap-3">
+              {toolSubcategories.map((sub) => (
+                <Link
+                  key={sub.slug}
+                  href={`/best/${sub.slug}`}
+                  className="group flex items-center gap-3 p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-amber-300 dark:hover:border-amber-700 hover:bg-amber-50/30 dark:hover:bg-amber-900/10 transition-all"
+                >
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-100 to-orange-100 dark:from-amber-900/30 dark:to-orange-900/30 flex items-center justify-center text-lg flex-shrink-0">
+                    🏆
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-sm group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
+                      Best {sub.name} ({year})
+                    </h3>
+                    <p className="text-[11px] text-gray-400 mt-0.5">Expert-ranked tools in this category</p>
+                  </div>
+                  <svg className="w-4 h-4 text-gray-300 group-hover:text-amber-400 transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </Link>
+              ))}
+              {/* Category hub link */}
+              <Link
+                href={`/${category}`}
+                className="group flex items-center gap-3 p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700 hover:bg-blue-50/30 dark:hover:bg-blue-900/10 transition-all"
+              >
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-blue-900/30 dark:to-indigo-900/30 flex items-center justify-center text-lg flex-shrink-0">
+                  📂
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-semibold text-sm group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                    All {cat?.name || category}
+                  </h3>
+                  <p className="text-[11px] text-gray-400 mt-0.5">Browse all {cat?.toolCount || ''}+ tools in this category</p>
+                </div>
+                <svg className="w-4 h-4 text-gray-300 group-hover:text-blue-400 transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
+            </div>
+          </section>
+        )}
+
         {/* ========== AD: STICKY SIDEBAR (Desktop) ========== */}
         <div className="hidden lg:block fixed right-4 top-32 z-30" style={{ maxWidth: '300px' }}>
           <AdSidebar />

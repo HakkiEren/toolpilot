@@ -164,6 +164,21 @@ export function SearchClient({ tools }: { tools: SearchTool[] }) {
               )}
             </div>
           </div>
+          {/* Popular searches — Quick discovery chips */}
+          {!query && (
+            <div className="mt-5 flex flex-wrap justify-center gap-2">
+              <span className="text-xs text-gray-400 self-center mr-1">Popular:</span>
+              {['ChatGPT', 'Shopify', 'HubSpot', 'Notion', 'Semrush', 'Canva', 'Slack', 'Monday.com'].map((term) => (
+                <button
+                  key={term}
+                  onClick={() => setQuery(term)}
+                  className="px-3 py-1.5 text-xs font-medium bg-white/80 dark:bg-gray-800/80 border border-gray-200/80 dark:border-gray-700/80 rounded-full hover:border-blue-300 dark:hover:border-blue-600 hover:bg-blue-50/50 dark:hover:bg-blue-900/20 hover:text-blue-600 transition-all"
+                >
+                  {term}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
@@ -390,13 +405,13 @@ export function SearchClient({ tools }: { tools: SearchTool[] }) {
         })}
       </div>
 
-      {/* No results */}
+      {/* No results — Enhanced with suggestions */}
       {filtered.length === 0 && (
-        <div className="text-center py-20">
-          <div className="text-6xl mb-4">&#128270;</div>
-          <h3 className="text-xl font-bold mb-2">No tools found</h3>
-          <p className="text-gray-500">
-            Try adjusting your search or filters to find what you&apos;re looking for.
+        <div className="text-center py-16">
+          <div className="text-6xl mb-4">🔍</div>
+          <h3 className="text-xl font-bold mb-2">No tools found for &ldquo;{query || 'your filters'}&rdquo;</h3>
+          <p className="text-gray-500 mb-6">
+            Try a different search term or explore our popular categories below.
           </p>
           <button
             onClick={() => {
@@ -406,10 +421,42 @@ export function SearchClient({ tools }: { tools: SearchTool[] }) {
               setCategoryFilter('all');
               setSortBy('rating');
             }}
-            className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            className="px-6 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-medium"
           >
             Clear all filters
           </button>
+
+          {/* Suggested searches */}
+          <div className="mt-8 max-w-lg mx-auto">
+            <p className="text-sm font-medium text-gray-500 mb-3">Try searching for:</p>
+            <div className="flex flex-wrap justify-center gap-2">
+              {['AI writing', 'CRM', 'email marketing', 'project management', 'hosting', 'SEO tools', 'e-commerce'].map((term) => (
+                <button
+                  key={term}
+                  onClick={() => { setQuery(term); setPriceFilter('all'); setRatingFilter(0); setCategoryFilter('all'); }}
+                  className="px-4 py-2 text-sm bg-gray-100 dark:bg-gray-800 rounded-xl hover:bg-blue-100 dark:hover:bg-blue-900/30 hover:text-blue-600 transition-all"
+                >
+                  {term}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Browse categories */}
+          <div className="mt-8 grid grid-cols-2 sm:grid-cols-3 gap-3 max-w-lg mx-auto">
+            {Object.entries(CATEGORY_LABELS).map(([slug, { label, color }]) => (
+              <a
+                key={slug}
+                href={`/${slug}`}
+                className="p-3 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700 transition-all text-center"
+              >
+                <div className="w-8 h-8 rounded-lg mx-auto mb-2 flex items-center justify-center text-sm font-bold text-white" style={{ backgroundColor: color }}>
+                  {label[0]}
+                </div>
+                <span className="text-sm font-medium">{label}</span>
+              </a>
+            ))}
+          </div>
         </div>
       )}
     </div>
