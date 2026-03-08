@@ -12,6 +12,16 @@ import { ReadingProgress } from '@/components/common/ReadingProgress';
 import { CopyLinkButton } from '@/components/common/CopyLinkButton';
 import type { Tool } from '@/types';
 
+// Individual award with full tool reference
+interface Award {
+  emoji: string;
+  title: string;
+  description: string;
+  tool: Tool;
+  gradient: string;
+  borderColor: string;
+}
+
 // Award badges — calculated from tool data
 function getAwardBadges(tools: Tool[]): Record<string, string[]> {
   const badges: Record<string, string[]> = {};
@@ -44,6 +54,78 @@ function getAwardBadges(tools: Tool[]): Record<string, string[]> {
   }
 
   return badges;
+}
+
+// Build structured awards list for showcase section
+function getAwards(tools: Tool[]): Award[] {
+  if (tools.length < 2) return [];
+  const awards: Award[] = [];
+
+  // Editor's Choice — #1 overall
+  awards.push({
+    emoji: '🏆',
+    title: 'Editor\'s Choice',
+    description: `Top-rated overall with ${tools[0].ratings.overall}/10`,
+    tool: tools[0],
+    gradient: 'from-yellow-400 to-amber-500',
+    borderColor: 'border-yellow-300 dark:border-yellow-700',
+  });
+
+  // Best Value
+  const bestValue = [...tools].sort((a, b) => b.ratings.valueForMoney - a.ratings.valueForMoney)[0];
+  if (bestValue && bestValue.id !== tools[0].id) {
+    awards.push({
+      emoji: '💎',
+      title: 'Best Value',
+      description: `Value score: ${bestValue.ratings.valueForMoney}/10`,
+      tool: bestValue,
+      gradient: 'from-emerald-400 to-teal-500',
+      borderColor: 'border-emerald-300 dark:border-emerald-700',
+    });
+  }
+
+  // Most User-Friendly
+  const easiest = [...tools].sort((a, b) => b.ratings.easeOfUse - a.ratings.easeOfUse)[0];
+  if (easiest && easiest.id !== tools[0].id && easiest.id !== bestValue?.id) {
+    awards.push({
+      emoji: '✨',
+      title: 'Easiest to Use',
+      description: `Ease score: ${easiest.ratings.easeOfUse}/10`,
+      tool: easiest,
+      gradient: 'from-blue-400 to-indigo-500',
+      borderColor: 'border-blue-300 dark:border-blue-700',
+    });
+  }
+
+  // Most Feature-Rich
+  const featureRich = [...tools].sort((a, b) => b.ratings.features - a.ratings.features)[0];
+  if (featureRich && !awards.some(a => a.tool.id === featureRich.id)) {
+    awards.push({
+      emoji: '⚙️',
+      title: 'Most Features',
+      description: `Features score: ${featureRich.ratings.features}/10`,
+      tool: featureRich,
+      gradient: 'from-purple-400 to-violet-500',
+      borderColor: 'border-purple-300 dark:border-purple-700',
+    });
+  }
+
+  // Budget Pick
+  const budgetPicks = tools
+    .filter(t => t.pricing.startingPrice && t.pricing.startingPrice > 0 && t.ratings.overall >= 7)
+    .sort((a, b) => (a.pricing.startingPrice || 999) - (b.pricing.startingPrice || 999));
+  if (budgetPicks.length > 0 && !awards.some(a => a.tool.id === budgetPicks[0].id)) {
+    awards.push({
+      emoji: '🏷️',
+      title: 'Budget Pick',
+      description: `From $${budgetPicks[0].pricing.startingPrice}/mo`,
+      tool: budgetPicks[0],
+      gradient: 'from-orange-400 to-rose-500',
+      borderColor: 'border-orange-300 dark:border-orange-700',
+    });
+  }
+
+  return awards;
 }
 
 export const revalidate = 3600;
@@ -165,6 +247,7 @@ export default async function BestOfPage({ params }: { params: Promise<{ slug: s
 
   const faqs = generateBestOfFAQs(allTools, sub.name);
   const awardBadges = getAwardBadges(allTools);
+  const awards = getAwards(allTools);
 
   const breadcrumbs = [
     { name: 'Home', url: '/' },
@@ -291,6 +374,51 @@ export default async function BestOfPage({ params }: { params: Promise<{ slug: s
               </div>
             </div>
           </div>
+        )}
+
+        {/* Award Winners Showcase */}
+        {awards.length >= 2 && (
+          <section className="mb-10">
+            <div className="flex items-center gap-2 mb-5">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-yellow-400 to-amber-500 flex items-center justify-center text-sm shadow-md shadow-yellow-500/20">🏅</div>
+              <h2 className="text-lg font-bold text-gray-900 dark:text-white">Award Winners</h2>
+            </div>
+            <div className={`grid gap-3 ${awards.length <= 3 ? 'md:grid-cols-3' : 'md:grid-cols-2 lg:grid-cols-4'}`}>
+              {awards.map((award) => (
+                <Link
+                  key={award.title}
+                  href={`/${award.tool.categorySlug}/${award.tool.slug}`}
+                  className={`group relative overflow-hidden bg-white dark:bg-gray-900 rounded-2xl border-2 ${award.borderColor} p-5 hover:shadow-lg transition-all hover:-translate-y-0.5`}
+                >
+                  <div className={`absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl ${award.gradient} opacity-[0.07] rounded-bl-full`} />
+                  <div className="relative">
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className="text-xl">{award.emoji}</span>
+                      <span className={`text-xs font-bold uppercase tracking-wider bg-gradient-to-r ${award.gradient} bg-clip-text text-transparent`}>
+                        {award.title}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2.5 mb-2">
+                      <ToolLogo logoUrl={award.tool.logoUrl} name={award.tool.name} size={32} />
+                      <div className="min-w-0">
+                        <div className="font-bold text-sm group-hover:text-indigo-600 transition-colors truncate">{award.tool.name}</div>
+                        <div className="text-[11px] text-gray-500 dark:text-gray-400">{award.description}</div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 mt-3">
+                      <div className="flex-1 h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                        <div
+                          className={`h-full rounded-full bg-gradient-to-r ${award.gradient}`}
+                          style={{ width: `${(award.tool.ratings.overall / 10) * 100}%` }}
+                        />
+                      </div>
+                      <span className="text-xs font-extrabold text-gray-700 dark:text-gray-300">{award.tool.ratings.overall}/10</span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
         )}
 
         {/* Quick Summary Table */}
