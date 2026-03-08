@@ -194,17 +194,57 @@ export function Footer() {
         </div>
       </div>
 
+      {/* Trending Searches — Extra internal linking for SEO */}
+      <div className="border-t border-gray-200/60 dark:border-gray-800/60">
+        <div className="max-w-7xl mx-auto px-4 py-6">
+          <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Trending Searches</h4>
+          <div className="flex flex-wrap gap-2">
+            {[
+              { label: 'Best AI tools 2026', href: '/ai-tools' },
+              { label: 'Free project management', href: '/search?cat=saas&price=free' },
+              { label: 'Email marketing comparison', href: '/marketing/compare' },
+              { label: 'CRM software pricing', href: '/best/crm' },
+              { label: 'Shopify alternatives', href: '/ecommerce/shopify/alternatives' },
+              { label: 'Free website builders', href: '/search?cat=hosting&price=free' },
+              { label: 'WordPress hosting', href: '/best/wordpress-hosting' },
+              { label: 'Best SEO tools', href: '/best/seo-tools' },
+              { label: 'Social media tools', href: '/best/social-media-management' },
+              { label: 'Landing page builders', href: '/best/landing-page-builders' },
+              { label: 'Help desk software', href: '/best/help-desk' },
+              { label: 'Time tracking apps', href: '/best/time-tracking' },
+            ].map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="text-xs px-3 py-1.5 bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 rounded-full hover:bg-blue-100 dark:hover:bg-blue-900/30 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+
       {/* Bottom Bar */}
       <div className="border-t border-gray-200 dark:border-gray-800">
         <div className="max-w-7xl mx-auto px-4 py-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-sm text-gray-400">
-              &copy; {year} {SITE_NAME}. All rights reserved. All trademarks are the property of their respective owners.
-            </p>
+            <div>
+              <p className="text-sm text-gray-400">
+                &copy; {year} {SITE_NAME}. All rights reserved. All trademarks are the property of their respective owners.
+              </p>
+              <p className="text-[10px] text-gray-400/60 mt-1">
+                We may earn affiliate commissions when you visit tools through our links. This does not affect our reviews or rankings.
+              </p>
+            </div>
             <div className="flex items-center gap-4 text-xs text-gray-400">
               <span>Independent reviews since 2025</span>
               <span className="w-1 h-1 bg-gray-300 dark:bg-gray-600 rounded-full" />
               <span>{year} Edition</span>
+              <span className="w-1 h-1 bg-gray-300 dark:bg-gray-600 rounded-full" />
+              <Link href="/feed.xml" className="hover:text-orange-500 transition-colors" title="RSS Feed">
+                <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M6.503 20.752c0 1.794-1.456 3.248-3.251 3.248-1.796 0-3.252-1.454-3.252-3.248 0-1.794 1.456-3.248 3.252-3.248 1.795 0 3.251 1.454 3.251 3.248zm-6.503-12.572v4.811c6.05.062 10.96 4.966 11.022 11.009h4.817c-.062-8.71-7.118-15.758-15.839-15.82zm0-8.18v4.819c12.951.115 23.437 10.586 23.498 23.501h4.502c-.072-15.572-12.765-28.22-28-28.32z"/></svg>
+              </Link>
             </div>
           </div>
         </div>
