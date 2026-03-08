@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getComparisonsByCategory, getCategoryStats } from '@/lib/data';
 import { generateBreadcrumbSchema, generateComparisonHubSchema, generateFAQSchema } from '@/lib/schema';
-import { CATEGORIES, CATEGORY_LIST, SITE_URL, SITE_NAME } from '@/lib/constants';
+import { CATEGORIES, CATEGORY_LIST, SUBCATEGORIES, SITE_URL, SITE_NAME } from '@/lib/constants';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { AdBanner, AdInArticle, AdMultiplex, AdSidebar } from '@/components/ads/AdSlot';
 import { ToolLogo } from '@/components/common/ToolLogo';
@@ -274,6 +274,35 @@ export default async function ComparisonHubPage({ params }: PageProps) {
             ))}
           </div>
         </section>
+
+        {/* Best-of Rankings — Cross-link to best-of pages */}
+        {(SUBCATEGORIES[category] || []).length > 0 && (
+          <section className="mt-10 mb-8">
+            <h2 className="text-xl font-bold mb-2">Best {cat.name} Rankings</h2>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+              Not sure which tool to pick? Browse our expert-curated rankings
+            </p>
+            <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-3">
+              {(SUBCATEGORIES[category] || []).slice(0, 6).map((sub) => (
+                <Link
+                  key={sub.slug}
+                  href={`/best/${sub.slug}`}
+                  className="group flex items-center gap-3 p-4 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-amber-300 dark:hover:border-amber-700 hover:bg-amber-50/30 dark:hover:bg-amber-900/10 transition-all"
+                >
+                  <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-amber-100 to-orange-100 dark:from-amber-900/30 dark:to-orange-900/30 flex items-center justify-center text-lg flex-shrink-0">
+                    🏆
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-medium text-sm group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors truncate">
+                      Best {sub.name}
+                    </h3>
+                    <p className="text-[11px] text-gray-400 mt-0.5 line-clamp-1">{sub.description}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* SEO text */}
         <section className="mt-8 mb-4">

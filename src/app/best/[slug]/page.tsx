@@ -788,6 +788,39 @@ export default async function BestOfPage({ params }: { params: Promise<{ slug: s
           </div>
         </div>
 
+        {/* Browse Category Hub — Prominent back-link for hub-and-spoke SEO */}
+        <div className="mb-10 bg-gradient-to-br from-indigo-50 to-blue-50 dark:from-indigo-950/20 dark:to-blue-950/20 rounded-2xl border border-indigo-200/60 dark:border-indigo-800/40 p-6 md:p-8">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-blue-600 flex items-center justify-center text-2xl text-white shadow-lg shadow-indigo-500/20 flex-shrink-0">
+              📂
+            </div>
+            <div className="flex-1">
+              <h3 className="font-bold text-lg text-gray-900 dark:text-white">
+                Explore All {sub.categoryName}
+              </h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                Browse {CATEGORIES[sub.categorySlug]?.toolCount || ''}+ tools, side-by-side comparisons, and detailed reviews in the {sub.categoryName} category.
+              </p>
+            </div>
+            <Link
+              href={`/${sub.categorySlug}`}
+              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-indigo-600 to-blue-600 text-white rounded-xl text-sm font-bold hover:from-indigo-700 hover:to-blue-700 transition-all shadow-lg shadow-indigo-600/20 flex-shrink-0"
+            >
+              Browse {sub.categoryName} &#8594;
+            </Link>
+          </div>
+          <div className="mt-4 flex flex-wrap gap-2">
+            <Link href={`/${sub.categorySlug}/compare`} className="text-xs px-3 py-1.5 bg-white/60 dark:bg-gray-800/60 rounded-full border border-indigo-200/60 dark:border-indigo-800/40 text-indigo-700 dark:text-indigo-400 font-medium hover:bg-white dark:hover:bg-gray-700 transition-colors">
+              {sub.categoryName} Comparisons
+            </Link>
+            {SUBCATEGORIES[sub.categorySlug]?.filter(s => s.slug !== slug).slice(0, 3).map(s => (
+              <Link key={s.slug} href={`/best/${s.slug}`} className="text-xs px-3 py-1.5 bg-white/60 dark:bg-gray-800/60 rounded-full border border-indigo-200/60 dark:border-indigo-800/40 text-indigo-700 dark:text-indigo-400 font-medium hover:bg-white dark:hover:bg-gray-700 transition-colors">
+                Best {s.name}
+              </Link>
+            ))}
+          </div>
+        </div>
+
         {/* Sticky Sidebar Ad (Desktop) */}
         <div className="hidden lg:block fixed right-4 top-32 z-30" style={{ maxWidth: '300px' }}>
           <AdSidebar />
@@ -808,13 +841,20 @@ export default async function BestOfPage({ params }: { params: Promise<{ slug: s
           </div>
         </div>
 
-        {/* Back to category */}
+        {/* Back to category — Minimal footer link */}
         <div className="text-center">
           <Link
             href={`/${sub.categorySlug}`}
             className="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline"
           >
-            &#8592; Back to all {sub.categoryName}
+            &#8592; All {sub.categoryName}
+          </Link>
+          <span className="mx-3 text-gray-300">·</span>
+          <Link
+            href="/best"
+            className="text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+          >
+            All Rankings
           </Link>
         </div>
       </div>

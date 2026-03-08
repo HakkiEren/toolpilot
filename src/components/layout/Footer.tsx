@@ -208,10 +208,10 @@ export function Footer() {
               { label: 'Free website builders', href: '/search?cat=hosting&price=free' },
               { label: 'WordPress hosting', href: '/best/wordpress-hosting' },
               { label: 'Best SEO tools', href: '/best/seo-tools' },
-              { label: 'Social media tools', href: '/best/social-media-management' },
-              { label: 'Landing page builders', href: '/best/landing-page-builders' },
-              { label: 'Help desk software', href: '/best/help-desk' },
-              { label: 'Time tracking apps', href: '/best/time-tracking' },
+              { label: 'Social media tools', href: '/best/social-media' },
+              { label: 'Landing page builders', href: '/best/landing-pages' },
+              { label: 'Help desk software', href: '/best/helpdesk' },
+              { label: 'No-code platforms', href: '/best/no-code' },
             ].map((item) => (
               <Link
                 key={item.href}
