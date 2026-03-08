@@ -313,7 +313,7 @@ export default async function HomePage() {
                 style={{ animationDelay: `${i * 60}ms` }}
               >
                 <div className="flex-shrink-0 relative">
-                  <ToolLogo logoUrl={tool.logo_url || ''} name={tool.name} size={48} className="p-1" />
+                  <ToolLogo logoUrl={tool.logo_url || ''} name={tool.name} size={48} className="p-1" priority={i < 3} />
                   {i < 3 && (
                     <span className="absolute -top-1 -right-1 w-5 h-5 bg-yellow-400 text-[10px] font-bold rounded-full flex items-center justify-center text-yellow-900">
                       {i + 1}

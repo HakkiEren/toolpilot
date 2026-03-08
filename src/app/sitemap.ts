@@ -35,7 +35,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/glossary`, lastModified: monthlyDate, changeFrequency: 'monthly', priority: 0.6 },
     { url: `${SITE_URL}/about/team`, lastModified: monthlyDate, changeFrequency: 'monthly', priority: 0.5 },
     { url: `${SITE_URL}/changelog`, lastModified: weeklyDate, changeFrequency: 'weekly', priority: 0.5 },
-    { url: `${SITE_URL}/feed.xml`, lastModified: weeklyDate, changeFrequency: 'weekly', priority: 0.3 },
+    // feed.xml excluded — RSS feeds are not HTML pages, auto-discovered via <link rel="alternate">
   );
 
   // 2. Category pages + comparison hub pages

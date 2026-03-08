@@ -13,6 +13,9 @@ const nextConfig: NextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128],
   },
 
+  // No trailing slashes — prevents duplicate content
+  trailingSlash: false,
+
   // Strict mode for better development
   reactStrictMode: true,
 

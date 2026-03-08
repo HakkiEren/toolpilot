@@ -180,7 +180,6 @@ export const LIMITS = {
 
 export const SEO = {
   titleSuffix: ` | ${SITE_NAME}`,
-  defaultOgImage: '/og-default.png',
   twitterHandle: '@propicked',
   locale: 'en_US',
 };

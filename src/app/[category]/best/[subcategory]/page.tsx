@@ -1,4 +1,4 @@
-import { redirect } from 'next/navigation';
+import { permanentRedirect } from 'next/navigation';
 import { SUBCATEGORIES } from '@/lib/constants';
 
 // Redirect old /[category]/best/[subcategory] URLs to new /best/[subcategory]
@@ -20,5 +20,5 @@ export default async function OldBestOfPage({
   params: Promise<{ category: string; subcategory: string }>;
 }) {
   const { subcategory } = await params;
-  redirect(`/best/${subcategory}`);
+  permanentRedirect(`/best/${subcategory}`);
 }
