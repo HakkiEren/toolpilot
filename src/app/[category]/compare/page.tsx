@@ -5,7 +5,7 @@ import { getComparisonsByCategory, getCategoryStats } from '@/lib/data';
 import { generateBreadcrumbSchema, generateComparisonHubSchema, generateFAQSchema } from '@/lib/schema';
 import { CATEGORIES, CATEGORY_LIST, SITE_URL, SITE_NAME } from '@/lib/constants';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
-import { AdBanner, AdInArticle, AdMultiplex } from '@/components/ads/AdSlot';
+import { AdBanner, AdInArticle, AdMultiplex, AdSidebar } from '@/components/ads/AdSlot';
 import { ToolLogo } from '@/components/common/ToolLogo';
 import { ReadingProgress } from '@/components/common/ReadingProgress';
 
@@ -309,6 +309,11 @@ export default async function ComparisonHubPage({ params }: PageProps) {
             ))}
           </div>
         </section>
+
+        {/* Sticky Sidebar Ad (Desktop) */}
+        <div className="hidden lg:block fixed right-4 top-32 z-30" style={{ maxWidth: '300px' }}>
+          <AdSidebar />
+        </div>
 
         {/* Freshness Signal */}
         <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-gray-400 border-t border-gray-200 dark:border-gray-800 pt-6">

@@ -6,7 +6,7 @@ import { CATEGORIES, SUBCATEGORIES, SITE_URL, SITE_NAME } from '@/lib/constants'
 import { generateBreadcrumbSchema, generateCollectionSchema, generateBestOfItemListSchema, generateFAQSchema } from '@/lib/schema';
 import { ToolLogo } from '@/components/common/ToolLogo';
 import { RatingStars } from '@/components/common/RatingStars';
-import { AdBanner, AdInArticle, AdMultiplex } from '@/components/ads/AdSlot';
+import { AdBanner, AdInArticle, AdMultiplex, AdSidebar } from '@/components/ads/AdSlot';
 import { ShareButtons } from '@/components/common/ShareButtons';
 import { ReadingProgress } from '@/components/common/ReadingProgress';
 import { CopyLinkButton } from '@/components/common/CopyLinkButton';
@@ -786,6 +786,11 @@ export default async function BestOfPage({ params }: { params: Promise<{ slug: s
                 </Link>
               ))}
           </div>
+        </div>
+
+        {/* Sticky Sidebar Ad (Desktop) */}
+        <div className="hidden lg:block fixed right-4 top-32 z-30" style={{ maxWidth: '300px' }}>
+          <AdSidebar />
         </div>
 
         {/* Freshness Footer */}
