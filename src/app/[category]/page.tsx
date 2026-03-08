@@ -9,7 +9,9 @@ import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { FAQSection } from '@/components/common/FAQSection';
 import { AdBanner, AdInArticle, AdMultiplex } from '@/components/ads/AdSlot';
 import { ToolGrid } from '@/components/category/ToolGrid';
+import { QuickCompare } from '@/components/category/QuickCompare';
 import { ReadingProgress } from '@/components/common/ReadingProgress';
+import { RecentlyViewed } from '@/components/common/RecentlyViewed';
 import { getCategoryContent } from '@/lib/category-content';
 
 // ============================================================
@@ -252,6 +254,9 @@ export default async function CategoryPage({ params }: PageProps) {
         {/* ========== AD: AFTER TOP 3 ========== */}
         <AdBanner />
 
+        {/* ========== RECENTLY VIEWED — Personalized browsing history ========== */}
+        <RecentlyViewed variant="compact" title="Recently Viewed" maxItems={6} />
+
         {/* ========== ALL TOOLS GRID — Interactive sort & filter ========== */}
         {tools.length > 0 ? (
           <ToolGrid
@@ -315,6 +320,20 @@ export default async function CategoryPage({ params }: PageProps) {
               ))}
             </div>
           </section>
+        )}
+
+        {/* ========== QUICK COMPARE WIDGET — Interactive side-by-side ========== */}
+        {tools.length >= 2 && (
+          <QuickCompare
+            tools={tools.map(t => ({
+              slug: t.slug,
+              name: t.name,
+              logoUrl: t.logoUrl,
+              ratings: t.ratings,
+              pricing: { hasFreeplan: t.pricing.hasFreeplan, startingPrice: t.pricing.startingPrice },
+            }))}
+            categorySlug={category}
+          />
         )}
 
         {/* ========== AD: AFTER COMPARISONS ========== */}

@@ -7,6 +7,7 @@ import { generateFAQSchema } from '@/lib/schema';
 import { ToolLogo } from '@/components/common/ToolLogo';
 import { RatingStars } from '@/components/common/RatingStars';
 import { AdBanner, AdInArticle, AdMultiplex, AdNative } from '@/components/ads/AdSlot';
+import { RecentlyViewed } from '@/components/common/RecentlyViewed';
 
 export const revalidate = 3600;
 
@@ -287,6 +288,13 @@ export default async function HomePage() {
           )}
         </div>
       </section>
+
+      {/* ============================================================ */}
+      {/* RECENTLY VIEWED — Personalized browsing history */}
+      {/* ============================================================ */}
+      <div className="max-w-7xl mx-auto px-4 pt-8">
+        <RecentlyViewed variant="strip" title="Recently Viewed" maxItems={8} />
+      </div>
 
       {/* ============================================================ */}
       {/* TRENDING TOOLS — Top rated across all categories */}

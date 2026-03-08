@@ -15,6 +15,8 @@ import { ShareButtons } from '@/components/common/ShareButtons';
 import { CopyLinkButton } from '@/components/common/CopyLinkButton';
 import { ReadingProgress } from '@/components/common/ReadingProgress';
 import { TableOfContents } from '@/components/common/TableOfContents';
+import { RecordToolView } from '@/components/common/RecentlyViewed';
+import { StickyMobileCTA } from '@/components/common/StickyMobileCTA';
 
 // ============================================================
 // TOOL PROFILE PAGE — Individual tool review (ENHANCED)
@@ -107,6 +109,15 @@ export default async function ToolPage({ params }: PageProps) {
 
   return (
     <>
+      <RecordToolView tool={{
+        slug: tool.slug,
+        categorySlug: tool.categorySlug,
+        name: tool.name,
+        logoUrl: tool.logoUrl,
+        rating: tool.ratings.overall,
+        tagline: tool.tagline,
+        hasFree: tool.pricing.hasFreeplan,
+      }} />
       <ReadingProgress />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(toolSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
@@ -914,6 +925,15 @@ export default async function ToolPage({ params }: PageProps) {
           </div>
         </div>
       </article>
+
+      {/* ========== STICKY MOBILE CTA — Bottom bar on mobile for conversions ========== */}
+      <StickyMobileCTA
+        toolName={tool.name}
+        rating={tool.ratings.overall}
+        websiteUrl={tool.websiteUrl}
+        hasFreeplan={tool.pricing.hasFreeplan}
+        freeTrialDays={tool.pricing.freeTrialDays}
+      />
     </>
   );
 }

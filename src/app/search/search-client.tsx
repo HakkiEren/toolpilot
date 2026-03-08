@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useEffect } from 'react';
 import { ToolLogo } from '@/components/common/ToolLogo';
+import { RecentlyViewed } from '@/components/common/RecentlyViewed';
 
 interface SearchTool {
   slug: string;
@@ -165,6 +166,9 @@ export function SearchClient({ tools }: { tools: SearchTool[] }) {
           </div>
         </div>
       </div>
+
+      {/* Recently Viewed — Personalized browsing history */}
+      <RecentlyViewed variant="strip" title="Recently Viewed" maxItems={6} />
 
       {/* Top Picks — Horizontal scroll strip (only shown when no query) */}
       {!query && (
