@@ -229,9 +229,12 @@ export default async function ToolPage({ params }: PageProps) {
               { id: 'about', label: `What is ${tool.name}?`, icon: '📖' },
               ...(featureEntries.length > 0 ? [{ id: 'features', label: 'Key Features', icon: '⚙️' }] : []),
               ...(tool.prosConsContent ? [{ id: 'pros-cons', label: 'Pros & Cons', icon: '⚖️' }] : []),
+              { id: 'ideal-for', label: 'Who Should Use It?', icon: '🎯' },
               { id: 'pricing', label: 'Pricing', icon: '💰' },
+              ...(relatedTools.length > 0 ? [{ id: 'scorecard', label: 'Competitor Scorecard', icon: '📊' }] : []),
               ...(comparisons.length > 0 ? [{ id: 'competitors', label: 'vs Competitors', icon: '🥊' }] : []),
               { id: 'verdict', label: 'Expert Verdict', icon: '🏆' },
+              { id: 'get-started', label: 'Getting Started', icon: '🚀' },
               ...(toolFAQs.length > 0 ? [{ id: 'faq', label: 'FAQ', icon: '❓' }] : []),
             ]}
           />
@@ -405,6 +408,43 @@ export default async function ToolPage({ params }: PageProps) {
         {/* ========== AD: AFTER PROS/CONS ========== */}
         <AdInArticle />
 
+        {/* ========== IDEAL FOR / NOT IDEAL FOR — Buyer's Guide ========== */}
+        <section id="ideal-for" className="mb-12 scroll-mt-24">
+          <h2 className="text-2xl font-bold mb-6">Who Should (and Shouldn&apos;t) Use {tool.name}?</h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Ideal For */}
+            <div className="bg-gradient-to-br from-emerald-50 to-green-50 dark:from-emerald-950/20 dark:to-green-950/20 rounded-2xl p-6 border border-emerald-200/60 dark:border-emerald-800/30">
+              <h3 className="font-bold text-emerald-700 dark:text-emerald-400 mb-4 flex items-center gap-2">
+                <span className="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/40 flex items-center justify-center text-sm">&#10003;</span>
+                Ideal For
+              </h3>
+              <ul className="space-y-3 text-sm">
+                {generateIdealFor(tool, cat?.name || category).map((item, i) => (
+                  <li key={i} className="flex items-start gap-2.5 text-gray-700 dark:text-gray-300">
+                    <span className="text-emerald-500 mt-0.5 flex-shrink-0 font-bold">&#10003;</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            {/* Not Ideal For */}
+            <div className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 rounded-2xl p-6 border border-amber-200/60 dark:border-amber-800/30">
+              <h3 className="font-bold text-amber-700 dark:text-amber-400 mb-4 flex items-center gap-2">
+                <span className="w-8 h-8 rounded-lg bg-amber-100 dark:bg-amber-900/40 flex items-center justify-center text-sm">&#9888;</span>
+                Not Ideal For
+              </h3>
+              <ul className="space-y-3 text-sm">
+                {generateNotIdealFor(tool, cat?.name || category).map((item, i) => (
+                  <li key={i} className="flex items-start gap-2.5 text-gray-700 dark:text-gray-300">
+                    <span className="text-amber-500 mt-0.5 flex-shrink-0">&#9888;</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </section>
+
         {/* ========== USE CASES ========== */}
         {tool.useCasesContent && (
           <section className="mb-12">
@@ -474,6 +514,69 @@ export default async function ToolPage({ params }: PageProps) {
             </div>
           )}
         </section>
+
+        {/* ========== QUICK COMPETITOR SCORECARD ========== */}
+        {relatedTools.length > 0 && (
+          <section id="scorecard" className="mb-12 scroll-mt-24">
+            <h2 className="text-2xl font-bold mb-2">How {tool.name} Compares</h2>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">Quick scorecard vs top alternatives in the {cat?.name || category} category</p>
+            <div className="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-700">
+              <table className="w-full text-sm">
+                <thead className="bg-gray-50 dark:bg-gray-800">
+                  <tr>
+                    <th className="py-3 px-4 text-left font-medium text-gray-500 w-[30%]">Tool</th>
+                    <th className="py-3 px-3 text-center font-medium text-gray-500">Overall</th>
+                    <th className="py-3 px-3 text-center font-medium text-gray-500 hidden sm:table-cell">Features</th>
+                    <th className="py-3 px-3 text-center font-medium text-gray-500 hidden sm:table-cell">Ease of Use</th>
+                    <th className="py-3 px-3 text-center font-medium text-gray-500 hidden md:table-cell">Value</th>
+                    <th className="py-3 px-3 text-center font-medium text-gray-500">Price</th>
+                    <th className="py-3 px-3 text-center font-medium text-gray-500">Free?</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {/* Current tool — highlighted row */}
+                  <tr className="bg-blue-50/50 dark:bg-blue-900/10 border-b border-gray-100 dark:border-gray-800">
+                    <td className="py-3 px-4">
+                      <div className="flex items-center gap-2.5">
+                        <ToolLogo logoUrl={tool.logoUrl} name={tool.name} size={28} />
+                        <span className="font-bold text-blue-600 dark:text-blue-400">{tool.name}</span>
+                        <span className="text-[10px] px-1.5 py-0.5 bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 rounded font-semibold">This tool</span>
+                      </div>
+                    </td>
+                    <td className="py-3 px-3 text-center">
+                      <span className={`font-black ${tool.ratings.overall >= 8 ? 'text-green-600' : tool.ratings.overall >= 6 ? 'text-yellow-600' : 'text-red-500'}`}>{tool.ratings.overall.toFixed(1)}</span>
+                    </td>
+                    <td className="py-3 px-3 text-center hidden sm:table-cell font-medium">{tool.ratings.features.toFixed(1)}</td>
+                    <td className="py-3 px-3 text-center hidden sm:table-cell font-medium">{tool.ratings.easeOfUse.toFixed(1)}</td>
+                    <td className="py-3 px-3 text-center hidden md:table-cell font-medium">{tool.ratings.valueForMoney.toFixed(1)}</td>
+                    <td className="py-3 px-3 text-center text-xs">{tool.pricing.startingPrice ? `$${tool.pricing.startingPrice}/mo` : 'N/A'}</td>
+                    <td className="py-3 px-3 text-center">{tool.pricing.hasFreeplan ? <span className="text-green-500">&#10003;</span> : <span className="text-gray-300">&#10007;</span>}</td>
+                  </tr>
+                  {/* Competitor rows */}
+                  {relatedTools.slice(0, 4).map((rt) => (
+                    <tr key={rt.id} className="border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/30 transition-colors">
+                      <td className="py-3 px-4">
+                        <Link href={`/${rt.categorySlug}/${rt.slug}`} className="flex items-center gap-2.5 hover:text-blue-600 transition-colors">
+                          <ToolLogo logoUrl={rt.logoUrl} name={rt.name} size={28} />
+                          <span className="font-medium">{rt.name}</span>
+                        </Link>
+                      </td>
+                      <td className="py-3 px-3 text-center">
+                        <span className={`font-bold ${rt.ratings.overall >= 8 ? 'text-green-600' : rt.ratings.overall >= 6 ? 'text-yellow-600' : 'text-red-500'}`}>{rt.ratings.overall.toFixed(1)}</span>
+                      </td>
+                      <td className="py-3 px-3 text-center hidden sm:table-cell">{rt.ratings.features.toFixed(1)}</td>
+                      <td className="py-3 px-3 text-center hidden sm:table-cell">{rt.ratings.easeOfUse.toFixed(1)}</td>
+                      <td className="py-3 px-3 text-center hidden md:table-cell">{rt.ratings.valueForMoney.toFixed(1)}</td>
+                      <td className="py-3 px-3 text-center text-xs">{rt.pricing.startingPrice ? `$${rt.pricing.startingPrice}/mo` : 'N/A'}</td>
+                      <td className="py-3 px-3 text-center">{rt.pricing.hasFreeplan ? <span className="text-green-500">&#10003;</span> : <span className="text-gray-300">&#10007;</span>}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="text-xs text-gray-400 mt-3 text-center">Scores based on our independent analysis. Higher is better (out of 10).</p>
+          </section>
+        )}
 
         {/* ========== VS COMPETITORS — With real logos ========== */}
         {comparisons.length > 0 && (
@@ -646,6 +749,53 @@ export default async function ToolPage({ params }: PageProps) {
                   <div className="text-xs text-gray-400 mt-0.5">{label}</div>
                 </div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ========== GETTING STARTED GUIDE — CTA Section ========== */}
+        <section id="get-started" className="mb-12 scroll-mt-24">
+          <h2 className="text-2xl font-bold mb-6">How to Get Started with {tool.name}</h2>
+          <div className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-blue-950/20 dark:via-indigo-950/20 dark:to-purple-950/20 rounded-2xl border border-blue-200/40 dark:border-blue-800/30 p-6 md:p-8">
+            {/* Decorative */}
+            <div className="absolute -top-12 -right-12 w-40 h-40 bg-blue-400/10 rounded-full blur-3xl pointer-events-none" />
+
+            <div className="relative">
+              {/* Steps */}
+              <div className="grid md:grid-cols-3 gap-6 mb-8">
+                {generateGettingStartedSteps(tool).map((step, i) => (
+                  <div key={i} className="flex items-start gap-3">
+                    <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center text-white font-black text-sm shadow-lg shadow-blue-500/20">
+                      {i + 1}
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-sm mb-1">{step.title}</h3>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{step.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* CTA */}
+              <div className="flex flex-wrap items-center gap-4 pt-4 border-t border-blue-200/40 dark:border-blue-800/20">
+                <a
+                  href={tool.websiteUrl}
+                  target="_blank"
+                  rel="noopener noreferrer nofollow sponsored"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl text-sm font-bold hover:from-blue-700 hover:to-indigo-700 transition-all shadow-lg shadow-blue-600/25"
+                >
+                  {tool.pricing.hasFreeplan ? 'Start Free' : tool.pricing.freeTrialDays ? `Start ${tool.pricing.freeTrialDays}-Day Trial` : `Try ${tool.name}`} &#8599;
+                </a>
+                <div className="flex items-center gap-3 text-xs text-gray-500">
+                  {tool.pricing.hasFreeplan && (
+                    <span className="flex items-center gap-1"><span className="text-green-500">&#10003;</span> No credit card required</span>
+                  )}
+                  {tool.pricing.freeTrialDays && (
+                    <span className="flex items-center gap-1"><span className="text-blue-500">&#9719;</span> {tool.pricing.freeTrialDays}-day free trial</span>
+                  )}
+                  <span className="flex items-center gap-1"><span className="text-purple-500">&#128274;</span> Cancel anytime</span>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -847,6 +997,135 @@ function generateExpertVerdict(tool: Tool, categoryName: string): string {
   }
 
   return parts.join(' ');
+}
+
+// ============================================================
+// HELPERS — "Ideal For / Not Ideal For" buyer guide generation
+// ============================================================
+
+function generateIdealFor(tool: Tool, categoryName: string): string[] {
+  const items: string[] = [];
+
+  // Based on ease of use
+  if (tool.ratings.easeOfUse >= 8) {
+    items.push(`Beginners and non-technical users looking for an intuitive ${categoryName} solution`);
+  } else if (tool.ratings.easeOfUse >= 7) {
+    items.push(`Users comfortable with technology who want a capable ${categoryName} tool`);
+  }
+
+  // Based on features
+  if (tool.ratings.features >= 8.5) {
+    items.push('Power users and teams who need a comprehensive, feature-rich platform');
+  } else if (tool.ratings.features >= 7) {
+    items.push('Teams that need solid core features without unnecessary complexity');
+  }
+
+  // Based on pricing
+  if (tool.pricing.hasFreeplan && tool.pricing.startingPrice && tool.pricing.startingPrice <= 30) {
+    items.push('Solopreneurs and startups with limited budgets — free plan + affordable upgrades');
+  } else if (tool.pricing.hasFreeplan) {
+    items.push('Users who want to try before committing — the free plan provides a risk-free start');
+  } else if (tool.pricing.startingPrice && tool.pricing.startingPrice <= 20) {
+    items.push('Budget-conscious individuals and small teams looking for affordable quality');
+  } else if (tool.pricing.startingPrice && tool.pricing.startingPrice > 50) {
+    items.push('Established businesses and teams with budget for professional-grade tooling');
+  }
+
+  // Based on support
+  if (tool.ratings.support >= 8) {
+    items.push('Teams that value responsive customer support and guided onboarding');
+  }
+
+  // Based on value
+  if (tool.ratings.valueForMoney >= 8.5) {
+    items.push('Value-seekers — you get more features per dollar than most competitors');
+  }
+
+  // Ensure we always have at least 3 items
+  if (items.length < 3) {
+    items.push(`Anyone evaluating ${categoryName} tools — rated ${tool.ratings.overall.toFixed(1)}/10 overall`);
+  }
+
+  return items.slice(0, 5);
+}
+
+function generateNotIdealFor(tool: Tool, categoryName: string): string[] {
+  const items: string[] = [];
+
+  // Based on pricing
+  if (!tool.pricing.hasFreeplan && tool.pricing.startingPrice && tool.pricing.startingPrice > 50) {
+    items.push('Budget-limited individuals or hobbyists who need a free or low-cost option');
+  }
+
+  // Based on ease of use
+  if (tool.ratings.easeOfUse < 7) {
+    items.push('Users who prefer plug-and-play simplicity without a learning curve');
+  }
+
+  // Based on features
+  if (tool.ratings.features < 7) {
+    items.push(`Power users needing advanced ${categoryName} capabilities — consider top-rated alternatives`);
+  }
+  if (tool.ratings.features >= 8.5 && tool.ratings.easeOfUse < 7.5) {
+    items.push('Teams that need quick setup — the extensive feature set comes with a steeper onboarding curve');
+  }
+
+  // Based on support
+  if (tool.ratings.support < 7) {
+    items.push('Users who rely heavily on customer support for troubleshooting and onboarding');
+  }
+
+  // Based on value
+  if (tool.ratings.valueForMoney < 7) {
+    items.push('Cost-sensitive buyers — the features-to-price ratio may not justify the investment for light use');
+  }
+
+  // Fallback
+  if (items.length < 2) {
+    items.push(`Users with very specialized needs that go beyond mainstream ${categoryName} functionality`);
+  }
+
+  return items.slice(0, 4);
+}
+
+// ============================================================
+// HELPERS — Getting Started steps generation
+// ============================================================
+
+function generateGettingStartedSteps(tool: Tool): Array<{ title: string; description: string }> {
+  const steps: Array<{ title: string; description: string }> = [];
+
+  // Step 1: Sign up
+  if (tool.pricing.hasFreeplan) {
+    steps.push({
+      title: 'Create a free account',
+      description: `Sign up at ${tool.name}\'s website — no credit card required for the free plan.`,
+    });
+  } else if (tool.pricing.freeTrialDays) {
+    steps.push({
+      title: `Start your ${tool.pricing.freeTrialDays}-day trial`,
+      description: `Sign up for the free trial to explore all features before committing to a plan.`,
+    });
+  } else {
+    steps.push({
+      title: 'Sign up and choose a plan',
+      description: `Visit ${tool.name}\'s website and select the plan that fits your needs${tool.pricing.startingPrice ? ` (from $${tool.pricing.startingPrice}/mo)` : ''}.`,
+    });
+  }
+
+  // Step 2: Setup
+  steps.push({
+    title: 'Configure your workspace',
+    description: `Follow the onboarding guide to set up your account. ${tool.ratings.easeOfUse >= 8 ? 'Most users are productive within minutes.' : 'Take advantage of any tutorials or documentation.'}`,
+  });
+
+  // Step 3: Go live
+  steps.push({
+    title: 'Start using key features',
+    description: `Explore the core features and integrate with your existing workflow. ${tool.ratings.features >= 8 ? 'The extensive feature set covers advanced use cases out of the box.' : 'Focus on core capabilities first, then expand as needed.'}`,
+  });
+
+  return steps;
 }
 
 function getVerdictHighlights(tool: Tool): Array<{ text: string; positive: boolean }> {
