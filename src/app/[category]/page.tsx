@@ -12,6 +12,7 @@ import { ToolGrid } from '@/components/category/ToolGrid';
 import { QuickCompare } from '@/components/category/QuickCompare';
 import { ReadingProgress } from '@/components/common/ReadingProgress';
 import { RecentlyViewed } from '@/components/common/RecentlyViewed';
+import { NewsletterSignup } from '@/components/common/NewsletterSignup';
 import { getCategoryContent } from '@/lib/category-content';
 
 // ============================================================
@@ -416,6 +417,11 @@ export default async function CategoryPage({ params }: PageProps) {
             </div>
           </section>
         )}
+
+        {/* ========== NEWSLETTER SIGNUP ========== */}
+        <div className="mb-12">
+          <NewsletterSignup variant="inline" category={cat.name} />
+        </div>
 
         {/* ========== RELATED BLOG POSTS ========== */}
         {categoryPosts.length > 0 && (

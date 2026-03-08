@@ -8,6 +8,7 @@ import { ToolLogo } from '@/components/common/ToolLogo';
 import { RatingStars } from '@/components/common/RatingStars';
 import { AdBanner, AdInArticle, AdMultiplex, AdNative } from '@/components/ads/AdSlot';
 import { RecentlyViewed } from '@/components/common/RecentlyViewed';
+import { NewsletterSignup } from '@/components/common/NewsletterSignup';
 
 export const revalidate = 3600;
 
@@ -926,6 +927,13 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ============================================================ */}
+      {/* NEWSLETTER SIGNUP — Lead capture banner */}
+      {/* ============================================================ */}
+      <div className="max-w-4xl mx-auto px-4 py-8">
+        <NewsletterSignup variant="banner" />
+      </div>
 
       {/* ============================================================ */}
       {/* FAQ SECTION — SEO-rich content with FAQ schema */}

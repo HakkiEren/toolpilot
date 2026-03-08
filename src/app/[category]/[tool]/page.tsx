@@ -17,6 +17,7 @@ import { ReadingProgress } from '@/components/common/ReadingProgress';
 import { TableOfContents } from '@/components/common/TableOfContents';
 import { RecordToolView } from '@/components/common/RecentlyViewed';
 import { StickyMobileCTA } from '@/components/common/StickyMobileCTA';
+import { NewsletterSignup } from '@/components/common/NewsletterSignup';
 
 // ============================================================
 // TOOL PROFILE PAGE — Individual tool review (ENHANCED)
@@ -810,6 +811,11 @@ export default async function ToolPage({ params }: PageProps) {
             </div>
           </div>
         </section>
+
+        {/* ========== NEWSLETTER SIGNUP ========== */}
+        <div className="mb-12">
+          <NewsletterSignup variant="inline" category={cat?.name} />
+        </div>
 
         {/* ========== AD: MULTIPLEX BEFORE RELATED ========== */}
         <AdMultiplex />
