@@ -659,6 +659,36 @@ export function generateCalculatorHowToSchema(
   };
 }
 
+// --- WEB APPLICATION SCHEMA (for calculator/interactive tool pages — rich snippets) ---
+export function generateWebApplicationSchema(
+  title: string,
+  description: string,
+  calculatorType: string,
+  categoryName: string
+) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: title,
+    description,
+    url: `${SITE_URL}/calculators/${calculatorType}`,
+    applicationCategory: 'FinanceApplication',
+    operatingSystem: 'Any',
+    browserRequirements: 'Requires JavaScript',
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD',
+    },
+    featureList: `Free ${categoryName} calculator, instant results, no signup required`,
+    creator: {
+      '@type': 'Organization',
+      name: SITE_NAME,
+      url: SITE_URL,
+    },
+  };
+}
+
 // --- GLOSSARY SCHEMA (DefinedTermSet for glossary pages) ---
 export function generateGlossarySchema(
   terms: { term: string; definition: string }[]

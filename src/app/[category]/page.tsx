@@ -53,6 +53,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
+// Calculator mapped to each category
+const CALCULATOR_MAP: Record<string, { slug: string; title: string; shortTitle: string }> = {
+  'ai-tools': { slug: 'ai-cost', title: 'AI Tool Cost Estimator', shortTitle: 'Estimate AI Costs' },
+  'saas': { slug: 'roi', title: 'SaaS ROI Calculator', shortTitle: 'Calculate ROI' },
+  'ecommerce': { slug: 'ecommerce-profit', title: 'E-commerce Profit Calculator', shortTitle: 'Calculate Margins' },
+  'marketing': { slug: 'email-marketing-roi', title: 'Email Marketing ROI Calculator', shortTitle: 'Calculate ROI' },
+  'hosting': { slug: 'hosting-cost', title: 'Hosting Cost Calculator', shortTitle: 'Compare Hosting Costs' },
+  'business': { slug: 'team-productivity', title: 'Team Productivity Calculator', shortTitle: 'Estimate Savings' },
+};
+
 export default async function CategoryPage({ params }: PageProps) {
   const { category } = await params;
   const cat = CATEGORIES[category];
@@ -72,6 +82,7 @@ export default async function CategoryPage({ params }: PageProps) {
   const faqSchema = categoryContent ? generateFAQSchema(categoryContent.faqs) : null;
 
   const subcategories = SUBCATEGORIES[category] || [];
+  const calculator = CALCULATOR_MAP[category];
 
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: '/' },
@@ -362,11 +373,80 @@ export default async function CategoryPage({ params }: PageProps) {
                     <div>
                       <h3 className="text-lg font-bold mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{section.title}</h3>
                       <p className="text-gray-600 dark:text-gray-300 leading-relaxed">{section.text}</p>
+                      {/* Contextual links per guide step */}
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        {idx === 0 && (
+                          <>
+                            <Link href={`/${category}/compare`} className="inline-flex items-center gap-1 text-xs font-medium text-blue-600 hover:text-blue-800 bg-blue-50 dark:bg-blue-900/20 px-3 py-1.5 rounded-full transition-colors">
+                              <span>&#128269;</span> Compare {cat.name} side by side
+                            </Link>
+                            {subcategories.length > 0 && (
+                              <Link href={`/best/${subcategories[0].slug}`} className="inline-flex items-center gap-1 text-xs font-medium text-amber-600 hover:text-amber-800 bg-amber-50 dark:bg-amber-900/20 px-3 py-1.5 rounded-full transition-colors">
+                                <span>&#127942;</span> Best {subcategories[0].name}
+                              </Link>
+                            )}
+                          </>
+                        )}
+                        {idx === 1 && calculator && (
+                          <>
+                            <Link href={`/calculators/${calculator.slug}`} className="inline-flex items-center gap-1 text-xs font-medium text-green-600 hover:text-green-800 bg-green-50 dark:bg-green-900/20 px-3 py-1.5 rounded-full transition-colors">
+                              <span>&#129518;</span> {calculator.shortTitle}
+                            </Link>
+                            {tools.length > 0 && (
+                              <Link href={`/${category}/${tools[0].slug}/pricing`} className="inline-flex items-center gap-1 text-xs font-medium text-purple-600 hover:text-purple-800 bg-purple-50 dark:bg-purple-900/20 px-3 py-1.5 rounded-full transition-colors">
+                                <span>&#128176;</span> See {tools[0].name} pricing
+                              </Link>
+                            )}
+                          </>
+                        )}
+                        {idx === 2 && (
+                          <>
+                            {tools.length > 0 && (
+                              <Link href={`/${category}/${tools[0].slug}/alternatives`} className="inline-flex items-center gap-1 text-xs font-medium text-orange-600 hover:text-orange-800 bg-orange-50 dark:bg-orange-900/20 px-3 py-1.5 rounded-full transition-colors">
+                                <span>&#128260;</span> Top {tools[0].name} alternatives
+                              </Link>
+                            )}
+                            {categoryPosts.length > 0 && (
+                              <Link href={`/blog/${categoryPosts[0].slug}`} className="inline-flex items-center gap-1 text-xs font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 dark:bg-indigo-900/20 px-3 py-1.5 rounded-full transition-colors">
+                                <span>&#128214;</span> Read: {categoryPosts[0].title.length > 40 ? categoryPosts[0].title.slice(0, 40) + '...' : categoryPosts[0].title}
+                              </Link>
+                            )}
+                          </>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
+          </section>
+        )}
+
+        {/* ========== CALCULATOR CTA — Contextual tool for budget planning ========== */}
+        {calculator && (
+          <section className="mb-12">
+            <Link
+              href={`/calculators/${calculator.slug}`}
+              className="group block relative overflow-hidden bg-gradient-to-r from-emerald-50 via-teal-50 to-cyan-50 dark:from-emerald-950/30 dark:via-teal-950/30 dark:to-cyan-950/30 rounded-2xl border border-emerald-200/60 dark:border-emerald-800/40 p-6 hover:border-emerald-300 dark:hover:border-emerald-700 transition-all hover:shadow-lg"
+            >
+              <div className="absolute -top-12 -right-12 w-40 h-40 bg-emerald-400/10 rounded-full blur-3xl pointer-events-none" />
+              <div className="relative flex items-center gap-4">
+                <div className="flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                  <span className="text-2xl">&#129518;</span>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors">
+                    Try Our Free {calculator.title}
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300 mt-0.5">
+                    Make data-driven decisions — estimate costs, savings, and ROI before you buy.
+                  </p>
+                </div>
+                <span className="hidden sm:flex items-center gap-1 text-sm font-semibold text-emerald-600 group-hover:translate-x-1 transition-transform">
+                  Try it free &#8594;
+                </span>
+              </div>
+            </Link>
           </section>
         )}
 
@@ -385,6 +465,9 @@ export default async function CategoryPage({ params }: PageProps) {
                   <div>
                     <h3 className="font-semibold text-sm mb-1">{factor.factor}</h3>
                     <p className="text-sm text-gray-500 dark:text-gray-400">{factor.description}</p>
+                    <Link href={`/${category}/compare`} className="inline-flex items-center gap-1 text-xs text-blue-500 hover:text-blue-700 font-medium mt-1.5 transition-colors">
+                      Compare by {factor.factor.toLowerCase()} &#8594;
+                    </Link>
                   </div>
                 </div>
               ))}
@@ -412,6 +495,22 @@ export default async function CategoryPage({ params }: PageProps) {
                   {['Hands-on Testing', 'Feature Analysis', 'Pricing Review', 'User Feedback'].map(item => (
                     <span key={item} className="text-xs px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-gray-300">{item}</span>
                   ))}
+                </div>
+                {/* Action links */}
+                <div className="mt-5 pt-4 border-t border-white/10 flex flex-wrap gap-3">
+                  <Link href={`/${category}/compare`} className="inline-flex items-center gap-1.5 text-xs font-medium text-blue-400 hover:text-blue-300 bg-white/5 hover:bg-white/10 px-3.5 py-2 rounded-lg transition-colors">
+                    <span>&#9878;</span> View all {cat.name} comparisons
+                  </Link>
+                  {subcategories.length > 0 && (
+                    <Link href={`/best/${subcategories[0].slug}`} className="inline-flex items-center gap-1.5 text-xs font-medium text-amber-400 hover:text-amber-300 bg-white/5 hover:bg-white/10 px-3.5 py-2 rounded-lg transition-colors">
+                      <span>&#127942;</span> Best {subcategories[0].name} rankings
+                    </Link>
+                  )}
+                  {calculator && (
+                    <Link href={`/calculators/${calculator.slug}`} className="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-400 hover:text-emerald-300 bg-white/5 hover:bg-white/10 px-3.5 py-2 rounded-lg transition-colors">
+                      <span>&#129518;</span> {calculator.shortTitle}
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>
@@ -456,6 +555,38 @@ export default async function CategoryPage({ params }: PageProps) {
             </div>
           </section>
         )}
+
+        {/* ========== CROSS-CATEGORY CALCULATORS ========== */}
+        <section className="mb-12">
+          <h2 className="text-xl font-bold mb-4">Free Business Calculators</h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {Object.entries(CALCULATOR_MAP).map(([catSlug, calc]) => {
+              const isCurrentCategory = catSlug === category;
+              return (
+                <Link
+                  key={calc.slug}
+                  href={`/calculators/${calc.slug}`}
+                  className={`group flex items-center gap-3 p-4 rounded-xl border transition-all hover:shadow-md ${
+                    isCurrentCategory
+                      ? 'bg-emerald-50 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-800'
+                      : 'bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 hover:border-emerald-200 dark:hover:border-emerald-800'
+                  }`}
+                >
+                  <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-100 to-teal-100 dark:from-emerald-900/40 dark:to-teal-900/40 flex items-center justify-center">
+                    <span className="text-lg">&#129518;</span>
+                  </div>
+                  <div className="min-w-0">
+                    <h3 className="font-medium text-sm group-hover:text-emerald-600 transition-colors truncate">{calc.title}</h3>
+                    <p className="text-[11px] text-gray-400 mt-0.5">{CATEGORIES[catSlug]?.name || catSlug}</p>
+                  </div>
+                  {isCurrentCategory && (
+                    <span className="ml-auto text-[10px] font-semibold text-emerald-600 bg-emerald-100 dark:bg-emerald-900/40 px-2 py-0.5 rounded-full">For you</span>
+                  )}
+                </Link>
+              );
+            })}
+          </div>
+        </section>
 
         {/* ========== CATEGORY FAQ ========== */}
         {categoryContent && categoryContent.faqs.length > 0 && (

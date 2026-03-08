@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { SITE_NAME, SITE_URL, SEO } from '@/lib/constants';
-import { generateCalculatorHowToSchema, generateBreadcrumbSchema } from '@/lib/schema';
+import { SITE_NAME, SITE_URL, SEO, CATEGORIES, SUBCATEGORIES } from '@/lib/constants';
+import { generateCalculatorHowToSchema, generateBreadcrumbSchema, generateWebApplicationSchema } from '@/lib/schema';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { AdBanner, AdInArticle } from '@/components/ads/AdSlot';
 import { CalculatorClient } from './calculator-client';
@@ -144,6 +144,10 @@ export default async function CalculatorPage({ params }: PageProps) {
     .filter(([key]) => key !== type)
     .map(([key, val]) => ({ slug: key, ...val }));
 
+  const cat = CATEGORIES[calc.category];
+  const catName = cat?.name || calc.category;
+  const subcategories = SUBCATEGORIES[calc.category] || [];
+
   const howToSchema = generateCalculatorHowToSchema(
     calc.title,
     calc.description,
@@ -152,17 +156,24 @@ export default async function CalculatorPage({ params }: PageProps) {
   );
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: '/' },
-    { name: 'Calculators', url: '/calculators/roi' },
+    { name: catName, url: `/${calc.category}` },
     { name: calc.title, url: `/calculators/${type}` },
   ]);
+  const webAppSchema = generateWebApplicationSchema(
+    calc.title,
+    calc.description,
+    type,
+    catName
+  );
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }} />
       <Breadcrumbs items={[
         { name: 'Home', url: '/' },
-        { name: 'Calculators', url: '/calculators/roi' },
+        { name: catName, url: `/${calc.category}` },
         { name: calc.title, url: '' },
       ]} />
 
@@ -213,18 +224,48 @@ export default async function CalculatorPage({ params }: PageProps) {
         </div>
       </section>
 
-      {/* Ad: Before Category Link */}
+      {/* Ad: Before Category Links */}
       <AdInArticle />
 
-      {/* Category Link */}
-      <div className="text-center">
-        <Link
-          href={`/${calc.category}`}
-          className="text-blue-600 font-medium hover:underline text-sm"
-        >
-          Browse {calc.category === 'ai-tools' ? 'AI Tools' : calc.category === 'saas' ? 'SaaS Tools' : calc.category === 'ecommerce' ? 'E-commerce' : calc.category === 'marketing' ? 'Marketing Tools' : calc.category === 'hosting' ? 'Web Hosting' : 'Business Tools'} →
-        </Link>
-      </div>
+      {/* Related Resources — Hub-and-spoke links for SEO equity */}
+      <section className="mb-12">
+        <h2 className="text-xl font-bold mb-4">Explore {catName}</h2>
+        <div className="grid sm:grid-cols-2 gap-3">
+          <Link
+            href={`/${calc.category}`}
+            className="group flex items-center gap-3 p-4 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-700 transition-all hover:shadow-md"
+          >
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-blue-900/40 dark:to-indigo-900/40 flex items-center justify-center text-lg">&#128202;</div>
+            <div>
+              <h3 className="font-semibold text-sm group-hover:text-blue-600 transition-colors">All {catName}</h3>
+              <p className="text-[11px] text-gray-400">Reviews, ratings &amp; comparisons</p>
+            </div>
+          </Link>
+          <Link
+            href={`/${calc.category}/compare`}
+            className="group flex items-center gap-3 p-4 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:border-purple-300 dark:hover:border-purple-700 transition-all hover:shadow-md"
+          >
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900/40 dark:to-pink-900/40 flex items-center justify-center text-lg">&#9878;</div>
+            <div>
+              <h3 className="font-semibold text-sm group-hover:text-purple-600 transition-colors">{catName} Comparisons</h3>
+              <p className="text-[11px] text-gray-400">Side-by-side feature analysis</p>
+            </div>
+          </Link>
+          {subcategories.slice(0, 4).map((sub) => (
+            <Link
+              key={sub.slug}
+              href={`/best/${sub.slug}`}
+              className="group flex items-center gap-3 p-4 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:border-amber-300 dark:hover:border-amber-700 transition-all hover:shadow-md"
+            >
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-100 to-orange-100 dark:from-amber-900/40 dark:to-orange-900/40 flex items-center justify-center text-lg">&#127942;</div>
+              <div>
+                <h3 className="font-semibold text-sm group-hover:text-amber-600 transition-colors">Best {sub.name}</h3>
+                <p className="text-[11px] text-gray-400">Top-ranked picks for {new Date().getFullYear()}</p>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }
