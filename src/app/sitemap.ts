@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { supabase } from '@/lib/supabase';
 import { SITE_URL, CATEGORY_LIST, SUBCATEGORIES, LIMITS } from '@/lib/constants';
+import { getAllGlossaryTermSlugs } from '@/lib/glossary-data';
 
 // ============================================================
 // DYNAMIC SITEMAP GENERATION
@@ -26,6 +27,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/terms`, lastModified: monthlyDate, changeFrequency: 'yearly', priority: 0.2 },
     // /sitemap-html excluded — noindexed via X-Robots-Tag, should not be in XML sitemap
     // Calculator pages
+    { url: `${SITE_URL}/calculators`, lastModified: monthlyDate, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${SITE_URL}/calculators/roi`, lastModified: monthlyDate, changeFrequency: 'monthly', priority: 0.6 },
     { url: `${SITE_URL}/calculators/email-marketing-roi`, lastModified: monthlyDate, changeFrequency: 'monthly', priority: 0.6 },
     { url: `${SITE_URL}/calculators/hosting-cost`, lastModified: monthlyDate, changeFrequency: 'monthly', priority: 0.6 },
@@ -33,6 +35,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/calculators/ai-cost`, lastModified: monthlyDate, changeFrequency: 'monthly', priority: 0.6 },
     { url: `${SITE_URL}/calculators/team-productivity`, lastModified: monthlyDate, changeFrequency: 'monthly', priority: 0.6 },
     { url: `${SITE_URL}/glossary`, lastModified: monthlyDate, changeFrequency: 'monthly', priority: 0.6 },
+    // Individual glossary term pages
+    ...getAllGlossaryTermSlugs().map((slug) => ({
+      url: `${SITE_URL}/glossary/${slug}`,
+      lastModified: monthlyDate,
+      changeFrequency: 'monthly' as const,
+      priority: 0.5,
+    })),
     { url: `${SITE_URL}/about/team`, lastModified: monthlyDate, changeFrequency: 'monthly', priority: 0.5 },
     { url: `${SITE_URL}/changelog`, lastModified: weeklyDate, changeFrequency: 'weekly', priority: 0.5 },
     // feed.xml excluded — RSS feeds are not HTML pages, auto-discovered via <link rel="alternate">

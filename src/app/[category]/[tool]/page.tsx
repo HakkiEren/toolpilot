@@ -43,9 +43,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const tool = await getToolBySlug(category, toolSlug);
   if (!tool) return {};
 
+  const catName = CATEGORIES[category]?.name || category;
+  const title = tool.metaTitle || `${tool.name} Review — Features, Pricing & Alternatives${SEO.titleSuffix}`;
+  const description = tool.metaDescription || `${tool.name}: ${tool.tagline}. Read our honest review with features, pricing plans, pros & cons.`;
+
   return {
-    title: tool.metaTitle || `${tool.name} Review — Features, Pricing & Alternatives${SEO.titleSuffix}`,
-    description: tool.metaDescription || `${tool.name}: ${tool.tagline}. Read our honest review with features, pricing plans, pros & cons.`,
+    title,
+    description,
     alternates: { canonical: `${SITE_URL}/${category}/${toolSlug}` },
     openGraph: {
       title: `${tool.name} Review`,
@@ -55,7 +59,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       publishedTime: tool.createdAt,
       modifiedTime: tool.lastUpdated,
       authors: [`${SITE_NAME} Editorial Team`],
-      section: CATEGORIES[category]?.name || category,
+      section: catName,
+      tags: [tool.name, catName, 'review', 'software comparison', ...(tool.pricing.hasFreeplan ? ['free plan'] : [])],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      site: SEO.twitterHandle,
+      title,
+      description,
     },
   };
 }

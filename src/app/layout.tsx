@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
+import Script from 'next/script';
 import './globals.css';
 import { SITE_NAME, SITE_DESCRIPTION, SITE_URL, SEO, CATEGORY_LIST, SUBCATEGORIES } from '@/lib/constants';
 import { generateOrganizationSchema, generateWebSiteSchema, generateSiteNavigationSchema } from '@/lib/schema';
@@ -84,45 +85,46 @@ export default function RootLayout({
         <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
         <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
-        {/* Google Analytics (GA4) */}
-        {process.env.NEXT_PUBLIC_GA_ID && (
-          <>
-            <script async src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`} />
-            <script
-              dangerouslySetInnerHTML={{
-                __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${process.env.NEXT_PUBLIC_GA_ID}');`,
-              }}
-            />
-          </>
-        )}
-        {/* Google AdSense */}
-        {process.env.NEXT_PUBLIC_ADSENSE_ID && (
-          <script
-            async
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_ID}`}
-            crossOrigin="anonymous"
-          />
-        )}
+        {/* Google Analytics (GA4) — deferred via next/script for better CWV */}
+        {/* Google AdSense — deferred via next/script for better CWV */}
+        {/* Consolidated @graph — Google prefers single JSON-LD block for sitewide schemas */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(generateOrganizationSchema()),
-          }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(generateWebSiteSchema()),
-          }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(generateSiteNavigationSchema()),
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@graph': [
+                // Strip @context from individual schemas since @graph provides it
+                (() => { const s = generateOrganizationSchema(); const { '@context': _, ...rest } = s; return rest; })(),
+                (() => { const s = generateWebSiteSchema(); const { '@context': _, ...rest } = s; return rest; })(),
+                (() => { const s = generateSiteNavigationSchema(); const { '@context': _, ...rest } = s; return rest; })(),
+              ],
+            }),
           }}
         />
       </head>
       <body className="bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 antialiased" suppressHydrationWarning>
+        {/* GA4 — loaded after hydration for better Core Web Vitals */}
+        {process.env.NEXT_PUBLIC_GA_ID && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+              strategy="afterInteractive"
+            />
+            <Script id="ga4-init" strategy="afterInteractive">
+              {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${process.env.NEXT_PUBLIC_GA_ID}');`}
+            </Script>
+          </>
+        )}
+        {/* AdSense — loaded after hydration for better Core Web Vitals */}
+        {process.env.NEXT_PUBLIC_ADSENSE_ID && (
+          <Script
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_ID}`}
+            strategy="afterInteractive"
+            crossOrigin="anonymous"
+          />
+        )}
+
         {/* Accessibility: Skip to main content */}
         <a href="#main-content" className="skip-link">
           Skip to main content

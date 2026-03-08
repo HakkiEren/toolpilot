@@ -46,6 +46,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const alts = await getToolsBySubcategory(category, tool.subcategorySlug, 2);
   const hasAlts = alts.filter(t => t.id !== tool.id).length > 0;
 
+  const catName = CATEGORIES[category]?.name || category;
+
   return {
     title,
     description,
@@ -58,6 +60,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       publishedTime: tool.createdAt,
       modifiedTime: tool.lastUpdated,
       authors: [`${SITE_NAME} Editorial Team`],
+      section: catName,
+      tags: [tool.name, 'alternatives', catName, 'software comparison'],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      site: SEO.twitterHandle,
+      title,
+      description,
     },
     ...(!hasAlts && { robots: { index: false, follow: true } }),
   };

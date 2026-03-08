@@ -46,6 +46,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const title = `${tool.name} Pricing Plans & Costs (${year})${SEO.titleSuffix}`;
   const description = `${tool.name} pricing: ${planCount} plans${tool.pricing.hasFreeplan ? ' (free plan available)' : ''}${priceRange.length >= 2 ? `, $${priceRange[0].price}-$${priceRange[priceRange.length - 1].price}/mo` : priceRange.length === 1 ? `, from $${priceRange[0].price}/mo` : ''}. Value score: ${tool.ratings.valueForMoney.toFixed(1)}/10. Compare costs, features per tier, and hidden fees.`;
 
+  const catName = CATEGORIES[category]?.name || category;
+
   return {
     title,
     description,
@@ -58,6 +60,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       publishedTime: tool.createdAt,
       modifiedTime: tool.lastUpdated,
       authors: [`${SITE_NAME} Editorial Team`],
+      section: catName,
+      tags: [tool.name, 'pricing', catName, ...(tool.pricing.hasFreeplan ? ['free plan'] : []), ...(tool.pricing.freeTrialDays ? ['free trial'] : [])],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      site: SEO.twitterHandle,
+      title,
+      description,
     },
   };
 }

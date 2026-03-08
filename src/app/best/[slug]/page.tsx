@@ -175,7 +175,15 @@ export async function generateMetadata(
       url: `${SITE_URL}/best/${slug}`,
       siteName: SITE_NAME,
       type: 'article',
+      locale: 'en_US',
       authors: [`${SITE_NAME} Editorial Team`],
+      section: sub.categoryName,
+      tags: [sub.name, sub.categoryName, 'best tools', 'comparison', `best ${sub.name.toLowerCase()}`],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
     },
   };
 }

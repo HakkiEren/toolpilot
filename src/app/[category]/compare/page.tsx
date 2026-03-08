@@ -29,14 +29,24 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!cat) return {};
 
   const year = new Date().getFullYear();
+  const title = `${cat.name} Comparisons (${year}) — Side-by-Side Tool Reviews`;
+  const description = `Compare the best ${cat.name.toLowerCase()} side by side. Detailed feature comparisons, pricing breakdowns, and expert verdicts to help you choose the right tool.`;
+
   return {
-    title: `${cat.name} Comparisons (${year}) — Side-by-Side Tool Reviews`,
-    description: `Compare the best ${cat.name.toLowerCase()} side by side. Detailed feature comparisons, pricing breakdowns, and expert verdicts to help you choose the right tool.`,
+    title,
+    description,
     alternates: { canonical: `${SITE_URL}/${cat.slug}/compare` },
     openGraph: {
       title: `${cat.name} Comparisons — Head-to-Head Reviews`,
       description: `Browse all ${cat.name.toLowerCase()} comparisons. Find which tool wins in features, pricing, and ease of use.`,
       url: `${SITE_URL}/${cat.slug}/compare`,
+      type: 'website',
+      siteName: SITE_NAME,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
     },
   };
 }
