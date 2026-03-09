@@ -465,6 +465,98 @@ export default async function ComparisonPage({ params }: PageProps) {
           <HtmlContent html={comparison.verdictContent} className="text-gray-700 dark:text-gray-200 [&>p]:mb-3 [&>p:last-child]:mb-0" />
         </div>
 
+        {/* ========== DECISION GUIDE — "Which Should You Choose?" ========== */}
+        <div className="grid md:grid-cols-2 gap-4 mb-10">
+          <div className="bg-blue-50 dark:bg-blue-950/20 border border-blue-200/60 dark:border-blue-800/30 rounded-2xl p-5">
+            <div className="flex items-center gap-2 mb-3">
+              <ToolLogo logoUrl={comparison.toolA.logoUrl} name={comparison.toolA.name} size={24} />
+              <h3 className="font-bold text-sm">Choose {comparison.toolA.name} if you need...</h3>
+            </div>
+            <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+              {comparison.toolA.ratings.easeOfUse >= comparison.toolB.ratings.easeOfUse && (
+                <li className="flex items-start gap-2">
+                  <span className="text-blue-500 mt-0.5">&#10003;</span>
+                  <span>Better ease of use ({comparison.toolA.ratings.easeOfUse.toFixed(1)} vs {comparison.toolB.ratings.easeOfUse.toFixed(1)})</span>
+                </li>
+              )}
+              {comparison.toolA.ratings.features >= comparison.toolB.ratings.features && (
+                <li className="flex items-start gap-2">
+                  <span className="text-blue-500 mt-0.5">&#10003;</span>
+                  <span>More comprehensive features ({comparison.toolA.ratings.features.toFixed(1)} vs {comparison.toolB.ratings.features.toFixed(1)})</span>
+                </li>
+              )}
+              {comparison.toolA.ratings.support > comparison.toolB.ratings.support && (
+                <li className="flex items-start gap-2">
+                  <span className="text-blue-500 mt-0.5">&#10003;</span>
+                  <span>Stronger customer support ({comparison.toolA.ratings.support.toFixed(1)} vs {comparison.toolB.ratings.support.toFixed(1)})</span>
+                </li>
+              )}
+              {comparison.toolA.ratings.valueForMoney > comparison.toolB.ratings.valueForMoney && (
+                <li className="flex items-start gap-2">
+                  <span className="text-blue-500 mt-0.5">&#10003;</span>
+                  <span>Better value for money ({comparison.toolA.ratings.valueForMoney.toFixed(1)} vs {comparison.toolB.ratings.valueForMoney.toFixed(1)})</span>
+                </li>
+              )}
+              {comparison.toolA.pricing.hasFreeplan && !comparison.toolB.pricing.hasFreeplan && (
+                <li className="flex items-start gap-2">
+                  <span className="text-blue-500 mt-0.5">&#10003;</span>
+                  <span>A free plan to get started</span>
+                </li>
+              )}
+              {comparison.toolA.pricing.startingPrice != null && comparison.toolB.pricing.startingPrice != null && comparison.toolA.pricing.startingPrice < comparison.toolB.pricing.startingPrice && (
+                <li className="flex items-start gap-2">
+                  <span className="text-blue-500 mt-0.5">&#10003;</span>
+                  <span>Lower starting price (${comparison.toolA.pricing.startingPrice}/mo vs ${comparison.toolB.pricing.startingPrice}/mo)</span>
+                </li>
+              )}
+            </ul>
+          </div>
+          <div className="bg-purple-50 dark:bg-purple-950/20 border border-purple-200/60 dark:border-purple-800/30 rounded-2xl p-5">
+            <div className="flex items-center gap-2 mb-3">
+              <ToolLogo logoUrl={comparison.toolB.logoUrl} name={comparison.toolB.name} size={24} />
+              <h3 className="font-bold text-sm">Choose {comparison.toolB.name} if you need...</h3>
+            </div>
+            <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+              {comparison.toolB.ratings.easeOfUse > comparison.toolA.ratings.easeOfUse && (
+                <li className="flex items-start gap-2">
+                  <span className="text-purple-500 mt-0.5">&#10003;</span>
+                  <span>Better ease of use ({comparison.toolB.ratings.easeOfUse.toFixed(1)} vs {comparison.toolA.ratings.easeOfUse.toFixed(1)})</span>
+                </li>
+              )}
+              {comparison.toolB.ratings.features > comparison.toolA.ratings.features && (
+                <li className="flex items-start gap-2">
+                  <span className="text-purple-500 mt-0.5">&#10003;</span>
+                  <span>More comprehensive features ({comparison.toolB.ratings.features.toFixed(1)} vs {comparison.toolA.ratings.features.toFixed(1)})</span>
+                </li>
+              )}
+              {comparison.toolB.ratings.support > comparison.toolA.ratings.support && (
+                <li className="flex items-start gap-2">
+                  <span className="text-purple-500 mt-0.5">&#10003;</span>
+                  <span>Stronger customer support ({comparison.toolB.ratings.support.toFixed(1)} vs {comparison.toolA.ratings.support.toFixed(1)})</span>
+                </li>
+              )}
+              {comparison.toolB.ratings.valueForMoney > comparison.toolA.ratings.valueForMoney && (
+                <li className="flex items-start gap-2">
+                  <span className="text-purple-500 mt-0.5">&#10003;</span>
+                  <span>Better value for money ({comparison.toolB.ratings.valueForMoney.toFixed(1)} vs {comparison.toolA.ratings.valueForMoney.toFixed(1)})</span>
+                </li>
+              )}
+              {comparison.toolB.pricing.hasFreeplan && !comparison.toolA.pricing.hasFreeplan && (
+                <li className="flex items-start gap-2">
+                  <span className="text-purple-500 mt-0.5">&#10003;</span>
+                  <span>A free plan to get started</span>
+                </li>
+              )}
+              {comparison.toolA.pricing.startingPrice != null && comparison.toolB.pricing.startingPrice != null && comparison.toolB.pricing.startingPrice < comparison.toolA.pricing.startingPrice && (
+                <li className="flex items-start gap-2">
+                  <span className="text-purple-500 mt-0.5">&#10003;</span>
+                  <span>Lower starting price (${comparison.toolB.pricing.startingPrice}/mo vs ${comparison.toolA.pricing.startingPrice}/mo)</span>
+                </li>
+              )}
+            </ul>
+          </div>
+        </div>
+
         {/* ========== SCORES ========== */}
         <section id="scores" className="mb-12 scroll-mt-32">
           <h2 className="text-2xl font-bold mb-6">Overall Score Comparison</h2>

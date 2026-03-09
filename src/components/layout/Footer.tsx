@@ -80,20 +80,20 @@ export function Footer() {
             <p className="text-sm text-gray-500 dark:text-gray-400 mb-4 max-w-xs">
               Unbiased tool comparisons powered by data, not sponsorships. We help you make smarter software decisions.
             </p>
-            {/* Trust badges */}
+            {/* Trust badges — linked to methodology */}
             <div className="flex flex-wrap gap-3 mb-4">
-              <span className="inline-flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400">
+              <Link href="/editorial-policy" className="inline-flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                 <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
                 </svg>
                 410+ Tools Reviewed
-              </span>
-              <span className="inline-flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400">
+              </Link>
+              <Link href="/editorial-policy" className="inline-flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                 <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
                 </svg>
                 100% Independent
-              </span>
+              </Link>
               <span className="inline-flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400">
                 <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
