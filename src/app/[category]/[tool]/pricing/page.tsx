@@ -197,7 +197,7 @@ export default async function PricingPage({ params }: PageProps) {
             <div className="relative flex flex-col md:flex-row md:items-center gap-5">
               <div className="flex-shrink-0 relative">
                 <div className="absolute inset-0 bg-emerald-500/20 rounded-2xl blur-xl scale-110" />
-                <ToolLogo logoUrl={tool.logoUrl} name={tool.name} size={72} className="shadow-xl relative" priority />
+                <ToolLogo logoUrl={tool.logoUrl} name={tool.name} size={72} className="shadow-xl relative" priority websiteUrl={tool.websiteUrl} />
               </div>
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-2">

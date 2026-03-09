@@ -157,7 +157,7 @@ export default async function ToolPage({ params }: PageProps) {
               {/* Logo with glow effect */}
               <div className="flex-shrink-0 relative">
                 <div className="absolute inset-0 bg-blue-500/20 rounded-2xl blur-xl scale-110" />
-                <ToolLogo logoUrl={tool.logoUrl} name={tool.name} size={96} className="shadow-xl relative" priority />
+                <ToolLogo logoUrl={tool.logoUrl} name={tool.name} size={96} className="shadow-xl relative" priority websiteUrl={tool.websiteUrl} />
               </div>
 
               {/* Title & Quick Info */}

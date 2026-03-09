@@ -201,7 +201,7 @@ export default async function AlternativesPage({ params }: PageProps) {
             <div className="flex items-center gap-4 flex-1">
               <div className="relative flex-shrink-0">
                 <div className="absolute inset-0 bg-blue-500/20 rounded-xl blur-lg scale-110" />
-                <ToolLogo logoUrl={tool.logoUrl} name={tool.name} size={56} className="shadow-lg relative" priority />
+                <ToolLogo logoUrl={tool.logoUrl} name={tool.name} size={56} className="shadow-lg relative" priority websiteUrl={tool.websiteUrl} />
               </div>
               <div>
                 <h2 className="text-xl font-bold">{tool.name}</h2>

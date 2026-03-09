@@ -9,6 +9,8 @@ interface ToolLogoProps {
   size?: number;
   className?: string;
   priority?: boolean;
+  /** Optional website URL for Google Favicon fallback */
+  websiteUrl?: string;
 }
 
 function LetterFallback({ name, size, className }: { name: string; size: number; className: string }) {
@@ -22,10 +24,65 @@ function LetterFallback({ name, size, className }: { name: string; size: number;
   );
 }
 
-export function ToolLogo({ logoUrl, name, size = 48, className = '', priority = false }: ToolLogoProps) {
-  const [hasError, setHasError] = useState(false);
+/** Extract domain from URL for Google Favicon API */
+function extractDomain(url: string): string | null {
+  try {
+    return new URL(url).hostname;
+  } catch {
+    return null;
+  }
+}
 
-  if (!logoUrl || hasError) {
+export function ToolLogo({ logoUrl, name, size = 48, className = '', priority = false, websiteUrl }: ToolLogoProps) {
+  // 3-tier fallback: Primary logo → Google Favicon → Letter
+  const [errorLevel, setErrorLevel] = useState(0); // 0=primary, 1=favicon, 2=letter
+
+  const domain = websiteUrl ? extractDomain(websiteUrl) : null;
+  const faviconUrl = domain ? `https://www.google.com/s2/favicons?domain=${domain}&sz=128` : null;
+
+  // Level 2: Letter fallback (final)
+  if (errorLevel >= 2 || (!logoUrl && !faviconUrl)) {
+    return <LetterFallback name={name} size={size} className={className} />;
+  }
+
+  // Level 1: Google Favicon fallback
+  if (errorLevel === 1 && faviconUrl) {
+    return (
+      <Image
+        src={faviconUrl}
+        alt={`${name} logo`}
+        width={size}
+        height={size}
+        className={`rounded-xl object-contain bg-gray-50 dark:bg-gray-800 flex-shrink-0 ${className}`}
+        loading="lazy"
+        unoptimized
+        onError={() => setErrorLevel(2)}
+      />
+    );
+  }
+
+  // Level 1 but no favicon available → skip to letter
+  if (errorLevel === 1) {
+    return <LetterFallback name={name} size={size} className={className} />;
+  }
+
+  // Level 0: Primary logo (Clearbit or stored URL)
+  if (!logoUrl) {
+    // No primary logo, try favicon directly
+    if (faviconUrl) {
+      return (
+        <Image
+          src={faviconUrl}
+          alt={`${name} logo`}
+          width={size}
+          height={size}
+          className={`rounded-xl object-contain bg-gray-50 dark:bg-gray-800 flex-shrink-0 ${className}`}
+          loading="lazy"
+          unoptimized
+          onError={() => setErrorLevel(2)}
+        />
+      );
+    }
     return <LetterFallback name={name} size={size} className={className} />;
   }
 
@@ -39,7 +96,7 @@ export function ToolLogo({ logoUrl, name, size = 48, className = '', priority = 
       loading={priority ? 'eager' : 'lazy'}
       priority={priority}
       unoptimized
-      onError={() => setHasError(true)}
+      onError={() => setErrorLevel(1)}
     />
   );
 }

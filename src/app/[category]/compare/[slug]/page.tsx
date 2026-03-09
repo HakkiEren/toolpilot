@@ -238,7 +238,7 @@ export default async function ComparisonPage({ params }: PageProps) {
                 <div className="flex flex-col md:flex-row items-center gap-4 mb-4">
                   <div className="relative">
                     {winner === 'a' && <div className="absolute -top-2 -right-2 text-lg animate-bounce">👑</div>}
-                    <ToolLogo logoUrl={comparison.toolA.logoUrl} name={comparison.toolA.name} size={56} className="shadow-lg" />
+                    <ToolLogo logoUrl={comparison.toolA.logoUrl} name={comparison.toolA.name} size={56} className="shadow-lg" websiteUrl={comparison.toolA.websiteUrl} />
                   </div>
                   <div>
                     <h2 className="font-bold text-xl">{comparison.toolA.name}</h2>
@@ -283,7 +283,7 @@ export default async function ComparisonPage({ params }: PageProps) {
                 <div className="flex flex-col md:flex-row-reverse items-center gap-4 mb-4">
                   <div className="relative">
                     {winner === 'b' && <div className="absolute -top-2 -left-2 text-lg animate-bounce">👑</div>}
-                    <ToolLogo logoUrl={comparison.toolB.logoUrl} name={comparison.toolB.name} size={56} className="shadow-lg" />
+                    <ToolLogo logoUrl={comparison.toolB.logoUrl} name={comparison.toolB.name} size={56} className="shadow-lg" websiteUrl={comparison.toolB.websiteUrl} />
                   </div>
                   <div>
                     <h2 className="font-bold text-xl">{comparison.toolB.name}</h2>
