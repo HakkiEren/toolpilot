@@ -76,6 +76,7 @@ export function BadgeEmbedCode({ toolName, toolSlug, categorySlug, rating, badge
         onClick={() => setIsOpen(true)}
         className="w-full text-center text-xs font-medium py-2 px-3 rounded-lg border-2 border-dashed hover:border-solid transition-all"
         style={{ borderColor: tierColor, color: tierColor }}
+        aria-label={`Get embed badge code for ${toolName}`}
       >
         Get Badge Code
       </button>
@@ -98,6 +99,7 @@ export function BadgeEmbedCode({ toolName, toolSlug, categorySlug, rating, badge
         </pre>
         <button
           onClick={handleCopy}
+          aria-label="Copy embed code to clipboard"
           className={`absolute top-1.5 right-1.5 text-[10px] px-2 py-1 rounded font-medium transition-colors ${
             copied
               ? 'bg-green-600 text-white'
@@ -110,6 +112,7 @@ export function BadgeEmbedCode({ toolName, toolSlug, categorySlug, rating, badge
 
       <button
         onClick={() => setIsOpen(false)}
+        aria-label="Close embed code panel"
         className="text-[10px] text-gray-400 hover:text-gray-600 transition-colors"
       >
         Close

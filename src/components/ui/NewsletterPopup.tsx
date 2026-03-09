@@ -134,6 +134,7 @@ export function NewsletterPopup() {
                 placeholder="your@email.com"
                 required
                 disabled={status === 'loading'}
+                aria-label="Email address for newsletter"
                 className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-blue-500 outline-none dark:bg-gray-800 dark:text-white transition-colors disabled:opacity-50"
               />
               {status === 'error' && (
@@ -142,6 +143,7 @@ export function NewsletterPopup() {
               <button
                 type="submit"
                 disabled={status === 'loading'}
+                aria-label="Subscribe to newsletter"
                 className="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all shadow-lg shadow-blue-500/25 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {status === 'loading' ? (

@@ -107,6 +107,7 @@ export function QuickCompare({ tools, categorySlug, existingComparisons = [] }: 
                 <button
                   onClick={(e) => { e.stopPropagation(); setToolA(''); setSearchA(''); }}
                   className="ml-auto text-gray-400 hover:text-red-500 text-xs"
+                  aria-label="Clear Tool A selection"
                 >
                   &#10005;
                 </button>
@@ -119,6 +120,7 @@ export function QuickCompare({ tools, categorySlug, existingComparisons = [] }: 
                   value={searchA}
                   onChange={(e) => { setSearchA(e.target.value); setShowDropdownA(true); }}
                   onFocus={() => { setShowDropdownA(true); setShowDropdownB(false); }}
+                  aria-label="Search for Tool A to compare"
                   className="w-full px-3 py-3 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900/30 outline-none transition-all"
                 />
               </div>
@@ -163,6 +165,7 @@ export function QuickCompare({ tools, categorySlug, existingComparisons = [] }: 
                 <button
                   onClick={(e) => { e.stopPropagation(); setToolB(''); setSearchB(''); }}
                   className="ml-auto text-gray-400 hover:text-red-500 text-xs"
+                  aria-label="Clear Tool B selection"
                 >
                   &#10005;
                 </button>
@@ -175,6 +178,7 @@ export function QuickCompare({ tools, categorySlug, existingComparisons = [] }: 
                   value={searchB}
                   onChange={(e) => { setSearchB(e.target.value); setShowDropdownB(true); }}
                   onFocus={() => { setShowDropdownB(true); setShowDropdownA(false); }}
+                  aria-label="Search for Tool B to compare"
                   className="w-full px-3 py-3 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900/30 outline-none transition-all"
                 />
               </div>

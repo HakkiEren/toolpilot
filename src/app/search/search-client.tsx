@@ -139,6 +139,7 @@ export function SearchClient({ tools }: { tools: SearchTool[] }) {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search tools... (e.g. ChatGPT, Shopify, email marketing)"
+                aria-label="Search tools by name, category, or feature"
                 className="w-full px-5 py-4 pl-12 text-lg bg-white dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 rounded-2xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 dark:focus:ring-blue-900/30 outline-none transition-all shadow-lg shadow-gray-200/50 dark:shadow-none"
               />
               <svg
@@ -157,6 +158,7 @@ export function SearchClient({ tools }: { tools: SearchTool[] }) {
               {query && (
                 <button
                   onClick={() => setQuery('')}
+                  aria-label="Clear search"
                   className="absolute right-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-200 transition-all"
                 >
                   &#10005;

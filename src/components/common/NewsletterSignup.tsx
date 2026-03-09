@@ -118,11 +118,13 @@ export function NewsletterSignup({ variant = 'inline', category, dismissable = t
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
               required
+              aria-label="Email address for newsletter"
               className="px-4 py-2.5 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900/30 outline-none transition-all min-w-0 w-48"
             />
             <button
               type="submit"
               disabled={status === 'loading'}
+              aria-label="Subscribe to newsletter"
               className="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl text-sm font-bold hover:from-blue-700 hover:to-indigo-700 transition-all shadow-sm disabled:opacity-50 whitespace-nowrap"
             >
               {status === 'loading' ? 'Joining...' : 'Subscribe'}
@@ -171,11 +173,13 @@ export function NewsletterSignup({ variant = 'inline', category, dismissable = t
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
               required
+              aria-label="Email address for newsletter"
               className="flex-1 px-4 py-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 text-white placeholder-white/50 text-sm focus:bg-white/20 focus:border-white/40 outline-none transition-all"
             />
             <button
               type="submit"
               disabled={status === 'loading'}
+              aria-label="Subscribe to newsletter"
               className="px-6 py-3 bg-white text-blue-600 rounded-xl text-sm font-bold hover:bg-blue-50 transition-all shadow-lg disabled:opacity-50"
             >
               {status === 'loading' ? 'Joining...' : 'Subscribe Free'}
@@ -221,11 +225,13 @@ export function NewsletterSignup({ variant = 'inline', category, dismissable = t
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter your email"
             required
+            aria-label="Email address for newsletter"
             className="w-full px-3 py-2.5 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900/30 outline-none transition-all"
           />
           <button
             type="submit"
             disabled={status === 'loading'}
+            aria-label="Subscribe to newsletter"
             className="w-full px-4 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg text-sm font-bold hover:from-blue-700 hover:to-indigo-700 transition-all disabled:opacity-50"
           >
             {status === 'loading' ? 'Joining...' : 'Subscribe Free'}

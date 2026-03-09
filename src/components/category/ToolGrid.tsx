@@ -202,6 +202,7 @@ export function ToolGrid({ tools, categorySlug, categoryName, subcategories = []
               onClick={() => setViewMode('grid')}
               className={`p-2 rounded-lg transition-colors ${viewMode === 'grid' ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600' : 'text-gray-400 hover:text-gray-600'}`}
               title="Grid view"
+              aria-label="Switch to grid view"
             >
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 16 16">
                 <path d="M1 2.5A1.5 1.5 0 012.5 1h3A1.5 1.5 0 017 2.5v3A1.5 1.5 0 015.5 7h-3A1.5 1.5 0 011 5.5v-3zm8 0A1.5 1.5 0 0110.5 1h3A1.5 1.5 0 0115 2.5v3A1.5 1.5 0 0113.5 7h-3A1.5 1.5 0 019 5.5v-3zm-8 8A1.5 1.5 0 012.5 9h3A1.5 1.5 0 017 10.5v3A1.5 1.5 0 015.5 15h-3A1.5 1.5 0 011 13.5v-3zm8 0A1.5 1.5 0 0110.5 9h3a1.5 1.5 0 011.5 1.5v3a1.5 1.5 0 01-1.5 1.5h-3A1.5 1.5 0 019 13.5v-3z"/>
@@ -211,6 +212,7 @@ export function ToolGrid({ tools, categorySlug, categoryName, subcategories = []
               onClick={() => setViewMode('list')}
               className={`p-2 rounded-lg transition-colors ${viewMode === 'list' ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600' : 'text-gray-400 hover:text-gray-600'}`}
               title="List view"
+              aria-label="Switch to list view"
             >
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 16 16">
                 <path fillRule="evenodd" d="M2.5 12a.5.5 0 01.5-.5h10a.5.5 0 010 1H3a.5.5 0 01-.5-.5zm0-4a.5.5 0 01.5-.5h10a.5.5 0 010 1H3a.5.5 0 01-.5-.5zm0-4a.5.5 0 01.5-.5h10a.5.5 0 010 1H3a.5.5 0 01-.5-.5z"/>
@@ -231,6 +233,7 @@ export function ToolGrid({ tools, categorySlug, categoryName, subcategories = []
               placeholder="Search tools..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              aria-label="Search tools in this category"
               className="w-full sm:w-44 pl-9 pr-3 py-2 text-sm border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all"
             />
           </div>
@@ -239,6 +242,7 @@ export function ToolGrid({ tools, categorySlug, categoryName, subcategories = []
           <select
             value={ratingFilter}
             onChange={(e) => setRatingFilter(e.target.value as RatingFilter)}
+            aria-label="Filter by rating"
             className={`px-3 py-2 text-xs font-medium border rounded-lg outline-none cursor-pointer transition-all ${
               ratingFilter !== 'all'
                 ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 border-yellow-300 dark:border-yellow-800'
@@ -267,6 +271,7 @@ export function ToolGrid({ tools, categorySlug, categoryName, subcategories = []
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as SortOption)}
+            aria-label="Sort tools by"
             className="px-3 py-2 text-xs font-medium border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-300 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none cursor-pointer"
           >
             <option value="rating">Sort: Top Rated</option>

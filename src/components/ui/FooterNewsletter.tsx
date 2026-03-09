@@ -82,11 +82,13 @@ export function FooterNewsletter() {
         placeholder="Enter your email"
         required
         disabled={status === 'loading'}
+        aria-label="Email address for newsletter"
         className="flex-1 md:w-72 px-4 py-2.5 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 text-white placeholder-white/30 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/40 disabled:opacity-50 transition-all"
       />
       <button
         type="submit"
         disabled={status === 'loading'}
+        aria-label="Subscribe to newsletter"
         className="px-6 py-2.5 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl text-sm font-semibold hover:shadow-lg hover:shadow-blue-500/20 transition-all flex-shrink-0 disabled:opacity-70 disabled:cursor-not-allowed"
       >
         {status === 'loading' ? (

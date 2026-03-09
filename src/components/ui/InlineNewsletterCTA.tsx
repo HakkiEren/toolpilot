@@ -97,11 +97,13 @@ export function InlineNewsletterCTA() {
               placeholder="your@email.com"
               required
               disabled={status === 'loading'}
+              aria-label="Email address for newsletter"
               className="flex-1 md:w-48 px-4 py-2.5 rounded-xl bg-white/20 backdrop-blur-sm border border-white/30 text-white placeholder-white/50 text-sm focus:outline-none focus:ring-2 focus:ring-white/40 disabled:opacity-50"
             />
             <button
               type="submit"
               disabled={status === 'loading'}
+              aria-label="Subscribe to newsletter"
               className="flex-shrink-0 px-5 py-2.5 bg-white text-blue-700 rounded-xl text-sm font-bold hover:bg-blue-50 transition-colors shadow-md disabled:opacity-70"
             >
               {status === 'loading' ? '...' : 'Subscribe'}
