@@ -449,6 +449,10 @@ export function generateCollectionSchema(
     name: `Best ${categoryName} (${new Date().getFullYear()})`,
     description,
     url: `${SITE_URL}/${categorySlug}`,
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `${SITE_URL}/${categorySlug}`,
+    },
     mainEntity: {
       '@type': 'ItemList',
       numberOfItems: tools.length,
@@ -509,6 +513,10 @@ export function generateComparisonHubSchema(
     '@type': 'CollectionPage',
     name: `${categoryName} Comparisons — Side-by-Side Tool Reviews`,
     url: `${SITE_URL}/${categorySlug}/compare`,
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `${SITE_URL}/${categorySlug}/compare`,
+    },
     mainEntity: {
       '@type': 'ItemList',
       numberOfItems: comparisons.length,
@@ -559,6 +567,7 @@ export function generatePricingSchema(
           price: plan.price ?? 0,
           priceCurrency: tool.pricing.currency || 'USD',
           availability: 'https://schema.org/InStock',
+          priceValidUntil: `${new Date().getFullYear()}-12-31`,
           url: tool.websiteUrl || `${SITE_URL}/${tool.categorySlug}/${tool.slug}/pricing`,
         })),
       },
@@ -798,6 +807,61 @@ export function generateEvaluationHowToSchema(categoryName: string, categorySlug
         name: 'Start a free trial or free plan',
         text: 'Once you\'ve narrowed your options, sign up for a free trial or free plan. Test the tool with your actual workflow before making a purchase decision.',
         url: `${SITE_URL}/${categorySlug}`,
+      },
+    ],
+    publisher: {
+      '@type': 'Organization',
+      name: SITE_NAME,
+      url: SITE_URL,
+    },
+  };
+}
+
+// --- ALTERNATIVES HOW-TO SCHEMA (rich snippet — "How to choose X alternatives") ---
+export function generateAlternativesHowToSchema(
+  toolName: string,
+  categorySlug: string,
+  toolSlug: string,
+  alternativeCount: number
+) {
+  const year = new Date().getFullYear();
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: `How to Choose the Best ${toolName} Alternative in ${year}`,
+    description: `A step-by-step guide to evaluating ${alternativeCount} ${toolName} alternatives and finding the right replacement for your needs.`,
+    url: `${SITE_URL}/${categorySlug}/${toolSlug}/alternatives`,
+    totalTime: 'PT8M',
+    step: [
+      {
+        '@type': 'HowToStep',
+        position: 1,
+        name: `Identify what you need from a ${toolName} alternative`,
+        text: `List the features you use most in ${toolName} and any pain points driving the switch. Consider pricing, integrations, team size, and workflow requirements.`,
+      },
+      {
+        '@type': 'HowToStep',
+        position: 2,
+        name: 'Compare ratings across key dimensions',
+        text: `Review each alternative's scores for features, ease of use, value for money, and customer support. Our ratings are based on expert analysis across these four dimensions on a 0-10 scale.`,
+      },
+      {
+        '@type': 'HowToStep',
+        position: 3,
+        name: 'Check pricing and free plan availability',
+        text: 'Compare starting prices, free plan limitations, and total cost of ownership. Many alternatives offer free plans or trials that let you test before committing.',
+      },
+      {
+        '@type': 'HowToStep',
+        position: 4,
+        name: 'Read head-to-head comparisons',
+        text: `Browse our detailed side-by-side comparisons of ${toolName} vs each alternative to see exactly how they differ in features, pricing, and user experience.`,
+      },
+      {
+        '@type': 'HowToStep',
+        position: 5,
+        name: 'Test your top picks with a free trial',
+        text: 'Sign up for a free trial or free plan of your top 2-3 alternatives. Test with your actual workflow and data before making a final decision.',
       },
     ],
     publisher: {

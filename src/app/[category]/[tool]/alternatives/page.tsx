@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getToolBySlug, getToolsByCategory, getToolsBySubcategory, getAllToolSlugs, getComparisonsByTool, getRelatedBlogPosts } from '@/lib/data';
-import { generateBreadcrumbSchema, generateBestOfItemListSchema, generateFAQSchema } from '@/lib/schema';
+import { generateBreadcrumbSchema, generateBestOfItemListSchema, generateFAQSchema, generateAlternativesHowToSchema } from '@/lib/schema';
 import { CATEGORIES, SUBCATEGORIES, SITE_URL, SEO, SITE_NAME } from '@/lib/constants';
 import { FAQSection } from '@/components/common/FAQSection';
 import type { FAQ } from '@/types';
@@ -127,6 +127,11 @@ export default async function AlternativesPage({ params }: PageProps) {
   ];
   const faqSchema = generateFAQSchema(altFaqs);
 
+  // HowTo schema for "How to choose alternatives" rich snippet
+  const howToSchema = filtered.length > 0
+    ? generateAlternativesHowToSchema(tool.name, category, toolSlug, filtered.length)
+    : null;
+
   // TOC items for navigation
   const tocItems = [
     ...(filtered.length > 0 ? [{ id: 'comparison-table', label: 'Quick Comparison', icon: '\uD83D\uDCCA' }] : []),
@@ -143,6 +148,7 @@ export default async function AlternativesPage({ params }: PageProps) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       {itemListSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />}
       {faqSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />}
+      {howToSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />}
 
       <article className="max-w-5xl mx-auto px-4 py-8">
         <Breadcrumbs items={[
