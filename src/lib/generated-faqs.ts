@@ -84,20 +84,24 @@ function normalizeRow(raw: FeatureMatrixRow): FeatureMatrixRow {
 // ---------------------------------------------------------------------------
 
 const CATEGORY_USE_CASE_MAP: Record<string, string> = {
-  "ai-tools": "beginners",
+  // Main categories (matched by tool.categorySlug)
+  "ai-tools": "AI enthusiasts and professionals",
+  "saas": "small businesses and growing teams",
+  "ecommerce": "online stores and e-commerce businesses",
+  "marketing": "marketing teams and agencies",
+  "hosting": "developers and website owners",
+  "business": "businesses and entrepreneurs",
+  // Subcategory-level overrides
   "ai-writing": "content creators",
   "ai-coding": "developers",
   "ai-image": "designers",
   "ai-video": "video creators",
   "ai-chat": "everyday users",
-  "saas": "small businesses",
-  "marketing": "marketing teams",
   "seo": "SEO professionals",
   "analytics": "data-driven teams",
   "crm": "sales teams",
   "project-management": "project managers",
   "design": "creative professionals",
-  "ecommerce": "online stores",
   "email-marketing": "email marketers",
   "social-media": "social media managers",
   "customer-support": "support teams",
@@ -116,10 +120,13 @@ function getUseCaseAudience(categorySlug: string): string {
 }
 
 function getRatingLabel(rating: number): string {
-  if (rating >= 4.5) return "excellent";
-  if (rating >= 4.0) return "strong";
-  if (rating >= 3.5) return "solid";
-  if (rating >= 3.0) return "decent";
+  // 10-point scale thresholds (site ratings range from ~6.0 to ~9.5)
+  if (rating >= 9.0) return "exceptional";
+  if (rating >= 8.5) return "excellent";
+  if (rating >= 8.0) return "strong";
+  if (rating >= 7.5) return "solid";
+  if (rating >= 7.0) return "good";
+  if (rating >= 6.0) return "decent";
   return "mixed";
 }
 
