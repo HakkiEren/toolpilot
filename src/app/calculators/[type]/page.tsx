@@ -6,6 +6,7 @@ import { generateCalculatorHowToSchema, generateBreadcrumbSchema, generateWebApp
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { FAQSection } from '@/components/common/FAQSection';
 import { AdBanner, AdInArticle } from '@/components/ads/AdSlot';
+import { getGlossaryTermsForCalculator } from '@/lib/glossary-data';
 import { CalculatorClient } from './calculator-client';
 
 // ============================================================
@@ -179,6 +180,7 @@ export default async function CalculatorPage({ params }: PageProps) {
   const cat = CATEGORIES[calc.category];
   const catName = cat?.name || calc.category;
   const subcategories = SUBCATEGORIES[calc.category] || [];
+  const relatedGlossaryTerms = getGlossaryTermsForCalculator(type);
 
   const howToSchema = generateCalculatorHowToSchema(
     calc.title,
@@ -265,6 +267,39 @@ export default async function CalculatorPage({ params }: PageProps) {
           ))}
         </div>
       </section>
+
+      {/* Key Terms — Glossary cross-links for topical authority */}
+      {relatedGlossaryTerms.length > 0 && (
+        <section className="mb-12">
+          <h2 className="text-xl font-bold mb-2">Key Terms to Know</h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+            Understand the concepts behind this calculator.
+          </p>
+          <div className="grid sm:grid-cols-2 gap-3">
+            {relatedGlossaryTerms.map((gt) => (
+              <Link
+                key={gt.slug}
+                href={`/glossary/${gt.slug}`}
+                className="group p-4 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-cyan-300 dark:hover:border-cyan-700 transition-all hover:shadow-sm"
+              >
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-100 to-blue-100 dark:from-cyan-900/40 dark:to-blue-900/40 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <svg className="w-4 h-4 text-cyan-600 dark:text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-sm group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors mb-1">
+                      {gt.term}
+                    </h3>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-2">{gt.definition}</p>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Ad: Before Category Links */}
       <AdInArticle />

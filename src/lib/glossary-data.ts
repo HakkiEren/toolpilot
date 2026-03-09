@@ -532,3 +532,41 @@ export function groupTermsByLetter(terms: GlossaryTerm[]): Record<string, Glossa
   });
   return groups;
 }
+
+// ============================================================
+// CROSS-LINKING MAPS — Glossary ↔ Calculators ↔ Categories
+// Boosts internal link equity and topical authority signals
+// ============================================================
+
+/** Calculator → related glossary term slugs */
+export const CALCULATOR_GLOSSARY_MAP: Record<string, string[]> = {
+  'roi': ['roi-return-on-investment', 'arr-annual-recurring-revenue', 'churn-rate', 'saas-software-as-a-service'],
+  'email-marketing-roi': ['email-marketing', 'ctr-click-through-rate', 'conversion-rate', 'marketing-automation', 'a-b-testing'],
+  'hosting-cost': ['web-hosting', 'vps-virtual-private-server', 'cdn-content-delivery-network', 'ssl-certificate', 'managed-hosting'],
+  'ecommerce-profit': ['e-commerce-platform', 'aov-average-order-value', 'cart-abandonment', 'payment-gateway', 'dropshipping'],
+  'ai-cost': ['artificial-intelligence', 'large-language-model', 'token', 'generative-ai', 'ai-agent'],
+  'team-productivity': ['workflow-automation', 'erp-enterprise-resource-planning', 'no-code-platform', 'digital-transformation', 'business-intelligence'],
+};
+
+/** Glossary category → related calculator slugs */
+export const CATEGORY_CALCULATOR_MAP: Record<string, { slug: string; title: string }[]> = {
+  'ai-tools': [{ slug: 'ai-cost', title: 'AI Cost Estimator' }],
+  'saas': [{ slug: 'roi', title: 'SaaS ROI Calculator' }],
+  'ecommerce': [{ slug: 'ecommerce-profit', title: 'Profit Margin Calculator' }],
+  'marketing': [{ slug: 'email-marketing-roi', title: 'Email Marketing ROI Calculator' }],
+  'hosting': [{ slug: 'hosting-cost', title: 'Hosting Cost Calculator' }],
+  'business': [{ slug: 'team-productivity', title: 'Productivity Calculator' }, { slug: 'roi', title: 'ROI Calculator' }],
+};
+
+/** Get glossary terms for a calculator */
+export function getGlossaryTermsForCalculator(calcSlug: string): GlossaryTerm[] {
+  const slugs = CALCULATOR_GLOSSARY_MAP[calcSlug] || [];
+  return slugs
+    .map((s) => GLOSSARY_TERMS.find((t) => t.slug === s))
+    .filter((t): t is GlossaryTerm => t !== undefined);
+}
+
+/** Get related calculators for a glossary term's category */
+export function getCalculatorsForCategory(categorySlug: string): { slug: string; title: string }[] {
+  return CATEGORY_CALCULATOR_MAP[categorySlug] || [];
+}

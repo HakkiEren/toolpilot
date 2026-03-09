@@ -54,6 +54,24 @@ const nextConfig: NextConfig = {
             key: 'Strict-Transport-Security',
             value: 'max-age=63072000; includeSubDomains; preload',
           },
+          {
+            // CSP report-only — monitor violations without breaking anything
+            // Allows: self, inline scripts/styles (Next.js needs), Google (GA4/AdSense/Fonts), Clearbit, Supabase
+            key: 'Content-Security-Policy-Report-Only',
+            value: [
+              "default-src 'self'",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://pagead2.googlesyndication.com https://adservice.google.com https://www.google-analytics.com https://ep1.adtrafficquality.google",
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+              "img-src 'self' data: blob: https://logo.clearbit.com https://www.google.com https://pagead2.googlesyndication.com https://www.googletagmanager.com",
+              "font-src 'self' https://fonts.gstatic.com",
+              "connect-src 'self' https://gqqgbfoniyfbpbognnks.supabase.co https://www.google-analytics.com https://pagead2.googlesyndication.com https://api.indexnow.org",
+              "frame-src https://googleads.g.doubleclick.net https://www.google.com https://pagead2.googlesyndication.com",
+              "object-src 'none'",
+              "base-uri 'self'",
+              "form-action 'self'",
+              "frame-ancestors 'none'",
+            ].join('; '),
+          },
         ],
       },
       {
@@ -90,9 +108,63 @@ const nextConfig: NextConfig = {
     ];
   },
 
-  // Redirects for SEO (trailing slash normalization)
+  // Redirects for SEO — handle common patterns & old URLs
   async redirects() {
-    return [];
+    return [
+      // Trailing slash normalization (catch-all)
+      {
+        source: '/:path+/',
+        destination: '/:path+',
+        permanent: true,
+      },
+      // Common alternative URL patterns people might try
+      {
+        source: '/tools',
+        destination: '/search',
+        permanent: true,
+      },
+      {
+        source: '/categories',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/reviews',
+        destination: '/search',
+        permanent: true,
+      },
+      {
+        source: '/compare',
+        destination: '/search',
+        permanent: false,
+      },
+      {
+        source: '/pricing',
+        destination: '/search',
+        permanent: false,
+      },
+      // RSS aliases
+      {
+        source: '/rss',
+        destination: '/feed.xml',
+        permanent: true,
+      },
+      {
+        source: '/rss.xml',
+        destination: '/feed.xml',
+        permanent: true,
+      },
+      {
+        source: '/feed',
+        destination: '/feed.xml',
+        permanent: true,
+      },
+      {
+        source: '/atom.xml',
+        destination: '/feed.xml',
+        permanent: true,
+      },
+    ];
   },
 };
 
