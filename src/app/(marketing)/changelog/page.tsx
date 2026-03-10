@@ -47,6 +47,8 @@ const CHANGELOG: {
       { type: 'launched', text: 'EditorialBadge anti-spam component: author attribution, last-updated date, editorial policy link on 1,700+ pages' },
       { type: 'improved', text: 'EditorialBadge deployed to tool reviews, comparisons, pricing, alternatives, and best-of ranking pages' },
       { type: 'improved', text: 'CollectionPage schema enhanced with about.aggregateRating for category pages' },
+      { type: 'improved', text: 'EditorialBadge extended to category, blog, glossary, calculators, and best-of hub pages (~1,890 pages total)' },
+      { type: 'improved', text: 'HTML Sitemap page: added noindex robots directive to prevent duplicate content issues' },
     ],
   },
   {
