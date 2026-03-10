@@ -14,6 +14,7 @@ export const metadata: Metadata = {
   title: `Sitemap — Browse All Pages | ${SITE_NAME}`,
   description: `Browse the complete ${SITE_NAME} sitemap. Find all tool reviews, comparisons, best-of lists, and blog posts in one place.`,
   alternates: { canonical: `${SITE_URL}/sitemap-html` },
+  robots: { index: false, follow: true },
 };
 
 export default async function SitemapPage() {

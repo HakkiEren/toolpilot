@@ -4,6 +4,7 @@ import { getBlogPosts } from '@/lib/data';
 import { generateBreadcrumbSchema } from '@/lib/schema';
 import { SITE_URL, SITE_NAME, SEO } from '@/lib/constants';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
+import { EditorialBadge } from '@/components/common/EditorialBadge';
 import { AdBanner, AdMultiplex } from '@/components/ads/AdSlot';
 
 // ============================================================
@@ -110,6 +111,7 @@ export default async function BlogIndexPage() {
             { name: 'Blog', url: '' },
           ]}
         />
+        <EditorialBadge lastUpdated={new Date().toISOString().split('T')[0]} />
 
         {/* Page Header — Premium glassmorphism */}
         <div className="mt-6 mb-10">

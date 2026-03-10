@@ -11,6 +11,7 @@ import { AdBanner, AdInArticle, AdMultiplex } from '@/components/ads/AdSlot';
 import { ToolGrid } from '@/components/category/ToolGrid';
 import { QuickCompare } from '@/components/category/QuickCompare';
 import { ReadingProgress } from '@/components/common/ReadingProgress';
+import { EditorialBadge } from '@/components/common/EditorialBadge';
 import { RecentlyViewed } from '@/components/common/RecentlyViewed';
 import { NewsletterSignup } from '@/components/common/NewsletterSignup';
 import { getCategoryContent } from '@/lib/category-content';
@@ -124,6 +125,7 @@ export default async function CategoryPage({ params }: PageProps) {
           { name: 'Home', url: '/' },
           { name: cat.name, url: '' },
         ]} />
+        <EditorialBadge lastUpdated={new Date().toISOString().split('T')[0]} />
 
         {/* ========== CATEGORY HERO — Premium glassmorphism ========== */}
         <div className="mt-6 mb-10">

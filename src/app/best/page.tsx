@@ -4,6 +4,7 @@ import { CATEGORIES, SUBCATEGORIES, SITE_URL, SITE_NAME, SEO } from '@/lib/const
 import { getCategoryStats } from '@/lib/data';
 import { generateBreadcrumbSchema } from '@/lib/schema';
 import { ReadingProgress } from '@/components/common/ReadingProgress';
+import { EditorialBadge } from '@/components/common/EditorialBadge';
 import { AdBanner, AdInArticle } from '@/components/ads/AdSlot';
 
 export const revalidate = 3600;
@@ -102,6 +103,7 @@ export default async function BestOfIndexPage() {
           <span>/</span>
           <span className="text-gray-900 dark:text-white font-medium">Best Tools</span>
         </nav>
+        <EditorialBadge lastUpdated={new Date().toISOString().split('T')[0]} />
 
         {/* Hero — Premium glassmorphism */}
         <div className="relative overflow-hidden bg-gradient-to-br from-purple-700 via-indigo-600 to-blue-700 rounded-3xl p-8 md:p-12 mb-12 text-white text-center shadow-xl">

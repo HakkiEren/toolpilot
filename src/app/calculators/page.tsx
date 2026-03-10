@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { SITE_NAME, SITE_URL, SEO, CATEGORY_LIST } from '@/lib/constants';
 import { generateBreadcrumbSchema } from '@/lib/schema';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
+import { EditorialBadge } from '@/components/common/EditorialBadge';
 import { AdBanner } from '@/components/ads/AdSlot';
 
 // ============================================================
@@ -128,6 +129,7 @@ export default function CalculatorsPage() {
 
       <div className="max-w-4xl mx-auto px-4 py-12">
         <Breadcrumbs items={[{ name: 'Home', url: '/' }, { name: 'Calculators', url: '' }]} />
+        <EditorialBadge lastUpdated={new Date().toISOString().split('T')[0]} />
 
         {/* Hero */}
         <div className="mt-6 mb-10">

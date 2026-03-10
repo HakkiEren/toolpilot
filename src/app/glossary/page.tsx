@@ -4,6 +4,7 @@ import { SITE_NAME, SITE_URL, SEO } from '@/lib/constants';
 import { AdBanner, AdInArticle } from '@/components/ads/AdSlot';
 import { generateBreadcrumbSchema, generateGlossarySchema } from '@/lib/schema';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
+import { EditorialBadge } from '@/components/common/EditorialBadge';
 import { GLOSSARY_TERMS, groupTermsByCategory, groupTermsByLetter } from '@/lib/glossary-data';
 
 // ============================================================
@@ -53,6 +54,7 @@ export default function GlossaryPage() {
 
     <div className="max-w-4xl mx-auto px-4 py-12">
       <Breadcrumbs items={[{ name: 'Home', url: '/' }, { name: 'Glossary', url: '' }]} />
+      <EditorialBadge lastUpdated={new Date().toISOString().split('T')[0]} />
 
       {/* Hero — Premium glassmorphism */}
       <div className="mt-6 mb-10">
