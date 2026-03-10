@@ -44,6 +44,7 @@ const CHANGELOG: {
     entries: [
       { type: 'launched', text: 'Cross-category navigation on all 6 category hub pages — breaks content silos and improves internal linking equity' },
       { type: 'improved', text: 'Each category page now shows 5 related categories with descriptions and top subcategories' },
+      { type: 'improved', text: 'Comparison hub pages now link to peer comparison hubs across all other categories' },
     ],
   },
   {
