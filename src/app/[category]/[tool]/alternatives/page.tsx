@@ -7,6 +7,7 @@ import { CATEGORIES, SUBCATEGORIES, SITE_URL, SEO, SITE_NAME } from '@/lib/const
 import { FAQSection } from '@/components/common/FAQSection';
 import type { FAQ } from '@/types';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
+import { EditorialBadge } from '@/components/common/EditorialBadge';
 import { AdBanner, AdInArticle, AdMultiplex } from '@/components/ads/AdSlot';
 import { ToolLogo } from '@/components/common/ToolLogo';
 import { ShareButtons } from '@/components/common/ShareButtons';
@@ -146,7 +147,9 @@ export default async function AlternativesPage({ params }: PageProps) {
     <>
       <ReadingProgress />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      {itemListSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />}
+      {itemListSchema && itemListSchema.map((schema: Record<string, unknown>, idx: number) => (
+        <script key={idx} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      ))}
       {faqSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />}
       {howToSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />}
 
@@ -157,6 +160,9 @@ export default async function AlternativesPage({ params }: PageProps) {
           { name: tool.name, url: `/${category}/${toolSlug}` },
           { name: 'Alternatives', url: '' },
         ]} />
+        <div className="mt-2">
+          <EditorialBadge lastUpdated={tool.lastUpdated} />
+        </div>
 
         {/* ========== HERO — Premium glassmorphism ========== */}
         <div className="mt-6 mb-10">

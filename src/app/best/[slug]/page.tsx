@@ -274,18 +274,17 @@ export default async function BestOfPage({ params }: { params: Promise<{ slug: s
       />
       {allTools.length > 0 && (
         <>
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{
-              __html: JSON.stringify(
-                generateBestOfItemListSchema(
-                  `Best ${sub.name} in ${year}`,
-                  `/best/${slug}`,
-                  allTools.map(t => ({ ...t, categorySlug: t.categorySlug || sub.categorySlug }))
-                )
-              ),
-            }}
-          />
+          {generateBestOfItemListSchema(
+            `Best ${sub.name} in ${year}`,
+            `/best/${slug}`,
+            allTools.map(t => ({ ...t, categorySlug: t.categorySlug || sub.categorySlug }))
+          ).map((schema, idx) => (
+            <script
+              key={idx}
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+            />
+          ))}
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{

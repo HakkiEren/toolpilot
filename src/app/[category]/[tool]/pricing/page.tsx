@@ -5,6 +5,7 @@ import { getToolBySlug, getAllToolSlugs, getRelatedLinks, getRelatedBlogPosts } 
 import { generatePricingSchema, generateProductSchema, generateBreadcrumbSchema, generateFAQSchema } from '@/lib/schema';
 import { CATEGORIES, SUBCATEGORIES, SITE_URL, SEO, SITE_NAME } from '@/lib/constants';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
+import { EditorialBadge } from '@/components/common/EditorialBadge';
 import { RelatedLinks } from '@/components/common/RelatedLinks';
 import { FAQSection } from '@/components/common/FAQSection';
 import { AdBanner, AdInArticle, AdMultiplex } from '@/components/ads/AdSlot';
@@ -186,6 +187,9 @@ export default async function PricingPage({ params }: PageProps) {
           { name: tool.name, url: `/${category}/${toolSlug}` },
           { name: 'Pricing', url: '' },
         ]} />
+        <div className="mt-2">
+          <EditorialBadge lastUpdated={tool.lastUpdated} />
+        </div>
 
         {/* ========== PRICING HERO — Premium glassmorphism ========== */}
         <div className="mt-6 mb-10">

@@ -8,6 +8,7 @@ import { CATEGORIES, SEO, SITE_URL, SITE_NAME, SUBCATEGORIES } from '@/lib/const
 import { generateToolFAQs } from '@/lib/generated-faqs';
 import { FAQSection } from '@/components/common/FAQSection';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
+import { EditorialBadge } from '@/components/common/EditorialBadge';
 import { RelatedLinks } from '@/components/common/RelatedLinks';
 import { AdBanner, AdInArticle, AdMultiplex, AdSidebar } from '@/components/ads/AdSlot';
 import { ToolLogo } from '@/components/common/ToolLogo';
@@ -145,6 +146,9 @@ export default async function ToolPage({ params }: PageProps) {
           { name: cat?.name || category, url: `/${category}` },
           { name: tool.name, url: '' },
         ]} />
+        <div className="mt-2">
+          <EditorialBadge lastUpdated={tool.lastUpdated} />
+        </div>
 
         {/* ========== HERO HEADER — Premium glassmorphism card ========== */}
         <div className="mt-6 mb-10">

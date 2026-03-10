@@ -13,6 +13,7 @@ import { VerdictSection } from '@/components/comparison/VerdictSection';
 import { FAQSection } from '@/components/common/FAQSection';
 import { RelatedLinks } from '@/components/common/RelatedLinks';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
+import { EditorialBadge } from '@/components/common/EditorialBadge';
 import { AdBanner, AdInArticle, AdMultiplex, AdNative } from '@/components/ads/AdSlot';
 import { ToolLogo } from '@/components/common/ToolLogo';
 import { ShareButtons } from '@/components/common/ShareButtons';
@@ -211,6 +212,9 @@ export default async function ComparisonPage({ params }: PageProps) {
             { name: `${comparison.toolA.name} vs ${comparison.toolB.name}`, url: '' },
           ]}
         />
+        <div className="mt-2">
+          <EditorialBadge lastUpdated={comparison.lastUpdated} />
+        </div>
 
         {/* ========== HERO — Dramatic battle card with gradient ========== */}
         <div className="mt-6 mb-8">

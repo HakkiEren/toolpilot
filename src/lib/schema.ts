@@ -441,8 +441,13 @@ export function generateCollectionSchema(
   categoryName: string,
   categorySlug: string,
   description: string,
-  tools: { name: string; slug: string; ratings: { overall: number }; logoUrl?: string }[]
+  tools: { name: string; slug: string; ratings: { overall: number; reviewCount?: number }; logoUrl?: string }[]
 ) {
+  const avgRating = tools.length > 0
+    ? +(tools.reduce((sum, t) => sum + t.ratings.overall, 0) / tools.length).toFixed(1)
+    : 0;
+  const totalReviews = tools.reduce((sum, t) => sum + ((t.ratings as { reviewCount?: number }).reviewCount || 1), 0);
+
   return {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
@@ -452,6 +457,19 @@ export function generateCollectionSchema(
     mainEntityOfPage: {
       '@type': 'WebPage',
       '@id': `${SITE_URL}/${categorySlug}`,
+    },
+    about: {
+      '@type': 'SoftwareApplication',
+      name: `${categoryName} Software`,
+      applicationCategory: 'BusinessApplication',
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: avgRating,
+        bestRating: 10,
+        worstRating: 0,
+        ratingCount: totalReviews,
+        reviewCount: tools.length,
+      },
     },
     mainEntity: {
       '@type': 'ItemList',
@@ -472,34 +490,66 @@ export function generateCollectionSchema(
 export function generateBestOfItemListSchema(
   title: string,
   url: string,
-  tools: { name: string; slug: string; categorySlug: string; ratings: { overall: number }; logoUrl?: string }[]
+  tools: { name: string; slug: string; categorySlug: string; ratings: { overall: number; reviewCount?: number }; logoUrl?: string }[]
 ) {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'ItemList',
-    name: title,
-    url: url.startsWith('http') ? url : `${SITE_URL}${url}`,
-    numberOfItems: tools.length,
-    itemListOrder: 'https://schema.org/ItemListOrderDescending',
-    itemListElement: tools.map((tool, idx) => ({
-      '@type': 'ListItem',
-      position: idx + 1,
-      name: tool.name,
-      url: `${SITE_URL}/${tool.categorySlug}/${tool.slug}`,
-      item: {
-        '@type': 'SoftwareApplication',
+  const fullUrl = url.startsWith('http') ? url : `${SITE_URL}${url}`;
+  // Page-level aggregate for SERP star ratings
+  const avgRating = tools.length > 0
+    ? +(tools.reduce((sum, t) => sum + t.ratings.overall, 0) / tools.length).toFixed(1)
+    : 0;
+  const totalReviews = tools.reduce((sum, t) => sum + (t.ratings.reviewCount || 1), 0);
+
+  return [
+    // 1. ItemList — ranking carousel
+    {
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      name: title,
+      url: fullUrl,
+      numberOfItems: tools.length,
+      itemListOrder: 'https://schema.org/ItemListOrderDescending',
+      itemListElement: tools.map((tool, idx) => ({
+        '@type': 'ListItem',
+        position: idx + 1,
         name: tool.name,
         url: `${SITE_URL}/${tool.categorySlug}/${tool.slug}`,
-        ...(tool.logoUrl && { image: tool.logoUrl }),
+        item: {
+          '@type': 'SoftwareApplication',
+          name: tool.name,
+          url: `${SITE_URL}/${tool.categorySlug}/${tool.slug}`,
+          ...(tool.logoUrl && { image: tool.logoUrl }),
+          aggregateRating: {
+            '@type': 'AggregateRating',
+            ratingValue: tool.ratings.overall,
+            bestRating: 10,
+            worstRating: 0,
+            ratingCount: tool.ratings.reviewCount || 1,
+          },
+        },
+      })),
+    },
+    // 2. WebPage with AggregateRating — SERP star snippet potential
+    {
+      '@context': 'https://schema.org',
+      '@type': 'WebPage',
+      name: title,
+      url: fullUrl,
+      description: `Expert-curated ranking of the ${tools.length} best tools. Average rating: ${avgRating}/10 based on ${totalReviews} reviews.`,
+      mainEntity: {
+        '@type': 'SoftwareApplication',
+        name: title,
+        applicationCategory: 'BusinessApplication',
         aggregateRating: {
           '@type': 'AggregateRating',
-          ratingValue: tool.ratings.overall,
+          ratingValue: avgRating,
           bestRating: 10,
           worstRating: 0,
+          ratingCount: totalReviews,
+          reviewCount: tools.length,
         },
       },
-    })),
-  };
+    },
+  ];
 }
 
 // --- COMPARISON HUB SCHEMA (ItemList of comparisons for a category) ---
