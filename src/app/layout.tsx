@@ -7,6 +7,7 @@ import { generateOrganizationSchema, generateWebSiteSchema, generateSiteNavigati
 import { MobileMenu } from '@/components/layout/MobileMenu';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { NewsletterPopup } from '@/components/ui/NewsletterPopup';
+import { CookieConsent } from '@/components/ui/CookieConsent';
 import { BackToTop } from '@/components/common/BackToTop';
 import { Footer } from '@/components/layout/Footer';
 import Link from 'next/link';
@@ -226,6 +227,9 @@ export default function RootLayout({
 
         {/* Newsletter Popup */}
         <NewsletterPopup />
+
+        {/* Cookie Consent Banner */}
+        <CookieConsent />
 
         {/* Back to Top Button */}
         <BackToTop />
