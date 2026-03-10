@@ -10,6 +10,7 @@ import { AdBanner, AdInArticle, AdMultiplex, AdNative } from '@/components/ads/A
 import { RecentlyViewed } from '@/components/common/RecentlyViewed';
 import { NewsletterSignup } from '@/components/common/NewsletterSignup';
 import { ToolFinder } from '@/components/common/ToolFinder';
+import { RevealOnScroll } from '@/components/common/RevealOnScroll';
 
 export const revalidate = 3600;
 
@@ -301,6 +302,7 @@ export default async function HomePage() {
       {/* ============================================================ */}
       {/* TRENDING TOOLS — Top rated across all categories */}
       {/* ============================================================ */}
+      <RevealOnScroll>
       <section className="max-w-7xl mx-auto px-4 py-16">
         <div className="flex items-center justify-between mb-8">
           <div>
@@ -367,6 +369,7 @@ export default async function HomePage() {
           })}
         </div>
       </section>
+      </RevealOnScroll>
 
       {/* ============================================================ */}
       {/* POPULAR ALTERNATIVES — Target "[Tool] alternatives" search queries */}
@@ -464,6 +467,7 @@ export default async function HomePage() {
       {/* POPULAR COMPARISONS — VS battles across categories */}
       {/* ============================================================ */}
       {latestComparisons && latestComparisons.length > 0 && (
+        <RevealOnScroll>
         <section className="bg-gray-50 dark:bg-gray-900/50 py-16">
           <div className="max-w-7xl mx-auto px-4">
             <div className="flex items-center justify-between mb-8">
@@ -535,6 +539,7 @@ export default async function HomePage() {
             </div>
           </div>
         </section>
+        </RevealOnScroll>
       )}
 
       {/* ========== AD: AFTER COMPARISONS ========== */}
@@ -545,6 +550,7 @@ export default async function HomePage() {
       {/* ============================================================ */}
       {/* BROWSE BY CATEGORY — Enhanced cards with tool counts */}
       {/* ============================================================ */}
+      <RevealOnScroll>
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-bold text-center mb-4">
@@ -605,6 +611,7 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+      </RevealOnScroll>
 
       {/* ========== AD: AFTER BROWSE BY CATEGORY ========== */}
       <div className="max-w-7xl mx-auto px-4">
@@ -676,6 +683,7 @@ export default async function HomePage() {
       {/* LATEST BLOG POSTS */}
       {/* ============================================================ */}
       {latestPosts && latestPosts.length > 0 && (
+        <RevealOnScroll>
         <section className="py-16">
           <div className="max-w-7xl mx-auto px-4">
             <div className="flex items-center justify-between mb-8">
@@ -688,33 +696,55 @@ export default async function HomePage() {
               </Link>
             </div>
             <div className="grid md:grid-cols-3 gap-6">
-              {latestPosts.map((post) => (
-                <Link
-                  key={post.slug}
-                  href={`/blog/${post.slug}`}
-                  className="group hover-lift bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden transition-all"
-                >
-                  <div className="h-32 bg-gradient-to-br from-blue-400 to-purple-500" />
-                  <div className="p-5">
-                    <h3 className="font-bold mb-2 group-hover:text-blue-600 transition-colors line-clamp-2">
-                      {post.title}
-                    </h3>
-                    <p className="text-sm text-gray-500 line-clamp-2">{post.excerpt}</p>
-                    <div className="text-xs text-gray-400 mt-3">
-                      {post.published_at
-                        ? new Date(post.published_at).toLocaleDateString('en-US', {
-                            month: 'short',
-                            day: 'numeric',
-                            year: 'numeric',
-                          })
-                        : ''}
+              {latestPosts.map((post, idx) => {
+                const gradients = [
+                  'from-blue-500 via-indigo-500 to-purple-600',
+                  'from-emerald-500 via-teal-500 to-cyan-600',
+                  'from-orange-500 via-rose-500 to-pink-600',
+                ];
+                const icons = [
+                  <svg key="pen" className="w-8 h-8 text-white/80" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" /></svg>,
+                  <svg key="chart" className="w-8 h-8 text-white/80" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" /></svg>,
+                  <svg key="bulb" className="w-8 h-8 text-white/80" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" /></svg>,
+                ];
+                return (
+                  <Link
+                    key={post.slug}
+                    href={`/blog/${post.slug}`}
+                    className="group hover-lift card-animate bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden transition-all"
+                    style={{ animationDelay: `${idx * 80}ms` }}
+                  >
+                    <div className={`relative h-32 bg-gradient-to-br ${gradients[idx % 3]} flex items-center justify-center`}>
+                      <div className="absolute inset-0 opacity-[0.08]" style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '16px 16px' }} />
+                      <div className="relative">{icons[idx % 3]}</div>
                     </div>
-                  </div>
-                </Link>
-              ))}
+                    <div className="p-5">
+                      <h3 className="font-bold mb-2 group-hover:text-blue-600 transition-colors line-clamp-2">
+                        {post.title}
+                      </h3>
+                      <p className="text-sm text-gray-500 line-clamp-2">{post.excerpt}</p>
+                      <div className="flex items-center justify-between mt-3">
+                        <span className="text-xs text-gray-400">
+                          {post.published_at
+                            ? new Date(post.published_at).toLocaleDateString('en-US', {
+                                month: 'short',
+                                day: 'numeric',
+                                year: 'numeric',
+                              })
+                            : ''}
+                        </span>
+                        <span className="text-xs font-medium text-blue-600 dark:text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                          Read more →
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
           </div>
         </section>
+        </RevealOnScroll>
       )}
 
       {/* ============================================================ */}
@@ -834,6 +864,7 @@ export default async function HomePage() {
       {/* ============================================================ */}
       {/* SOCIAL PROOF — Testimonials and trust signals */}
       {/* ============================================================ */}
+      <RevealOnScroll>
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-bold text-center mb-4">
@@ -892,6 +923,7 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+      </RevealOnScroll>
 
       {/* ============================================================ */}
       {/* TRUST SIGNALS */}

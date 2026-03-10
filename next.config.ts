@@ -137,12 +137,12 @@ const nextConfig: NextConfig = {
       {
         source: '/compare',
         destination: '/search',
-        permanent: false,
+        permanent: true,
       },
       {
         source: '/pricing',
         destination: '/search',
-        permanent: false,
+        permanent: true,
       },
       // RSS aliases
       {

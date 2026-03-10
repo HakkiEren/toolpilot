@@ -387,7 +387,7 @@ export function generateBlogSchema(post: BlogPost) {
 
   return {
     '@context': 'https://schema.org',
-    '@type': 'Article',
+    '@type': 'TechArticle',
     headline: post.title,
     description: post.excerpt,
     url: `${SITE_URL}/blog/${post.slug}`,

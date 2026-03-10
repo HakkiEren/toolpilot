@@ -1,5 +1,12 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SITE_NAME, CATEGORY_LIST } from '@/lib/constants';
+
+export const metadata: Metadata = {
+  title: `Page Not Found | ${SITE_NAME}`,
+  description: 'The page you are looking for does not exist or has been moved. Browse our tool categories, comparisons, and rankings instead.',
+  robots: { index: false, follow: true },
+};
 
 const QUICK_TOOLS = [
   { slug: 'roi', name: 'SaaS ROI Calculator', emoji: '📊' },
@@ -19,7 +26,7 @@ const TOP_RANKINGS = [
   { slug: 'ai-coding', label: 'Best AI Coding Tools' },
   { slug: 'ai-writing', label: 'Best AI Writing Tools' },
   { slug: 'ai-chatbots', label: 'Best AI Chatbots' },
-  { slug: 'website-builders', label: 'Best Website Builders' },
+  { slug: 'store-builders', label: 'Best Online Store Builders' },
 ];
 
 export default function NotFound() {
