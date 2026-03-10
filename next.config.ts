@@ -29,7 +29,7 @@ const nextConfig: NextConfig = {
 
   // Optimize commonly used packages for better tree-shaking
   experimental: {
-    optimizePackageImports: ['@supabase/supabase-js'],
+    optimizePackageImports: ['@supabase/supabase-js', 'react', 'react-dom'],
   },
 
   // Headers for security, caching & crawl budget

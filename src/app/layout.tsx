@@ -1,16 +1,19 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import Script from 'next/script';
+import dynamic from 'next/dynamic';
 import './globals.css';
 import { SITE_NAME, SITE_DESCRIPTION, SITE_URL, SEO, CATEGORY_LIST, SUBCATEGORIES } from '@/lib/constants';
 import { generateOrganizationSchema, generateWebSiteSchema, generateSiteNavigationSchema } from '@/lib/schema';
 import { MobileMenu } from '@/components/layout/MobileMenu';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
-import { NewsletterPopup } from '@/components/ui/NewsletterPopup';
-import { CookieConsent } from '@/components/ui/CookieConsent';
-import { BackToTop } from '@/components/common/BackToTop';
 import { Footer } from '@/components/layout/Footer';
 import Link from 'next/link';
+
+// Lazy-load non-critical UI components — code-split from initial JS bundle
+const NewsletterPopup = dynamic(() => import('@/components/ui/NewsletterPopup').then(m => m.NewsletterPopup));
+const CookieConsent = dynamic(() => import('@/components/ui/CookieConsent').then(m => m.CookieConsent));
+const BackToTop = dynamic(() => import('@/components/common/BackToTop').then(m => m.BackToTop));
 
 const inter = Inter({ subsets: ['latin'], display: 'swap' });
 
