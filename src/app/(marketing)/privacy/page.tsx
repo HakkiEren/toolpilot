@@ -1,11 +1,28 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { SITE_NAME, SITE_URL } from '@/lib/constants';
+import { SITE_NAME, SITE_URL, SEO } from '@/lib/constants';
+
+const privacyTitle = `Privacy Policy | ${SITE_NAME}`;
+const privacyDescription = `Privacy Policy for ${SITE_NAME}. Learn how we collect, use, and protect your personal information.`;
 
 export const metadata: Metadata = {
-  title: `Privacy Policy | ${SITE_NAME}`,
-  description: `Privacy Policy for ${SITE_NAME}. Learn how we collect, use, and protect your personal information.`,
+  title: privacyTitle,
+  description: privacyDescription,
   alternates: { canonical: `${SITE_URL}/privacy` },
+  openGraph: {
+    title: privacyTitle,
+    description: privacyDescription,
+    url: `${SITE_URL}/privacy`,
+    siteName: SITE_NAME,
+    type: 'website',
+    locale: SEO.locale,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    site: SEO.twitterHandle,
+    title: privacyTitle,
+    description: privacyDescription,
+  },
 };
 
 const SECTIONS = [

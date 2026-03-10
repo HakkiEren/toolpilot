@@ -1,19 +1,29 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { SITE_NAME, SITE_URL } from '@/lib/constants';
+import { SITE_NAME, SITE_URL, SEO } from '@/lib/constants';
 import { generateBreadcrumbSchema } from '@/lib/schema';
 import ContactForm from './contact-form';
 
+const contactTitle = `Contact Us — Get in Touch | ${SITE_NAME}`;
+const contactDescription = `Contact the ${SITE_NAME} team. Submit tool suggestions, report inaccuracies, partnership inquiries, or ask questions. We typically respond within 24-48 hours.`;
+
 export const metadata: Metadata = {
-  title: `Contact Us — Get in Touch | ${SITE_NAME}`,
-  description: `Contact the ${SITE_NAME} team. Submit tool suggestions, report inaccuracies, partnership inquiries, or ask questions. We typically respond within 24-48 hours.`,
+  title: contactTitle,
+  description: contactDescription,
   alternates: { canonical: `${SITE_URL}/contact` },
   openGraph: {
-    title: `Contact Us — Get in Touch | ${SITE_NAME}`,
-    description: `Contact the ${SITE_NAME} team. Submit tool suggestions, report inaccuracies, partnership inquiries, or ask questions.`,
+    title: contactTitle,
+    description: contactDescription,
     url: `${SITE_URL}/contact`,
     siteName: SITE_NAME,
     type: 'website',
+    locale: SEO.locale,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    site: SEO.twitterHandle,
+    title: contactTitle,
+    description: contactDescription,
   },
 };
 

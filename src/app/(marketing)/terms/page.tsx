@@ -1,11 +1,28 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { SITE_NAME, SITE_URL } from '@/lib/constants';
+import { SITE_NAME, SITE_URL, SEO } from '@/lib/constants';
+
+const termsTitle = `Terms of Service | ${SITE_NAME}`;
+const termsDescription = `Terms of Service for ${SITE_NAME}. Read the terms and conditions that govern your use of our website.`;
 
 export const metadata: Metadata = {
-  title: `Terms of Service | ${SITE_NAME}`,
-  description: `Terms of Service for ${SITE_NAME}. Read the terms and conditions that govern your use of our website.`,
+  title: termsTitle,
+  description: termsDescription,
   alternates: { canonical: `${SITE_URL}/terms` },
+  openGraph: {
+    title: termsTitle,
+    description: termsDescription,
+    url: `${SITE_URL}/terms`,
+    siteName: SITE_NAME,
+    type: 'website',
+    locale: SEO.locale,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    site: SEO.twitterHandle,
+    title: termsTitle,
+    description: termsDescription,
+  },
 };
 
 const SECTIONS = [
