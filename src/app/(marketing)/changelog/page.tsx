@@ -40,6 +40,20 @@ const CHANGELOG: {
 }[] = [
   {
     date: '2026-03-10',
+    version: '3.4',
+    entries: [
+      { type: 'improved', text: '404 page: proper metadata with noindex + fixed broken /best/website-builders link' },
+      { type: 'improved', text: 'SEO redirects: /compare and /pricing upgraded from 302 to 301 for PageRank transfer' },
+      { type: 'improved', text: 'Blog schema upgraded from Article to TechArticle for stronger tech content signals' },
+      { type: 'improved', text: 'ThemeToggle: emoji (sun/moon) replaced with crisp SVG icons for cross-platform consistency' },
+      { type: 'improved', text: 'Homepage blog cards: unique gradient per card with category icons and entry animations' },
+      { type: 'launched', text: 'Scroll-triggered reveal animations on 7 homepage sections using IntersectionObserver (respects reduced motion)' },
+      { type: 'improved', text: 'Footer: gradient background, social icon hover effects, improved trending pill contrast' },
+      { type: 'added', text: 'Calculators link added to footer Resources column (was missing from navigation)' },
+    ],
+  },
+  {
+    date: '2026-03-10',
     version: '3.3',
     entries: [
       { type: 'launched', text: 'AboutPage JSON-LD schema for E-E-A-T — tells Google about organization founding, team size, and expertise areas', link: '/about' },
