@@ -590,6 +590,40 @@ export default async function CategoryPage({ params }: PageProps) {
           </div>
         </section>
 
+        {/* ========== EXPLORE OTHER CATEGORIES ========== */}
+        <section className="mb-12">
+          <h2 className="text-xl font-bold mb-4">Explore Other Categories</h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {CATEGORY_LIST.filter((c) => c.slug !== category).map((otherCat) => {
+              const otherSubs = SUBCATEGORIES[otherCat.slug] || [];
+              return (
+                <Link
+                  key={otherCat.slug}
+                  href={`/${otherCat.slug}`}
+                  className="group hover-lift bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-4 hover:border-indigo-300 dark:hover:border-indigo-700 transition-all"
+                >
+                  <h3 className="font-semibold text-sm group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors mb-1">
+                    {otherCat.name}
+                  </h3>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-2 mb-2">
+                    {otherCat.description}
+                  </p>
+                  <div className="flex flex-wrap gap-1">
+                    {otherSubs.slice(0, 3).map((sub) => (
+                      <span key={sub.slug} className="text-[10px] px-2 py-0.5 bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 rounded-full">
+                        {sub.name}
+                      </span>
+                    ))}
+                    {otherSubs.length > 3 && (
+                      <span className="text-[10px] px-2 py-0.5 text-gray-400">+{otherSubs.length - 3} more</span>
+                    )}
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </section>
+
         {/* ========== CATEGORY FAQ ========== */}
         {categoryContent && categoryContent.faqs.length > 0 && (
           <section className="mb-12">
