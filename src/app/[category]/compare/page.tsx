@@ -356,6 +356,30 @@ export default async function ComparisonHubPage({ params }: PageProps) {
           <AdSidebar />
         </div>
 
+        {/* Compare Tools in Other Categories */}
+        <section className="mt-10 mb-8">
+          <h2 className="text-xl font-bold mb-4">Compare Tools in Other Categories</h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {CATEGORY_LIST.filter((c) => c.slug !== category).map((otherCat) => (
+              <Link
+                key={otherCat.slug}
+                href={`/${otherCat.slug}/compare`}
+                className="group flex items-center gap-3 p-4 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-700 hover:shadow-md transition-all"
+              >
+                <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-purple-100 to-indigo-100 dark:from-purple-900/30 dark:to-indigo-900/30 flex items-center justify-center">
+                  <span className="text-lg">&#9878;</span>
+                </div>
+                <div className="min-w-0">
+                  <h3 className="font-medium text-sm group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors truncate">
+                    {otherCat.name} Comparisons
+                  </h3>
+                  <p className="text-[11px] text-gray-400 truncate">{otherCat.description}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+
         {/* Freshness Signal */}
         <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-gray-400 border-t border-gray-200 dark:border-gray-800 pt-6">
           <div className="flex items-center gap-2">
