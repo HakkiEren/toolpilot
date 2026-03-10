@@ -4,6 +4,8 @@
 // safe formatting tags (p, h3, ul, li, strong, em, a, br)
 // ============================================================
 
+import { enrichHtmlWithGlossaryLinks, enrichTextWithGlossaryLinks } from '@/lib/glossary-linker';
+
 const ALLOWED_TAGS = new Set([
   'p', 'br', 'strong', 'b', 'em', 'i', 'u', 'a',
   'ul', 'ol', 'li', 'h2', 'h3', 'h4', 'h5', 'h6',
@@ -54,28 +56,39 @@ interface HtmlContentProps {
   html: string;
   className?: string;
   as?: 'div' | 'p' | 'span';
+  /** When true, automatically links glossary terms to /glossary/[slug] pages */
+  glossaryLinks?: boolean;
 }
 
 /**
  * Renders HTML content safely. If the content doesn't contain HTML tags,
  * it renders as plain text. If it contains HTML, it sanitizes and renders.
+ * Optionally enriches content with glossary term links.
  */
-export function HtmlContent({ html, className = '', as: Tag = 'div' }: HtmlContentProps) {
+export function HtmlContent({ html, className = '', as: Tag = 'div', glossaryLinks = false }: HtmlContentProps) {
   if (!html) return null;
 
   // Check if content actually has HTML tags
   const hasHtml = /<[a-zA-Z][^>]*>/.test(html);
 
-  if (!hasHtml) {
-    // No HTML — render as plain text
+  if (!hasHtml && !glossaryLinks) {
+    // No HTML, no glossary — render as plain text
     return <Tag className={className}>{html}</Tag>;
   }
 
-  // Has HTML — sanitize and render
+  let processed = hasHtml ? sanitizeHtml(html) : html;
+
+  // Enrich with glossary links if requested
+  if (glossaryLinks) {
+    processed = hasHtml
+      ? enrichHtmlWithGlossaryLinks(processed)
+      : enrichTextWithGlossaryLinks(processed);
+  }
+
   return (
     <Tag
       className={className}
-      dangerouslySetInnerHTML={{ __html: sanitizeHtml(html) }}
+      dangerouslySetInnerHTML={{ __html: processed }}
     />
   );
 }

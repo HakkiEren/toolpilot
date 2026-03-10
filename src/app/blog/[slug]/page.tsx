@@ -12,6 +12,7 @@ import { ShareButtons } from '@/components/common/ShareButtons';
 import { CopyLinkButton } from '@/components/common/CopyLinkButton';
 import { ReadingProgress } from '@/components/common/ReadingProgress';
 import { InlineNewsletterCTA } from '@/components/ui/InlineNewsletterCTA';
+import { enrichHtmlWithGlossaryLinks } from '@/lib/glossary-linker';
 import type { InternalLink } from '@/types';
 
 // ============================================================
@@ -268,7 +269,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                 prose-img:rounded-xl prose-img:shadow-md
                 prose-code:bg-gray-100 dark:prose-code:bg-gray-800 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded
                 prose-blockquote:border-blue-500 prose-blockquote:bg-blue-50/50 dark:prose-blockquote:bg-blue-900/10 prose-blockquote:rounded-r-lg prose-blockquote:py-1"
-              dangerouslySetInnerHTML={{ __html: post.content }}
+              dangerouslySetInnerHTML={{ __html: enrichHtmlWithGlossaryLinks(post.content) }}
             />
 
             {/* Share buttons — after article body */}

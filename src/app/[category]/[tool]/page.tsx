@@ -15,6 +15,7 @@ import { ToolLogo } from '@/components/common/ToolLogo';
 import { ShareButtons } from '@/components/common/ShareButtons';
 import { CopyLinkButton } from '@/components/common/CopyLinkButton';
 import { ReadingProgress } from '@/components/common/ReadingProgress';
+import { GlossaryLinkedText } from '@/components/common/GlossaryLinkedText';
 import { TableOfContents } from '@/components/common/TableOfContents';
 import { RecordToolView } from '@/components/common/RecentlyViewed';
 import { StickyMobileCTA } from '@/components/common/StickyMobileCTA';
@@ -366,7 +367,7 @@ export default async function ToolPage({ params }: PageProps) {
         <section id="about" className="mb-12 scroll-mt-24">
           <h2 className="text-2xl font-bold mb-4">What is {tool.name}?</h2>
           <div className="prose dark:prose-invert max-w-none text-gray-600 dark:text-gray-300 leading-relaxed">
-            <p>{tool.description}</p>
+            <GlossaryLinkedText text={tool.description} />
           </div>
         </section>
 

@@ -436,6 +436,39 @@ table tbody tr:hover {
   text-underline-offset: 3px;
 }
 
+/* Glossary auto-links — subtle dotted underline */
+a.glossary-link {
+  color: #4f46e5;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+}
+
+a.glossary-link:hover {
+  text-decoration-style: solid;
+  color: #4338ca;
+}
+
+.dark a.glossary-link {
+  color: #818cf8;
+}
+
+.dark a.glossary-link:hover {
+  color: #a5b4fc;
+}
+
+/* Inside prose, override prose defaults for glossary links */
+.prose a.glossary-link {
+  color: #4f46e5;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+}
+
+.dark .prose a.glossary-link {
+  color: #818cf8;
+}
+
 /* Ad container */
 .ad-slot {
   border-radius: var(--radius-md);

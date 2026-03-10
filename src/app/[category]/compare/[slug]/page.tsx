@@ -414,6 +414,7 @@ export default async function ComparisonPage({ params }: PageProps) {
           {/* Intro Content */}
           <HtmlContent
             html={comparison.introContent}
+            glossaryLinks
             className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed [&>p]:mb-4 [&>p:last-child]:mb-0"
           />
         </div>
