@@ -39,6 +39,39 @@ const CHANGELOG: {
   entries: { type: 'added' | 'updated' | 'improved' | 'launched'; text: string; link?: string }[];
 }[] = [
   {
+    date: '2026-03-10',
+    version: '3.3',
+    entries: [
+      { type: 'launched', text: 'AboutPage JSON-LD schema for E-E-A-T — tells Google about organization founding, team size, and expertise areas', link: '/about' },
+      { type: 'launched', text: 'ContactPage JSON-LD schema for rich results with structured contact point data', link: '/contact' },
+      { type: 'improved', text: 'SiteNavigationElement schema expanded with Glossary, Calculators, and About links for better site structure signals' },
+      { type: 'improved', text: 'Content-Language: en HTTP header added across all pages for language targeting' },
+      { type: 'improved', text: 'Visual breadcrumbs + BreadcrumbList schema added to Privacy, Terms, and Editorial Policy pages' },
+      { type: 'improved', text: 'Visual breadcrumbs added to About and Contact pages for consistent navigation' },
+      { type: 'launched', text: 'GDPR cookie consent banner with accept/decline buttons and Privacy Policy link' },
+      { type: 'improved', text: 'Skeleton loading states: replaced spinner with premium card grid skeleton with shimmer effects' },
+      { type: 'improved', text: 'Newsletter popup timing optimized: triggers at 60s OR 40% scroll depth (was 30s only)' },
+      { type: 'added', text: 'CSS skeleton shimmer animation system in globals.css for perceived performance' },
+    ],
+  },
+  {
+    date: '2026-03-09',
+    version: '3.2',
+    entries: [
+      { type: 'launched', text: 'Dynamic OG images for best-of hub, blog hub, calculators hub, glossary terms, and marketing pages' },
+      { type: 'launched', text: 'Comparison Decision Guide — "Choose X if you need…" recommendation cards on 327+ comparison pages' },
+      { type: 'improved', text: 'Footer trust badges now link to Editorial Policy page for transparency' },
+      { type: 'improved', text: 'HowTo schema on alternatives pages: "How to Choose the Best [Tool] Alternative" with structured steps' },
+      { type: 'improved', text: 'CollectionPage + ComparisonHub schemas enhanced with mainEntityOfPage property' },
+      { type: 'improved', text: 'Pricing schema: Added priceValidUntil for Google Merchant compliance' },
+      { type: 'improved', text: '18 aria-labels added across 10 files for screen reader accessibility (WCAG 2.1)' },
+      { type: 'added', text: 'WhatsApp + Telegram sharing buttons added to social share component' },
+      { type: 'improved', text: '3-tier ToolLogo fallback: Clearbit → Google Favicon → gradient letter for zero broken images' },
+      { type: 'improved', text: 'Glossary ↔ Calculator bidirectional cross-linking for internal link equity' },
+      { type: 'improved', text: 'CSP report-only header + SEO redirects for /tools, /compare, /reviews paths' },
+    ],
+  },
+  {
     date: '2026-03-08',
     version: '3.1',
     entries: [
