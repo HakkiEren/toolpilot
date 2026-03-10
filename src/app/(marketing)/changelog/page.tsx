@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     description: changelogDescription,
     url: `${SITE_URL}/changelog`,
     siteName: SITE_NAME,
-    type: 'article',
+    type: 'website',
     locale: SEO.locale,
   },
   twitter: {

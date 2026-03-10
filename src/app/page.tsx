@@ -1001,11 +1001,14 @@ export default async function HomePage() {
       {/* ============================================================ */}
       {/* FAQ SECTION — SEO-rich content with FAQ schema */}
       {/* ============================================================ */}
-      <HomeFAQ toolCount={toolCount || 40} comparisonCount={comparisonCount || 30} />
+      <RevealOnScroll>
+        <HomeFAQ toolCount={toolCount || 40} comparisonCount={comparisonCount || 30} />
+      </RevealOnScroll>
 
       {/* ============================================================ */}
       {/* QUICK ACCESS — Deep links to all resources for max internal linking */}
       {/* ============================================================ */}
+      <RevealOnScroll>
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-bold text-center mb-4">
@@ -1142,6 +1145,7 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+      </RevealOnScroll>
 
       {/* ============================================================ */}
       {/* HOW IT WORKS — HowTo schema for rich snippets */}
