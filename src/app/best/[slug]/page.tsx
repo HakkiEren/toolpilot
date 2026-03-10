@@ -160,7 +160,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { slug } = await params;
   const sub = subcategoryMap[slug];
-  if (!sub) return {};
+  if (!sub) notFound();
 
   const year = new Date().getFullYear();
   const title = `Best ${sub.name} in ${year} — Top Picks Compared`;

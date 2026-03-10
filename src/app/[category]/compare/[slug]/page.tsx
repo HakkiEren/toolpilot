@@ -94,7 +94,7 @@ interface PageProps {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { category, slug } = await params;
   const comparison = await getComparison(category, slug);
-  if (!comparison) return {};
+  if (!comparison) notFound();
 
   const title = comparison.metaTitle || `${comparison.toolA.name} vs ${comparison.toolB.name}${SEO.titleSuffix}`;
   const description = comparison.metaDescription ||

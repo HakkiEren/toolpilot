@@ -14,6 +14,7 @@ import { ReadingProgress } from '@/components/common/ReadingProgress';
 // ============================================================
 
 export const revalidate = 3600;
+export const dynamicParams = false;
 
 export async function generateStaticParams() {
   return CATEGORY_LIST.map((cat) => ({ category: cat.slug }));
@@ -26,7 +27,7 @@ interface PageProps {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { category } = await params;
   const cat = CATEGORIES[category];
-  if (!cat) return {};
+  if (!cat) notFound();
 
   const year = new Date().getFullYear();
   const title = `${cat.name} Comparisons (${year}) — Side-by-Side Tool Reviews`;

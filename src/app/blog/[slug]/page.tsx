@@ -34,7 +34,7 @@ interface PageProps {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const post = await getBlogBySlug(slug);
-  if (!post) return {};
+  if (!post) notFound();
 
   return {
     title: post.metaTitle || `${post.title}${SEO.titleSuffix}`,

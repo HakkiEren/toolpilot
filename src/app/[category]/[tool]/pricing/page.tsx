@@ -38,7 +38,7 @@ interface PageProps {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { category, tool: toolSlug } = await params;
   const tool = await getToolBySlug(category, toolSlug);
-  if (!tool) return {};
+  if (!tool) notFound();
 
   const year = new Date().getFullYear();
   const plans = tool.pricing.plans || [];

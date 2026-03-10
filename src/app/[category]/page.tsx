@@ -20,6 +20,8 @@ import { getCategoryContent } from '@/lib/category-content';
 // Category Hub Page — ENHANCED with stats, filters, better grid
 // ============================================================
 
+export const dynamicParams = false;
+
 export async function generateStaticParams() {
   return CATEGORY_LIST.map((cat) => ({ category: cat.slug }));
 }
@@ -31,7 +33,7 @@ interface PageProps {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { category } = await params;
   const cat = CATEGORIES[category];
-  if (!cat) return {};
+  if (!cat) notFound();
 
   return {
     title: cat.metaTitle,

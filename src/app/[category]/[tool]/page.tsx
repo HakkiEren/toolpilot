@@ -43,7 +43,7 @@ interface PageProps {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { category, tool: toolSlug } = await params;
   const tool = await getToolBySlug(category, toolSlug);
-  if (!tool) return {};
+  if (!tool) notFound();
 
   const catName = CATEGORIES[category]?.name || category;
   const title = tool.metaTitle || `${tool.name} Review — Features, Pricing & Alternatives${SEO.titleSuffix}`;

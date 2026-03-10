@@ -20,6 +20,7 @@ import {
 // ============================================================
 
 export const revalidate = 86400; // 24h — content rarely changes
+export const dynamicParams = false;
 
 export function generateStaticParams() {
   return getAllGlossaryTermSlugs().map((slug) => ({ slug }));
@@ -32,7 +33,7 @@ interface PageProps {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const term = getGlossaryTermBySlug(slug);
-  if (!term) return {};
+  if (!term) notFound();
 
   const title = `What is ${term.term}? Definition & Guide | ${SITE_NAME}`;
   const description = `${term.definition} Learn how ${term.term.replace(/\([^)]*\)/g, '').trim()} works and why it matters for choosing the right ${term.category.toLowerCase()} tools.`;
