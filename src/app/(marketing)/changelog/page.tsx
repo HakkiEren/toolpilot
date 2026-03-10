@@ -40,6 +40,16 @@ const CHANGELOG: {
 }[] = [
   {
     date: '2026-03-10',
+    version: '3.6',
+    entries: [
+      { type: 'launched', text: 'Glossary deep-linking: auto-links glossary terms in tool descriptions, comparison intros, and blog posts to /glossary pages', link: '/glossary' },
+      { type: 'added', text: 'GlossaryLinkedText component for plain text content with automatic term detection' },
+      { type: 'improved', text: 'HtmlContent component extended with glossaryLinks prop for HTML content enrichment' },
+      { type: 'improved', text: 'Internal linking density boost across ~870 pages (413 tool + 327 comparison + 128 blog pages)' },
+    ],
+  },
+  {
+    date: '2026-03-10',
     version: '3.5',
     entries: [
       { type: 'launched', text: 'AggregateRating schema on best-of and category pages — enables star ratings in Google search results (SERP stars)' },
