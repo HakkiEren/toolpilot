@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SITE_NAME, SITE_URL, SEO } from '@/lib/constants';
 import { AdBanner, AdInArticle } from '@/components/ads/AdSlot';
-import { generateBreadcrumbSchema, generateGlossarySchema } from '@/lib/schema';
+import { generateBreadcrumbSchema, generateGlossarySchema, generateFAQSchema } from '@/lib/schema';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { EditorialBadge } from '@/components/common/EditorialBadge';
 import { GLOSSARY_TERMS, groupTermsByCategory, groupTermsByLetter } from '@/lib/glossary-data';
@@ -47,10 +47,17 @@ export default function GlossaryPage() {
   ]);
   const glossarySchema = generateGlossarySchema(GLOSSARY_TERMS);
 
+  const glossaryFAQs = [
+    { question: 'What is the ProPicked glossary?', answer: `Our glossary contains ${GLOSSARY_TERMS.length} definitions covering software, SaaS, AI, e-commerce, hosting, and marketing terminology. Each term is explained in plain language to help you understand the tools and technologies we review.` },
+    { question: 'Who writes the glossary definitions?', answer: 'All definitions are written and reviewed by the ProPicked editorial team with expertise in software evaluation and digital technology. Definitions are updated regularly to reflect evolving industry terminology.' },
+    { question: 'Can I suggest a term to add?', answer: 'Yes! If there\'s a term you\'d like us to define, reach out via our contact page. We regularly expand our glossary based on reader feedback and emerging technologies.' },
+  ];
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(glossarySchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(generateFAQSchema(glossaryFAQs)) }} />
 
     <div className="max-w-4xl mx-auto px-4 py-12">
       <Breadcrumbs items={[{ name: 'Home', url: '/' }, { name: 'Glossary', url: '' }]} />
@@ -179,6 +186,24 @@ export default function GlossaryPage() {
           ))}
         </div>
       </div>
+
+      {/* FAQ Section */}
+      <section className="mt-12 mb-12">
+        <h2 className="text-2xl font-bold mb-4">Frequently Asked Questions</h2>
+        <div className="space-y-3">
+          {glossaryFAQs.map((faq, i) => (
+            <details key={i} className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl group" open={i === 0}>
+              <summary className="flex items-center justify-between px-6 py-4 cursor-pointer font-semibold text-gray-900 dark:text-white hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">
+                {faq.question}
+                <span className="text-gray-400 dark:text-gray-500 group-open:rotate-180 transition-transform">&#9660;</span>
+              </summary>
+              <div className="px-6 pb-4 text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                {faq.answer}
+              </div>
+            </details>
+          ))}
+        </div>
+      </section>
 
       {/* Ad: Before CTA */}
       <AdInArticle />

@@ -49,6 +49,7 @@ const CHANGELOG: {
       { type: 'improved', text: 'CollectionPage schema enhanced with about.aggregateRating for category pages' },
       { type: 'improved', text: 'EditorialBadge extended to category, blog, glossary, calculators, and best-of hub pages (~1,890 pages total)' },
       { type: 'improved', text: 'HTML Sitemap page: added noindex robots directive to prevent duplicate content issues' },
+      { type: 'launched', text: 'FAQ schema + visible FAQ sections on best-of hub, calculators hub, and glossary hub pages for rich snippet eligibility' },
     ],
   },
   {

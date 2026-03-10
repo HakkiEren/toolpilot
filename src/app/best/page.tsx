@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import { CATEGORIES, SUBCATEGORIES, SITE_URL, SITE_NAME, SEO } from '@/lib/constants';
 import { getCategoryStats } from '@/lib/data';
-import { generateBreadcrumbSchema } from '@/lib/schema';
+import { generateBreadcrumbSchema, generateFAQSchema } from '@/lib/schema';
 import { ReadingProgress } from '@/components/common/ReadingProgress';
 import { EditorialBadge } from '@/components/common/EditorialBadge';
 import { AdBanner, AdInArticle } from '@/components/ads/AdSlot';
@@ -55,6 +55,13 @@ export default async function BestOfIndexPage() {
     { name: 'Best Tools', url: '/best' },
   ];
 
+  const bestOfFAQs = [
+    { question: 'How are tools ranked on ProPicked?', answer: `We evaluate every tool across four dimensions: ease of use, feature completeness, value for money, and customer support. Each dimension receives a score from 0-10, combined into an overall rating. Rankings are updated regularly to reflect new features and pricing changes.` },
+    { question: 'Are ProPicked rankings influenced by advertising?', answer: 'No. Our rankings are editorially independent. While we may earn affiliate commissions when you visit a tool through our links, this never affects placement or scores. Tools are ranked purely on merit.' },
+    { question: `How often are the best-of lists updated?`, answer: `We review and update our rankings on a rolling basis. Major updates happen when tools release significant new features, change pricing, or when new competitors enter the market. Each page shows its last-updated date.` },
+    { question: 'Can I suggest a tool to be reviewed?', answer: `Yes! We welcome suggestions from users. Visit our contact page to submit a tool for review. Our editorial team evaluates all submissions and adds qualifying tools to the relevant categories.` },
+  ];
+
   // CollectionPage schema for best-of index
   const allSubcategories = Object.entries(SUBCATEGORIES).flatMap(([, subs]) => subs);
   const bestOfCollectionSchema = {
@@ -93,6 +100,12 @@ export default async function BestOfIndexPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(bestOfCollectionSchema),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(generateFAQSchema(bestOfFAQs)),
         }}
       />
 
@@ -192,6 +205,24 @@ export default async function BestOfIndexPage() {
               emerging competitors. Unlike many review sites, our rankings are not influenced by
               advertising or affiliate relationships &mdash; we prioritize objectivity and accuracy.
             </p>
+          </div>
+        </div>
+
+        {/* FAQ Section */}
+        <div className="mt-10 mb-10">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Frequently Asked Questions</h2>
+          <div className="space-y-3">
+            {bestOfFAQs.map((faq, i) => (
+              <details key={i} className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl group" open={i === 0}>
+                <summary className="flex items-center justify-between px-6 py-4 cursor-pointer font-semibold text-gray-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                  {faq.question}
+                  <span className="text-gray-400 dark:text-gray-500 group-open:rotate-180 transition-transform">&#9660;</span>
+                </summary>
+                <div className="px-6 pb-4 text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                  {faq.answer}
+                </div>
+              </details>
+            ))}
           </div>
         </div>
 

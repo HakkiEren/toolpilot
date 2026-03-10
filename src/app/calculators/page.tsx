@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SITE_NAME, SITE_URL, SEO, CATEGORY_LIST } from '@/lib/constants';
-import { generateBreadcrumbSchema } from '@/lib/schema';
+import { generateBreadcrumbSchema, generateFAQSchema } from '@/lib/schema';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { EditorialBadge } from '@/components/common/EditorialBadge';
 import { AdBanner } from '@/components/ads/AdSlot';
@@ -97,6 +97,13 @@ const CALCULATORS = [
   },
 ];
 
+const calcFAQs = [
+  { question: 'Are these calculators free to use?', answer: 'Yes, all calculators on ProPicked are 100% free with no signup required. You can use them as many times as you need.' },
+  { question: 'Is my data private when using these calculators?', answer: 'Absolutely. All calculations run locally in your browser. We do not collect, store, or transmit any of the numbers you enter.' },
+  { question: 'How accurate are the calculator results?', answer: 'Our calculators use industry-standard formulas and are designed to give you reliable estimates. However, actual results may vary based on your specific circumstances. Use them as a starting point for informed decision-making.' },
+  { question: 'Which calculator should I use first?', answer: 'Start with the ROI Calculator if you\'re evaluating SaaS tools, or the E-commerce Profit Calculator if you run an online store. Each calculator page includes guidance on when and how to use it.' },
+];
+
 export default function CalculatorsPage() {
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: '/' },
@@ -126,6 +133,7 @@ export default function CalculatorsPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(generateFAQSchema(calcFAQs)) }} />
 
       <div className="max-w-4xl mx-auto px-4 py-12">
         <Breadcrumbs items={[{ name: 'Home', url: '/' }, { name: 'Calculators', url: '' }]} />
@@ -231,6 +239,24 @@ export default function CalculatorsPage() {
                   <p className="text-xs text-gray-400">Reviews & comparisons</p>
                 </div>
               </Link>
+            ))}
+          </div>
+        </section>
+
+        {/* FAQ Section */}
+        <section className="mb-12">
+          <h2 className="text-2xl font-bold mb-4">Frequently Asked Questions</h2>
+          <div className="space-y-3">
+            {calcFAQs.map((faq, i) => (
+              <details key={i} className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl group" open={i === 0}>
+                <summary className="flex items-center justify-between px-6 py-4 cursor-pointer font-semibold text-gray-900 dark:text-white hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
+                  {faq.question}
+                  <span className="text-gray-400 dark:text-gray-500 group-open:rotate-180 transition-transform">&#9660;</span>
+                </summary>
+                <div className="px-6 pb-4 text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                  {faq.answer}
+                </div>
+              </details>
             ))}
           </div>
         </section>
