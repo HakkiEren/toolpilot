@@ -11,6 +11,7 @@ import { RecentlyViewed } from '@/components/common/RecentlyViewed';
 import { NewsletterSignup } from '@/components/common/NewsletterSignup';
 import { ToolFinder } from '@/components/common/ToolFinder';
 import { RevealOnScroll } from '@/components/common/RevealOnScroll';
+import { HeroSearch } from '@/components/common/HeroSearch';
 
 export const revalidate = 3600;
 
@@ -173,18 +174,8 @@ export default async function HomePage() {
             Data-driven, unbiased reviews. Zero sponsorships.
           </p>
 
-          {/* Search Bar */}
-          <div className="max-w-xl mx-auto mb-10">
-            <Link
-              href="/search"
-              className="flex items-center gap-3 px-5 py-4 glass rounded-2xl shadow-lg hover:shadow-xl hover:border-blue-300 transition-all group"
-            >
-              <svg className="w-5 h-5 text-gray-400 group-hover:text-blue-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-              <span className="text-gray-400">Search tools, compare features, find pricing...</span>
-            </Link>
-          </div>
+          {/* Search Bar — Real input with typing animation */}
+          <HeroSearch />
 
           {/* Quick Category Chips */}
           <div className="flex flex-wrap gap-2 justify-center mb-8">
