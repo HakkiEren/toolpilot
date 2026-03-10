@@ -40,6 +40,14 @@ const CHANGELOG: {
 }[] = [
   {
     date: '2026-03-10',
+    version: '3.8',
+    entries: [
+      { type: 'launched', text: 'Cross-category navigation on all 6 category hub pages — breaks content silos and improves internal linking equity' },
+      { type: 'improved', text: 'Each category page now shows 5 related categories with descriptions and top subcategories' },
+    ],
+  },
+  {
+    date: '2026-03-10',
     version: '3.7',
     entries: [
       { type: 'launched', text: 'Individual author profile pages at /about/team/[slug] with full bio, published articles, and Person schema', link: '/about/team' },
