@@ -50,6 +50,7 @@ const CHANGELOG: {
       { type: 'launched', text: 'Scroll-triggered reveal animations on 7 homepage sections using IntersectionObserver (respects reduced motion)' },
       { type: 'improved', text: 'Footer: gradient background, social icon hover effects, improved trending pill contrast' },
       { type: 'added', text: 'Calculators link added to footer Resources column (was missing from navigation)' },
+      { type: 'launched', text: 'Interactive hero search bar with typing animation cycling through 6 search suggestions' },
     ],
   },
   {
