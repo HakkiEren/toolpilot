@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SITE_NAME, SITE_URL, SEO } from '@/lib/constants';
+import { generateBreadcrumbSchema } from '@/lib/schema';
+import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 
 const privacyTitle = `Privacy Policy | ${SITE_NAME}`;
 const privacyDescription = `Privacy Policy for ${SITE_NAME}. Learn how we collect, use, and protect your personal information.`;
@@ -172,8 +174,21 @@ const SECTIONS = [
 ];
 
 export default function PrivacyPage() {
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: '/' },
+    { name: 'Privacy Policy', url: '/privacy' },
+  ]);
+
   return (
     <div className="max-w-4xl mx-auto px-4 py-12">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+
+      {/* Visual breadcrumbs */}
+      <Breadcrumbs items={[
+        { name: 'Home', url: '/' },
+        { name: 'Privacy Policy', url: '' },
+      ]} />
+
       {/* Hero — Premium glassmorphism */}
       <div className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/40 dark:from-gray-900 dark:via-blue-950/10 dark:to-indigo-950/10 rounded-3xl border border-gray-200/60 dark:border-gray-800/60 p-8 md:p-10 mb-12">
         <div className="absolute -top-24 -right-24 w-72 h-72 bg-blue-400/10 dark:bg-blue-400/5 rounded-full blur-3xl pointer-events-none" />

@@ -872,6 +872,63 @@ export function generateAlternativesHowToSchema(
   };
 }
 
+// --- ABOUT PAGE SCHEMA (AboutPage for E-E-A-T signals) ---
+export function generateAboutPageSchema(stats: { tools: number; comparisons: number; blogs: number; categories: number }) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'AboutPage',
+    name: `About ${SITE_NAME}`,
+    url: `${SITE_URL}/about`,
+    description: `Learn about ${SITE_NAME} — our mission, methodology, and the team behind ${stats.tools}+ unbiased tool reviews.`,
+    mainEntity: {
+      '@type': 'Organization',
+      name: SITE_NAME,
+      url: SITE_URL,
+      foundingDate: '2026',
+      numberOfEmployees: {
+        '@type': 'QuantitativeValue',
+        value: 5,
+      },
+      knowsAbout: [
+        'Software Reviews',
+        'SaaS Tools',
+        'AI Tools',
+        'E-commerce Platforms',
+        'Digital Marketing Tools',
+        'Web Hosting',
+        'Business Software',
+      ],
+    },
+    significantLinks: [
+      `${SITE_URL}/about/team`,
+      `${SITE_URL}/editorial-policy`,
+      `${SITE_URL}/contact`,
+    ],
+  };
+}
+
+// --- CONTACT PAGE SCHEMA (ContactPage for rich results) ---
+export function generateContactPageSchema() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ContactPage',
+    name: `Contact ${SITE_NAME}`,
+    url: `${SITE_URL}/contact`,
+    description: `Get in touch with the ${SITE_NAME} team. Submit tool suggestions, report inaccuracies, or ask questions.`,
+    mainEntity: {
+      '@type': 'Organization',
+      name: SITE_NAME,
+      url: SITE_URL,
+      contactPoint: {
+        '@type': 'ContactPoint',
+        contactType: 'customer service',
+        url: `${SITE_URL}/contact`,
+        availableLanguage: 'English',
+      },
+    },
+  };
+}
+
 // --- SITE NAVIGATION SCHEMA (helps Google understand site structure) ---
 export function generateSiteNavigationSchema() {
   return {
@@ -887,6 +944,9 @@ export function generateSiteNavigationSchema() {
       { '@type': 'SiteNavigationElement', name: 'Business', url: `${SITE_URL}/business` },
       { '@type': 'SiteNavigationElement', name: 'Blog', url: `${SITE_URL}/blog` },
       { '@type': 'SiteNavigationElement', name: 'Best Of', url: `${SITE_URL}/best` },
+      { '@type': 'SiteNavigationElement', name: 'Glossary', url: `${SITE_URL}/glossary` },
+      { '@type': 'SiteNavigationElement', name: 'Calculators', url: `${SITE_URL}/calculators` },
+      { '@type': 'SiteNavigationElement', name: 'About', url: `${SITE_URL}/about` },
       { '@type': 'SiteNavigationElement', name: 'Search', url: `${SITE_URL}/search` },
     ],
   };

@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SITE_NAME, SITE_URL, SEO } from '@/lib/constants';
-import { generateBreadcrumbSchema } from '@/lib/schema';
+import { generateBreadcrumbSchema, generateContactPageSchema } from '@/lib/schema';
+import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import ContactForm from './contact-form';
 
 const contactTitle = `Contact Us — Get in Touch | ${SITE_NAME}`;
@@ -91,6 +92,8 @@ export default function ContactPage() {
     { name: 'Contact', url: '/contact' },
   ]);
 
+  const contactPageSchema = generateContactPageSchema();
+
   const faqSchema = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -107,7 +110,15 @@ export default function ContactPage() {
   return (
     <div className="max-w-5xl mx-auto px-4 py-12">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(contactPageSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+
+      {/* Visual breadcrumbs */}
+      <Breadcrumbs items={[
+        { name: 'Home', url: '/' },
+        { name: 'Contact', url: '' },
+      ]} />
+
       {/* Hero — Premium glassmorphism */}
       <div className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-emerald-50/30 to-cyan-50/40 dark:from-gray-900 dark:via-emerald-950/10 dark:to-cyan-950/10 rounded-3xl border border-gray-200/60 dark:border-gray-800/60 p-8 md:p-12 mb-12 text-center">
         <div className="absolute -top-24 -right-24 w-72 h-72 bg-emerald-400/10 dark:bg-emerald-400/5 rounded-full blur-3xl pointer-events-none" />

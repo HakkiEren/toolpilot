@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SITE_NAME, SITE_URL, CATEGORY_LIST, SEO } from '@/lib/constants';
 import { supabase } from '@/lib/supabase';
-import { generateBreadcrumbSchema } from '@/lib/schema';
+import { generateBreadcrumbSchema, generateAboutPageSchema } from '@/lib/schema';
+import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 
 const aboutTitle = `About Us — Our Mission & Methodology | ${SITE_NAME}`;
 const aboutDescription = `Learn about ${SITE_NAME} — our mission to help businesses find the right digital tools through unbiased, data-driven comparisons and honest reviews across 6 categories.`;
@@ -86,12 +87,24 @@ export default async function AboutPage() {
     { name: 'About', url: `${SITE_URL}/about` },
   ]);
 
+  const aboutPageSchema = generateAboutPageSchema(stats);
+
   return (
     <div className="max-w-5xl mx-auto px-4 py-12">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutPageSchema) }}
+      />
+
+      {/* Visual breadcrumbs */}
+      <Breadcrumbs items={[
+        { name: 'Home', url: '/' },
+        { name: 'About', url: '' },
+      ]} />
       {/* Hero — Premium glassmorphism */}
       <div className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50/40 to-indigo-50/60 dark:from-gray-900 dark:via-blue-950/20 dark:to-indigo-950/20 rounded-3xl border border-gray-200/60 dark:border-gray-800/60 p-8 md:p-12 mb-16 text-center">
         <div className="absolute -top-24 -right-24 w-72 h-72 bg-blue-400/10 dark:bg-blue-400/5 rounded-full blur-3xl pointer-events-none" />

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SITE_NAME, SITE_URL, CATEGORY_LIST, SEO } from '@/lib/constants';
 import { generateBreadcrumbSchema } from '@/lib/schema';
+import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 
 // ============================================================
 // EDITORIAL POLICY PAGE — E-E-A-T signal for Google
@@ -131,6 +132,13 @@ export default function EditorialPolicyPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+
+      <div className="max-w-4xl mx-auto px-4 pt-6">
+        <Breadcrumbs items={[
+          { name: 'Home', url: '/' },
+          { name: 'Editorial Policy', url: '' },
+        ]} />
+      </div>
 
       {/* Hero */}
       <div className="relative overflow-hidden">
