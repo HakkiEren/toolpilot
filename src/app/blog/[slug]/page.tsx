@@ -263,7 +263,7 @@ export default async function BlogPostPage({ params }: PageProps) {
 
             {/* Article Body */}
             <div
-              className="prose prose-lg dark:prose-invert max-w-none
+              className="blog-article-content prose prose-lg dark:prose-invert max-w-none
                 prose-headings:font-bold prose-headings:tracking-tight
                 prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-a:no-underline hover:prose-a:underline
                 prose-img:rounded-xl prose-img:shadow-md
