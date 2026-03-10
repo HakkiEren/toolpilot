@@ -40,6 +40,16 @@ const CHANGELOG: {
 }[] = [
   {
     date: '2026-03-10',
+    version: '3.7',
+    entries: [
+      { type: 'launched', text: 'Individual author profile pages at /about/team/[slug] with full bio, published articles, and Person schema', link: '/about/team' },
+      { type: 'improved', text: 'Blog post author bylines now link to individual author pages for stronger E-E-A-T signals' },
+      { type: 'improved', text: 'Author URL in schema.org data updated from hash-anchors to dedicated profile pages' },
+      { type: 'added', text: 'Author profile pages added to XML sitemap (4 new pages, 1,891 total)' },
+    ],
+  },
+  {
+    date: '2026-03-10',
     version: '3.6',
     entries: [
       { type: 'launched', text: 'Glossary deep-linking: auto-links glossary terms in tool descriptions, comparison intros, and blog posts to /glossary pages', link: '/glossary' },
