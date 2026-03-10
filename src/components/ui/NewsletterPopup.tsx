@@ -1,11 +1,12 @@
 'use client';
 
 // ============================================================
-// NEWSLETTER POPUP — Timed modal with API integration
-// Shows after 30 seconds, stores subscribers in Supabase
+// NEWSLETTER POPUP — Scroll-depth + time triggered modal
+// Shows after 60s OR 40% scroll depth (whichever first)
+// Stores subscribers in Supabase
 // ============================================================
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 
 export function NewsletterPopup() {
   const [show, setShow] = useState(false);
@@ -13,19 +14,40 @@ export function NewsletterPopup() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMsg, setErrorMsg] = useState('');
   const honeypotRef = useRef<HTMLInputElement>(null);
+  const triggeredRef = useRef(false);
+
+  const triggerPopup = useCallback(() => {
+    if (triggeredRef.current) return;
+    triggeredRef.current = true;
+    setShow(true);
+  }, []);
 
   useEffect(() => {
     // Don't show if already dismissed or subscribed
     const dismissed = localStorage.getItem('newsletter_dismissed');
     if (dismissed) return;
 
-    // Show after 30 seconds on page
+    // Trigger 1: After 60 seconds on page
     const timer = setTimeout(() => {
-      setShow(true);
-    }, 30000);
+      triggerPopup();
+    }, 60000);
 
-    return () => clearTimeout(timer);
-  }, []);
+    // Trigger 2: When user scrolls past 40% of page
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (docHeight > 0 && scrollTop / docHeight >= 0.4) {
+        triggerPopup();
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [triggerPopup]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
