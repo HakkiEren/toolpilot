@@ -10,6 +10,7 @@ import { AdBanner, AdInArticle, AdMultiplex, AdSidebar } from '@/components/ads/
 import { ShareButtons } from '@/components/common/ShareButtons';
 import { ReadingProgress } from '@/components/common/ReadingProgress';
 import { CopyLinkButton } from '@/components/common/CopyLinkButton';
+import { EditorialBadge } from '@/components/common/EditorialBadge';
 import type { Tool } from '@/types';
 
 // Individual award with full tool reference
@@ -311,8 +312,9 @@ export default async function BestOfPage({ params }: { params: Promise<{ slug: s
           <span>/</span>
           <Link href={`/${sub.categorySlug}`} className="hover:text-gray-700">{sub.categoryName}</Link>
           <span>/</span>
-          <span className="text-gray-900 font-medium">Best {sub.name}</span>
+          <span className="text-gray-900 font-medium dark:text-gray-200">Best {sub.name}</span>
         </nav>
+        <EditorialBadge lastUpdated={new Date().toISOString().split('T')[0]} />
 
         {/* Hero — Premium gradient with animated pattern */}
         <div className="relative overflow-hidden bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-700 rounded-3xl p-8 md:p-12 mb-10 text-white shadow-xl shadow-indigo-600/20">

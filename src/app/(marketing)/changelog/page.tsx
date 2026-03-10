@@ -40,6 +40,17 @@ const CHANGELOG: {
 }[] = [
   {
     date: '2026-03-10',
+    version: '3.5',
+    entries: [
+      { type: 'launched', text: 'AggregateRating schema on best-of and category pages — enables star ratings in Google search results (SERP stars)' },
+      { type: 'added', text: 'Page-level AggregateRating with ratingCount for Google Rich Results compliance' },
+      { type: 'launched', text: 'EditorialBadge anti-spam component: author attribution, last-updated date, editorial policy link on 1,700+ pages' },
+      { type: 'improved', text: 'EditorialBadge deployed to tool reviews, comparisons, pricing, alternatives, and best-of ranking pages' },
+      { type: 'improved', text: 'CollectionPage schema enhanced with about.aggregateRating for category pages' },
+    ],
+  },
+  {
+    date: '2026-03-10',
     version: '3.4',
     entries: [
       { type: 'improved', text: '404 page: proper metadata with noindex + fixed broken /best/website-builders link' },
