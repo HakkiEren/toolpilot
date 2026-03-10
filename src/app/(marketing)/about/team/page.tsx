@@ -115,7 +115,9 @@ export default function TeamPage() {
                   <div className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${member.gradient} flex items-center justify-center text-white text-2xl font-bold shadow-lg mb-4`}>
                     {member.initials}
                   </div>
-                  <h2 className="text-lg font-bold">{member.name}</h2>
+                  <Link href={`/about/team/${member.slug}`} className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                    <h2 className="text-lg font-bold">{member.name}</h2>
+                  </Link>
                   <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">{member.role}</p>
                   <div className="flex gap-4 text-center mb-4">
                     <div>

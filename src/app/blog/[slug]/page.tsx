@@ -204,7 +204,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                 {(() => {
                   const headerAuthor = getAuthor(post.author);
                   return (
-                    <Link href={`/about/team#${headerAuthor.slug}`} className="flex items-center gap-2 hover:text-blue-600 transition-colors">
+                    <Link href={`/about/team/${headerAuthor.slug}`} className="flex items-center gap-2 hover:text-blue-600 transition-colors">
                       <div className={`w-8 h-8 rounded-full bg-gradient-to-br ${headerAuthor.gradient} flex items-center justify-center text-white text-xs font-bold flex-shrink-0`}>
                         {headerAuthor.initials}
                       </div>
@@ -523,7 +523,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                         {author.initials}
                       </div>
                       <div>
-                        <Link href={`/about/team#${author.slug}`} className="font-semibold text-sm hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                        <Link href={`/about/team/${author.slug}`} className="font-semibold text-sm hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                           {author.name}
                         </Link>
                         <div className="text-xs text-gray-400">{author.role}</div>

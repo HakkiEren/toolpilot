@@ -164,7 +164,7 @@ export function getAuthor(name: string): Author {
  */
 export function getAuthorUrl(name: string): string {
   const author = getAuthor(name);
-  return `${SITE_URL}/about/team#${author.slug}`;
+  return `${SITE_URL}/about/team/${author.slug}`;
 }
 
 /**

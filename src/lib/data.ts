@@ -329,6 +329,18 @@ export async function getBlogBySlug(slug: string): Promise<BlogPost | null> {
   return mapBlogRow(data);
 }
 
+export async function getBlogsByAuthor(authorName: string): Promise<BlogPost[]> {
+  const { data, error } = await supabase
+    .from('blog_posts')
+    .select('*')
+    .eq('status', 'published')
+    .eq('author', authorName)
+    .order('published_at', { ascending: false });
+
+  if (error || !data) return [];
+  return data.map(mapBlogRow);
+}
+
 // --- Category Stats ---
 
 export async function getComparisonsByCategory(

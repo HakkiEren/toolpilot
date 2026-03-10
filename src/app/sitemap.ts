@@ -2,6 +2,7 @@ import type { MetadataRoute } from 'next';
 import { supabase } from '@/lib/supabase';
 import { SITE_URL, CATEGORY_LIST, SUBCATEGORIES, LIMITS } from '@/lib/constants';
 import { getAllGlossaryTermSlugs } from '@/lib/glossary-data';
+import { getTeamMembers } from '@/lib/authors';
 
 // ============================================================
 // DYNAMIC SITEMAP GENERATION
@@ -45,6 +46,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/editorial-policy`, lastModified: monthlyDate, changeFrequency: 'monthly', priority: 0.5 },
     { url: `${SITE_URL}/badges`, lastModified: monthlyDate, changeFrequency: 'monthly', priority: 0.5 },
     { url: `${SITE_URL}/about/team`, lastModified: monthlyDate, changeFrequency: 'monthly', priority: 0.5 },
+    ...getTeamMembers().map((m) => ({
+      url: `${SITE_URL}/about/team/${m.slug}`,
+      lastModified: monthlyDate,
+      changeFrequency: 'monthly' as const,
+      priority: 0.5,
+    })),
     { url: `${SITE_URL}/changelog`, lastModified: weeklyDate, changeFrequency: 'weekly', priority: 0.5 },
     // feed.xml excluded — RSS feeds are not HTML pages, auto-discovered via <link rel="alternate">
   );
