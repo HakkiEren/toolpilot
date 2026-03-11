@@ -15,6 +15,7 @@ import { EditorialBadge } from '@/components/common/EditorialBadge';
 import { RecentlyViewed } from '@/components/common/RecentlyViewed';
 import { NewsletterSignup } from '@/components/common/NewsletterSignup';
 import { getCategoryContent } from '@/lib/category-content';
+import { BlogCard } from '@/components/blog/BlogCard';
 
 // ============================================================
 // Category Hub Page — ENHANCED with stats, filters, better grid
@@ -171,6 +172,34 @@ export default async function CategoryPage({ params }: PageProps) {
             </div>
           </div>
         </div>
+
+        {/* ========== MARKET LANDSCAPE — auto-generated unique per category ========== */}
+        <section className="mb-12">
+          <div className="bg-gradient-to-r from-blue-50/50 to-indigo-50/50 dark:from-gray-800/50 dark:to-gray-900 rounded-2xl p-6 border border-blue-100/50 dark:border-gray-700">
+            <h2 className="text-xl font-bold mb-3">{cat.name} Market Overview ({year})</h2>
+            <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-[15px]">
+              {(() => {
+                const paidTools = tools.filter(t => t.pricing.startingPrice);
+                const avgPrice = paidTools.length > 0 ? paidTools.reduce((s, t) => s + (t.pricing.startingPrice || 0), 0) / paidTools.length : 0;
+                const freePct = tools.length > 0 ? Math.round(freeCount / tools.length * 100) : 0;
+                const sorted = [...tools].sort((a, b) => b.ratings.overall - a.ratings.overall);
+                const top = sorted[0];
+                const topEase = [...tools].sort((a, b) => b.ratings.easeOfUse - a.ratings.easeOfUse)[0];
+                const topValue = [...tools].sort((a, b) => b.ratings.valueForMoney - a.ratings.valueForMoney)[0];
+                const highRated = tools.filter(t => t.ratings.overall >= 8).length;
+
+                let text = `The ${cat.name.toLowerCase()} landscape in ${year} includes ${tools.length} tools that we've independently reviewed and rated, with an average score of ${avgRating}/10 across our editorial assessments. `;
+                text += `${freeCount} tools (${freePct}%) offer free plans, ${paidTools.length > 0 ? `and the average paid starting price is $${avgPrice.toFixed(0)}/mo` : 'while others require paid subscriptions'}. `;
+                text += `${highRated} tools scored 8.0 or higher in our ratings, indicating a competitive market with several strong options. `;
+                if (top) text += `${top.name} leads the category at ${top.ratings.overall.toFixed(1)}/10 overall. `;
+                if (topEase && topEase.slug !== top?.slug) text += `For ease of use, ${topEase.name} tops the charts at ${topEase.ratings.easeOfUse.toFixed(1)}/10. `;
+                if (topValue && topValue.slug !== top?.slug && topValue.slug !== topEase?.slug) text += `Best value for money goes to ${topValue.name} at ${topValue.ratings.valueForMoney.toFixed(1)}/10. `;
+                text += `With ${stats.comparisonCount} side-by-side comparisons available, you can evaluate specific matchups that matter most to your team's requirements.`;
+                return text;
+              })()}
+            </p>
+          </div>
+        </section>
 
         {/* ========== SUBCATEGORIES (AI Tools only) ========== */}
         {subcategories.length > 0 && (
@@ -531,30 +560,14 @@ export default async function CategoryPage({ params }: PageProps) {
           <section className="mb-12">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-bold">{cat.name} Insights &amp; Guides</h2>
-              <Link href="/blog" className="text-sm text-blue-600 font-medium hover:underline">
-                All articles &#8594;
+              <Link href="/blog" className="inline-flex items-center gap-1.5 text-sm text-blue-600 font-semibold hover:text-blue-700 transition-colors">
+                All articles
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
               </Link>
             </div>
-            <div className="grid md:grid-cols-3 gap-4">
+            <div className="grid md:grid-cols-3 gap-5">
               {categoryPosts.map((post) => (
-                <Link
-                  key={post.slug}
-                  href={`/blog/${post.slug}`}
-                  className="group hover-lift bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-700 transition-all overflow-hidden"
-                >
-                  <div className="p-5">
-                    <span className="inline-block px-2.5 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 text-[10px] font-semibold rounded-full mb-3 uppercase tracking-wide">
-                      {cat.name}
-                    </span>
-                    <h3 className="font-semibold text-sm group-hover:text-blue-600 transition-colors line-clamp-2 mb-2">{post.title}</h3>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-2">{post.excerpt}</p>
-                    <div className="mt-3 flex items-center gap-2 text-xs text-gray-400">
-                      <span>By {post.author}</span>
-                      <span>·</span>
-                      <span>{new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
-                    </div>
-                  </div>
-                </Link>
+                <BlogCard key={post.slug} post={post} />
               ))}
             </div>
           </section>

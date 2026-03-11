@@ -371,6 +371,16 @@ export default async function ToolPage({ params }: PageProps) {
           </div>
         </section>
 
+        {/* ========== MARKET ANALYSIS — auto-generated unique per tool ========== */}
+        <section className="mb-12">
+          <h2 className="text-2xl font-bold mb-4">{tool.name} — Our Analysis</h2>
+          <div className="bg-gradient-to-r from-gray-50 to-white dark:from-gray-800/50 dark:to-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-gray-700">
+            <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+              {generateMarketAnalysis(tool, cat?.name || category, relatedTools)}
+            </p>
+          </div>
+        </section>
+
         {/* ========== AD: AFTER DESCRIPTION ========== */}
         <AdBanner />
 
@@ -552,6 +562,18 @@ export default async function ToolPage({ params }: PageProps) {
             </div>
           )}
         </section>
+
+        {/* ========== PRICING INSIGHT — auto-generated unique per tool ========== */}
+        {tool.pricing.plans.length > 0 && (
+          <div className="mb-12 p-5 bg-amber-50/50 dark:bg-amber-900/10 rounded-xl border border-amber-200/50 dark:border-amber-800/30">
+            <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">
+              <span>💡</span> Pricing Insight
+            </h3>
+            <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+              {generatePricingInsight(tool, cat?.name || category)}
+            </p>
+          </div>
+        )}
 
         {/* ========== QUICK COMPETITOR SCORECARD ========== */}
         {relatedTools.length > 0 && (
@@ -1298,4 +1320,90 @@ function getVerdictHighlights(tool: Tool): Array<{ text: string; positive: boole
   if (tool.pricing.startingPrice && tool.pricing.startingPrice > 100) highlights.push({ text: 'Premium Pricing', positive: false });
 
   return highlights.slice(0, 5);
+}
+
+// ============================================================
+// HELPERS — Market analysis & pricing insight (unique per tool)
+// ============================================================
+
+function generateMarketAnalysis(tool: Tool, categoryName: string, relatedTools: Tool[]): string {
+  const parts: string[] = [];
+
+  // Opening with overall positioning
+  const tier = tool.ratings.overall >= 8.5 ? 'top-tier' : tool.ratings.overall >= 7.5 ? 'strong' : tool.ratings.overall >= 6.5 ? 'mid-range' : 'entry-level';
+  parts.push(`With a ${tool.ratings.overall.toFixed(1)}/10 overall rating, ${tool.name} is a ${tier} contender in the ${categoryName.toLowerCase()} space.`);
+
+  // Strengths summary
+  const metrics = [
+    { name: 'ease of use', score: tool.ratings.easeOfUse },
+    { name: 'feature depth', score: tool.ratings.features },
+    { name: 'value for money', score: tool.ratings.valueForMoney },
+    { name: 'customer support', score: tool.ratings.support },
+  ].sort((a, b) => b.score - a.score);
+
+  parts.push(`Its standout strength is ${metrics[0].name} at ${metrics[0].score.toFixed(1)}/10, followed by ${metrics[1].name} (${metrics[1].score.toFixed(1)}/10).`);
+
+  // Pricing context
+  if (tool.pricing.hasFreeplan && tool.pricing.startingPrice) {
+    parts.push(`The free-to-start model with paid plans from $${tool.pricing.startingPrice}/mo makes ${tool.name} accessible for evaluation while offering advanced capabilities at higher tiers.`);
+  } else if (tool.pricing.hasFreeplan) {
+    parts.push(`${tool.name}'s free plan lowers the barrier to entry, allowing teams to validate the fit before scaling.`);
+  } else if (tool.pricing.startingPrice) {
+    const level = tool.pricing.startingPrice > 50 ? 'premium' : tool.pricing.startingPrice > 20 ? 'mid-range' : 'affordable';
+    parts.push(`At ${level} pricing (from $${tool.pricing.startingPrice}/mo), ${tool.name} targets ${tool.pricing.startingPrice > 50 ? 'professional teams and enterprises' : 'individuals and growing teams'} seeking reliable ${categoryName.toLowerCase()} capabilities.`);
+  }
+
+  // Competitive context
+  if (relatedTools.length > 0) {
+    const avgRating = relatedTools.reduce((sum, t) => sum + t.ratings.overall, 0) / relatedTools.length;
+    const diff = tool.ratings.overall - avgRating;
+    if (diff > 0.5) {
+      parts.push(`Compared to similar tools in the ${categoryName.toLowerCase()} space (averaging ${avgRating.toFixed(1)}/10), ${tool.name} consistently outperforms on key metrics.`);
+    } else if (diff < -0.5) {
+      parts.push(`While some competitors score marginally higher on average (${avgRating.toFixed(1)}/10), ${tool.name} compensates with ${metrics[0].name === 'ease of use' ? 'an exceptionally smooth user experience' : metrics[0].name === 'value for money' ? 'outstanding value for the price point' : `strong ${metrics[0].name}`}.`);
+    } else {
+      parts.push(`${tool.name} competes closely with other ${categoryName.toLowerCase()} solutions, which average ${avgRating.toFixed(1)}/10.`);
+    }
+  }
+
+  // Review count social proof
+  if (tool.ratings.reviewCount && tool.ratings.reviewCount > 1000) {
+    parts.push(`With ${tool.ratings.reviewCount.toLocaleString()} user reviews across platforms, ${tool.name} has a substantial track record that informs our analysis.`);
+  } else if (tool.ratings.reviewCount && tool.ratings.reviewCount > 100) {
+    parts.push(`Backed by ${tool.ratings.reviewCount.toLocaleString()} user reviews, our assessment reflects both editorial testing and community feedback.`);
+  }
+
+  return parts.join(' ');
+}
+
+function generatePricingInsight(tool: Tool, categoryName: string): string {
+  const parts: string[] = [];
+  const { pricing } = tool;
+
+  if (pricing.plans.length >= 2) {
+    const sorted = [...pricing.plans].filter(p => p.price !== null && p.price !== undefined).sort((a, b) => (a.price || 0) - (b.price || 0));
+    const cheapest = sorted[0];
+    const expensive = sorted[sorted.length - 1];
+    if (cheapest && expensive && cheapest !== expensive) {
+      parts.push(`${tool.name}'s pricing spans from ${cheapest.price === 0 ? 'free' : `$${cheapest.price}/mo`} (${cheapest.name}) to ${expensive.price === null ? 'custom pricing' : `$${expensive.price}/mo`} (${expensive.name}), covering ${pricing.plans.length} distinct tiers.`);
+    }
+  }
+
+  if (pricing.hasFreeplan) {
+    const freePlan = pricing.plans.find(p => p.price === 0);
+    if (freePlan && freePlan.features.length > 0) {
+      parts.push(`The free ${freePlan.name} plan includes ${freePlan.features.length} features${freePlan.features.length >= 3 ? `, notably ${freePlan.features[0].toLowerCase()} and ${freePlan.features[1].toLowerCase()}` : ''}, making it genuinely usable rather than just a limited trial.`);
+    }
+  }
+
+  const valueScore = tool.ratings.valueForMoney;
+  if (valueScore >= 8) {
+    parts.push(`With a value-for-money score of ${valueScore.toFixed(1)}/10, ${tool.name} delivers strong ROI relative to ${categoryName.toLowerCase()} competitors.`);
+  } else if (valueScore >= 7) {
+    parts.push(`A value-for-money score of ${valueScore.toFixed(1)}/10 indicates solid returns for most team sizes and use cases.`);
+  } else {
+    parts.push(`The value-for-money score of ${valueScore.toFixed(1)}/10 suggests evaluating whether the feature set justifies the investment for your use case.`);
+  }
+
+  return parts.join(' ');
 }
