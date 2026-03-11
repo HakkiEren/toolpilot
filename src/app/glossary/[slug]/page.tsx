@@ -5,6 +5,7 @@ import { SITE_NAME, SITE_URL, SEO, CATEGORY_LIST } from '@/lib/constants';
 import { generateBreadcrumbSchema, generateFAQSchema } from '@/lib/schema';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { AdBanner, AdInArticle } from '@/components/ads/AdSlot';
+import { EditorialBadge } from '@/components/common/EditorialBadge';
 import {
   GLOSSARY_TERMS,
   getGlossaryTermBySlug,
@@ -306,12 +307,9 @@ export default async function GlossaryTermPage({ params }: PageProps) {
           </section>
         )}
 
-        {/* Freshness Signal */}
-        <div className="flex items-center gap-2 text-xs text-gray-400 pt-4 border-t border-gray-200 dark:border-gray-800">
-          <span>📅</span>
-          <span>Last reviewed: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long' })}</span>
-          <span className="mx-1">·</span>
-          <span>By {SITE_NAME} Editorial Team</span>
+        {/* Editorial Badge — E-E-A-T freshness signal */}
+        <div className="pt-4 border-t border-gray-200 dark:border-gray-800">
+          <EditorialBadge lastUpdated={new Date().toISOString()} />
         </div>
       </div>
     </>

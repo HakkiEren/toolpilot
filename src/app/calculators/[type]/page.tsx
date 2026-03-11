@@ -7,6 +7,7 @@ import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { FAQSection } from '@/components/common/FAQSection';
 import { AdBanner, AdInArticle } from '@/components/ads/AdSlot';
 import { getGlossaryTermsForCalculator } from '@/lib/glossary-data';
+import { EditorialBadge } from '@/components/common/EditorialBadge';
 import { CalculatorClient } from './calculator-client';
 
 // ============================================================
@@ -145,7 +146,7 @@ interface PageProps {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { type } = await params;
   const calc = CALCULATORS[type];
-  if (!calc) return {};
+  if (!calc) notFound();
 
   return {
     title: calc.metaTitle,
@@ -343,6 +344,11 @@ export default async function CalculatorPage({ params }: PageProps) {
           ))}
         </div>
       </section>
+
+      {/* Editorial Badge — E-E-A-T freshness signal */}
+      <div className="border-t border-gray-200 dark:border-gray-800 pt-6">
+        <EditorialBadge lastUpdated={new Date().toISOString()} />
+      </div>
     </div>
   );
 }

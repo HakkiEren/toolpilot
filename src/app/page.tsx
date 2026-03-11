@@ -12,6 +12,7 @@ import { NewsletterSignup } from '@/components/common/NewsletterSignup';
 import { ToolFinder } from '@/components/common/ToolFinder';
 import { RevealOnScroll } from '@/components/common/RevealOnScroll';
 import { HeroSearch } from '@/components/common/HeroSearch';
+import { EditorialBadge } from '@/components/common/EditorialBadge';
 
 export const revalidate = 3600;
 
@@ -1268,6 +1269,11 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Editorial Badge — E-E-A-T freshness signal */}
+      <div className="max-w-7xl mx-auto px-4 pb-8 border-t border-gray-200 dark:border-gray-800 pt-6">
+        <EditorialBadge lastUpdated={new Date().toISOString()} />
+      </div>
     </>
   );
 }
