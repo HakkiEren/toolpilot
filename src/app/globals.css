@@ -1098,3 +1098,37 @@ h1, h2, h3 {
     animation: none;
   }
 }
+
+/* ============================================================
+   BLOG CARD ENHANCEMENTS
+   ============================================================ */
+
+/* Smooth image zoom on blog cards */
+.blog-card-img {
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.group:hover .blog-card-img {
+  transform: scale(1.05);
+}
+
+/* Blog card top accent stripe on hover */
+.blog-card-stripe {
+  position: relative;
+}
+.blog-card-stripe::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 10;
+  border-radius: 9999px 9999px 0 0;
+}
+.blog-card-stripe:hover::before {
+  transform: scaleX(1);
+}

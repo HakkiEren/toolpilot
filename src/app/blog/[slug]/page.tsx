@@ -16,6 +16,7 @@ import { InlineNewsletterCTA } from '@/components/ui/InlineNewsletterCTA';
 import { enrichHtmlWithGlossaryLinks } from '@/lib/glossary-linker';
 import { EditorialBadge } from '@/components/common/EditorialBadge';
 import { BlogHero } from '@/components/blog/BlogHero';
+import { BlogCard } from '@/components/blog/BlogCard';
 import type { InternalLink } from '@/types';
 
 // ============================================================
@@ -229,6 +230,7 @@ export default async function BlogPostPage({ params }: PageProps) {
         {/* Blog Hero — Featured Image */}
         <BlogHero
           title={post.title}
+          slug={slug}
           categorySlug={post.categorySlug}
           categoryName={categoryName}
           readingTime={readingTime}
@@ -456,34 +458,11 @@ export default async function BlogPostPage({ params }: PageProps) {
                 .slice(0, 3);
               if (relatedPosts.length === 0) return null;
               return (
-                <section className="mt-12">
-                  <h2 className="text-2xl font-bold mb-6">You Might Also Like</h2>
-                  <div className="grid sm:grid-cols-3 gap-4">
+                <section className="mt-12 -mx-4 px-4 py-8 bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/20 dark:from-gray-800/50 dark:via-blue-900/10 dark:to-purple-900/10 rounded-2xl">
+                  <h2 className="text-2xl font-extrabold mb-6">You Might Also Like</h2>
+                  <div className="grid sm:grid-cols-3 gap-5">
                     {relatedPosts.map((rp) => (
-                      <Link
-                        key={rp.slug}
-                        href={`/blog/${rp.slug}`}
-                        className="group rounded-xl border border-gray-200 dark:border-gray-700 p-4 hover:border-blue-300 dark:hover:border-blue-600 hover:bg-blue-50/30 dark:hover:bg-blue-900/10 transition-all"
-                      >
-                        {rp.categorySlug && (
-                          <span className="inline-block px-2 py-0.5 rounded-md text-[10px] font-semibold bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 mb-2">
-                            {rp.categorySlug.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())}
-                          </span>
-                        )}
-                        <h3 className="font-semibold text-sm leading-snug group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2 mb-2">
-                          {rp.title}
-                        </h3>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-2">
-                          {rp.excerpt}
-                        </p>
-                        <div className="mt-3 flex items-center gap-2 text-[11px] text-gray-400">
-                          <span>{rp.author}</span>
-                          <span className="w-0.5 h-0.5 bg-gray-300 rounded-full" />
-                          <time dateTime={rp.publishedAt}>
-                            {new Date(rp.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                          </time>
-                        </div>
-                      </Link>
+                      <BlogCard key={rp.slug} post={rp} variant="compact" />
                     ))}
                   </div>
                 </section>

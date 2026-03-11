@@ -3,7 +3,7 @@
   "configurations": [
     {
       "name": "pseo-toolkit-dev",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "C:\\Program Files\\nodejs\\npm.cmd",
       "runtimeArgs": ["run", "dev"],
       "port": 3000
     }

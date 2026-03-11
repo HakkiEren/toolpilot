@@ -1,3 +1,4 @@
+import React from 'react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getBlogPosts } from '@/lib/data';
@@ -6,6 +7,8 @@ import { SITE_URL, SITE_NAME, SEO } from '@/lib/constants';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { EditorialBadge } from '@/components/common/EditorialBadge';
 import { AdBanner, AdMultiplex } from '@/components/ads/AdSlot';
+import { BlogCard } from '@/components/blog/BlogCard';
+import { InlineNewsletterCTA } from '@/components/ui/InlineNewsletterCTA';
 
 // ============================================================
 // Blog Index Page — Editorial content hub for topical authority
@@ -34,21 +37,13 @@ export const metadata: Metadata = {
 };
 
 const CATEGORY_COLORS: Record<string, { bg: string; text: string }> = {
-  guides: { bg: 'bg-blue-100 dark:bg-blue-900/30', text: 'text-blue-700 dark:text-blue-400' },
-  tutorials: { bg: 'bg-green-100 dark:bg-green-900/30', text: 'text-green-700 dark:text-green-400' },
-  comparisons: { bg: 'bg-purple-100 dark:bg-purple-900/30', text: 'text-purple-700 dark:text-purple-400' },
-  reviews: { bg: 'bg-orange-100 dark:bg-orange-900/30', text: 'text-orange-700 dark:text-orange-400' },
-  news: { bg: 'bg-red-100 dark:bg-red-900/30', text: 'text-red-700 dark:text-red-400' },
+  'ai-tools':   { bg: 'bg-purple-100 dark:bg-purple-900/30', text: 'text-purple-700 dark:text-purple-400' },
+  'saas':       { bg: 'bg-blue-100 dark:bg-blue-900/30',     text: 'text-blue-700 dark:text-blue-400' },
+  'ecommerce':  { bg: 'bg-green-100 dark:bg-green-900/30',   text: 'text-green-700 dark:text-green-400' },
+  'marketing':  { bg: 'bg-amber-100 dark:bg-amber-900/30',   text: 'text-amber-700 dark:text-amber-400' },
+  'hosting':    { bg: 'bg-red-100 dark:bg-red-900/30',       text: 'text-red-700 dark:text-red-400' },
+  'business':   { bg: 'bg-indigo-100 dark:bg-indigo-900/30', text: 'text-indigo-700 dark:text-indigo-400' },
 };
-
-const GRADIENT_COLORS = [
-  'from-blue-400 to-indigo-500',
-  'from-purple-400 to-pink-500',
-  'from-green-400 to-teal-500',
-  'from-orange-400 to-red-500',
-  'from-cyan-400 to-blue-500',
-  'from-rose-400 to-purple-500',
-];
 
 export default async function BlogIndexPage() {
   const posts = await getBlogPosts(200);
@@ -61,8 +56,9 @@ export default async function BlogIndexPage() {
   // Group posts by category for stats
   const categoryMap: Record<string, number> = {};
   posts.forEach((p) => {
-    const cat = p.categorySlug || 'guides';
-    categoryMap[cat] = (categoryMap[cat] || 0) + 1;
+    if (p.categorySlug) {
+      categoryMap[p.categorySlug] = (categoryMap[p.categorySlug] || 0) + 1;
+    }
   });
 
   // Featured post = first/latest post
@@ -144,8 +140,9 @@ export default async function BlogIndexPage() {
           {Object.entries(categoryMap)
             .sort((a, b) => b[1] - a[1])
             .map(([cat, count]) => {
-              const colors = CATEGORY_COLORS[cat] || CATEGORY_COLORS.guides;
-              const catLabel = cat.charAt(0).toUpperCase() + cat.slice(1).replace(/-/g, ' ');
+              const defaultColors = { bg: 'bg-gray-100 dark:bg-gray-800', text: 'text-gray-700 dark:text-gray-400' };
+              const colors = CATEGORY_COLORS[cat] || defaultColors;
+              const catLabel = cat.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
               return (
                 <Link
                   key={cat}
@@ -162,54 +159,7 @@ export default async function BlogIndexPage() {
           <>
             {/* Featured Post */}
             {featured && (
-              <Link
-                href={`/blog/${featured.slug}`}
-                className="group block mb-10 overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-800 hover:border-blue-300 hover:shadow-lg transition-all"
-              >
-                <div className="grid md:grid-cols-2">
-                  <div className={`h-48 md:h-auto bg-gradient-to-br ${GRADIENT_COLORS[0]}`} />
-                  <div className="p-8 flex flex-col justify-center">
-                    <div className="flex items-center gap-2 mb-3">
-                      <span className="text-xs font-bold text-blue-600 uppercase tracking-wider">Featured</span>
-                      {featured.categorySlug && (
-                        <>
-                          <span className="w-1 h-1 bg-gray-300 rounded-full" />
-                          <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${CATEGORY_COLORS[featured.categorySlug]?.bg || 'bg-gray-100'} ${CATEGORY_COLORS[featured.categorySlug]?.text || 'text-gray-600'}`}>
-                            {featured.categorySlug.charAt(0).toUpperCase() + featured.categorySlug.slice(1)}
-                          </span>
-                        </>
-                      )}
-                    </div>
-                    <h2 className="text-2xl font-bold mb-3 group-hover:text-blue-600 transition-colors">
-                      {featured.title}
-                    </h2>
-                    <p className="text-gray-500 dark:text-gray-400 mb-4 line-clamp-3">
-                      {featured.excerpt}
-                    </p>
-                    <div className="flex items-center gap-4 text-sm text-gray-400">
-                      <div className="flex items-center gap-2">
-                        <div className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
-                          {(featured.author || `${SITE_NAME} Team`)[0]}
-                        </div>
-                        <span className="text-gray-600 dark:text-gray-300 font-medium">
-                          {featured.author || `${SITE_NAME} Team`}
-                        </span>
-                      </div>
-                      <span className="w-1 h-1 bg-gray-300 rounded-full" />
-                      <time dateTime={featured.publishedAt}>
-                        {new Date(featured.publishedAt).toLocaleDateString('en-US', {
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric',
-                        })}
-                      </time>
-                      <span className="ml-auto text-blue-600 font-medium group-hover:underline">
-                        Read Article &rarr;
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </Link>
+              <BlogCard post={featured} variant="featured" priority />
             )}
 
             {/* Ad: After Featured Post */}
@@ -217,63 +167,21 @@ export default async function BlogIndexPage() {
 
             {/* Blog Posts Grid */}
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {restPosts.map((post, idx) => {
-                const gradientIdx = (idx + 1) % GRADIENT_COLORS.length;
-                return (
-                  <Link
-                    key={post.slug}
-                    href={`/blog/${post.slug}`}
-                    className="group hover-lift card-animate flex flex-col rounded-2xl border border-gray-200 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-600 hover:shadow-md transition-all overflow-hidden bg-white dark:bg-gray-900"
-                    style={{ animationDelay: `${(idx % 9) * 60}ms` }}
-                  >
-                    {/* Color header */}
-                    <div className={`h-2 bg-gradient-to-r ${GRADIENT_COLORS[gradientIdx]}`} />
-
-                    <div className="p-6 flex flex-col flex-1">
-                      {/* Category Badge */}
-                      {post.categorySlug && (
-                        <span className={`self-start inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium mb-3 ${CATEGORY_COLORS[post.categorySlug]?.bg || 'bg-gray-100'} ${CATEGORY_COLORS[post.categorySlug]?.text || 'text-gray-600'}`}>
-                          {post.categorySlug.charAt(0).toUpperCase() + post.categorySlug.slice(1)}
-                        </span>
-                      )}
-
-                      {/* Title */}
-                      <h2 className="text-lg font-semibold mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2">
-                        {post.title}
-                      </h2>
-
-                      {/* Excerpt */}
-                      <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-3 flex-1">
-                        {post.excerpt}
-                      </p>
-
-                      {/* Footer: Author + Date */}
-                      <div className="mt-4 flex items-center gap-3 text-sm">
-                        <div className="flex items-center gap-2 flex-1 min-w-0">
-                          <div className="w-6 h-6 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0">
-                            {(post.author || `${SITE_NAME} Team`)[0]}
-                          </div>
-                          <span className="text-gray-500 dark:text-gray-400 truncate text-xs">
-                            {post.author || `${SITE_NAME} Team`}
-                          </span>
-                        </div>
-                        <time
-                          dateTime={post.publishedAt}
-                          className="text-gray-400 dark:text-gray-500 text-xs flex-shrink-0"
-                        >
-                          {new Date(post.publishedAt).toLocaleDateString('en-US', {
-                            month: 'short',
-                            day: 'numeric',
-                          })}
-                        </time>
-                        <span className="text-blue-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
-                          &rarr;
-                        </span>
-                      </div>
+              {restPosts.map((post, idx) => (
+                <React.Fragment key={post.slug}>
+                  <BlogCard
+                    post={post}
+                    animationDelay={(idx % 9) * 60}
+                    priority={idx < 3}
+                  />
+                  {/* Newsletter CTA after every 6 posts */}
+                  {idx === 5 && (
+                    <div className="md:col-span-2 lg:col-span-3">
+                      <InlineNewsletterCTA />
                     </div>
-                  </Link>
-                );
-              })}
+                  )}
+                </React.Fragment>
+              ))}
             </div>
           </>
         ) : (
