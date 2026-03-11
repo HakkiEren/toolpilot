@@ -44,6 +44,11 @@ export interface ToolInput {
   pricing: ToolPricing;
   ratings: ToolRatings;
   categorySlug: string;
+  // Rich content fields for data-driven FAQs
+  description?: string;
+  prosConsContent?: string;
+  useCasesContent?: string;
+  bestForContent?: string;
 }
 
 export interface ComparisonBottomLine {
@@ -155,6 +160,52 @@ function buildPricingSummary(pricing: ToolPricing): string {
 }
 
 // ---------------------------------------------------------------------------
+// Content extraction helpers for data-driven FAQs
+// ---------------------------------------------------------------------------
+
+function extractProsFromHtml(html: string | undefined): string[] {
+  if (!html) return [];
+  const m = html.match(/Pros[\s\S]*?<ul>([\s\S]*?)<\/ul>/i);
+  if (!m) return [];
+  return [...m[1].matchAll(/<li[^>]*>([\s\S]*?)<\/li>/gi)]
+    .map(x => stripHtmlTags(x[1]))
+    .filter(s => s.length > 5 && s.length < 150)
+    .slice(0, 5);
+}
+
+function extractConsFromHtml(html: string | undefined): string[] {
+  if (!html) return [];
+  const m = html.match(/Cons[\s\S]*?<ul>([\s\S]*?)<\/ul>/i);
+  if (!m) return [];
+  return [...m[1].matchAll(/<li[^>]*>([\s\S]*?)<\/li>/gi)]
+    .map(x => stripHtmlTags(x[1]))
+    .filter(s => s.length > 5 && s.length < 150)
+    .slice(0, 5);
+}
+
+function extractUseCasesFromHtml(html: string | undefined): string[] {
+  if (!html) return [];
+  return [...html.matchAll(/<h3[^>]*>([\s\S]*?)<\/h3>/gi)]
+    .map(x => stripHtmlTags(x[1]))
+    .filter(s => s.length > 3 && s.length < 100)
+    .slice(0, 5);
+}
+
+function extractBestForFromHtml(html: string | undefined): string[] {
+  if (!html) return [];
+  return [...html.matchAll(/<li[^>]*>([\s\S]*?)<\/li>/gi)]
+    .map(x => stripHtmlTags(x[1]))
+    .filter(s => s.length > 10 && s.length < 200)
+    .slice(0, 5);
+}
+
+function getFirstSentence(text: string | undefined): string {
+  if (!text) return '';
+  const sentences = text.split(/(?<=[.!?])\s+/).map(s => s.trim()).filter(s => s.length > 15);
+  return sentences[0] || '';
+}
+
+// ---------------------------------------------------------------------------
 // generateToolFAQs
 // ---------------------------------------------------------------------------
 
@@ -163,6 +214,15 @@ export function generateToolFAQs(tool: ToolInput): FAQ[] {
   const { name, pricing, ratings, categorySlug } = tool;
   const audience = getUseCaseAudience(categorySlug);
   const ratingLabel = getRatingLabel(ratings.overall);
+
+  // Extract rich content for data-driven answers
+  const pros = extractProsFromHtml(tool.prosConsContent);
+  const cons = extractConsFromHtml(tool.prosConsContent);
+  const useCases = extractUseCasesFromHtml(tool.useCasesContent);
+  const bestFor = extractBestForFromHtml(tool.bestForContent);
+  const descHighlight = getFirstSentence(tool.description);
+
+  const faqs: FAQ[] = [];
 
   // 1. "Is {tool.name} worth it in {year}?"
   const worthItAnswer = (() => {
@@ -175,8 +235,13 @@ export function generateToolFAQs(tool: ToolInput): FAQ[] {
             ? `Starting at ${formatPrice(pricing.startingPrice)}/month, it provides reasonable value for its feature set.`
             : `You can check their website for the latest pricing and plan details.`;
 
-    return `With a ${ratingLabel} ${ratings.overall}/10 user rating, ${name} remains a competitive choice in ${year}. ${valueNote} Most users find it delivers good value relative to comparable tools in the market.`;
+    const proBoost = pros.length > 0
+      ? ` Users consistently highlight ${pros[0].toLowerCase()} as a standout strength.`
+      : '';
+
+    return `With a ${ratingLabel} ${ratings.overall}/10 user rating, ${name} remains a competitive choice in ${year}. ${valueNote}${proBoost} Most users find it delivers good value relative to comparable tools in the market.`;
   })();
+  faqs.push({ question: `Is ${name} worth it in ${year}?`, answer: worthItAnswer });
 
   // 2. "Does {tool.name} have a free plan?"
   const freePlanAnswer = (() => {
@@ -187,18 +252,50 @@ export function generateToolFAQs(tool: ToolInput): FAQ[] {
           : "";
       return `Yes, ${name} offers a free plan that lets you explore its core features without a credit card.${trialExtra} It's a great way to evaluate whether the tool fits your workflow before upgrading.`;
     }
-
     if (pricing.freeTrialDays !== null) {
-      return `${name} does not have a permanent free plan, but it does offer a ${pricing.freeTrialDays}-day free trial. This gives you enough time to test the full feature set. After the trial you can choose the paid tier that matches your needs.`;
+      return `${name} doesn't have a permanent free plan, but it does offer a ${pricing.freeTrialDays}-day free trial. That's enough time to test the full feature set and see if it clicks for you.`;
     }
-
-    return `${name} does not currently offer a free plan or free trial. ${pricing.startingPrice !== null ? `Paid plans start at ${formatPrice(pricing.startingPrice)}/month.` : "Check their website for the latest pricing."} You may want to request a demo or contact their sales team for a guided walkthrough before purchasing.`;
+    return `${name} doesn't currently offer a free plan or free trial. ${pricing.startingPrice !== null ? `Paid plans start at ${formatPrice(pricing.startingPrice)}/month.` : "Check their website for the latest pricing."} You may want to request a demo or reach out to their sales team before committing.`;
   })();
+  faqs.push({ question: `Does ${name} have a free plan?`, answer: freePlanAnswer });
 
-  // 3. "What are the best {tool.name} alternatives?"
-  const alternativesAnswer = `Several tools compete directly with ${name} in the ${categorySlug.replace(/-/g, " ")} space. We maintain a curated alternatives page that compares features, pricing, and user ratings side by side. Visit our ${name} alternatives page to find the best fit for ${audience}.`;
+  // 3. "What are the pros and cons of {tool.name}?"
+  if (pros.length > 0 || cons.length > 0) {
+    const prosText = pros.length > 0
+      ? `On the plus side, users love ${pros.slice(0, 3).map(p => p.toLowerCase()).join(', ')}.`
+      : `Users generally find it delivers on its core promises.`;
+    const consText = cons.length > 0
+      ? ` On the flip side, some mention ${cons.slice(0, 2).map(c => c.toLowerCase()).join(' and ')} as areas that could improve.`
+      : ` There aren't many common complaints, which speaks to its overall quality.`;
+    const overallText = ratings.overall >= 8
+      ? ` With a ${ratings.overall}/10 rating, the pros clearly outweigh the cons for most users.`
+      : ` It scores ${ratings.overall}/10 overall — solid, but worth weighing these trade-offs for your situation.`;
+    faqs.push({
+      question: `What are the pros and cons of ${name}?`,
+      answer: `${prosText}${consText}${overallText}`,
+    });
+  }
 
-  // 4. "How much does {tool.name} cost?"
+  // 4. "What can you use {tool.name} for?"
+  if (useCases.length > 0) {
+    const useCaseList = useCases.slice(0, 4).map(u => u.toLowerCase()).join(', ');
+    const descLine = descHighlight ? ` ${descHighlight}` : '';
+    faqs.push({
+      question: `What can you use ${name} for?`,
+      answer: `${name} is built for ${useCaseList}.${descLine} Whether you're a solo user or part of a larger team, it's designed to handle these workflows out of the box.`,
+    });
+  }
+
+  // 5. "Who is {tool.name} best for?"
+  if (bestFor.length > 0) {
+    const personaList = bestFor.slice(0, 3).join('. ');
+    faqs.push({
+      question: `Who is ${name} best for?`,
+      answer: `${name} works best for a few specific types of users. ${personaList}. If any of that sounds like you, it's definitely worth a closer look.`,
+    });
+  }
+
+  // 6. "How much does {tool.name} cost?"
   const costAnswer = (() => {
     const summary = buildPricingSummary(pricing);
     const freeNote = pricing.hasFreeplan
@@ -206,32 +303,38 @@ export function generateToolFAQs(tool: ToolInput): FAQ[] {
       : `${name} is a paid tool with multiple tiers.`;
     return `${freeNote} ${summary}. Visit the official pricing page for the most up-to-date information and any available discounts.`;
   })();
+  faqs.push({ question: `How much does ${name} cost?`, answer: costAnswer });
 
-  // 5. "Is {tool.name} good for {use case}?"
-  const useCaseAnswer = `${name} is well-suited for ${audience}, especially those looking for ${ratingLabel === "excellent" || ratingLabel === "strong" ? "a top-rated" : "a reliable"} solution in the ${categorySlug.replace(/-/g, " ")} category. Its ${ratings.overall >= 4.0 ? "high user satisfaction score" : "feature set"} suggests it handles common workflows effectively. We recommend starting with ${pricing.hasFreeplan ? "the free plan" : pricing.freeTrialDays ? "the free trial" : "a demo"} to see if it meets your specific requirements.`;
+  // 7. "What are the best {tool.name} alternatives?"
+  const alternativesAnswer = `Several tools compete directly with ${name} in the ${categorySlug.replace(/-/g, " ")} space. We maintain a curated alternatives page that compares features, pricing, and user ratings side by side. Visit our ${name} alternatives page to find the best fit for ${audience}.`;
+  faqs.push({ question: `What are the best ${name} alternatives?`, answer: alternativesAnswer });
 
-  return [
-    {
-      question: `Is ${name} worth it in ${year}?`,
-      answer: worthItAnswer,
-    },
-    {
-      question: `Does ${name} have a free plan?`,
-      answer: freePlanAnswer,
-    },
-    {
-      question: `What are the best ${name} alternatives?`,
-      answer: alternativesAnswer,
-    },
-    {
-      question: `How much does ${name} cost?`,
-      answer: costAnswer,
-    },
-    {
-      question: `Is ${name} good for ${audience}?`,
-      answer: useCaseAnswer,
-    },
-  ];
+  // 8. "Is {tool.name} good for {use case}?"
+  const useCaseAnswer = (() => {
+    const proBoost = pros.length > 1
+      ? ` Users especially appreciate ${pros[1].toLowerCase()}, which makes a real difference in day-to-day use.`
+      : '';
+    return `${name} is well-suited for ${audience}, especially those looking for ${ratingLabel === "excellent" || ratingLabel === "strong" ? "a top-rated" : "a reliable"} solution in the ${categorySlug.replace(/-/g, " ")} category.${proBoost} We recommend starting with ${pricing.hasFreeplan ? "the free plan" : pricing.freeTrialDays ? "the free trial" : "a demo"} to see if it meets your specific requirements.`;
+  })();
+  faqs.push({ question: `Is ${name} good for ${audience}?`, answer: useCaseAnswer });
+
+  // 9. "What do users like most about {tool.name}?" (only if we have enough real data)
+  if (pros.length >= 2) {
+    faqs.push({
+      question: `What do users like most about ${name}?`,
+      answer: `The most common praise for ${name} centers around ${pros[0].toLowerCase()}. Users also frequently mention ${pros[1].toLowerCase()}${pros.length > 2 ? ` and ${pros[2].toLowerCase()}` : ''} as key strengths. These aren't just marketing claims — they come from actual user feedback and reviews we've analyzed.`,
+    });
+  }
+
+  // 10. "Where does {tool.name} fall short?" (only if we have real cons)
+  if (cons.length >= 2) {
+    faqs.push({
+      question: `Where does ${name} fall short?`,
+      answer: `No tool is perfect, and ${name} is no exception. The most common concerns include ${cons[0].toLowerCase()} and ${cons[1].toLowerCase()}.${cons.length > 2 ? ` Some users also note ${cons[2].toLowerCase()}.` : ''} That said, whether these are dealbreakers depends on your specific needs and workflow.`,
+    });
+  }
+
+  return faqs;
 }
 
 // ---------------------------------------------------------------------------

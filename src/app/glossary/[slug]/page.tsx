@@ -84,15 +84,28 @@ export default async function GlossaryTermPage({ params }: PageProps) {
     { name: term.term, url: `/glossary/${term.slug}` },
   ]);
 
-  // FAQ schema for the term
+  // FAQ schema for the term — expanded with unique, data-driven answers
+  const cleanTerm = term.term.replace(/\([^)]*\)/g, '').trim();
   const faqs = [
     {
       question: `What is ${term.term}?`,
-      answer: term.extendedDefinition,
+      answer: `${term.definition} ${term.practicalExample ? term.practicalExample.split('.').slice(0, 1).join('.') + '.' : ''}`,
     },
     {
-      question: `Why is ${term.term.replace(/\([^)]*\)/g, '').trim()} important?`,
-      answer: `Understanding ${term.term.replace(/\([^)]*\)/g, '').trim()} is essential for evaluating ${term.category.toLowerCase()} tools and making informed technology decisions. It helps businesses choose the right solutions, optimize costs, and stay competitive in their industry.`,
+      question: `Why does ${cleanTerm} matter for businesses?`,
+      answer: term.whyItMatters || `Understanding ${cleanTerm} helps businesses evaluate ${term.category.toLowerCase()} tools effectively, make smarter purchasing decisions, and stay ahead of industry trends. It's one of those concepts that becomes more valuable the deeper you understand it.`,
+    },
+    {
+      question: `What's a common mistake people make with ${cleanTerm}?`,
+      answer: term.commonMisconception || `One frequent misunderstanding is assuming ${cleanTerm} works the same way across all contexts. The reality is more nuanced — how it applies depends on your specific industry, team size, and goals. Taking time to understand the specifics saves headaches later.`,
+    },
+    {
+      question: `How does ${cleanTerm} affect ${term.category.toLowerCase()} tool pricing?`,
+      answer: `${cleanTerm} plays a role in how ${term.category.toLowerCase()} tools are priced and valued. Tools that leverage ${cleanTerm} effectively often justify premium pricing through better outcomes. When comparing tools, look beyond the price tag and evaluate how well each one implements ${cleanTerm} for your use case.`,
+    },
+    {
+      question: `What should beginners know about ${cleanTerm}?`,
+      answer: `${term.keyTakeaways && term.keyTakeaways.length > 0 ? term.keyTakeaways.slice(0, 2).join('. ') + '.' : `Start by understanding the basics: ${term.definition}`} ${term.proTip ? `Here's a practical tip: ${term.proTip}` : `The most important thing is to apply ${cleanTerm} concepts to your specific situation rather than following generic advice.`}`,
     },
   ];
   const faqSchema = generateFAQSchema(faqs);
@@ -165,10 +178,87 @@ export default async function GlossaryTermPage({ params }: PageProps) {
           </div>
         </section>
 
+        {/* Why It Matters */}
+        {term.whyItMatters && (
+          <section className="mb-10">
+            <h2 className="text-xl font-bold mb-4">Why It Matters</h2>
+            <div className="p-5 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 rounded-2xl border border-amber-200/50 dark:border-amber-800/50">
+              <div className="flex items-start gap-3">
+                <span className="text-2xl flex-shrink-0">🎯</span>
+                <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                  {term.whyItMatters}
+                </p>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Real-World Example */}
+        {term.practicalExample && (
+          <section className="mb-10">
+            <h2 className="text-xl font-bold mb-4">Real-World Example</h2>
+            <div className="p-5 bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-950/20 dark:to-teal-950/20 rounded-2xl border border-emerald-200/50 dark:border-emerald-800/50">
+              <div className="flex items-start gap-3">
+                <span className="text-2xl flex-shrink-0">💼</span>
+                <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                  {term.practicalExample}
+                </p>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Common Misconception */}
+        {term.commonMisconception && (
+          <section className="mb-10">
+            <h2 className="text-xl font-bold mb-4">Common Misconception</h2>
+            <div className="p-5 bg-gradient-to-r from-red-50 to-rose-50 dark:from-red-950/20 dark:to-rose-950/20 rounded-2xl border border-red-200/50 dark:border-red-800/50">
+              <div className="flex items-start gap-3">
+                <span className="text-2xl flex-shrink-0">⚠️</span>
+                <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                  {term.commonMisconception}
+                </p>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Pro Tip */}
+        {term.proTip && (
+          <section className="mb-10">
+            <div className="p-5 bg-gradient-to-r from-violet-50 to-purple-50 dark:from-violet-950/20 dark:to-purple-950/20 rounded-2xl border border-violet-200/50 dark:border-violet-800/50">
+              <div className="flex items-start gap-3">
+                <span className="text-2xl flex-shrink-0">💡</span>
+                <div>
+                  <h3 className="font-bold text-sm mb-1.5 text-violet-800 dark:text-violet-300">Pro Tip</h3>
+                  <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                    {term.proTip}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Key Takeaways */}
+        {term.keyTakeaways && term.keyTakeaways.length > 0 && (
+          <section className="mb-10">
+            <h2 className="text-xl font-bold mb-4">Key Takeaways</h2>
+            <ul className="space-y-2.5">
+              {term.keyTakeaways.map((takeaway, i) => (
+                <li key={i} className="flex items-start gap-3 p-3 bg-gray-50 dark:bg-gray-800/40 rounded-xl">
+                  <span className="text-cyan-500 dark:text-cyan-400 font-bold text-sm mt-0.5 flex-shrink-0">✓</span>
+                  <span className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{takeaway}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
         {/* Quick Fact Card */}
         <div className="mb-10 p-5 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 rounded-2xl border border-blue-200/50 dark:border-blue-800/50">
           <div className="flex items-start gap-3">
-            <span className="text-2xl flex-shrink-0">💡</span>
+            <span className="text-2xl flex-shrink-0">📌</span>
             <div>
               <h3 className="font-bold text-sm mb-1">Quick Summary</h3>
               <p className="text-sm text-gray-600 dark:text-gray-400">
