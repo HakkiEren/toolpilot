@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getBlogBySlug, getBlogPosts, getToolBySlug, getComparisonsByCategory } from '@/lib/data';
-import { generateBlogSchema, generateBreadcrumbSchema } from '@/lib/schema';
+import { generateBlogSchema, generateBreadcrumbSchema, generateFAQSchema } from '@/lib/schema';
+import { extractFAQsFromContent, extractHowToSteps, isHowToPost } from '@/lib/blog-seo';
 import { SITE_URL, SEO, SITE_NAME, CATEGORIES, SUBCATEGORIES } from '@/lib/constants';
 import { getAuthor, getAuthorUrl } from '@/lib/authors';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
@@ -13,13 +14,16 @@ import { CopyLinkButton } from '@/components/common/CopyLinkButton';
 import { ReadingProgress } from '@/components/common/ReadingProgress';
 import { InlineNewsletterCTA } from '@/components/ui/InlineNewsletterCTA';
 import { enrichHtmlWithGlossaryLinks } from '@/lib/glossary-linker';
+import { EditorialBadge } from '@/components/common/EditorialBadge';
+import { BlogHero } from '@/components/blog/BlogHero';
+import { BlogCard } from '@/components/blog/BlogCard';
 import type { InternalLink } from '@/types';
 
 // ============================================================
 // Blog Post Page — Individual article with related tools & links
 // ============================================================
 
-export const revalidate = 3600;
+export const revalidate = false;
 export const dynamicParams = true;
 
 export async function generateStaticParams() {
@@ -144,11 +148,48 @@ export default async function BlogPostPage({ params }: PageProps) {
 
   // JSON-LD schemas
   const blogSchema = generateBlogSchema(post);
+  const categoryName = post.categorySlug
+    ? (CATEGORIES[post.categorySlug]?.name || post.categorySlug.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase()))
+    : null;
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: '/' },
     { name: 'Blog', url: '/blog' },
+    ...(post.categorySlug && categoryName
+      ? [{ name: categoryName, url: `/${post.categorySlug}` }]
+      : []),
     { name: post.title, url: `/blog/${slug}` },
   ]);
+
+  // FAQPage schema — extract FAQ Q&A from content for Google Rich Results
+  const contentFaqs = extractFAQsFromContent(post.content);
+  const faqSchema = contentFaqs.length > 0 ? generateFAQSchema(contentFaqs) : null;
+
+  // HowTo schema — for guide/how-to posts (Google Rich Results)
+  const howToSteps = isHowToPost(slug, post.title) ? extractHowToSteps(post.content) : [];
+  const howToSchema = howToSteps.length >= 3 ? {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: post.title,
+    description: post.excerpt || post.metaDescription,
+    url: `${SITE_URL}/blog/${slug}`,
+    totalTime: `PT${readingTime}M`,
+    step: howToSteps.map((s, idx) => ({
+      '@type': 'HowToStep',
+      position: idx + 1,
+      name: s.name,
+      text: s.text,
+      url: `${SITE_URL}/blog/${slug}#step-${idx + 1}`,
+    })),
+    author: {
+      '@type': 'Person',
+      name: post.author,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: SITE_NAME,
+      url: SITE_URL,
+    },
+  } : null;
 
   return (
     <>
@@ -161,37 +202,46 @@ export default async function BlogPostPage({ params }: PageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
+      {howToSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
+        />
+      )}
 
       <div className="max-w-7xl mx-auto px-4 py-8">
         <Breadcrumbs
           items={[
             { name: 'Home', url: '/' },
             { name: 'Blog', url: '/blog' },
+            ...(post.categorySlug && categoryName
+              ? [{ name: categoryName, url: `/${post.categorySlug}` }]
+              : []),
             { name: post.title, url: '' },
           ]}
+        />
+
+        {/* Blog Hero — Featured Image */}
+        <BlogHero
+          title={post.title}
+          slug={slug}
+          categorySlug={post.categorySlug}
+          categoryName={categoryName}
+          readingTime={readingTime}
+          author={post.author}
         />
 
         <div className="mt-8 grid lg:grid-cols-[1fr_300px] gap-10">
           {/* Main Article Content */}
           <article className="min-w-0">
-            {/* Article Header — Premium magazine style */}
+            {/* Excerpt + Date + Share */}
             <header className="mb-10">
-              {/* Category Badge */}
-              {post.categorySlug && (
-                <Link
-                  href={`/${post.categorySlug}`}
-                  className="inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-semibold bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 hover:from-blue-200 hover:to-indigo-200 dark:hover:bg-blue-900/50 transition-colors mb-4 shadow-sm"
-                >
-                  {post.categorySlug
-                    .replace(/-/g, ' ')
-                    .replace(/\b\w/g, (c) => c.toUpperCase())}
-                </Link>
-              )}
-
-              <h1 className="text-3xl md:text-4xl font-extrabold mb-4 leading-tight tracking-tight">
-                {post.title}
-              </h1>
-
               {/* Speakable excerpt for voice search */}
               {post.excerpt && (
                 <p data-speakable="true" className="text-lg text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">
@@ -200,7 +250,7 @@ export default async function BlogPostPage({ params }: PageProps) {
               )}
 
               <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
-                {/* Author with avatar — uses centralized author data */}
+                {/* Author with avatar */}
                 {(() => {
                   const headerAuthor = getAuthor(post.author);
                   return (
@@ -225,13 +275,6 @@ export default async function BlogPostPage({ params }: PageProps) {
                     })}
                   </time>
                 </span>
-                <span className="w-1 h-1 bg-gray-300 rounded-full" />
-                <span className="flex items-center gap-1.5">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  {readingTime} min read
-                </span>
                 {post.updatedAt && post.updatedAt !== post.publishedAt && (
                   <span className="text-gray-400 dark:text-gray-500">
                     (Updated:{' '}
@@ -247,7 +290,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                 )}
               </div>
 
-              {/* Share buttons — below meta info */}
+              {/* Share buttons */}
               <div className="mt-4 flex items-center gap-2">
                 <ShareButtons
                   url={`${SITE_URL}/blog/${slug}`}
@@ -263,7 +306,7 @@ export default async function BlogPostPage({ params }: PageProps) {
 
             {/* Article Body */}
             <div
-              className="prose prose-lg dark:prose-invert max-w-none
+              className="blog-article-content prose prose-lg dark:prose-invert max-w-none
                 prose-headings:font-bold prose-headings:tracking-tight
                 prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-a:no-underline hover:prose-a:underline
                 prose-img:rounded-xl prose-img:shadow-md
@@ -415,34 +458,11 @@ export default async function BlogPostPage({ params }: PageProps) {
                 .slice(0, 3);
               if (relatedPosts.length === 0) return null;
               return (
-                <section className="mt-12">
-                  <h2 className="text-2xl font-bold mb-6">You Might Also Like</h2>
-                  <div className="grid sm:grid-cols-3 gap-4">
+                <section className="mt-12 -mx-4 px-4 py-8 bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/20 dark:from-gray-800/50 dark:via-blue-900/10 dark:to-purple-900/10 rounded-2xl">
+                  <h2 className="text-2xl font-extrabold mb-6">You Might Also Like</h2>
+                  <div className="grid sm:grid-cols-3 gap-5">
                     {relatedPosts.map((rp) => (
-                      <Link
-                        key={rp.slug}
-                        href={`/blog/${rp.slug}`}
-                        className="group rounded-xl border border-gray-200 dark:border-gray-700 p-4 hover:border-blue-300 dark:hover:border-blue-600 hover:bg-blue-50/30 dark:hover:bg-blue-900/10 transition-all"
-                      >
-                        {rp.categorySlug && (
-                          <span className="inline-block px-2 py-0.5 rounded-md text-[10px] font-semibold bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 mb-2">
-                            {rp.categorySlug.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())}
-                          </span>
-                        )}
-                        <h3 className="font-semibold text-sm leading-snug group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2 mb-2">
-                          {rp.title}
-                        </h3>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-2">
-                          {rp.excerpt}
-                        </p>
-                        <div className="mt-3 flex items-center gap-2 text-[11px] text-gray-400">
-                          <span>{rp.author}</span>
-                          <span className="w-0.5 h-0.5 bg-gray-300 rounded-full" />
-                          <time dateTime={rp.publishedAt}>
-                            {new Date(rp.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                          </time>
-                        </div>
-                      </Link>
+                      <BlogCard key={rp.slug} post={rp} variant="compact" />
                     ))}
                   </div>
                 </section>
@@ -485,27 +505,9 @@ export default async function BlogPostPage({ params }: PageProps) {
               </div>
             </nav>
 
-            {/* Freshness Signal — Enhanced trust badge */}
-            <div className="mt-10 flex flex-wrap items-center gap-4 text-sm text-gray-400 border-t border-gray-200 dark:border-gray-800 pt-6">
-              <div className="flex items-center gap-2">
-                <span>📅</span>
-                <span>Last updated: {new Date(post.updatedAt || post.publishedAt).toLocaleDateString(
-                  'en-US',
-                  { year: 'numeric', month: 'long', day: 'numeric' }
-                )}</span>
-              </div>
-              <div className="w-1 h-1 bg-gray-300 dark:bg-gray-600 rounded-full" />
-              <div className="flex items-center gap-2">
-                <span>✍️</span>
-                <Link href="/about/team" className="hover:text-blue-500 transition-colors">
-                  By {post.author}
-                </Link>
-              </div>
-              <div className="w-1 h-1 bg-gray-300 dark:bg-gray-600 rounded-full" />
-              <div className="flex items-center gap-2">
-                <span>⏱️</span>
-                <span>{readingTime} min read</span>
-              </div>
+            {/* Editorial Badge — E-E-A-T freshness signal */}
+            <div className="mt-10 border-t border-gray-200 dark:border-gray-800 pt-6">
+              <EditorialBadge lastUpdated={post.updatedAt || post.publishedAt} author={post.author} />
             </div>
           </article>
 

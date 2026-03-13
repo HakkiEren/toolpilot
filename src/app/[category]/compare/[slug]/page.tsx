@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getComparison, getAllComparisonSlugs, getRelatedLinks, getRelatedComparisons, getRelatedBlogPosts } from '@/lib/data';
+import { getComparison, getAllComparisonSlugs, getRelatedLinks, getRelatedComparisons, getRelatedBlogPosts, getBlogPostsByCategory, getBlogPosts } from '@/lib/data';
 import { generateComparisonSchema, generateComparisonItemListSchema, generateFAQSchema, generateBreadcrumbSchema } from '@/lib/schema';
 import { CATEGORIES, SUBCATEGORIES, LIMITS, SEO, SITE_URL, SITE_NAME } from '@/lib/constants';
 import { generateComparisonBottomLine, generateKeyDifferences, generateComparisonFAQs } from '@/lib/generated-faqs';
@@ -21,70 +21,68 @@ import { CopyLinkButton } from '@/components/common/CopyLinkButton';
 import { ReadingProgress } from '@/components/common/ReadingProgress';
 import { HtmlContent, stripHtml } from '@/components/common/HtmlContent';
 import { RecordToolView } from '@/components/common/RecentlyViewed';
+import { BlogCard } from '@/components/blog/BlogCard';
 
 // ============================================================
 // COMPARISON PAGE — ENHANCED with winner banner, nav, tool cards
 // ============================================================
 
 /**
- * Parse scenario content for a specific tool.
- * Some DB records put both tools' scenarios in scenarioContent with h3 headers,
- * while migrationContent is empty. This splits them intelligently.
+ * Deterministic hash — same slug always produces the same number.
+ * Used to pick blog posts so each comparison page has a unique but stable set.
  */
-function parseScenarioForTool(scenarioContent: string, migrationContent: string, tool: 'a' | 'b'): string {
-  // If both fields have content, use them directly
-  if (scenarioContent && migrationContent) {
-    return tool === 'a' ? scenarioContent : migrationContent;
+function deterministicHash(str: string): number {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash |= 0; // Convert to 32bit integer
   }
-
-  // If only one field has content, try to split it by "Choose Tool B" header
-  if (scenarioContent && !migrationContent) {
-    // Look for a split point: second h3, or "Choose Tool B" pattern
-    const toolBPatterns = [
-      /<h3[^>]*>Choose Tool B/i,
-      /<h3[^>]*>.*?Tool B/i,
-      /<h3[^>]*>.*?if you (?:are|want|need|prefer).*?<\/h3>/i,
-    ];
-
-    for (const pattern of toolBPatterns) {
-      const match = scenarioContent.search(pattern);
-      if (match > 0) {
-        const partA = scenarioContent.substring(0, match).replace(/<h3[^>]*>.*?<\/h3>/i, '').trim();
-        const partB = scenarioContent.substring(match).replace(/<h3[^>]*>.*?<\/h3>/i, '').trim();
-        return tool === 'a' ? partA : partB;
-      }
-    }
-
-    // Fallback: try splitting by the second <h3> tag
-    const h3Parts = scenarioContent.split(/<h3[^>]*>/i).filter(Boolean);
-    if (h3Parts.length >= 2) {
-      const cleanPart = (p: string) => p.replace(/<\/h3>/i, '').trim();
-      return tool === 'a' ? cleanPart(h3Parts[0]) : cleanPart(h3Parts[1]);
-    }
-
-    // Last resort: try splitting by <ul> blocks
-    const ulParts = scenarioContent.split(/<\/ul>/i).filter(p => p.includes('<ul'));
-    if (ulParts.length >= 2) {
-      return tool === 'a'
-        ? ulParts[0].replace(/<h3[^>]*>.*?<\/h3>/gi, '').trim() + '</ul>'
-        : ulParts[1].replace(/<h3[^>]*>.*?<\/h3>/gi, '').trim() + '</ul>';
-    }
-  }
-
-  // If nothing works, return what we have or empty
-  if (tool === 'a') return scenarioContent || '';
-  return migrationContent || scenarioContent || '';
+  return Math.abs(hash);
 }
 
-export const revalidate = 3600;
+/**
+ * Pick N items from an array using a deterministic seed.
+ * Same seed + same array = same selection every time.
+ */
+function deterministicPick<T>(items: T[], seed: number, count: number): T[] {
+  if (items.length <= count) return items;
+  const picked: T[] = [];
+  const used = new Set<number>();
+  let s = seed;
+  while (picked.length < count && used.size < items.length) {
+    s = ((s * 1103515245 + 12345) & 0x7fffffff); // LCG
+    const idx = s % items.length;
+    if (!used.has(idx)) {
+      used.add(idx);
+      picked.push(items[idx]);
+    }
+  }
+  return picked;
+}
+
+/**
+ * Strip the first ## heading from markdown/HTML content so the section
+ * heading can be provided by the page layout instead.
+ */
+function stripSectionHeading(content: string): string {
+  if (!content) return '';
+  // Strip leading ## heading (markdown)
+  let cleaned = content.replace(/^##\s+.+\n*/m, '').trim();
+  // Strip leading <h2>/<h3> heading (HTML)
+  cleaned = cleaned.replace(/^<h[23][^>]*>.*?<\/h[23]>\s*/i, '').trim();
+  return cleaned;
+}
+
+// ISR: revalidate every 24h, allow on-demand generation for non-prebuilt pages
+export const revalidate = 86400;
 export const dynamicParams = true;
 
 export async function generateStaticParams() {
-  const slugs = await getAllComparisonSlugs();
-  return slugs.map(({ categorySlug, comparisonSlug }) => ({
-    category: categorySlug,
-    slug: comparisonSlug,
-  }));
+  // Return empty — all 15,000+ comparison pages are generated on-demand via ISR.
+  // This prevents build timeouts on Vercel (2-core, 8 GB machines).
+  // Pages are cached after first visit and revalidated every 24h.
+  return [];
 }
 
 interface PageProps {
@@ -132,11 +130,18 @@ export default async function ComparisonPage({ params }: PageProps) {
   if (!comparison) notFound();
 
   const cat = CATEGORIES[category];
-  const [relatedLinks, alsoCompare, relatedPosts] = await Promise.all([
+  const [relatedLinks, alsoCompare, categoryBlogPosts, allBlogPosts] = await Promise.all([
     getRelatedLinks(comparison.toolA),
     getRelatedComparisons(comparison, 4),
-    getRelatedBlogPosts(category, comparison.toolA.slug, 2),
+    getBlogPostsByCategory(category, 50),
+    getBlogPosts(50),
   ]);
+
+  // Deterministic blog post selection — same slug always picks the same 3 posts
+  const seed = deterministicHash(slug);
+  const blogPool = categoryBlogPosts.length >= 3 ? categoryBlogPosts : allBlogPosts;
+  const relatedPosts = deterministicPick(blogPool, seed, 3);
+
   const year = new Date().getFullYear();
 
   // Determine winner
@@ -415,7 +420,7 @@ export default async function ComparisonPage({ params }: PageProps) {
           <HtmlContent
             html={comparison.introContent}
             glossaryLinks
-            className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed [&>p]:mb-4 [&>p:last-child]:mb-0"
+            className="prose-content text-lg text-gray-600 dark:text-gray-300 leading-relaxed"
           />
         </div>
 
@@ -467,7 +472,7 @@ export default async function ComparisonPage({ params }: PageProps) {
         {/* ========== QUICK VERDICT ========== */}
         <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl p-6 mb-10">
           <h2 className="text-xl font-semibold mb-3">Quick Verdict</h2>
-          <HtmlContent html={comparison.verdictContent} className="text-gray-700 dark:text-gray-200 [&>p]:mb-3 [&>p:last-child]:mb-0" />
+          <HtmlContent html={stripSectionHeading(comparison.verdictContent)} className="prose-content text-gray-700 dark:text-gray-200" />
         </div>
 
         {/* ========== DECISION GUIDE — "Which Should You Choose?" ========== */}
@@ -662,16 +667,29 @@ export default async function ComparisonPage({ params }: PageProps) {
         {/* ========== VERDICT / USE CASES ========== */}
         <section id="verdict" className="mb-12 scroll-mt-32">
           <h2 className="text-2xl font-bold mb-6">Which Should You Choose?</h2>
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="hover-lift bg-white dark:bg-gray-900 rounded-2xl p-6 border border-blue-200 dark:border-blue-800/30">
-              <div className="flex items-center gap-3 mb-4">
-                <ToolLogo logoUrl={comparison.toolA.logoUrl} name={comparison.toolA.name} size={32} />
-                <h3 className="text-lg font-semibold">
-                  Choose {comparison.toolA.name} if...
-                </h3>
+
+          {/* Scenario: Who should use which */}
+          {comparison.scenarioContent && (
+            <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 mb-6">
+              <HtmlContent html={stripSectionHeading(comparison.scenarioContent)} className="prose-content text-gray-700 dark:text-gray-200" />
+            </div>
+          )}
+
+          {/* Migration Guide */}
+          {comparison.migrationContent && (
+            <div className="bg-gradient-to-br from-slate-50 to-gray-50 dark:from-gray-800/50 dark:to-gray-900 rounded-2xl p-6 border border-gray-200/60 dark:border-gray-700/60 mb-6">
+              <HtmlContent html={stripSectionHeading(comparison.migrationContent)} className="prose-content text-gray-700 dark:text-gray-200 text-sm" />
+            </div>
+          )}
+
+          {/* Tool action cards */}
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="hover-lift bg-white dark:bg-gray-900 rounded-2xl p-5 border border-blue-200 dark:border-blue-800/30">
+              <div className="flex items-center gap-3 mb-3">
+                <ToolLogo logoUrl={comparison.toolA.logoUrl} name={comparison.toolA.name} size={28} />
+                <h3 className="text-base font-semibold">{comparison.toolA.name}</h3>
               </div>
-              <HtmlContent html={parseScenarioForTool(comparison.scenarioContent, comparison.migrationContent, 'a')} className="text-gray-600 dark:text-gray-300 [&>ul]:list-disc [&>ul]:pl-5 [&>ul]:space-y-1 [&>li]:text-sm [&>p]:mb-2" />
-              <div className="flex flex-wrap items-center gap-3 mt-4">
+              <div className="flex flex-wrap items-center gap-3">
                 <Link
                   href={`/${category}/${comparison.toolA.slug}`}
                   className="inline-flex items-center gap-1 text-sm text-blue-600 font-medium hover:underline"
@@ -690,15 +708,12 @@ export default async function ComparisonPage({ params }: PageProps) {
                 )}
               </div>
             </div>
-            <div className="hover-lift bg-white dark:bg-gray-900 rounded-2xl p-6 border border-purple-200 dark:border-purple-800/30">
-              <div className="flex items-center gap-3 mb-4">
-                <ToolLogo logoUrl={comparison.toolB.logoUrl} name={comparison.toolB.name} size={32} />
-                <h3 className="text-lg font-semibold">
-                  Choose {comparison.toolB.name} if...
-                </h3>
+            <div className="hover-lift bg-white dark:bg-gray-900 rounded-2xl p-5 border border-purple-200 dark:border-purple-800/30">
+              <div className="flex items-center gap-3 mb-3">
+                <ToolLogo logoUrl={comparison.toolB.logoUrl} name={comparison.toolB.name} size={28} />
+                <h3 className="text-base font-semibold">{comparison.toolB.name}</h3>
               </div>
-              <HtmlContent html={parseScenarioForTool(comparison.scenarioContent, comparison.migrationContent, 'b')} className="text-gray-600 dark:text-gray-300 [&>ul]:list-disc [&>ul]:pl-5 [&>ul]:space-y-1 [&>li]:text-sm [&>p]:mb-2" />
-              <div className="flex flex-wrap items-center gap-3 mt-4">
+              <div className="flex flex-wrap items-center gap-3">
                 <Link
                   href={`/${category}/${comparison.toolB.slug}`}
                   className="inline-flex items-center gap-1 text-sm text-purple-600 font-medium hover:underline"
@@ -781,6 +796,40 @@ export default async function ComparisonPage({ params }: PageProps) {
           </section>
         )}
 
+        {/* ========== BOTTOM LINE — Ultra-premium dark gradient ========== */}
+        <section className="mb-12">
+          <div className="relative overflow-hidden bg-gradient-to-br from-gray-900 via-slate-900 to-indigo-950 rounded-2xl p-6 md:p-8 text-white shadow-xl">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="relative">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-400 to-amber-500 flex items-center justify-center text-lg shadow-lg shadow-yellow-500/20">💡</div>
+                <h2 className="text-xl font-bold">The Bottom Line</h2>
+              </div>
+              <h3 className="text-lg font-semibold text-blue-300 mb-3">{bottomLine.headline}</h3>
+              <p className="text-gray-300 leading-relaxed text-sm">{bottomLine.summary}</p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <a
+                  href={comparison.toolA.websiteUrl || `/${category}/${comparison.toolA.slug}`}
+                  target={comparison.toolA.websiteUrl ? '_blank' : undefined}
+                  rel={comparison.toolA.websiteUrl ? 'noopener noreferrer nofollow sponsored' : undefined}
+                  className="glow-pulse inline-flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white rounded-xl text-sm font-bold transition-all shadow-lg shadow-blue-600/25"
+                >
+                  Try {comparison.toolA.name} ↗
+                </a>
+                <a
+                  href={comparison.toolB.websiteUrl || `/${category}/${comparison.toolB.slug}`}
+                  target={comparison.toolB.websiteUrl ? '_blank' : undefined}
+                  rel={comparison.toolB.websiteUrl ? 'noopener noreferrer nofollow sponsored' : undefined}
+                  className="inline-flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-700 hover:to-purple-600 text-white rounded-xl text-sm font-bold transition-all shadow-lg shadow-purple-600/25"
+                >
+                  Try {comparison.toolB.name} ↗
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* ========== ALSO COMPARE — Related comparisons ========== */}
         {alsoCompare.length > 0 && (
           <section className="mb-12">
@@ -812,24 +861,21 @@ export default async function ComparisonPage({ params }: PageProps) {
           </section>
         )}
 
-        {/* ========== RELATED BLOG POSTS ========== */}
+        {/* ========== RELATED BLOG POSTS — Deterministic per-page selection ========== */}
         {relatedPosts.length > 0 && (
           <section className="mb-12">
-            <h2 className="text-2xl font-bold mb-6">Related Articles</h2>
-            <div className="grid md:grid-cols-2 gap-4">
-              {relatedPosts.map((post) => (
-                <Link
-                  key={post.slug}
-                  href={`/blog/${post.slug}`}
-                  className="group hover-lift bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700 transition-all p-5"
-                >
-                  <h3 className="font-semibold text-sm group-hover:text-blue-600 transition-colors line-clamp-2 mb-2">{post.title}</h3>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-2">{post.excerpt}</p>
-                  <div className="mt-3 text-xs text-gray-400 flex items-center gap-1">
-                    <span>📅</span>
-                    {new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                  </div>
-                </Link>
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-blue-900/30 dark:to-indigo-900/30 flex items-center justify-center text-lg flex-shrink-0">
+                📰
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold">From Our Blog</h2>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Expert insights and in-depth guides</p>
+              </div>
+            </div>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {relatedPosts.map((post, i) => (
+                <BlogCard key={post.slug} post={post} variant="compact" animationDelay={i * 100} />
               ))}
             </div>
           </section>
@@ -900,40 +946,6 @@ export default async function ComparisonPage({ params }: PageProps) {
             </section>
           );
         })()}
-
-        {/* ========== BOTTOM LINE — Ultra-premium dark gradient ========== */}
-        <section className="mb-12">
-          <div className="relative overflow-hidden bg-gradient-to-br from-gray-900 via-slate-900 to-indigo-950 rounded-2xl p-6 md:p-8 text-white shadow-xl">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-48 h-48 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
-            <div className="relative">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-400 to-amber-500 flex items-center justify-center text-lg shadow-lg shadow-yellow-500/20">💡</div>
-                <h2 className="text-xl font-bold">The Bottom Line</h2>
-              </div>
-              <h3 className="text-lg font-semibold text-blue-300 mb-3">{bottomLine.headline}</h3>
-              <p className="text-gray-300 leading-relaxed text-sm">{bottomLine.summary}</p>
-              <div className="mt-6 flex flex-wrap gap-3">
-                <a
-                  href={comparison.toolA.websiteUrl || `/${category}/${comparison.toolA.slug}`}
-                  target={comparison.toolA.websiteUrl ? '_blank' : undefined}
-                  rel={comparison.toolA.websiteUrl ? 'noopener noreferrer nofollow sponsored' : undefined}
-                  className="glow-pulse inline-flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white rounded-xl text-sm font-bold transition-all shadow-lg shadow-blue-600/25"
-                >
-                  Try {comparison.toolA.name} ↗
-                </a>
-                <a
-                  href={comparison.toolB.websiteUrl || `/${category}/${comparison.toolB.slug}`}
-                  target={comparison.toolB.websiteUrl ? '_blank' : undefined}
-                  rel={comparison.toolB.websiteUrl ? 'noopener noreferrer nofollow sponsored' : undefined}
-                  className="inline-flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-700 hover:to-purple-600 text-white rounded-xl text-sm font-bold transition-all shadow-lg shadow-purple-600/25"
-                >
-                  Try {comparison.toolB.name} ↗
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* ========== AD: MULTIPLEX BEFORE RELATED ========== */}
         <AdMultiplex />

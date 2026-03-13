@@ -1,33 +1,66 @@
 import type { MetadataRoute } from 'next';
 import { supabase } from '@/lib/supabase';
-import { SITE_URL, CATEGORY_LIST, SUBCATEGORIES, LIMITS } from '@/lib/constants';
+import { SITE_URL, CATEGORY_LIST, SUBCATEGORIES } from '@/lib/constants';
 import { getAllGlossaryTermSlugs } from '@/lib/glossary-data';
 import { getTeamMembers } from '@/lib/authors';
 
 // ============================================================
-// DYNAMIC SITEMAP GENERATION
-// Next.js automatically serves this as /sitemap.xml
-// For 50K+ pages, use generateSitemaps() to split
+// SITEMAP INDEX — splits into multiple sitemaps for 15,000+ pages
+// Next.js auto-generates /sitemap.xml as index pointing to
+// /sitemap/0.xml, /sitemap/1.xml, etc.
 // ============================================================
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+export const revalidate = 3600; // Regenerate sitemap every 1 hour
+
+const URLS_PER_SITEMAP = 5000;
+
+/**
+ * Generate sitemap IDs.
+ * Sitemap 0: static + categories + tools + blog + glossary (~2000 URLs)
+ * Sitemap 1+: comparison pages in batches of 5000
+ */
+export async function generateSitemaps() {
+  // Count total comparisons
+  const { count } = await supabase
+    .from('comparisons')
+    .select('id', { count: 'exact', head: true });
+
+  const totalComparisons = count || 0;
+  const comparisonSitemaps = Math.ceil(totalComparisons / URLS_PER_SITEMAP);
+
+  // Sitemap 0 = everything except comparisons
+  // Sitemap 1..N = comparison pages
+  return Array.from({ length: 1 + comparisonSitemaps }, (_, i) => ({ id: i }));
+}
+
+export default async function sitemap({ id }: { id: number }): Promise<MetadataRoute.Sitemap> {
+  // Sitemap 0: static pages, categories, tools, blog, glossary
+  if (id === 0) {
+    return buildCoreSitemap();
+  }
+
+  // Sitemap 1+: comparison pages in batches
+  const offset = (id - 1) * URLS_PER_SITEMAP;
+  return buildComparisonSitemap(offset, URLS_PER_SITEMAP);
+}
+
+// ============================================================
+// CORE SITEMAP (id=0): static + categories + tools + blog
+// ============================================================
+async function buildCoreSitemap(): Promise<MetadataRoute.Sitemap> {
   const entries: MetadataRoute.Sitemap = [];
-
-  // 1. Static pages — use stable dates for proper Googlebot cache signaling
   const now = new Date();
-  const weeklyDate = new Date(now.getFullYear(), now.getMonth(), now.getDate()); // today at midnight
-  const monthlyDate = new Date(now.getFullYear(), now.getMonth(), 1); // first of month
+  const weeklyDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const monthlyDate = new Date(now.getFullYear(), now.getMonth(), 1);
 
+  // 1. Static pages
   entries.push(
     { url: SITE_URL, lastModified: weeklyDate, changeFrequency: 'daily', priority: 1.0 },
     { url: `${SITE_URL}/blog`, lastModified: weeklyDate, changeFrequency: 'weekly', priority: 0.8 },
-    // /search excluded — blocked in robots.txt, no need in sitemap
     { url: `${SITE_URL}/about`, lastModified: monthlyDate, changeFrequency: 'monthly', priority: 0.4 },
     { url: `${SITE_URL}/contact`, lastModified: monthlyDate, changeFrequency: 'monthly', priority: 0.4 },
     { url: `${SITE_URL}/privacy`, lastModified: monthlyDate, changeFrequency: 'yearly', priority: 0.2 },
     { url: `${SITE_URL}/terms`, lastModified: monthlyDate, changeFrequency: 'yearly', priority: 0.2 },
-    // /sitemap-html excluded — noindexed via X-Robots-Tag, should not be in XML sitemap
-    // Calculator pages
     { url: `${SITE_URL}/calculators`, lastModified: monthlyDate, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${SITE_URL}/calculators/roi`, lastModified: monthlyDate, changeFrequency: 'monthly', priority: 0.6 },
     { url: `${SITE_URL}/calculators/email-marketing-roi`, lastModified: monthlyDate, changeFrequency: 'monthly', priority: 0.6 },
@@ -36,7 +69,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/calculators/ai-cost`, lastModified: monthlyDate, changeFrequency: 'monthly', priority: 0.6 },
     { url: `${SITE_URL}/calculators/team-productivity`, lastModified: monthlyDate, changeFrequency: 'monthly', priority: 0.6 },
     { url: `${SITE_URL}/glossary`, lastModified: monthlyDate, changeFrequency: 'monthly', priority: 0.6 },
-    // Individual glossary term pages
     ...getAllGlossaryTermSlugs().map((slug) => ({
       url: `${SITE_URL}/glossary/${slug}`,
       lastModified: monthlyDate,
@@ -53,7 +85,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.5,
     })),
     { url: `${SITE_URL}/changelog`, lastModified: weeklyDate, changeFrequency: 'weekly', priority: 0.5 },
-    // feed.xml excluded — RSS feeds are not HTML pages, auto-discovered via <link rel="alternate">
   );
 
   // 2. Category pages + comparison hub pages
@@ -90,13 +121,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   }
 
-  // 4. Tool pages
+  // 4. Tool pages (with alternatives + pricing sub-pages)
   const { data: tools } = await supabase
     .from('tools')
     .select('slug, category_slug, last_updated')
     .eq('status', 'published')
-    .order('ratings_overall', { ascending: false })
-    .limit(LIMITS.SITEMAP_MAX_URLS);
+    .order('ratings_overall', { ascending: false });
 
   if (tools) {
     for (const tool of tools) {
@@ -106,8 +136,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         changeFrequency: 'weekly',
         priority: 0.8,
       });
-
-      // Tool sub-pages
       entries.push({
         url: `${SITE_URL}/${tool.category_slug}/${tool.slug}/alternatives`,
         lastModified: new Date(tool.last_updated),
@@ -117,24 +145,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       entries.push({
         url: `${SITE_URL}/${tool.category_slug}/${tool.slug}/pricing`,
         lastModified: new Date(tool.last_updated),
-        changeFrequency: 'weekly',
-        priority: 0.7,
-      });
-    }
-  }
-
-  // 4. Comparison pages
-  const { data: comparisons } = await supabase
-    .from('comparisons')
-    .select('slug, category_slug, last_updated')
-    .order('created_at', { ascending: false })
-    .limit(LIMITS.SITEMAP_MAX_URLS);
-
-  if (comparisons) {
-    for (const comp of comparisons) {
-      entries.push({
-        url: `${SITE_URL}/${comp.category_slug}/compare/${comp.slug}`,
-        lastModified: new Date(comp.last_updated),
         changeFrequency: 'weekly',
         priority: 0.7,
       });
@@ -163,16 +173,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 }
 
 // ============================================================
-// For 50K+ pages: uncomment this to generate multiple sitemaps
+// COMPARISON SITEMAPS (id=1+): batched by 5000
 // ============================================================
-// export async function generateSitemaps() {
-//   const { count } = await supabase
-//     .from('tools')
-//     .select('id', { count: 'exact', head: true })
-//     .eq('status', 'published');
-//
-//   const totalPages = (count || 0) * 3; // tools + alternatives + pricing
-//   const sitemapCount = Math.ceil(totalPages / LIMITS.SITEMAP_MAX_URLS);
-//
-//   return Array.from({ length: sitemapCount }, (_, i) => ({ id: i }));
-// }
+async function buildComparisonSitemap(offset: number, limit: number): Promise<MetadataRoute.Sitemap> {
+  const { data: comparisons } = await supabase
+    .from('comparisons')
+    .select('slug, category_slug, last_updated')
+    .order('created_at', { ascending: false })
+    .range(offset, offset + limit - 1);
+
+  if (!comparisons) return [];
+
+  return comparisons.map((comp) => ({
+    url: `${SITE_URL}/${comp.category_slug}/compare/${comp.slug}`,
+    lastModified: new Date(comp.last_updated),
+    changeFrequency: 'weekly' as const,
+    priority: 0.7,
+  }));
+}

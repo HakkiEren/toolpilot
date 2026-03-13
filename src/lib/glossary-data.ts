@@ -3,6 +3,8 @@
 // Each term becomes an indexable page at /glossary/[slug]
 // ============================================================
 
+import { GLOSSARY_ENRICHMENTS } from './glossary-enrichments';
+
 export interface GlossaryTerm {
   term: string;
   slug: string;
@@ -15,6 +17,16 @@ export interface GlossaryTerm {
   relatedLabel?: string;
   /** Related glossary term slugs for cross-linking */
   relatedTerms?: string[];
+  /** Real-world usage scenario (2-3 sentences) */
+  practicalExample?: string;
+  /** Common mistake people make about this concept (1-2 sentences) */
+  commonMisconception?: string;
+  /** Business impact / why you should care (2-3 sentences) */
+  whyItMatters?: string;
+  /** Actionable expert tip (1-2 sentences) */
+  proTip?: string;
+  /** Quick bullet-point takeaways (3-4 items) */
+  keyTakeaways?: string[];
 }
 
 function slugify(term: string): string {
@@ -494,6 +506,18 @@ export const GLOSSARY_TERMS: GlossaryTerm[] = [
     relatedTerms: ['erp-enterprise-resource-planning', 'no-code-platform', 'workflow-automation'],
   },
 ];
+
+// Apply enrichment data (practicalExample, whyItMatters, etc.) to each term
+GLOSSARY_TERMS.forEach((term) => {
+  const enrichment = GLOSSARY_ENRICHMENTS[term.slug];
+  if (enrichment) {
+    term.practicalExample = enrichment.practicalExample;
+    term.commonMisconception = enrichment.commonMisconception;
+    term.whyItMatters = enrichment.whyItMatters;
+    term.proTip = enrichment.proTip;
+    term.keyTakeaways = enrichment.keyTakeaways;
+  }
+});
 
 /** Get a term by slug */
 export function getGlossaryTermBySlug(slug: string): GlossaryTerm | undefined {

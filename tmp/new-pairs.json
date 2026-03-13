@@ -1,0 +1,1712 @@
+[
+  {
+    "tool_a_id": "7e710219-718f-483c-9034-cddfda414766",
+    "tool_a_name": "AI21 Labs",
+    "tool_a_slug": "ai21-labs",
+    "tool_b_id": "40d11028-07e6-4a51-9eef-998173b81bfb",
+    "tool_b_name": "DeepSeek",
+    "tool_b_slug": "deepseek",
+    "category_slug": "ai-tools"
+  },
+  {
+    "tool_a_id": "e286fe3a-46f6-4e77-8dbc-0bf4cd27bd96",
+    "tool_a_name": "Beautiful.ai",
+    "tool_a_slug": "beautiful-ai",
+    "tool_b_id": "40d11028-07e6-4a51-9eef-998173b81bfb",
+    "tool_b_name": "DeepSeek",
+    "tool_b_slug": "deepseek",
+    "category_slug": "ai-tools"
+  },
+  {
+    "tool_a_id": "2b65f538-75ac-4c0f-9b0a-d296addfae0b",
+    "tool_a_name": "Bolt.new",
+    "tool_a_slug": "bolt-new",
+    "tool_b_id": "932c1542-ce0d-44e7-a5d8-3a15be8e2723",
+    "tool_b_name": "Midjourney",
+    "tool_b_slug": "midjourney",
+    "category_slug": "ai-tools"
+  },
+  {
+    "tool_a_id": "2a152b0c-dcd7-401a-8af7-982881fb312f",
+    "tool_a_name": "Character.AI",
+    "tool_a_slug": "character-ai",
+    "tool_b_id": "845aa29b-bfb2-4eb1-9b42-b2a7b3bef1de",
+    "tool_b_name": "ChatGPT",
+    "tool_b_slug": "chatgpt",
+    "category_slug": "ai-tools"
+  },
+  {
+    "tool_a_id": "b8a85da7-7f6d-4265-98c1-fda7705b80ed",
+    "tool_a_name": "Cline",
+    "tool_a_slug": "cline",
+    "tool_b_id": "845aa29b-bfb2-4eb1-9b42-b2a7b3bef1de",
+    "tool_b_name": "ChatGPT",
+    "tool_b_slug": "chatgpt",
+    "category_slug": "ai-tools"
+  },
+  {
+    "tool_a_id": "f049732a-2613-45c4-aafb-a8787dd33d34",
+    "tool_a_name": "Codeium",
+    "tool_a_slug": "codeium",
+    "tool_b_id": "845aa29b-bfb2-4eb1-9b42-b2a7b3bef1de",
+    "tool_b_name": "ChatGPT",
+    "tool_b_slug": "chatgpt",
+    "category_slug": "ai-tools"
+  },
+  {
+    "tool_a_id": "b5f6bd6e-85c7-46d4-984c-07cc58e12eed",
+    "tool_a_name": "Gamma",
+    "tool_a_slug": "gamma",
+    "tool_b_id": "a19f0b77-a1d1-422e-8bca-d4bef8014ba3",
+    "tool_b_name": "Google Gemini",
+    "tool_b_slug": "gemini",
+    "category_slug": "ai-tools"
+  },
+  {
+    "tool_a_id": "feffeb0c-fc17-4585-8b3c-141f7f908317",
+    "tool_a_name": "Google Veo",
+    "tool_a_slug": "google-veo",
+    "tool_b_id": "a19f0b77-a1d1-422e-8bca-d4bef8014ba3",
+    "tool_b_name": "Google Gemini",
+    "tool_b_slug": "gemini",
+    "category_slug": "ai-tools"
+  },
+  {
+    "tool_a_id": "f95bd34f-4a17-40da-b456-dd61d328025b",
+    "tool_a_name": "Granola",
+    "tool_a_slug": "granola-ai",
+    "tool_b_id": "a19f0b77-a1d1-422e-8bca-d4bef8014ba3",
+    "tool_b_name": "Google Gemini",
+    "tool_b_slug": "gemini",
+    "category_slug": "ai-tools"
+  },
+  {
+    "tool_a_id": "9fd63d5e-dcae-4347-822e-d7aae8b775cc",
+    "tool_a_name": "Groq",
+    "tool_a_slug": "groq",
+    "tool_b_id": "40d11028-07e6-4a51-9eef-998173b81bfb",
+    "tool_b_name": "DeepSeek",
+    "tool_b_slug": "deepseek",
+    "category_slug": "ai-tools"
+  },
+  {
+    "tool_a_id": "c2c71b61-3df4-42dc-8242-0b26e36612c1",
+    "tool_a_name": "Hugging Face",
+    "tool_a_slug": "hugging-face",
+    "tool_b_id": "6031ec0b-15de-47b5-8bb8-f8e3c283571f",
+    "tool_b_name": "Claude",
+    "tool_b_slug": "claude",
+    "category_slug": "ai-tools"
+  },
+  {
+    "tool_a_id": "cd30eb21-7ac9-4b3b-b6ad-f168b2b9e4e1",
+    "tool_a_name": "Ideogram",
+    "tool_a_slug": "ideogram",
+    "tool_b_id": "6031ec0b-15de-47b5-8bb8-f8e3c283571f",
+    "tool_b_name": "Claude",
+    "tool_b_slug": "claude",
+    "category_slug": "ai-tools"
+  },
+  {
+    "tool_a_id": "7d833533-7cad-45d5-a1d3-66834978acc3",
+    "tool_a_name": "InVideo AI",
+    "tool_a_slug": "invideo-ai",
+    "tool_b_id": "6031ec0b-15de-47b5-8bb8-f8e3c283571f",
+    "tool_b_name": "Claude",
+    "tool_b_slug": "claude",
+    "category_slug": "ai-tools"
+  },
+  {
+    "tool_a_id": "cf3e9625-5d0b-4acd-917f-7af63fc7e260",
+    "tool_a_name": "Krea AI",
+    "tool_a_slug": "krea-ai",
+    "tool_b_id": "932c1542-ce0d-44e7-a5d8-3a15be8e2723",
+    "tool_b_name": "Midjourney",
+    "tool_b_slug": "midjourney",
+    "category_slug": "ai-tools"
+  },
+  {
+    "tool_a_id": "377ce113-6659-4896-b57f-ec6bd19824fb",
+    "tool_a_name": "LangChain",
+    "tool_a_slug": "langchain",
+    "tool_b_id": "8fa3a67b-273f-4b50-b9b1-2b553dfe0db2",
+    "tool_b_name": "Descript",
+    "tool_b_slug": "descript",
+    "category_slug": "ai-tools"
+  },
+  {
+    "tool_a_id": "d4e74b14-9751-483c-9612-25e408a4b617",
+    "tool_a_name": "Lovable",
+    "tool_a_slug": "lovable",
+    "tool_b_id": "932c1542-ce0d-44e7-a5d8-3a15be8e2723",
+    "tool_b_name": "Midjourney",
+    "tool_b_slug": "midjourney",
+    "category_slug": "ai-tools"
+  },
+  {
+    "tool_a_id": "4c66551d-4f42-47d1-bed8-56153372e7c2",
+    "tool_a_name": "Mem",
+    "tool_a_slug": "mem-ai",
+    "tool_b_id": "d56b329b-e882-4110-829a-69b0b1d5a685",
+    "tool_b_name": "GitHub Copilot",
+    "tool_b_slug": "github-copilot",
+    "category_slug": "ai-tools"
+  },
+  {
+    "tool_a_id": "950257ee-c2dd-4930-8f0e-da77f4cdb4a3",
+    "tool_a_name": "Meta Llama",
+    "tool_a_slug": "meta-llama",
+    "tool_b_id": "d56b329b-e882-4110-829a-69b0b1d5a685",
+    "tool_b_name": "GitHub Copilot",
+    "tool_b_slug": "github-copilot",
+    "category_slug": "ai-tools"
+  },
+  {
+    "tool_a_id": "60dfbd48-ddb4-4df0-af38-1f2884d1653b",
+    "tool_a_name": "Murf AI",
+    "tool_a_slug": "murf-ai",
+    "tool_b_id": "d56b329b-e882-4110-829a-69b0b1d5a685",
+    "tool_b_name": "GitHub Copilot",
+    "tool_b_slug": "github-copilot",
+    "category_slug": "ai-tools"
+  },
+  {
+    "tool_a_id": "d3f18b52-c642-4791-b276-d0a039ef71d3",
+    "tool_a_name": "Napkin AI",
+    "tool_a_slug": "napkin-ai",
+    "tool_b_id": "359c4b83-b846-4669-b868-680992546c79",
+    "tool_b_name": "Cursor",
+    "tool_b_slug": "cursor",
+    "category_slug": "ai-tools"
+  },
+  {
+    "tool_a_id": "b57b8419-83d4-467a-b601-492043eb8ec9",
+    "tool_a_name": "NotebookLM",
+    "tool_a_slug": "notebook-lm",
+    "tool_b_id": "359c4b83-b846-4669-b868-680992546c79",
+    "tool_b_name": "Cursor",
+    "tool_b_slug": "cursor",
+    "category_slug": "ai-tools"
+  },
+  {
+    "tool_a_id": "bea8c75d-8ff7-4931-bbb7-2201280bedf9",
+    "tool_a_name": "OpenAI Sora",
+    "tool_a_slug": "openai-sora",
+    "tool_b_id": "8fa3a67b-273f-4b50-b9b1-2b553dfe0db2",
+    "tool_b_name": "Descript",
+    "tool_b_slug": "descript",
+    "category_slug": "ai-tools"
+  },
+  {
+    "tool_a_id": "22a18c0f-0192-4e07-9f10-fb9ad73dd6f3",
+    "tool_a_name": "Perplexity API",
+    "tool_a_slug": "perplexity-api",
+    "tool_b_id": "8fa3a67b-273f-4b50-b9b1-2b553dfe0db2",
+    "tool_b_name": "Descript",
+    "tool_b_slug": "descript",
+    "category_slug": "ai-tools"
+  },
+  {
+    "tool_a_id": "198a9feb-450d-4dc0-a726-ca2b6aad0518",
+    "tool_a_name": "Perplexity Pro",
+    "tool_a_slug": "perplexity-pro",
+    "tool_b_id": "fc95f708-c0f3-4138-a460-6b8dba876bfe",
+    "tool_b_name": "Synthesia",
+    "tool_b_slug": "synthesia",
+    "category_slug": "ai-tools"
+  },
+  {
+    "tool_a_id": "6a9fec0b-60aa-4347-b05b-9c7fd2155591",
+    "tool_a_name": "Perplexity Spaces",
+    "tool_a_slug": "perplexity-spaces",
+    "tool_b_id": "fa87f8d6-f021-4b36-8e64-efa9fc123e53",
+    "tool_b_name": "Jasper",
+    "tool_b_slug": "jasper",
+    "category_slug": "ai-tools"
+  },
+  {
+    "tool_a_id": "1f857ef5-de1d-4b58-a8d9-3691046f1772",
+    "tool_a_name": "PhotoRoom",
+    "tool_a_slug": "photoroom",
+    "tool_b_id": "359c4b83-b846-4669-b868-680992546c79",
+    "tool_b_name": "Cursor",
+    "tool_b_slug": "cursor",
+    "category_slug": "ai-tools"
+  },
+  {
+    "tool_a_id": "c622191c-04a0-4406-8206-bb6ee6202db6",
+    "tool_a_name": "Pieces for Developers",
+    "tool_a_slug": "pieces-for-developers",
+    "tool_b_id": "fa87f8d6-f021-4b36-8e64-efa9fc123e53",
+    "tool_b_name": "Jasper",
+    "tool_b_slug": "jasper",
+    "category_slug": "ai-tools"
+  },
+  {
+    "tool_a_id": "c7f21760-c2f9-4c2a-af8c-ea02f0b18a01",
+    "tool_a_name": "Pixlr",
+    "tool_a_slug": "pixlr",
+    "tool_b_id": "fa87f8d6-f021-4b36-8e64-efa9fc123e53",
+    "tool_b_name": "Jasper",
+    "tool_b_slug": "jasper",
+    "category_slug": "ai-tools"
+  },
+  {
+    "tool_a_id": "af3b42cd-52c8-47c9-85db-a7d9a4613bcb",
+    "tool_a_name": "Podcastle",
+    "tool_a_slug": "podcastle",
+    "tool_b_id": "83986a62-3ed5-4ad1-95c0-490ae1cebb7f",
+    "tool_b_name": "Perplexity AI",
+    "tool_b_slug": "perplexity",
+    "category_slug": "ai-tools"
+  },
+  {
+    "tool_a_id": "894f87c7-16ca-4718-b7dd-7b60fb64443f",
+    "tool_a_name": "Recraft AI",
+    "tool_a_slug": "recraft-ai",
+    "tool_b_id": "83986a62-3ed5-4ad1-95c0-490ae1cebb7f",
+    "tool_b_name": "Perplexity AI",
+    "tool_b_slug": "perplexity",
+    "category_slug": "ai-tools"
+  },
+  {
+    "tool_a_id": "5c4d5ea6-2487-4edb-b1e1-5239dfcf096c",
+    "tool_a_name": "Replicate",
+    "tool_a_slug": "replicate",
+    "tool_b_id": "7d743b30-64f3-45db-b672-97fbb70ba69b",
+    "tool_b_name": "Claude Code",
+    "tool_b_slug": "claude-code",
+    "category_slug": "ai-tools"
+  },
+  {
+    "tool_a_id": "a909e33a-03a0-4cb3-8a6e-1d8057805a56",
+    "tool_a_name": "Replit AI",
+    "tool_a_slug": "replit-ai",
+    "tool_b_id": "83986a62-3ed5-4ad1-95c0-490ae1cebb7f",
+    "tool_b_name": "Perplexity AI",
+    "tool_b_slug": "perplexity",
+    "category_slug": "ai-tools"
+  },
+  {
+    "tool_a_id": "fed67cd2-7c12-4730-b408-deed7ea71dec",
+    "tool_a_name": "Stability AI",
+    "tool_a_slug": "stability-ai",
+    "tool_b_id": "c8eeac12-bf21-4e02-8cc8-e3c4c734c56e",
+    "tool_b_name": "DALL-E 3",
+    "tool_b_slug": "dall-e",
+    "category_slug": "ai-tools"
+  },
+  {
+    "tool_a_id": "edad640b-fe18-4dfc-bdf9-8787a2e37392",
+    "tool_a_name": "tldraw",
+    "tool_a_slug": "tldraw",
+    "tool_b_id": "7d743b30-64f3-45db-b672-97fbb70ba69b",
+    "tool_b_name": "Claude Code",
+    "tool_b_slug": "claude-code",
+    "category_slug": "ai-tools"
+  },
+  {
+    "tool_a_id": "645b3a84-c797-4233-b98b-1e3b9d832e62",
+    "tool_a_name": "Together AI",
+    "tool_a_slug": "together-ai",
+    "tool_b_id": "7d743b30-64f3-45db-b672-97fbb70ba69b",
+    "tool_b_name": "Claude Code",
+    "tool_b_slug": "claude-code",
+    "category_slug": "ai-tools"
+  },
+  {
+    "tool_a_id": "052a38c9-6256-4238-bcce-4c82acd29ded",
+    "tool_a_name": "Tome",
+    "tool_a_slug": "tome",
+    "tool_b_id": "c8eeac12-bf21-4e02-8cc8-e3c4c734c56e",
+    "tool_b_name": "DALL-E 3",
+    "tool_b_slug": "dall-e",
+    "category_slug": "ai-tools"
+  },
+  {
+    "tool_a_id": "07e9852d-80ea-4153-9b9e-278b7ba1f2d7",
+    "tool_a_name": "Udio",
+    "tool_a_slug": "udio",
+    "tool_b_id": "c8eeac12-bf21-4e02-8cc8-e3c4c734c56e",
+    "tool_b_name": "DALL-E 3",
+    "tool_b_slug": "dall-e",
+    "category_slug": "ai-tools"
+  },
+  {
+    "tool_a_id": "5682b1c2-36c3-4b9a-9c60-d238796152bb",
+    "tool_a_name": "v0 by Vercel",
+    "tool_a_slug": "v0",
+    "tool_b_id": "35ea13f5-31a8-411a-b198-bf3706e85f9d",
+    "tool_b_name": "Stable Diffusion",
+    "tool_b_slug": "stable-diffusion",
+    "category_slug": "ai-tools"
+  },
+  {
+    "tool_a_id": "2b3dd8ba-9792-4365-b438-b2fd8a125d55",
+    "tool_a_name": "Weights & Biases",
+    "tool_a_slug": "weights-and-biases",
+    "tool_b_id": "fc95f708-c0f3-4138-a460-6b8dba876bfe",
+    "tool_b_name": "Synthesia",
+    "tool_b_slug": "synthesia",
+    "category_slug": "ai-tools"
+  },
+  {
+    "tool_a_id": "d8f71c2e-0864-43e3-997f-0ed1eb126d56",
+    "tool_a_name": "Brex",
+    "tool_a_slug": "brex",
+    "tool_b_id": "d57d4572-2cde-4cb9-84e8-6bc160d4fae1",
+    "tool_b_name": "Xero",
+    "tool_b_slug": "xero",
+    "category_slug": "business"
+  },
+  {
+    "tool_a_id": "502e1f8a-04dd-4617-a742-86a058442e5b",
+    "tool_a_name": "Claap",
+    "tool_a_slug": "claap",
+    "tool_b_id": "d57d4572-2cde-4cb9-84e8-6bc160d4fae1",
+    "tool_b_name": "Xero",
+    "tool_b_slug": "xero",
+    "category_slug": "business"
+  },
+  {
+    "tool_a_id": "d0e57c31-e53b-4829-bdc0-c7e6acb65d6d",
+    "tool_a_name": "Clio",
+    "tool_a_slug": "clio",
+    "tool_b_id": "f047e05f-a01d-4c2c-8cd3-f6e160a038dd",
+    "tool_b_name": "Airtable",
+    "tool_b_slug": "airtable",
+    "category_slug": "business"
+  },
+  {
+    "tool_a_id": "47dbf260-fce0-4d6c-914b-c76df86e45ea",
+    "tool_a_name": "Clockwise",
+    "tool_a_slug": "clockwise",
+    "tool_b_id": "d57d4572-2cde-4cb9-84e8-6bc160d4fae1",
+    "tool_b_name": "Xero",
+    "tool_b_slug": "xero",
+    "category_slug": "business"
+  },
+  {
+    "tool_a_id": "fdec4e54-f672-484c-bcc7-6b041128131f",
+    "tool_a_name": "Craft",
+    "tool_a_slug": "craft-docs",
+    "tool_b_id": "3822d129-07d7-4d5c-912d-cfdf0acde2b0",
+    "tool_b_name": "QuickBooks",
+    "tool_b_slug": "quickbooks",
+    "category_slug": "business"
+  },
+  {
+    "tool_a_id": "c27de6da-00ea-4725-9581-90b79a711934",
+    "tool_a_name": "Fathom",
+    "tool_a_slug": "fathom-video",
+    "tool_b_id": "3822d129-07d7-4d5c-912d-cfdf0acde2b0",
+    "tool_b_name": "QuickBooks",
+    "tool_b_slug": "quickbooks",
+    "category_slug": "business"
+  },
+  {
+    "tool_a_id": "45e4a988-58ec-4c1b-ad56-9d2c0822d458",
+    "tool_a_name": "Fellow",
+    "tool_a_slug": "fellow",
+    "tool_b_id": "3822d129-07d7-4d5c-912d-cfdf0acde2b0",
+    "tool_b_name": "QuickBooks",
+    "tool_b_slug": "quickbooks",
+    "category_slug": "business"
+  },
+  {
+    "tool_a_id": "0f5ad729-6e5e-40d7-9434-b9366f3191a7",
+    "tool_a_name": "Grammarly Business",
+    "tool_a_slug": "grammarly-business",
+    "tool_b_id": "f047e05f-a01d-4c2c-8cd3-f6e160a038dd",
+    "tool_b_name": "Airtable",
+    "tool_b_slug": "airtable",
+    "category_slug": "business"
+  },
+  {
+    "tool_a_id": "d76a5624-f716-4f3f-a018-572cee06e546",
+    "tool_a_name": "Keeper Security",
+    "tool_a_slug": "keeper-security",
+    "tool_b_id": "082725c7-8b45-4c39-9682-fe504df42325",
+    "tool_b_name": "1Password",
+    "tool_b_slug": "1password",
+    "category_slug": "business"
+  },
+  {
+    "tool_a_id": "872a13e3-b596-4455-9141-ae1d83ae4bd6",
+    "tool_a_name": "Krisp",
+    "tool_a_slug": "krisp",
+    "tool_b_id": "082725c7-8b45-4c39-9682-fe504df42325",
+    "tool_b_name": "1Password",
+    "tool_b_slug": "1password",
+    "category_slug": "business"
+  },
+  {
+    "tool_a_id": "8fe2212e-e30e-4413-89ad-9d59af50328d",
+    "tool_a_name": "LegalZoom",
+    "tool_a_slug": "legalzoom",
+    "tool_b_id": "f047e05f-a01d-4c2c-8cd3-f6e160a038dd",
+    "tool_b_name": "Airtable",
+    "tool_b_slug": "airtable",
+    "category_slug": "business"
+  },
+  {
+    "tool_a_id": "b2f8f0e5-16e6-4c89-994e-0915c31df593",
+    "tool_a_name": "Lucidchart",
+    "tool_a_slug": "lucidchart",
+    "tool_b_id": "082725c7-8b45-4c39-9682-fe504df42325",
+    "tool_b_name": "1Password",
+    "tool_b_slug": "1password",
+    "category_slug": "business"
+  },
+  {
+    "tool_a_id": "7d2af318-65ae-47e1-8ea3-80bb03c5475e",
+    "tool_a_name": "Mercury",
+    "tool_a_slug": "mercury",
+    "tool_b_id": "db76d087-e3d8-4306-ae2a-326e66d0b5cb",
+    "tool_b_name": "BambooHR",
+    "tool_b_slug": "bamboohr",
+    "category_slug": "business"
+  },
+  {
+    "tool_a_id": "de2fd578-bc88-4254-9710-c9019eddf707",
+    "tool_a_name": "Mixmax",
+    "tool_a_slug": "mixmax",
+    "tool_b_id": "9be1086c-17b3-4171-8acb-17ad3d680845",
+    "tool_b_name": "FreshBooks",
+    "tool_b_slug": "freshbooks",
+    "category_slug": "business"
+  },
+  {
+    "tool_a_id": "c1f9e10b-0347-45ef-8188-ff7bcb92a826",
+    "tool_a_name": "Mural",
+    "tool_a_slug": "mural",
+    "tool_b_id": "9be1086c-17b3-4171-8acb-17ad3d680845",
+    "tool_b_name": "FreshBooks",
+    "tool_b_slug": "freshbooks",
+    "category_slug": "business"
+  },
+  {
+    "tool_a_id": "ef40b3ee-b137-4c99-ace4-f249ce5297f9",
+    "tool_a_name": "Notion Calendar",
+    "tool_a_slug": "notion-calendar",
+    "tool_b_id": "607d5343-a17f-4c02-af7d-1faba0cc6c0d",
+    "tool_b_name": "Zapier",
+    "tool_b_slug": "zapier",
+    "category_slug": "business"
+  },
+  {
+    "tool_a_id": "1fbec0da-1098-4fe4-8cb3-61b05168679b",
+    "tool_a_name": "Oyster HR",
+    "tool_a_slug": "oyster-hr",
+    "tool_b_id": "607d5343-a17f-4c02-af7d-1faba0cc6c0d",
+    "tool_b_name": "Zapier",
+    "tool_b_slug": "zapier",
+    "category_slug": "business"
+  },
+  {
+    "tool_a_id": "e79150f7-867e-42fb-9ef6-6aeb57c4b3d3",
+    "tool_a_name": "Pitch",
+    "tool_a_slug": "pitch",
+    "tool_b_id": "9be1086c-17b3-4171-8acb-17ad3d680845",
+    "tool_b_name": "FreshBooks",
+    "tool_b_slug": "freshbooks",
+    "category_slug": "business"
+  },
+  {
+    "tool_a_id": "80928a1d-4721-410d-8fde-83add756ac78",
+    "tool_a_name": "Raycast",
+    "tool_a_slug": "raycast",
+    "tool_b_id": "db76d087-e3d8-4306-ae2a-326e66d0b5cb",
+    "tool_b_name": "BambooHR",
+    "tool_b_slug": "bamboohr",
+    "category_slug": "business"
+  },
+  {
+    "tool_a_id": "b5c7ba34-0d82-4700-b7d6-c80b86bfcdd3",
+    "tool_a_name": "Rocket Lawyer",
+    "tool_a_slug": "rocket-lawyer",
+    "tool_b_id": "db76d087-e3d8-4306-ae2a-326e66d0b5cb",
+    "tool_b_name": "BambooHR",
+    "tool_b_slug": "bamboohr",
+    "category_slug": "business"
+  },
+  {
+    "tool_a_id": "2c2a79b3-5df3-4748-88fd-406c13baf1b2",
+    "tool_a_name": "Scribe",
+    "tool_a_slug": "scribe",
+    "tool_b_id": "3c3420de-b274-41a4-a4ba-719ff6167ffc",
+    "tool_b_name": "Gusto",
+    "tool_b_slug": "gusto",
+    "category_slug": "business"
+  },
+  {
+    "tool_a_id": "803b684b-3d0c-478b-ada8-5d58aa7de135",
+    "tool_a_name": "Slite",
+    "tool_a_slug": "slite",
+    "tool_b_id": "3c3420de-b274-41a4-a4ba-719ff6167ffc",
+    "tool_b_name": "Gusto",
+    "tool_b_slug": "gusto",
+    "category_slug": "business"
+  },
+  {
+    "tool_a_id": "425eff8d-5d8a-4a7d-8b00-280c2533345f",
+    "tool_a_name": "Stripe Atlas",
+    "tool_a_slug": "stripe-atlas",
+    "tool_b_id": "607d5343-a17f-4c02-af7d-1faba0cc6c0d",
+    "tool_b_name": "Zapier",
+    "tool_b_slug": "zapier",
+    "category_slug": "business"
+  },
+  {
+    "tool_a_id": "5bf54e8f-d8fc-4474-9b8e-708d52de25e3",
+    "tool_a_name": "Sunsama",
+    "tool_a_slug": "sunsama",
+    "tool_b_id": "e339f26d-82ab-4342-afb5-9e96e5abc61c",
+    "tool_b_name": "Miro",
+    "tool_b_slug": "miro",
+    "category_slug": "business"
+  },
+  {
+    "tool_a_id": "26aa8bf7-d180-4458-96a9-efacd16e58c6",
+    "tool_a_name": "Tango",
+    "tool_a_slug": "tango",
+    "tool_b_id": "3c3420de-b274-41a4-a4ba-719ff6167ffc",
+    "tool_b_name": "Gusto",
+    "tool_b_slug": "gusto",
+    "category_slug": "business"
+  },
+  {
+    "tool_a_id": "bcf488cb-b7b5-4c9f-904c-328cea5f29b6",
+    "tool_a_name": "Taskade",
+    "tool_a_slug": "taskade",
+    "tool_b_id": "db2c5af0-979a-4df5-a2d1-b186fa9f05f7",
+    "tool_b_name": "NordVPN",
+    "tool_b_slug": "nordvpn",
+    "category_slug": "business"
+  },
+  {
+    "tool_a_id": "2819fc23-69fe-4e56-bfb8-155008505a49",
+    "tool_a_name": "Whimsical",
+    "tool_a_slug": "whimsical",
+    "tool_b_id": "db2c5af0-979a-4df5-a2d1-b186fa9f05f7",
+    "tool_b_name": "NordVPN",
+    "tool_b_slug": "nordvpn",
+    "category_slug": "business"
+  },
+  {
+    "tool_a_id": "7c45a7e7-d281-4b21-b166-c6c86b7a5027",
+    "tool_a_name": "Adyen",
+    "tool_a_slug": "adyen",
+    "tool_b_id": "9c6cf6f9-d8cc-4fc8-9b60-ac1728557f44",
+    "tool_b_name": "Shopify",
+    "tool_b_slug": "shopify",
+    "category_slug": "ecommerce"
+  },
+  {
+    "tool_a_id": "f211a49c-6def-4588-b1d5-ae00845071ef",
+    "tool_a_name": "AfterShip",
+    "tool_a_slug": "aftership",
+    "tool_b_id": "9c6cf6f9-d8cc-4fc8-9b60-ac1728557f44",
+    "tool_b_name": "Shopify",
+    "tool_b_slug": "shopify",
+    "category_slug": "ecommerce"
+  },
+  {
+    "tool_a_id": "11c01d32-59fc-4336-8721-1b5e4f82c26a",
+    "tool_a_name": "Bold Commerce",
+    "tool_a_slug": "bold-commerce",
+    "tool_b_id": "9c6cf6f9-d8cc-4fc8-9b60-ac1728557f44",
+    "tool_b_name": "Shopify",
+    "tool_b_slug": "shopify",
+    "category_slug": "ecommerce"
+  },
+  {
+    "tool_a_id": "02e31b1b-aae2-4f47-9ed7-9a981a105dce",
+    "tool_a_name": "CartFlows",
+    "tool_a_slug": "cartflows",
+    "tool_b_id": "0dcdebe0-c0e7-4178-9afe-e426271f39fe",
+    "tool_b_name": "WooCommerce",
+    "tool_b_slug": "woocommerce",
+    "category_slug": "ecommerce"
+  },
+  {
+    "tool_a_id": "04f8a2b0-0835-4b30-a729-942b97199c7d",
+    "tool_a_name": "Commercetools",
+    "tool_a_slug": "commercetools",
+    "tool_b_id": "96da8db8-c478-497f-a4c2-e589b23e92cf",
+    "tool_b_name": "Stripe",
+    "tool_b_slug": "stripe",
+    "category_slug": "ecommerce"
+  },
+  {
+    "tool_a_id": "6a63cbda-9dde-42ab-987f-cb197e216ed0",
+    "tool_a_name": "Faire",
+    "tool_a_slug": "faire",
+    "tool_b_id": "0dcdebe0-c0e7-4178-9afe-e426271f39fe",
+    "tool_b_name": "WooCommerce",
+    "tool_b_slug": "woocommerce",
+    "category_slug": "ecommerce"
+  },
+  {
+    "tool_a_id": "151dac2c-deae-424b-a84f-847a4a4c9080",
+    "tool_a_name": "Fourthwall",
+    "tool_a_slug": "fourthwall",
+    "tool_b_id": "0dcdebe0-c0e7-4178-9afe-e426271f39fe",
+    "tool_b_name": "WooCommerce",
+    "tool_b_slug": "woocommerce",
+    "category_slug": "ecommerce"
+  },
+  {
+    "tool_a_id": "011b0266-b50a-411d-9629-005caa879bfa",
+    "tool_a_name": "Gorgias",
+    "tool_a_slug": "gorgias",
+    "tool_b_id": "96da8db8-c478-497f-a4c2-e589b23e92cf",
+    "tool_b_name": "Stripe",
+    "tool_b_slug": "stripe",
+    "category_slug": "ecommerce"
+  },
+  {
+    "tool_a_id": "22778c19-a23a-4ac9-9567-551d67db1880",
+    "tool_a_name": "Helium 10",
+    "tool_a_slug": "helium-10",
+    "tool_b_id": "103beadd-1963-40d2-8c0b-6b9a0dc14874",
+    "tool_b_name": "Squarespace",
+    "tool_b_slug": "squarespace",
+    "category_slug": "ecommerce"
+  },
+  {
+    "tool_a_id": "1fd9e752-f211-409a-9a47-74b197792e28",
+    "tool_a_name": "Junip",
+    "tool_a_slug": "junip",
+    "tool_b_id": "103beadd-1963-40d2-8c0b-6b9a0dc14874",
+    "tool_b_name": "Squarespace",
+    "tool_b_slug": "squarespace",
+    "category_slug": "ecommerce"
+  },
+  {
+    "tool_a_id": "c69fbd55-ae7e-4c0c-ae8f-5fe00bfd61fc",
+    "tool_a_name": "Loop Returns",
+    "tool_a_slug": "loop-returns",
+    "tool_b_id": "96da8db8-c478-497f-a4c2-e589b23e92cf",
+    "tool_b_name": "Stripe",
+    "tool_b_slug": "stripe",
+    "category_slug": "ecommerce"
+  },
+  {
+    "tool_a_id": "467fa190-9134-4370-a859-049f2c4dbca1",
+    "tool_a_name": "Metorik",
+    "tool_a_slug": "metorik",
+    "tool_b_id": "224ea8f6-6b93-4e85-979f-f0bb7992f929",
+    "tool_b_name": "Magento",
+    "tool_b_slug": "magento",
+    "category_slug": "ecommerce"
+  },
+  {
+    "tool_a_id": "4e97925a-3fa0-4b5f-b618-8e7c629d41d6",
+    "tool_a_name": "OpenCart",
+    "tool_a_slug": "opencart",
+    "tool_b_id": "103beadd-1963-40d2-8c0b-6b9a0dc14874",
+    "tool_b_name": "Squarespace",
+    "tool_b_slug": "squarespace",
+    "category_slug": "ecommerce"
+  },
+  {
+    "tool_a_id": "4a1b2f1c-5a5c-463b-98c4-5af9e82bb635",
+    "tool_a_name": "Ordoro",
+    "tool_a_slug": "ordoro",
+    "tool_b_id": "9c6cf6f9-d8cc-4fc8-9b60-ac1728557f44",
+    "tool_b_name": "Shopify",
+    "tool_b_slug": "shopify",
+    "category_slug": "ecommerce"
+  },
+  {
+    "tool_a_id": "c4b00d7e-2491-4d1f-9382-43c771b101e4",
+    "tool_a_name": "Printful",
+    "tool_a_slug": "printful",
+    "tool_b_id": "9853e4cc-3048-42af-92f4-953f24e516b6",
+    "tool_b_name": "BigCommerce",
+    "tool_b_slug": "bigcommerce",
+    "category_slug": "ecommerce"
+  },
+  {
+    "tool_a_id": "db98e16f-aabd-4b10-a0b1-10967ff621ed",
+    "tool_a_name": "Rebuy",
+    "tool_a_slug": "rebuy",
+    "tool_b_id": "9853e4cc-3048-42af-92f4-953f24e516b6",
+    "tool_b_name": "BigCommerce",
+    "tool_b_slug": "bigcommerce",
+    "category_slug": "ecommerce"
+  },
+  {
+    "tool_a_id": "f5f0b956-5eb4-4c71-8091-95a120ed94a9",
+    "tool_a_name": "Recharge",
+    "tool_a_slug": "recharge",
+    "tool_b_id": "224ea8f6-6b93-4e85-979f-f0bb7992f929",
+    "tool_b_name": "Magento",
+    "tool_b_slug": "magento",
+    "category_slug": "ecommerce"
+  },
+  {
+    "tool_a_id": "77006869-2ee7-4ed1-8fe2-9f1862ad4f8d",
+    "tool_a_name": "ReturnGO",
+    "tool_a_slug": "returngo",
+    "tool_b_id": "224ea8f6-6b93-4e85-979f-f0bb7992f929",
+    "tool_b_name": "Magento",
+    "tool_b_slug": "magento",
+    "category_slug": "ecommerce"
+  },
+  {
+    "tool_a_id": "6717125b-d3bc-44f0-b229-b7ce2ee5e308",
+    "tool_a_name": "Saleor",
+    "tool_a_slug": "saleor",
+    "tool_b_id": "9853e4cc-3048-42af-92f4-953f24e516b6",
+    "tool_b_name": "BigCommerce",
+    "tool_b_slug": "bigcommerce",
+    "category_slug": "ecommerce"
+  },
+  {
+    "tool_a_id": "510fe43a-0815-455c-9352-fc368e3d3a41",
+    "tool_a_name": "Shogun",
+    "tool_a_slug": "shogun",
+    "tool_b_id": "fc357542-196a-4c4e-8834-d7368ff7f9bd",
+    "tool_b_name": "Wix",
+    "tool_b_slug": "wix",
+    "category_slug": "ecommerce"
+  },
+  {
+    "tool_a_id": "09412696-54c7-42b6-81d4-00f099e089c8",
+    "tool_a_name": "Shopify Markets",
+    "tool_a_slug": "shopify-markets",
+    "tool_b_id": "fc357542-196a-4c4e-8834-d7368ff7f9bd",
+    "tool_b_name": "Wix",
+    "tool_b_slug": "wix",
+    "category_slug": "ecommerce"
+  },
+  {
+    "tool_a_id": "8166172d-bd61-43f5-b580-afa50efeb972",
+    "tool_a_name": "Shopify Plus",
+    "tool_a_slug": "shopify-plus",
+    "tool_b_id": "133d1b74-ced3-4f6e-a8c0-d5d83c970ddc",
+    "tool_b_name": "Podia",
+    "tool_b_slug": "podia",
+    "category_slug": "ecommerce"
+  },
+  {
+    "tool_a_id": "dd330c7b-0072-46d8-a999-9825d8b039b3",
+    "tool_a_name": "Shopify POS",
+    "tool_a_slug": "shopify-pos",
+    "tool_b_id": "133d1b74-ced3-4f6e-a8c0-d5d83c970ddc",
+    "tool_b_name": "Podia",
+    "tool_b_slug": "podia",
+    "category_slug": "ecommerce"
+  },
+  {
+    "tool_a_id": "9bea9141-cf94-4447-bd95-4c45dd05f462",
+    "tool_a_name": "Snipcart",
+    "tool_a_slug": "snipcart",
+    "tool_b_id": "8fa0b73a-69fb-4c23-bee2-131c22ad60e3",
+    "tool_b_name": "Gumroad",
+    "tool_b_slug": "gumroad",
+    "category_slug": "ecommerce"
+  },
+  {
+    "tool_a_id": "4adcf6df-0b03-41b5-8cee-2da1118aa0b1",
+    "tool_a_name": "Stamped.io",
+    "tool_a_slug": "stamped-io",
+    "tool_b_id": "1e1e1981-aa87-4291-b5a0-ede6dd0b3e78",
+    "tool_b_name": "ShipStation",
+    "tool_b_slug": "shipstation",
+    "category_slug": "ecommerce"
+  },
+  {
+    "tool_a_id": "d7d0203d-cde3-455d-aeb5-f353de907175",
+    "tool_a_name": "Swell",
+    "tool_a_slug": "swell-commerce",
+    "tool_b_id": "133d1b74-ced3-4f6e-a8c0-d5d83c970ddc",
+    "tool_b_name": "Podia",
+    "tool_b_slug": "podia",
+    "category_slug": "ecommerce"
+  },
+  {
+    "tool_a_id": "ecef0468-1f42-4206-b3f9-5257e288c924",
+    "tool_a_name": "Yotpo",
+    "tool_a_slug": "yotpo",
+    "tool_b_id": "1e1e1981-aa87-4291-b5a0-ede6dd0b3e78",
+    "tool_b_name": "ShipStation",
+    "tool_b_slug": "shipstation",
+    "category_slug": "ecommerce"
+  },
+  {
+    "tool_a_id": "bac5c8dd-eb15-4e1c-a31d-2beec7aee4ad",
+    "tool_a_name": "Zettle by PayPal",
+    "tool_a_slug": "zettle",
+    "tool_b_id": "1e1e1981-aa87-4291-b5a0-ede6dd0b3e78",
+    "tool_b_name": "ShipStation",
+    "tool_b_slug": "shipstation",
+    "category_slug": "ecommerce"
+  },
+  {
+    "tool_a_id": "5605b907-23b7-46b7-bc22-55877f5d439b",
+    "tool_a_name": "10Web",
+    "tool_a_slug": "10web",
+    "tool_b_id": "ad6e5a47-1d02-460e-a687-de77b0ff6f2a",
+    "tool_b_name": "SiteGround",
+    "tool_b_slug": "siteground",
+    "category_slug": "hosting"
+  },
+  {
+    "tool_a_id": "fa269728-c246-48a6-9322-f1c47dd03950",
+    "tool_a_name": "CapRover",
+    "tool_a_slug": "caprover",
+    "tool_b_id": "ad6e5a47-1d02-460e-a687-de77b0ff6f2a",
+    "tool_b_name": "SiteGround",
+    "tool_b_slug": "siteground",
+    "category_slug": "hosting"
+  },
+  {
+    "tool_a_id": "ad97b4b6-2ae4-4d04-b269-eec18a3629a6",
+    "tool_a_name": "ChemiCloud",
+    "tool_a_slug": "chemicloud",
+    "tool_b_id": "056fb015-934b-4d3c-a1e9-e3e373b78330",
+    "tool_b_name": "AWS",
+    "tool_b_slug": "aws",
+    "category_slug": "hosting"
+  },
+  {
+    "tool_a_id": "b4337f7b-d5fb-4730-adc6-4dad6431ed93",
+    "tool_a_name": "Closte",
+    "tool_a_slug": "closte",
+    "tool_b_id": "ad6e5a47-1d02-460e-a687-de77b0ff6f2a",
+    "tool_b_name": "SiteGround",
+    "tool_b_slug": "siteground",
+    "category_slug": "hosting"
+  },
+  {
+    "tool_a_id": "626f94cb-a119-4f0a-9961-2d3a2971ddfc",
+    "tool_a_name": "Cloudflare CDN",
+    "tool_a_slug": "cloudflare-cdn",
+    "tool_b_id": "894a6e72-58db-4552-b115-2db7223041ee",
+    "tool_b_name": "Cloudflare",
+    "tool_b_slug": "cloudflare",
+    "category_slug": "hosting"
+  },
+  {
+    "tool_a_id": "0a500535-d4c3-44b4-9f58-830d54001c95",
+    "tool_a_name": "Cloudflare Workers",
+    "tool_a_slug": "cloudflare-workers",
+    "tool_b_id": "894a6e72-58db-4552-b115-2db7223041ee",
+    "tool_b_name": "Cloudflare",
+    "tool_b_slug": "cloudflare",
+    "category_slug": "hosting"
+  },
+  {
+    "tool_a_id": "602c09cb-88b8-4949-807f-02e96eb19c6b",
+    "tool_a_name": "Coolify",
+    "tool_a_slug": "coolify",
+    "tool_b_id": "894a6e72-58db-4552-b115-2db7223041ee",
+    "tool_b_name": "Cloudflare",
+    "tool_b_slug": "cloudflare",
+    "category_slug": "hosting"
+  },
+  {
+    "tool_a_id": "36b6edf7-6c3a-47d5-a234-181779278791",
+    "tool_a_name": "Deno Deploy",
+    "tool_a_slug": "deno-deploy",
+    "tool_b_id": "3419178a-750e-49e5-b6af-b7d93216d74e",
+    "tool_b_name": "DigitalOcean",
+    "tool_b_slug": "digitalocean",
+    "category_slug": "hosting"
+  },
+  {
+    "tool_a_id": "5851d1b9-3e9e-4886-8fdc-be53b8c2f102",
+    "tool_a_name": "Devrims",
+    "tool_a_slug": "devrims",
+    "tool_b_id": "056fb015-934b-4d3c-a1e9-e3e373b78330",
+    "tool_b_name": "AWS",
+    "tool_b_slug": "aws",
+    "category_slug": "hosting"
+  },
+  {
+    "tool_a_id": "9d8a2159-e9cc-4bdd-8c51-8e06507d599b",
+    "tool_a_name": "Dokku",
+    "tool_a_slug": "dokku",
+    "tool_b_id": "3419178a-750e-49e5-b6af-b7d93216d74e",
+    "tool_b_name": "DigitalOcean",
+    "tool_b_slug": "digitalocean",
+    "category_slug": "hosting"
+  },
+  {
+    "tool_a_id": "b09201ce-2b4f-4e2f-b8c4-9b2fed5accb3",
+    "tool_a_name": "Fastly",
+    "tool_a_slug": "fastly",
+    "tool_b_id": "3419178a-750e-49e5-b6af-b7d93216d74e",
+    "tool_b_name": "DigitalOcean",
+    "tool_b_slug": "digitalocean",
+    "category_slug": "hosting"
+  },
+  {
+    "tool_a_id": "05fd9f3d-ec4c-4631-bd92-44831e664b49",
+    "tool_a_name": "Google Domains",
+    "tool_a_slug": "google-domains",
+    "tool_b_id": "056fb015-934b-4d3c-a1e9-e3e373b78330",
+    "tool_b_name": "AWS",
+    "tool_b_slug": "aws",
+    "category_slug": "hosting"
+  },
+  {
+    "tool_a_id": "0e395542-100a-466f-9a3c-a209980fc596",
+    "tool_a_name": "HostISO",
+    "tool_a_slug": "hostiso",
+    "tool_b_id": "fed5114a-41af-451d-953c-cc0d1f9a9de2",
+    "tool_b_name": "Netlify",
+    "tool_b_slug": "netlify",
+    "category_slug": "hosting"
+  },
+  {
+    "tool_a_id": "ed4ba92d-3f4d-45cd-a1a2-223fe7ceb116",
+    "tool_a_name": "Hostinger VPS",
+    "tool_a_slug": "hostinger-vps",
+    "tool_b_id": "fed5114a-41af-451d-953c-cc0d1f9a9de2",
+    "tool_b_name": "Netlify",
+    "tool_b_slug": "netlify",
+    "category_slug": "hosting"
+  },
+  {
+    "tool_a_id": "6b73060c-6747-4c35-abce-7cc208e2fc8f",
+    "tool_a_name": "InterServer",
+    "tool_a_slug": "interserver",
+    "tool_b_id": "fed5114a-41af-451d-953c-cc0d1f9a9de2",
+    "tool_b_name": "Netlify",
+    "tool_b_slug": "netlify",
+    "category_slug": "hosting"
+  },
+  {
+    "tool_a_id": "bac527c7-a76a-46dd-a63f-5451ac0e954c",
+    "tool_a_name": "Kamatera",
+    "tool_a_slug": "kamatera",
+    "tool_b_id": "2edd382b-800f-4419-abca-a390c0ed8d06",
+    "tool_b_name": "Vercel",
+    "tool_b_slug": "vercel",
+    "category_slug": "hosting"
+  },
+  {
+    "tool_a_id": "abc9a99c-df88-408e-8ce8-10d906e52afc",
+    "tool_a_name": "Liquid Web",
+    "tool_a_slug": "liquid-web",
+    "tool_b_id": "818e6833-23b0-47d2-84c9-31a61d9f0467",
+    "tool_b_name": "Render",
+    "tool_b_slug": "render",
+    "category_slug": "hosting"
+  },
+  {
+    "tool_a_id": "b57f12ca-d2b0-42bd-ad3b-6f14058d01bf",
+    "tool_a_name": "Microsoft Azure",
+    "tool_a_slug": "azure",
+    "tool_b_id": "2edd382b-800f-4419-abca-a390c0ed8d06",
+    "tool_b_name": "Vercel",
+    "tool_b_slug": "vercel",
+    "category_slug": "hosting"
+  },
+  {
+    "tool_a_id": "a04828a3-fa8e-4c60-8196-fbece340232d",
+    "tool_a_name": "Nexcess",
+    "tool_a_slug": "nexcess",
+    "tool_b_id": "818e6833-23b0-47d2-84c9-31a61d9f0467",
+    "tool_b_name": "Render",
+    "tool_b_slug": "render",
+    "category_slug": "hosting"
+  },
+  {
+    "tool_a_id": "16b0bbad-bb7d-4683-91d3-6c8a5af7606d",
+    "tool_a_name": "Pagely",
+    "tool_a_slug": "pagely",
+    "tool_b_id": "818e6833-23b0-47d2-84c9-31a61d9f0467",
+    "tool_b_name": "Render",
+    "tool_b_slug": "render",
+    "category_slug": "hosting"
+  },
+  {
+    "tool_a_id": "e6325df0-c3d2-47fb-8aef-fd75e43f2b1e",
+    "tool_a_name": "Pantheon",
+    "tool_a_slug": "pantheon",
+    "tool_b_id": "2edd382b-800f-4419-abca-a390c0ed8d06",
+    "tool_b_name": "Vercel",
+    "tool_b_slug": "vercel",
+    "category_slug": "hosting"
+  },
+  {
+    "tool_a_id": "5cb42a9a-34e4-4bca-b844-10240ae2ea04",
+    "tool_a_name": "Platform.sh",
+    "tool_a_slug": "platform-sh",
+    "tool_b_id": "992426b2-cba0-4c98-8885-6dccf86da252",
+    "tool_b_name": "Cloudways",
+    "tool_b_slug": "cloudways",
+    "category_slug": "hosting"
+  },
+  {
+    "tool_a_id": "bec8cbb7-5077-4d56-943b-892bf257f5d9",
+    "tool_a_name": "Porkbun",
+    "tool_a_slug": "porkbun",
+    "tool_b_id": "c1a0529d-dac2-4112-8ef1-1efb6abc0006",
+    "tool_b_name": "Fly.io",
+    "tool_b_slug": "fly-io",
+    "category_slug": "hosting"
+  },
+  {
+    "tool_a_id": "eb7e02bd-2e37-4dfe-a1eb-8b7e3c360a77",
+    "tool_a_name": "Pressidium",
+    "tool_a_slug": "pressidium",
+    "tool_b_id": "197c6586-2a95-4509-8903-608c92b46f74",
+    "tool_b_name": "Railway",
+    "tool_b_slug": "railway",
+    "category_slug": "hosting"
+  },
+  {
+    "tool_a_id": "ed760e1e-7538-4629-808b-19a232c1eed4",
+    "tool_a_name": "RunCloud",
+    "tool_a_slug": "runcloud",
+    "tool_b_id": "197c6586-2a95-4509-8903-608c92b46f74",
+    "tool_b_name": "Railway",
+    "tool_b_slug": "railway",
+    "category_slug": "hosting"
+  },
+  {
+    "tool_a_id": "46d98b58-2097-4f80-aa84-610951c8a9b9",
+    "tool_a_name": "SpinupWP",
+    "tool_a_slug": "spinupwp",
+    "tool_b_id": "197c6586-2a95-4509-8903-608c92b46f74",
+    "tool_b_name": "Railway",
+    "tool_b_slug": "railway",
+    "category_slug": "hosting"
+  },
+  {
+    "tool_a_id": "c4bd4423-8646-4d20-9438-1dc265640fab",
+    "tool_a_name": "SST",
+    "tool_a_slug": "sst",
+    "tool_b_id": "992426b2-cba0-4c98-8885-6dccf86da252",
+    "tool_b_name": "Cloudways",
+    "tool_b_slug": "cloudways",
+    "category_slug": "hosting"
+  },
+  {
+    "tool_a_id": "4905df53-5956-4d9e-a5db-6042e718cb19",
+    "tool_a_name": "TMD Hosting",
+    "tool_a_slug": "tmd-hosting",
+    "tool_b_id": "c1a0529d-dac2-4112-8ef1-1efb6abc0006",
+    "tool_b_name": "Fly.io",
+    "tool_b_slug": "fly-io",
+    "category_slug": "hosting"
+  },
+  {
+    "tool_a_id": "fda29378-fae2-4fc1-90c8-4a500dfc10d2",
+    "tool_a_name": "Turso",
+    "tool_a_slug": "turso",
+    "tool_b_id": "992426b2-cba0-4c98-8885-6dccf86da252",
+    "tool_b_name": "Cloudways",
+    "tool_b_slug": "cloudways",
+    "category_slug": "hosting"
+  },
+  {
+    "tool_a_id": "46af75a7-dc3a-4c3b-a4d2-c01fb179ebd3",
+    "tool_a_name": "Upstash",
+    "tool_a_slug": "upstash",
+    "tool_b_id": "db9893f1-d824-498e-8d1f-b5408d72dc16",
+    "tool_b_name": "Kinsta",
+    "tool_b_slug": "kinsta",
+    "category_slug": "hosting"
+  },
+  {
+    "tool_a_id": "c69d7807-588f-48cc-a3c1-0e47c37f3d10",
+    "tool_a_name": "WPX Hosting",
+    "tool_a_slug": "wpx-hosting",
+    "tool_b_id": "c1a0529d-dac2-4112-8ef1-1efb6abc0006",
+    "tool_b_name": "Fly.io",
+    "tool_b_slug": "fly-io",
+    "category_slug": "hosting"
+  },
+  {
+    "tool_a_id": "d23069eb-9271-44dd-9294-311195f123b7",
+    "tool_a_name": "Amplitude",
+    "tool_a_slug": "amplitude",
+    "tool_b_id": "91726ff0-6f8b-4cdd-8703-90622bbfec3a",
+    "tool_b_name": "Ahrefs",
+    "tool_b_slug": "ahrefs",
+    "category_slug": "marketing"
+  },
+  {
+    "tool_a_id": "7c9c0c27-8eb3-488d-83bd-8887b666976a",
+    "tool_a_name": "Apollo.io",
+    "tool_a_slug": "apollo-io",
+    "tool_b_id": "91726ff0-6f8b-4cdd-8703-90622bbfec3a",
+    "tool_b_name": "Ahrefs",
+    "tool_b_slug": "ahrefs",
+    "category_slug": "marketing"
+  },
+  {
+    "tool_a_id": "18187ee8-ceaf-4d34-901e-57757001fdec",
+    "tool_a_name": "beehiiv",
+    "tool_a_slug": "beehiiv",
+    "tool_b_id": "91726ff0-6f8b-4cdd-8703-90622bbfec3a",
+    "tool_b_name": "Ahrefs",
+    "tool_b_slug": "ahrefs",
+    "category_slug": "marketing"
+  },
+  {
+    "tool_a_id": "f69ba44f-b8a6-4212-ad52-6fe29a504e26",
+    "tool_a_name": "Benchmark Email",
+    "tool_a_slug": "benchmark-email",
+    "tool_b_id": "d0f1f75d-65c6-46f3-a663-eddc55f1c9cc",
+    "tool_b_name": "Semrush",
+    "tool_b_slug": "semrush",
+    "category_slug": "marketing"
+  },
+  {
+    "tool_a_id": "3c3104bf-cff7-474a-8164-f0950961d70c",
+    "tool_a_name": "Campaign Monitor",
+    "tool_a_slug": "campaign-monitor",
+    "tool_b_id": "7fbdaa42-8bb4-40a5-8f03-192e5e1c948c",
+    "tool_b_name": "ConvertKit",
+    "tool_b_slug": "convertkit",
+    "category_slug": "marketing"
+  },
+  {
+    "tool_a_id": "c08c743d-20ed-4962-8ef8-eb66d956bf75",
+    "tool_a_name": "Clay",
+    "tool_a_slug": "clay",
+    "tool_b_id": "7cccbab9-550d-48e7-b04a-c39abd4c9de8",
+    "tool_b_name": "Mailchimp",
+    "tool_b_slug": "mailchimp",
+    "category_slug": "marketing"
+  },
+  {
+    "tool_a_id": "49166fb3-05b3-4783-8952-9ce19c09bfa3",
+    "tool_a_name": "Customer.io",
+    "tool_a_slug": "customer-io",
+    "tool_b_id": "7fbdaa42-8bb4-40a5-8f03-192e5e1c948c",
+    "tool_b_name": "ConvertKit",
+    "tool_b_slug": "convertkit",
+    "category_slug": "marketing"
+  },
+  {
+    "tool_a_id": "0fabe0ce-2d6f-4b5b-8873-526a881586ff",
+    "tool_a_name": "Customer.io Data Pipelines",
+    "tool_a_slug": "customer-io-data-pipelines",
+    "tool_b_id": "7cccbab9-550d-48e7-b04a-c39abd4c9de8",
+    "tool_b_name": "Mailchimp",
+    "tool_b_slug": "mailchimp",
+    "category_slug": "marketing"
+  },
+  {
+    "tool_a_id": "bcbaea50-0d99-4d56-a356-749d9c145391",
+    "tool_a_name": "Customer.io Journeys",
+    "tool_a_slug": "customer-io-journeys",
+    "tool_b_id": "7fbdaa42-8bb4-40a5-8f03-192e5e1c948c",
+    "tool_b_name": "ConvertKit",
+    "tool_b_slug": "convertkit",
+    "category_slug": "marketing"
+  },
+  {
+    "tool_a_id": "0e068040-0914-4dba-adc9-f7398e807015",
+    "tool_a_name": "Frase",
+    "tool_a_slug": "frase",
+    "tool_b_id": "7cccbab9-550d-48e7-b04a-c39abd4c9de8",
+    "tool_b_name": "Mailchimp",
+    "tool_b_slug": "mailchimp",
+    "category_slug": "marketing"
+  },
+  {
+    "tool_a_id": "8aedc56e-5698-4fef-9e7b-3ba861dcda50",
+    "tool_a_name": "Instantly",
+    "tool_a_slug": "instantly",
+    "tool_b_id": "36e9baba-9cb0-49f6-b1e3-852cdd6ad234",
+    "tool_b_name": "Klaviyo",
+    "tool_b_slug": "klaviyo",
+    "category_slug": "marketing"
+  },
+  {
+    "tool_a_id": "a6cf0db2-7e6c-4eab-bc9f-38d727e14485",
+    "tool_a_name": "Kit (ConvertKit)",
+    "tool_a_slug": "kit",
+    "tool_b_id": "d0f1f75d-65c6-46f3-a663-eddc55f1c9cc",
+    "tool_b_name": "Semrush",
+    "tool_b_slug": "semrush",
+    "category_slug": "marketing"
+  },
+  {
+    "tool_a_id": "d7f4d09a-8ca3-4636-b6f7-a2e579c31942",
+    "tool_a_name": "Lemlist",
+    "tool_a_slug": "lemlist",
+    "tool_b_id": "36e9baba-9cb0-49f6-b1e3-852cdd6ad234",
+    "tool_b_name": "Klaviyo",
+    "tool_b_slug": "klaviyo",
+    "category_slug": "marketing"
+  },
+  {
+    "tool_a_id": "7ca261e8-164e-4e0c-a330-6ea0e653073f",
+    "tool_a_name": "LinkedIn Ads",
+    "tool_a_slug": "linkedin-ads",
+    "tool_b_id": "36e9baba-9cb0-49f6-b1e3-852cdd6ad234",
+    "tool_b_name": "Klaviyo",
+    "tool_b_slug": "klaviyo",
+    "category_slug": "marketing"
+  },
+  {
+    "tool_a_id": "230a811e-62d9-44fb-863e-3b7f69c98536",
+    "tool_a_name": "Marketo",
+    "tool_a_slug": "marketo",
+    "tool_b_id": "0687d64f-90f3-4ea8-8264-7db0d2e95073",
+    "tool_b_name": "Buffer",
+    "tool_b_slug": "buffer",
+    "category_slug": "marketing"
+  },
+  {
+    "tool_a_id": "b51c8893-c14c-434a-8930-03f4da4f8f74",
+    "tool_a_name": "Matomo",
+    "tool_a_slug": "matomo",
+    "tool_b_id": "d0f1f75d-65c6-46f3-a663-eddc55f1c9cc",
+    "tool_b_name": "Semrush",
+    "tool_b_slug": "semrush",
+    "category_slug": "marketing"
+  },
+  {
+    "tool_a_id": "7452f760-bffd-4965-9fe9-28c71a2b62ea",
+    "tool_a_name": "Moosend",
+    "tool_a_slug": "moosend",
+    "tool_b_id": "0687d64f-90f3-4ea8-8264-7db0d2e95073",
+    "tool_b_name": "Buffer",
+    "tool_b_slug": "buffer",
+    "category_slug": "marketing"
+  },
+  {
+    "tool_a_id": "3786ac9d-bc46-4b4c-b544-1728c0d177c9",
+    "tool_a_name": "Notion Sites",
+    "tool_a_slug": "notion-sites-marketing",
+    "tool_b_id": "0687d64f-90f3-4ea8-8264-7db0d2e95073",
+    "tool_b_name": "Buffer",
+    "tool_b_slug": "buffer",
+    "category_slug": "marketing"
+  },
+  {
+    "tool_a_id": "d9726df5-ec54-4a2f-ab2f-a5438df69826",
+    "tool_a_name": "Pardot",
+    "tool_a_slug": "pardot",
+    "tool_b_id": "37ccf794-375e-4f94-a1b2-e93617586ac9",
+    "tool_b_name": "Moz",
+    "tool_b_slug": "moz",
+    "category_slug": "marketing"
+  },
+  {
+    "tool_a_id": "d1a13928-1fe2-4735-9fd6-d278b40374fb",
+    "tool_a_name": "PhantomBuster",
+    "tool_a_slug": "phantom-buster",
+    "tool_b_id": "75207822-56ad-4316-a180-88f38142470c",
+    "tool_b_name": "ActiveCampaign",
+    "tool_b_slug": "activecampaign",
+    "category_slug": "marketing"
+  },
+  {
+    "tool_a_id": "a23f70ae-993c-4605-95c0-72f76a2105eb",
+    "tool_a_name": "SE Ranking",
+    "tool_a_slug": "se-ranking",
+    "tool_b_id": "37ccf794-375e-4f94-a1b2-e93617586ac9",
+    "tool_b_name": "Moz",
+    "tool_b_slug": "moz",
+    "category_slug": "marketing"
+  },
+  {
+    "tool_a_id": "76beac20-a91e-48c4-9a06-850aa7fb2b69",
+    "tool_a_name": "Segment",
+    "tool_a_slug": "segment",
+    "tool_b_id": "75207822-56ad-4316-a180-88f38142470c",
+    "tool_b_name": "ActiveCampaign",
+    "tool_b_slug": "activecampaign",
+    "category_slug": "marketing"
+  },
+  {
+    "tool_a_id": "afd7054c-14f8-4883-9886-9e9da3b3ca37",
+    "tool_a_name": "Sprig",
+    "tool_a_slug": "sprig",
+    "tool_b_id": "75207822-56ad-4316-a180-88f38142470c",
+    "tool_b_name": "ActiveCampaign",
+    "tool_b_slug": "activecampaign",
+    "category_slug": "marketing"
+  },
+  {
+    "tool_a_id": "7b6f5b90-b8d8-463e-ae8b-831d2574217b",
+    "tool_a_name": "Swipe Pages",
+    "tool_a_slug": "swipe-pages",
+    "tool_b_id": "37ccf794-375e-4f94-a1b2-e93617586ac9",
+    "tool_b_name": "Moz",
+    "tool_b_slug": "moz",
+    "category_slug": "marketing"
+  },
+  {
+    "tool_a_id": "633fa562-6f37-4f27-ad4f-7580140cfa99",
+    "tool_a_name": "TikTok Ads",
+    "tool_a_slug": "tiktok-ads",
+    "tool_b_id": "30536e80-b735-4a80-9ebc-ba4d937158e1",
+    "tool_b_name": "Later",
+    "tool_b_slug": "later",
+    "category_slug": "marketing"
+  },
+  {
+    "tool_a_id": "c9db8ec9-6a17-4014-b7cd-e64974aa2bc3",
+    "tool_a_name": "Triple Whale",
+    "tool_a_slug": "triple-whale-analytics",
+    "tool_b_id": "30536e80-b735-4a80-9ebc-ba4d937158e1",
+    "tool_b_name": "Later",
+    "tool_b_slug": "later",
+    "category_slug": "marketing"
+  },
+  {
+    "tool_a_id": "5329e9e3-4412-43e9-a3b5-7cd077fb9f89",
+    "tool_a_name": "Typefully",
+    "tool_a_slug": "typefully",
+    "tool_b_id": "91726ff0-6f8b-4cdd-8703-90622bbfec3a",
+    "tool_b_name": "Ahrefs",
+    "tool_b_slug": "ahrefs",
+    "category_slug": "marketing"
+  },
+  {
+    "tool_a_id": "a4fb2dac-c378-46d5-9757-e830bbfd19e8",
+    "tool_a_name": "Webflow",
+    "tool_a_slug": "webflow",
+    "tool_b_id": "2722e310-b8ee-41fc-8e59-524352c276be",
+    "tool_b_name": "Sprout Social",
+    "tool_b_slug": "sprout-social",
+    "category_slug": "marketing"
+  },
+  {
+    "tool_a_id": "b42055bb-4e7d-4c3a-b56b-b91abd3def59",
+    "tool_a_name": "Attio",
+    "tool_a_slug": "attio",
+    "tool_b_id": "6d04268e-771b-4cdc-9f58-2435aea65021",
+    "tool_b_name": "HubSpot",
+    "tool_b_slug": "hubspot",
+    "category_slug": "saas"
+  },
+  {
+    "tool_a_id": "95fb0d42-19b5-4f29-be5c-4985c2c9c1ce",
+    "tool_a_name": "Bitrix24",
+    "tool_a_slug": "bitrix24",
+    "tool_b_id": "6d04268e-771b-4cdc-9f58-2435aea65021",
+    "tool_b_name": "HubSpot",
+    "tool_b_slug": "hubspot",
+    "category_slug": "saas"
+  },
+  {
+    "tool_a_id": "8ca7c958-cabd-49fb-9b88-d886bf33114b",
+    "tool_a_name": "Chatwoot",
+    "tool_a_slug": "chatwoot",
+    "tool_b_id": "6d04268e-771b-4cdc-9f58-2435aea65021",
+    "tool_b_name": "HubSpot",
+    "tool_b_slug": "hubspot",
+    "category_slug": "saas"
+  },
+  {
+    "tool_a_id": "d26c69f2-2ff6-461f-80ef-a683ed87d773",
+    "tool_a_name": "ConnectWise",
+    "tool_a_slug": "connectwise",
+    "tool_b_id": "594a1e53-a0b5-48dd-9f89-03f246ac28fc",
+    "tool_b_name": "Notion",
+    "tool_b_slug": "notion-database",
+    "category_slug": "saas"
+  },
+  {
+    "tool_a_id": "70fe34d5-6bc0-415c-8789-fe635b3e3f41",
+    "tool_a_name": "DocuWare",
+    "tool_a_slug": "docuware",
+    "tool_b_id": "594a1e53-a0b5-48dd-9f89-03f246ac28fc",
+    "tool_b_name": "Notion",
+    "tool_b_slug": "notion-database",
+    "category_slug": "saas"
+  },
+  {
+    "tool_a_id": "c2071e76-8909-4711-996e-56fc897cf04a",
+    "tool_a_name": "Dropbox Business",
+    "tool_a_slug": "dropbox-business",
+    "tool_b_id": "594a1e53-a0b5-48dd-9f89-03f246ac28fc",
+    "tool_b_name": "Notion",
+    "tool_b_slug": "notion-database",
+    "category_slug": "saas"
+  },
+  {
+    "tool_a_id": "605d588c-cf36-4de8-8902-cc4a719ff326",
+    "tool_a_name": "Dub",
+    "tool_a_slug": "dub",
+    "tool_b_id": "35c935ad-300a-47af-b094-1ae9ff868bfb",
+    "tool_b_name": "Salesforce",
+    "tool_b_slug": "salesforce",
+    "category_slug": "saas"
+  },
+  {
+    "tool_a_id": "fc1342eb-a4a3-4f82-a419-7783a148df75",
+    "tool_a_name": "Erxes",
+    "tool_a_slug": "erxes",
+    "tool_b_id": "35c935ad-300a-47af-b094-1ae9ff868bfb",
+    "tool_b_name": "Salesforce",
+    "tool_b_slug": "salesforce",
+    "category_slug": "saas"
+  },
+  {
+    "tool_a_id": "217379af-6517-4a91-a846-6627d540facf",
+    "tool_a_name": "Fibery",
+    "tool_a_slug": "fibery",
+    "tool_b_id": "35c935ad-300a-47af-b094-1ae9ff868bfb",
+    "tool_b_name": "Salesforce",
+    "tool_b_slug": "salesforce",
+    "category_slug": "saas"
+  },
+  {
+    "tool_a_id": "a65e150e-c83a-4338-a5ad-12543f130884",
+    "tool_a_name": "Forecast",
+    "tool_a_slug": "forecast-app",
+    "tool_b_id": "4caf3dc1-22e5-44dd-8490-5f380bd8cf93",
+    "tool_b_name": "Asana",
+    "tool_b_slug": "asana",
+    "category_slug": "saas"
+  },
+  {
+    "tool_a_id": "451ddbe7-db28-47bf-8528-0af0830e3a37",
+    "tool_a_name": "Freshchat",
+    "tool_a_slug": "freshchat",
+    "tool_b_id": "1b6f1157-b15c-4999-a67b-3f0d9f2b7fa1",
+    "tool_b_name": "Pipedrive",
+    "tool_b_slug": "pipedrive",
+    "category_slug": "saas"
+  },
+  {
+    "tool_a_id": "70573711-34d1-486f-a1cd-2d94dc714c51",
+    "tool_a_name": "Front",
+    "tool_a_slug": "front",
+    "tool_b_id": "4caf3dc1-22e5-44dd-8490-5f380bd8cf93",
+    "tool_b_name": "Asana",
+    "tool_b_slug": "asana",
+    "category_slug": "saas"
+  },
+  {
+    "tool_a_id": "09c6bb9d-e932-4d38-b15b-25cd1a90f031",
+    "tool_a_name": "Gather",
+    "tool_a_slug": "gather",
+    "tool_b_id": "1b6f1157-b15c-4999-a67b-3f0d9f2b7fa1",
+    "tool_b_name": "Pipedrive",
+    "tool_b_slug": "pipedrive",
+    "category_slug": "saas"
+  },
+  {
+    "tool_a_id": "1b6e9754-8a69-4cd3-9030-5f2e1c408dc8",
+    "tool_a_name": "Height",
+    "tool_a_slug": "height",
+    "tool_b_id": "1b6f1157-b15c-4999-a67b-3f0d9f2b7fa1",
+    "tool_b_name": "Pipedrive",
+    "tool_b_slug": "pipedrive",
+    "category_slug": "saas"
+  },
+  {
+    "tool_a_id": "22de3b39-9b98-42a2-bde8-c7b662c761e9",
+    "tool_a_name": "Help Scout",
+    "tool_a_slug": "help-scout",
+    "tool_b_id": "4caf3dc1-22e5-44dd-8490-5f380bd8cf93",
+    "tool_b_name": "Asana",
+    "tool_b_slug": "asana",
+    "category_slug": "saas"
+  },
+  {
+    "tool_a_id": "1980abe0-5dc4-4a42-b94a-9b9e9f33c5e3",
+    "tool_a_name": "Hive",
+    "tool_a_slug": "hive",
+    "tool_b_id": "fc163e4f-a196-4f66-8a32-f343742c4e84",
+    "tool_b_name": "Google Workspace",
+    "tool_b_slug": "google-workspace",
+    "category_slug": "saas"
+  },
+  {
+    "tool_a_id": "8c919aed-7bda-423b-91be-730455d312fd",
+    "tool_a_name": "Huly",
+    "tool_a_slug": "huly-platform",
+    "tool_b_id": "fc163e4f-a196-4f66-8a32-f343742c4e84",
+    "tool_b_name": "Google Workspace",
+    "tool_b_slug": "google-workspace",
+    "category_slug": "saas"
+  },
+  {
+    "tool_a_id": "d0fd6ea6-22b4-47ce-8b80-184084eece59",
+    "tool_a_name": "Kantata",
+    "tool_a_slug": "kantata",
+    "tool_b_id": "199d41e5-b220-4001-9230-0bce313e7ec8",
+    "tool_b_name": "Monday.com",
+    "tool_b_slug": "monday",
+    "category_slug": "saas"
+  },
+  {
+    "tool_a_id": "c3f1ca4f-57f3-4028-ba1a-5704d3814b63",
+    "tool_a_name": "Missive",
+    "tool_a_slug": "missive",
+    "tool_b_id": "fc163e4f-a196-4f66-8a32-f343742c4e84",
+    "tool_b_name": "Google Workspace",
+    "tool_b_slug": "google-workspace",
+    "category_slug": "saas"
+  },
+  {
+    "tool_a_id": "4b6a900e-2692-470a-8b6a-140912087be5",
+    "tool_a_name": "Notion Projects",
+    "tool_a_slug": "notion-projects",
+    "tool_b_id": "199d41e5-b220-4001-9230-0bce313e7ec8",
+    "tool_b_name": "Monday.com",
+    "tool_b_slug": "monday",
+    "category_slug": "saas"
+  },
+  {
+    "tool_a_id": "c802a38f-28b0-42e8-b121-6b6bdda46b93",
+    "tool_a_name": "Odoo",
+    "tool_a_slug": "odoo",
+    "tool_b_id": "199d41e5-b220-4001-9230-0bce313e7ec8",
+    "tool_b_name": "Monday.com",
+    "tool_b_slug": "monday",
+    "category_slug": "saas"
+  },
+  {
+    "tool_a_id": "bd76b4a0-1735-46b1-a2e9-6b1c415e0766",
+    "tool_a_name": "Outline",
+    "tool_a_slug": "outline-wiki",
+    "tool_b_id": "1f696f5b-7cf2-4079-ba8b-1d62fa429e7f",
+    "tool_b_name": "Zoom",
+    "tool_b_slug": "zoom",
+    "category_slug": "saas"
+  },
+  {
+    "tool_a_id": "99437f7e-4145-40d3-95ec-279dbbaaeb0b",
+    "tool_a_name": "PagerDuty",
+    "tool_a_slug": "pagerduty",
+    "tool_b_id": "1f696f5b-7cf2-4079-ba8b-1d62fa429e7f",
+    "tool_b_name": "Zoom",
+    "tool_b_slug": "zoom",
+    "category_slug": "saas"
+  },
+  {
+    "tool_a_id": "68388e7d-0dd0-4b1d-8e77-1cfbcfa2d836",
+    "tool_a_name": "Plane",
+    "tool_a_slug": "plane",
+    "tool_b_id": "1f696f5b-7cf2-4079-ba8b-1d62fa429e7f",
+    "tool_b_name": "Zoom",
+    "tool_b_slug": "zoom",
+    "category_slug": "saas"
+  },
+  {
+    "tool_a_id": "8aa187a2-b0b4-4ab0-a2a3-0bdec918d09d",
+    "tool_a_name": "Podio",
+    "tool_a_slug": "podio",
+    "tool_b_id": "24afe03b-5499-4bfb-913d-f226786df68d",
+    "tool_b_name": "Slack",
+    "tool_b_slug": "slack",
+    "category_slug": "saas"
+  },
+  {
+    "tool_a_id": "8c3b799c-7a29-44a4-853e-d6d6be9fe223",
+    "tool_a_name": "Productive",
+    "tool_a_slug": "productive-io",
+    "tool_b_id": "c25cbd1a-16d5-4465-8e59-88cd8ab615ae",
+    "tool_b_name": "ClickUp",
+    "tool_b_slug": "clickup",
+    "category_slug": "saas"
+  },
+  {
+    "tool_a_id": "ae0ad254-2f1a-4ad1-a85c-cf20a2cfa8dc",
+    "tool_a_name": "Retool Workflows",
+    "tool_a_slug": "retool-workflows",
+    "tool_b_id": "24afe03b-5499-4bfb-913d-f226786df68d",
+    "tool_b_name": "Slack",
+    "tool_b_slug": "slack",
+    "category_slug": "saas"
+  },
+  {
+    "tool_a_id": "857be10d-cb0e-4099-bf02-184a20290d87",
+    "tool_a_name": "SAP Business One",
+    "tool_a_slug": "sap-business-one",
+    "tool_b_id": "c25cbd1a-16d5-4465-8e59-88cd8ab615ae",
+    "tool_b_name": "ClickUp",
+    "tool_b_slug": "clickup",
+    "category_slug": "saas"
+  },
+  {
+    "tool_a_id": "9b5f4d20-7eaa-4c3b-a6f2-a96eb1cbf0ac",
+    "tool_a_name": "Scoro",
+    "tool_a_slug": "scoro",
+    "tool_b_id": "c25cbd1a-16d5-4465-8e59-88cd8ab615ae",
+    "tool_b_name": "ClickUp",
+    "tool_b_slug": "clickup",
+    "category_slug": "saas"
+  },
+  {
+    "tool_a_id": "3a5bf722-541b-4b1d-89d8-589a906be3ac",
+    "tool_a_name": "tawk.to",
+    "tool_a_slug": "tawk-to",
+    "tool_b_id": "24afe03b-5499-4bfb-913d-f226786df68d",
+    "tool_b_name": "Slack",
+    "tool_b_slug": "slack",
+    "category_slug": "saas"
+  },
+  {
+    "tool_a_id": "4eda9c67-eead-49be-9df7-192420a97616",
+    "tool_a_name": "Teamleader",
+    "tool_a_slug": "teamleader",
+    "tool_b_id": "bf8a6132-e69c-489e-b70b-d1e4312c9ee2",
+    "tool_b_name": "Jira",
+    "tool_b_slug": "jira",
+    "category_slug": "saas"
+  },
+  {
+    "tool_a_id": "a4125374-8c98-4ead-8179-c2517b54cb0a",
+    "tool_a_name": "Twenty CRM",
+    "tool_a_slug": "twenty-crm",
+    "tool_b_id": "f312f777-8cb3-4a80-b919-ba527e1f84de",
+    "tool_b_name": "Zendesk",
+    "tool_b_slug": "zendesk",
+    "category_slug": "saas"
+  },
+  {
+    "tool_a_id": "2be4b63c-7b5b-4ad2-9bdb-2cebf74fd3bd",
+    "tool_a_name": "Whereby",
+    "tool_a_slug": "whereby",
+    "tool_b_id": "f312f777-8cb3-4a80-b919-ba527e1f84de",
+    "tool_b_name": "Zendesk",
+    "tool_b_slug": "zendesk",
+    "category_slug": "saas"
+  },
+  {
+    "tool_a_id": "71ace65c-4a70-4a3c-9306-680eea0b4521",
+    "tool_a_name": "Workplace by Meta",
+    "tool_a_slug": "workplace-by-meta",
+    "tool_b_id": "bf8a6132-e69c-489e-b70b-d1e4312c9ee2",
+    "tool_b_name": "Jira",
+    "tool_b_slug": "jira",
+    "category_slug": "saas"
+  },
+  {
+    "tool_a_id": "0dc6e8d4-da38-4751-b62d-a2f9350547b2",
+    "tool_a_name": "Zammad",
+    "tool_a_slug": "zammad",
+    "tool_b_id": "f312f777-8cb3-4a80-b919-ba527e1f84de",
+    "tool_b_name": "Zendesk",
+    "tool_b_slug": "zendesk",
+    "category_slug": "saas"
+  },
+  {
+    "tool_a_id": "666686cb-7a8f-4c24-9982-dc49ea1fb8fb",
+    "tool_a_name": "Zoho Desk",
+    "tool_a_slug": "zoho-desk",
+    "tool_b_id": "03f9247b-cae7-4e19-8113-28fff26c08af",
+    "tool_b_name": "Trello",
+    "tool_b_slug": "trello",
+    "category_slug": "saas"
+  },
+  {
+    "tool_a_id": "404754b8-e0fc-44e6-9730-ad5c67071e2a",
+    "tool_a_name": "Zoho Projects",
+    "tool_a_slug": "zoho-projects",
+    "tool_b_id": "03f9247b-cae7-4e19-8113-28fff26c08af",
+    "tool_b_name": "Trello",
+    "tool_b_slug": "trello",
+    "category_slug": "saas"
+  }
+]

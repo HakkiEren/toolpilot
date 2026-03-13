@@ -8,12 +8,13 @@ import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { AdBanner, AdInArticle, AdMultiplex, AdSidebar } from '@/components/ads/AdSlot';
 import { ToolLogo } from '@/components/common/ToolLogo';
 import { ReadingProgress } from '@/components/common/ReadingProgress';
+import { EditorialBadge } from '@/components/common/EditorialBadge';
 
 // ============================================================
 // COMPARISON HUB PAGE — Lists all comparisons for a category
 // ============================================================
 
-export const revalidate = 3600;
+export const revalidate = false;
 export const dynamicParams = false;
 
 export async function generateStaticParams() {
@@ -381,22 +382,9 @@ export default async function ComparisonHubPage({ params }: PageProps) {
           </div>
         </section>
 
-        {/* Freshness Signal */}
-        <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-gray-400 border-t border-gray-200 dark:border-gray-800 pt-6">
-          <div className="flex items-center gap-2">
-            <span>📅</span>
-            <span>Last updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
-          </div>
-          <div className="w-1 h-1 bg-gray-300 dark:bg-gray-600 rounded-full" />
-          <div className="flex items-center gap-2">
-            <span>📊</span>
-            <span>{comparisons.length} comparisons reviewed</span>
-          </div>
-          <div className="w-1 h-1 bg-gray-300 dark:bg-gray-600 rounded-full" />
-          <div className="flex items-center gap-2">
-            <span>✅</span>
-            <span>Independent analysis by {SITE_NAME}</span>
-          </div>
+        {/* Editorial Badge — E-E-A-T freshness signal */}
+        <div className="mt-6 border-t border-gray-200 dark:border-gray-800 pt-6">
+          <EditorialBadge lastUpdated={new Date().toISOString()} />
         </div>
       </div>
     </>

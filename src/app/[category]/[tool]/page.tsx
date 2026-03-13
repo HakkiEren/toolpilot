@@ -16,6 +16,7 @@ import { ShareButtons } from '@/components/common/ShareButtons';
 import { CopyLinkButton } from '@/components/common/CopyLinkButton';
 import { ReadingProgress } from '@/components/common/ReadingProgress';
 import { GlossaryLinkedText } from '@/components/common/GlossaryLinkedText';
+import { extractProsList, extractConsList, extractUseCaseTitles, extractBestForPersonas, getDescriptionHighlight } from '@/lib/content-extractor';
 import { TableOfContents } from '@/components/common/TableOfContents';
 import { RecordToolView } from '@/components/common/RecentlyViewed';
 import { StickyMobileCTA } from '@/components/common/StickyMobileCTA';
@@ -25,7 +26,7 @@ import { NewsletterSignup } from '@/components/common/NewsletterSignup';
 // TOOL PROFILE PAGE — Individual tool review (ENHANCED)
 // ============================================================
 
-export const revalidate = 3600;
+export const revalidate = false;
 export const dynamicParams = true;
 
 export async function generateStaticParams() {
@@ -114,6 +115,10 @@ export default async function ToolPage({ params }: PageProps) {
     },
     ratings: { overall: tool.ratings.overall },
     categorySlug: tool.categorySlug,
+    description: tool.description,
+    prosConsContent: tool.prosConsContent,
+    useCasesContent: tool.useCasesContent,
+    bestForContent: tool.bestForContent,
   });
   const faqSchema = generateFAQSchema(toolFAQs);
 
@@ -285,10 +290,28 @@ export default async function ToolPage({ params }: PageProps) {
             <div className="flex-1 h-px bg-blue-200/50 dark:bg-blue-800/30" />
           </div>
           <p data-speakable="true" className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
-            {tool.name} is {tool.ratings.overall >= 8 ? 'a top-rated' : tool.ratings.overall >= 6 ? 'a solid' : 'an'} {cat?.name?.toLowerCase() || 'digital'} tool rated {tool.ratings.overall.toFixed(1)}/10.{' '}
-            {tool.pricing.hasFreeplan ? 'It offers a free plan, making it accessible for individuals and small teams.' : tool.pricing.startingPrice ? `Plans start at $${tool.pricing.startingPrice}/mo.` : 'Contact sales for pricing.'}{' '}
-            Key strengths: features ({tool.ratings.features.toFixed(1)}/10) and ease of use ({tool.ratings.easeOfUse.toFixed(1)}/10).{' '}
-            {tool.ratings.overall >= 8 ? 'Highly recommended for most use cases.' : tool.ratings.overall >= 6 ? 'Worth considering if its strengths align with your needs.' : 'Consider comparing with top-rated alternatives.'}
+            {(() => {
+              const pros = extractProsList(tool.prosConsContent);
+              const desc = getDescriptionHighlight(tool.description);
+              const topPro = pros.length > 0 ? pros[0].charAt(0).toLowerCase() + pros[0].slice(1) : '';
+              const tier = tool.ratings.overall >= 8.5 ? 'one of the top-rated' : tool.ratings.overall >= 7.5 ? 'a strong' : tool.ratings.overall >= 6 ? 'a decent' : 'an';
+              const pricePart = tool.pricing.hasFreeplan
+                ? `It has a free plan, so you can try it without risk.`
+                : tool.pricing.startingPrice
+                  ? `Plans start at $${tool.pricing.startingPrice}/mo.`
+                  : 'Check their site for current pricing.';
+              const proPart = topPro
+                ? ` Users particularly like ${topPro}.`
+                : desc
+                  ? ` ${desc.split(/[.!?]/)[0]}.`
+                  : '';
+              const closePart = tool.ratings.overall >= 8
+                ? ` We recommend it for most ${(cat?.name || 'digital').toLowerCase()} use cases.`
+                : tool.ratings.overall >= 6.5
+                  ? ` Worth a look if its strengths match what you need.`
+                  : ` Compare it with top-rated alternatives before deciding.`;
+              return `${tool.name} is ${tier} ${(cat?.name || 'digital').toLowerCase()} tool — we rate it ${tool.ratings.overall.toFixed(1)}/10 overall. ${pricePart}${proPart}${closePart}`;
+            })()}
           </p>
         </div>
 
@@ -368,6 +391,16 @@ export default async function ToolPage({ params }: PageProps) {
           <h2 className="text-2xl font-bold mb-4">What is {tool.name}?</h2>
           <div className="prose dark:prose-invert max-w-none text-gray-600 dark:text-gray-300 leading-relaxed">
             <GlossaryLinkedText text={tool.description} />
+          </div>
+        </section>
+
+        {/* ========== MARKET ANALYSIS — auto-generated unique per tool ========== */}
+        <section className="mb-12">
+          <h2 className="text-2xl font-bold mb-4">{tool.name} — Our Analysis</h2>
+          <div className="bg-gradient-to-r from-gray-50 to-white dark:from-gray-800/50 dark:to-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-gray-700">
+            <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+              {generateMarketAnalysis(tool, cat?.name || category, relatedTools)}
+            </p>
           </div>
         </section>
 
@@ -552,6 +585,18 @@ export default async function ToolPage({ params }: PageProps) {
             </div>
           )}
         </section>
+
+        {/* ========== PRICING INSIGHT — auto-generated unique per tool ========== */}
+        {tool.pricing.plans.length > 0 && (
+          <div className="mb-12 p-5 bg-amber-50/50 dark:bg-amber-900/10 rounded-xl border border-amber-200/50 dark:border-amber-800/30">
+            <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">
+              <span>💡</span> Pricing Insight
+            </h3>
+            <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+              {generatePricingInsight(tool, cat?.name || category)}
+            </p>
+          </div>
+        )}
 
         {/* ========== QUICK COMPETITOR SCORECARD ========== */}
         {relatedTools.length > 0 && (
@@ -1106,47 +1151,47 @@ function extractCons(html: string): string {
 function generateExpertVerdict(tool: Tool, categoryName: string): string {
   const { ratings, pricing, name } = tool;
   const parts: string[] = [];
+  const pros = extractProsList(tool.prosConsContent);
+  const cons = extractConsList(tool.prosConsContent);
+  const bestFor = extractBestForPersonas(tool.bestForContent);
 
-  // Opening — strength-based
-  const bestMetric = [
-    { name: 'features', score: ratings.features },
-    { name: 'ease of use', score: ratings.easeOfUse },
-    { name: 'value for money', score: ratings.valueForMoney },
-    { name: 'customer support', score: ratings.support },
-  ].sort((a, b) => b.score - a.score);
-
-  const strongest = bestMetric[0];
-  const weakest = bestMetric[bestMetric.length - 1];
-
-  if (ratings.overall >= 8.5) {
-    parts.push(`${name} earns a top-tier rating in the ${categoryName} category, excelling particularly in ${strongest.name} (${strongest.score.toFixed(1)}/10).`);
-  } else if (ratings.overall >= 7.5) {
-    parts.push(`${name} is a strong performer in the ${categoryName} space, with its greatest strength in ${strongest.name} (${strongest.score.toFixed(1)}/10).`);
-  } else if (ratings.overall >= 6) {
-    parts.push(`${name} delivers a capable experience in the ${categoryName} category, scoring best in ${strongest.name} (${strongest.score.toFixed(1)}/10).`);
+  // Opening — conversational, uses real pros
+  if (ratings.overall >= 8.5 && pros.length > 0) {
+    parts.push(`Here's our honest take: ${name} is one of the best ${categoryName.toLowerCase()} tools we've reviewed. What makes it stand out? ${pros[0]}.`);
+  } else if (ratings.overall >= 7.5 && pros.length > 0) {
+    parts.push(`${name} is a solid pick in the ${categoryName.toLowerCase()} space. Its biggest strength? ${pros[0]}.`);
+  } else if (ratings.overall >= 6 && pros.length > 0) {
+    parts.push(`${name} gets the job done for ${categoryName.toLowerCase()}. It's not the top-rated option, but it has real strengths — like ${pros[0].charAt(0).toLowerCase() + pros[0].slice(1)}.`);
+  } else if (pros.length > 0) {
+    parts.push(`${name} is a more niche pick for ${categoryName.toLowerCase()}. It does have some things going for it — ${pros[0].charAt(0).toLowerCase() + pros[0].slice(1)} — but the competition is tough.`);
   } else {
-    parts.push(`${name} provides basic ${categoryName} functionality but faces stiff competition from higher-rated alternatives.`);
+    parts.push(`${name} scores ${ratings.overall.toFixed(1)}/10 overall as a ${categoryName.toLowerCase()} tool. It's ${ratings.overall >= 7.5 ? 'a strong contender' : 'worth evaluating'} depending on what you need.`);
   }
 
-  // Pricing context
+  // Second pro + pricing context
+  if (pros.length >= 2) {
+    parts.push(`On top of that, ${pros[1].charAt(0).toLowerCase() + pros[1].slice(1)}.`);
+  }
   if (pricing.hasFreeplan && pricing.startingPrice) {
-    parts.push(`With a free plan and paid tiers from $${pricing.startingPrice}/mo, it accommodates both individual users and growing teams.`);
+    parts.push(`You can start for free and upgrade to paid plans from $${pricing.startingPrice}/mo when you're ready.`);
   } else if (pricing.hasFreeplan) {
-    parts.push(`The free plan lets you evaluate it risk-free before committing to a paid tier.`);
+    parts.push(`There's a free plan, so you can try it without any commitment.`);
   } else if (pricing.startingPrice) {
-    parts.push(`Starting at $${pricing.startingPrice}/mo, it targets ${pricing.startingPrice > 50 ? 'teams and organizations' : 'individual users and small teams'} looking for professional-grade tools.`);
+    parts.push(`Pricing starts at $${pricing.startingPrice}/mo — ${pricing.startingPrice > 50 ? 'it\'s aimed at teams with real budgets' : 'reasonable for what you get'}.`);
   }
 
-  // Weakness callout (constructive)
-  if (weakest.score < 7 && weakest.score < strongest.score - 1.5) {
-    parts.push(`Its ${weakest.name} score (${weakest.score.toFixed(1)}/10) leaves room for improvement, so factor that into your decision if ${weakest.name} is a priority.`);
+  // Weakness — honest, using real cons
+  if (cons.length > 0) {
+    parts.push(`Where does it fall short? ${cons[0]}. That's worth knowing upfront.`);
   }
 
-  // Closing recommendation
-  if (ratings.overall >= 7.5) {
-    parts.push(`Overall, we confidently recommend ${name} for users who need a ${ratings.easeOfUse >= 8 ? 'user-friendly' : 'feature-rich'} ${categoryName} solution.`);
+  // Closing — with bestFor data if available
+  if (ratings.overall >= 7.5 && bestFor.length > 0) {
+    parts.push(`Bottom line: we'd recommend ${name} especially if you're ${bestFor[0].charAt(0).toLowerCase() + bestFor[0].slice(1)}.`);
+  } else if (ratings.overall >= 7.5) {
+    parts.push(`Bottom line: ${name} earns our recommendation for most ${categoryName.toLowerCase()} use cases.`);
   } else {
-    parts.push(`We recommend comparing ${name} against top alternatives before making your final choice.`);
+    parts.push(`Our suggestion: compare ${name} against top alternatives before deciding. It's decent, but there are stronger options out there.`);
   }
 
   return parts.join(' ');
@@ -1158,45 +1203,29 @@ function generateExpertVerdict(tool: Tool, categoryName: string): string {
 
 function generateIdealFor(tool: Tool, categoryName: string): string[] {
   const items: string[] = [];
+  const bestFor = extractBestForPersonas(tool.bestForContent);
+  const useCases = extractUseCaseTitles(tool.useCasesContent);
 
-  // Based on ease of use
-  if (tool.ratings.easeOfUse >= 8) {
-    items.push(`Beginners and non-technical users looking for an intuitive ${categoryName} solution`);
-  } else if (tool.ratings.easeOfUse >= 7) {
-    items.push(`Users comfortable with technology who want a capable ${categoryName} tool`);
+  // Pull from real bestFor data first (highest uniqueness)
+  for (const persona of bestFor.slice(0, 3)) {
+    if (items.length < 3) items.push(persona);
   }
 
-  // Based on features
-  if (tool.ratings.features >= 8.5) {
-    items.push('Power users and teams who need a comprehensive, feature-rich platform');
-  } else if (tool.ratings.features >= 7) {
-    items.push('Teams that need solid core features without unnecessary complexity');
+  // Add rating-based items if needed
+  if (items.length < 3 && tool.ratings.easeOfUse >= 8) {
+    items.push(`People who don't want a steep learning curve — ${tool.name} is beginner-friendly (${tool.ratings.easeOfUse.toFixed(1)}/10 ease of use)`);
   }
-
-  // Based on pricing
-  if (tool.pricing.hasFreeplan && tool.pricing.startingPrice && tool.pricing.startingPrice <= 30) {
-    items.push('Solopreneurs and startups with limited budgets — free plan + affordable upgrades');
-  } else if (tool.pricing.hasFreeplan) {
-    items.push('Users who want to try before committing — the free plan provides a risk-free start');
-  } else if (tool.pricing.startingPrice && tool.pricing.startingPrice <= 20) {
-    items.push('Budget-conscious individuals and small teams looking for affordable quality');
-  } else if (tool.pricing.startingPrice && tool.pricing.startingPrice > 50) {
-    items.push('Established businesses and teams with budget for professional-grade tooling');
+  if (items.length < 4 && tool.pricing.hasFreeplan) {
+    items.push(`Anyone who wants to test-drive before paying — there's a free plan`);
   }
-
-  // Based on support
-  if (tool.ratings.support >= 8) {
-    items.push('Teams that value responsive customer support and guided onboarding');
+  if (items.length < 4 && tool.ratings.valueForMoney >= 8.5) {
+    items.push(`Value-seekers — you get a lot for your money (${tool.ratings.valueForMoney.toFixed(1)}/10 value score)`);
   }
-
-  // Based on value
-  if (tool.ratings.valueForMoney >= 8.5) {
-    items.push('Value-seekers — you get more features per dollar than most competitors');
+  if (items.length < 4 && useCases.length > 0) {
+    items.push(`Teams focused on ${useCases[0].charAt(0).toLowerCase() + useCases[0].slice(1)}`);
   }
-
-  // Ensure we always have at least 3 items
   if (items.length < 3) {
-    items.push(`Anyone evaluating ${categoryName} tools — rated ${tool.ratings.overall.toFixed(1)}/10 overall`);
+    items.push(`Anyone shopping for a solid ${categoryName.toLowerCase()} tool — rated ${tool.ratings.overall.toFixed(1)}/10`);
   }
 
   return items.slice(0, 5);
@@ -1204,38 +1233,28 @@ function generateIdealFor(tool: Tool, categoryName: string): string[] {
 
 function generateNotIdealFor(tool: Tool, categoryName: string): string[] {
   const items: string[] = [];
+  const cons = extractConsList(tool.prosConsContent);
 
-  // Based on pricing
-  if (!tool.pricing.hasFreeplan && tool.pricing.startingPrice && tool.pricing.startingPrice > 50) {
-    items.push('Budget-limited individuals or hobbyists who need a free or low-cost option');
+  // Pull from real cons first (highest uniqueness)
+  if (cons.length > 0) {
+    items.push(`People bothered by: ${cons[0].charAt(0).toLowerCase() + cons[0].slice(1)}`);
+  }
+  if (cons.length >= 2) {
+    items.push(`Users who need: ${cons[1].charAt(0).toLowerCase() + cons[1].slice(1)} — that's a weak spot here`);
   }
 
-  // Based on ease of use
-  if (tool.ratings.easeOfUse < 7) {
-    items.push('Users who prefer plug-and-play simplicity without a learning curve');
+  // Rating-based fallbacks
+  if (items.length < 2 && !tool.pricing.hasFreeplan && tool.pricing.startingPrice && tool.pricing.startingPrice > 50) {
+    items.push(`Budget-limited users — there's no free plan and pricing starts at $${tool.pricing.startingPrice}/mo`);
   }
-
-  // Based on features
-  if (tool.ratings.features < 7) {
-    items.push(`Power users needing advanced ${categoryName} capabilities — consider top-rated alternatives`);
+  if (items.length < 3 && tool.ratings.easeOfUse < 7) {
+    items.push('People who want plug-and-play simplicity — there is a learning curve');
   }
-  if (tool.ratings.features >= 8.5 && tool.ratings.easeOfUse < 7.5) {
-    items.push('Teams that need quick setup — the extensive feature set comes with a steeper onboarding curve');
+  if (items.length < 3 && tool.ratings.support < 7) {
+    items.push('Teams that rely heavily on customer support — it\'s not the strongest here');
   }
-
-  // Based on support
-  if (tool.ratings.support < 7) {
-    items.push('Users who rely heavily on customer support for troubleshooting and onboarding');
-  }
-
-  // Based on value
-  if (tool.ratings.valueForMoney < 7) {
-    items.push('Cost-sensitive buyers — the features-to-price ratio may not justify the investment for light use');
-  }
-
-  // Fallback
   if (items.length < 2) {
-    items.push(`Users with very specialized needs that go beyond mainstream ${categoryName} functionality`);
+    items.push(`Users with very niche needs beyond mainstream ${categoryName.toLowerCase()} tools`);
   }
 
   return items.slice(0, 4);
@@ -1247,35 +1266,44 @@ function generateNotIdealFor(tool: Tool, categoryName: string): string[] {
 
 function generateGettingStartedSteps(tool: Tool): Array<{ title: string; description: string }> {
   const steps: Array<{ title: string; description: string }> = [];
+  const useCases = extractUseCaseTitles(tool.useCasesContent);
+  const pros = extractProsList(tool.prosConsContent);
 
   // Step 1: Sign up
   if (tool.pricing.hasFreeplan) {
     steps.push({
       title: 'Create a free account',
-      description: `Sign up at ${tool.name}\'s website — no credit card required for the free plan.`,
+      description: `Head to ${tool.name}'s website and sign up — no credit card needed for the free plan. You'll get access right away.`,
     });
   } else if (tool.pricing.freeTrialDays) {
     steps.push({
-      title: `Start your ${tool.pricing.freeTrialDays}-day trial`,
-      description: `Sign up for the free trial to explore all features before committing to a plan.`,
+      title: `Start your ${tool.pricing.freeTrialDays}-day free trial`,
+      description: `Sign up for the trial and explore everything ${tool.name} offers. ${tool.pricing.freeTrialDays} days is enough time to know if it's right for you.`,
     });
   } else {
     steps.push({
-      title: 'Sign up and choose a plan',
-      description: `Visit ${tool.name}\'s website and select the plan that fits your needs${tool.pricing.startingPrice ? ` (from $${tool.pricing.startingPrice}/mo)` : ''}.`,
+      title: 'Pick a plan and sign up',
+      description: `Visit ${tool.name}'s website and choose the plan that fits${tool.pricing.startingPrice ? ` (starting at $${tool.pricing.startingPrice}/mo)` : ''}. Most plans let you cancel anytime.`,
     });
   }
 
-  // Step 2: Setup
+  // Step 2: Setup (tool-specific)
   steps.push({
-    title: 'Configure your workspace',
-    description: `Follow the onboarding guide to set up your account. ${tool.ratings.easeOfUse >= 8 ? 'Most users are productive within minutes.' : 'Take advantage of any tutorials or documentation.'}`,
+    title: 'Set up your workspace',
+    description: tool.ratings.easeOfUse >= 8
+      ? `Follow the onboarding guide — most people are up and running in minutes. ${tool.name} is designed to be intuitive from the start.`
+      : `Take 15-20 minutes to go through the setup wizard. Check out any tutorials they offer — it'll save you time later.`,
   });
 
-  // Step 3: Go live
+  // Step 3: Go live (uses real features/use cases)
+  const goLiveDetail = useCases.length > 0
+    ? `Start with ${useCases[0].charAt(0).toLowerCase() + useCases[0].slice(1)} — that's where most users see quick wins.`
+    : pros.length > 0
+      ? `Focus on what ${tool.name} does best: ${pros[0].charAt(0).toLowerCase() + pros[0].slice(1)}.`
+      : 'Start with the core features and build from there as you get comfortable.';
   steps.push({
-    title: 'Start using key features',
-    description: `Explore the core features and integrate with your existing workflow. ${tool.ratings.features >= 8 ? 'The extensive feature set covers advanced use cases out of the box.' : 'Focus on core capabilities first, then expand as needed.'}`,
+    title: 'Start using it for real',
+    description: `Don't just poke around — actually use it for a real task. ${goLiveDetail}`,
   });
 
   return steps;
@@ -1298,4 +1326,90 @@ function getVerdictHighlights(tool: Tool): Array<{ text: string; positive: boole
   if (tool.pricing.startingPrice && tool.pricing.startingPrice > 100) highlights.push({ text: 'Premium Pricing', positive: false });
 
   return highlights.slice(0, 5);
+}
+
+// ============================================================
+// HELPERS — Market analysis & pricing insight (unique per tool)
+// ============================================================
+
+function generateMarketAnalysis(tool: Tool, categoryName: string, relatedTools: Tool[]): string {
+  const parts: string[] = [];
+  const desc = getDescriptionHighlight(tool.description);
+  const pros = extractProsList(tool.prosConsContent);
+  const useCases = extractUseCaseTitles(tool.useCasesContent);
+
+  // Opening — use first sentence from description (UNIQUE per tool)
+  if (desc) {
+    parts.push(desc.split(/[.!?]/)[0] + '.');
+  }
+
+  // Positioning
+  const tier = tool.ratings.overall >= 8.5 ? 'one of the highest-rated' : tool.ratings.overall >= 7.5 ? 'a well-regarded' : tool.ratings.overall >= 6.5 ? 'a mid-tier' : 'a newer';
+  parts.push(`It's ${tier} option in ${categoryName.toLowerCase()}, scoring ${tool.ratings.overall.toFixed(1)}/10 overall.`);
+
+  // What it does well — from real pros
+  if (pros.length >= 2) {
+    parts.push(`What users like most: ${pros[0].charAt(0).toLowerCase() + pros[0].slice(1)}, and ${pros[1].charAt(0).toLowerCase() + pros[1].slice(1)}.`);
+  } else if (pros.length === 1) {
+    parts.push(`Its biggest draw? ${pros[0]}.`);
+  }
+
+  // Pricing context
+  if (tool.pricing.hasFreeplan && tool.pricing.startingPrice) {
+    parts.push(`You can start free and scale to paid plans from $${tool.pricing.startingPrice}/mo — handy for teams that want to test before they invest.`);
+  } else if (tool.pricing.hasFreeplan) {
+    parts.push(`The free plan is a nice touch — lets you kick the tires before spending anything.`);
+  } else if (tool.pricing.startingPrice) {
+    parts.push(`At $${tool.pricing.startingPrice}/mo to start, it's ${tool.pricing.startingPrice > 50 ? 'positioned for teams with real budgets' : 'priced competitively for its class'}.`);
+  }
+
+  // Competition
+  if (relatedTools.length > 2) {
+    const avg = relatedTools.reduce((s, t) => s + t.ratings.overall, 0) / relatedTools.length;
+    const diff = tool.ratings.overall - avg;
+    if (diff > 0.5) {
+      parts.push(`It outperforms most alternatives in this category (average: ${avg.toFixed(1)}/10).`);
+    } else if (diff < -0.5) {
+      parts.push(`Some competitors score higher on average (${avg.toFixed(1)}/10), but ${tool.name} has its own niche.`);
+    }
+  }
+
+  // Use cases
+  if (useCases.length >= 2) {
+    parts.push(`Common use cases include ${useCases[0].charAt(0).toLowerCase() + useCases[0].slice(1)} and ${useCases[1].charAt(0).toLowerCase() + useCases[1].slice(1)}.`);
+  }
+
+  return parts.join(' ');
+}
+
+function generatePricingInsight(tool: Tool, categoryName: string): string {
+  const parts: string[] = [];
+  const { pricing } = tool;
+
+  if (pricing.plans.length >= 2) {
+    const sorted = [...pricing.plans].filter(p => p.price !== null && p.price !== undefined).sort((a, b) => (a.price || 0) - (b.price || 0));
+    const cheapest = sorted[0];
+    const expensive = sorted[sorted.length - 1];
+    if (cheapest && expensive && cheapest !== expensive) {
+      parts.push(`${tool.name} has ${pricing.plans.length} pricing tiers, from ${cheapest.price === 0 ? 'free' : `$${cheapest.price}/mo`} (${cheapest.name}) up to ${expensive.price === null ? 'custom pricing' : `$${expensive.price}/mo`} (${expensive.name}).`);
+    }
+  }
+
+  if (pricing.hasFreeplan) {
+    const freePlan = pricing.plans.find(p => p.price === 0);
+    if (freePlan && freePlan.features.length > 0) {
+      parts.push(`The free ${freePlan.name} plan isn't just a demo — it includes ${freePlan.features.length} usable features${freePlan.features.length >= 3 ? ` like ${freePlan.features[0].toLowerCase()} and ${freePlan.features[1].toLowerCase()}` : ''}.`);
+    }
+  }
+
+  const v = tool.ratings.valueForMoney;
+  if (v >= 8) {
+    parts.push(`With a ${v.toFixed(1)}/10 value score, you're getting good bang for your buck compared to other ${categoryName.toLowerCase()} tools.`);
+  } else if (v >= 7) {
+    parts.push(`The value score sits at ${v.toFixed(1)}/10 — fair for what you get, though shopping around never hurts.`);
+  } else {
+    parts.push(`At ${v.toFixed(1)}/10 for value, it's worth checking whether the features justify the cost for your use case.`);
+  }
+
+  return parts.join(' ');
 }

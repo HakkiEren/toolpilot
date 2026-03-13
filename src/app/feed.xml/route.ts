@@ -1,14 +1,16 @@
 import { supabase } from '@/lib/supabase';
-import { SITE_NAME, SITE_URL, SITE_DESCRIPTION } from '@/lib/constants';
+import { SITE_NAME, SITE_URL, SITE_DESCRIPTION, CATEGORIES } from '@/lib/constants';
 
 // ============================================================
 // RSS FEED — Auto-discovery for blog readers, Google News,
 // Google Discover, and feed aggregators.
 // Accessible at /feed.xml
 // Covers: blog posts, tool reviews, and comparisons
+// Enhanced: content:encoded for richer previews, proper
+// lastBuildDate from actual content, category labels
 // ============================================================
 
-export const revalidate = 3600;
+export const revalidate = 3600; // Regenerate RSS feed every 1 hour
 
 function escapeXml(str: string): string {
   return str
@@ -17,6 +19,11 @@ function escapeXml(str: string): string {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&apos;');
+}
+
+function getCategoryLabel(slug: string): string {
+  const cat = Object.values(CATEGORIES).find(c => c.slug === slug);
+  return cat?.name || slug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
 }
 
 export async function GET() {
@@ -48,52 +55,77 @@ export async function GET() {
   const tools = toolsResult.data || [];
   const comparisons = comparisonsResult.data || [];
 
-  const now = new Date().toUTCString();
+  // Compute lastBuildDate from most recent content across all types
+  const allDates = [
+    ...posts.map(p => p.updated_at || p.published_at),
+    ...tools.map(t => t.last_updated || t.created_at),
+    ...comparisons.map(c => c.last_updated || c.created_at),
+  ].filter(Boolean).map(d => new Date(d).getTime());
+  const lastBuildDate = allDates.length > 0
+    ? new Date(Math.max(...allDates)).toUTCString()
+    : new Date().toUTCString();
 
-  const blogItems = posts.map((post) => `
+  const blogItems = posts.map((post) => {
+    const catLabel = getCategoryLabel(post.category_slug || '');
+    const pubDate = new Date(post.published_at).toUTCString();
+    const excerpt = escapeXml(post.excerpt || '');
+    return `
     <item>
       <title>${escapeXml(post.title)}</title>
       <link>${SITE_URL}/blog/${post.slug}</link>
       <guid isPermaLink="true">${SITE_URL}/blog/${post.slug}</guid>
-      <description>${escapeXml(post.excerpt || '')}</description>
+      <description>${excerpt}</description>
+      <content:encoded><![CDATA[<p>${post.excerpt || ''}</p><p><a href="${SITE_URL}/blog/${post.slug}">Read full article on ${SITE_NAME}</a></p>]]></content:encoded>
       <dc:creator>${escapeXml(post.author || `${SITE_NAME} Editorial Team`)}</dc:creator>
       <category>Blog</category>
-      <category>${escapeXml(post.category_slug || 'guides')}</category>
-      <pubDate>${new Date(post.published_at).toUTCString()}</pubDate>
-    </item>`).join('');
+      ${catLabel ? `<category>${escapeXml(catLabel)}</category>` : ''}
+      <pubDate>${pubDate}</pubDate>
+    </item>`;
+  }).join('');
 
-  const toolItems = tools.map((tool) => `
+  const toolItems = tools.map((tool) => {
+    const catLabel = getCategoryLabel(tool.category_slug);
+    const pubDate = new Date(tool.created_at).toUTCString();
+    return `
     <item>
       <title>${escapeXml(tool.name)} Review — ${escapeXml(tool.tagline || '')}</title>
       <link>${SITE_URL}/${tool.category_slug}/${tool.slug}</link>
       <guid isPermaLink="true">${SITE_URL}/${tool.category_slug}/${tool.slug}</guid>
       <description>${escapeXml(`Expert review of ${tool.name}. ${tool.tagline || ''}`)}</description>
+      <content:encoded><![CDATA[<p>Expert review of <strong>${tool.name}</strong>: ${tool.tagline || ''}</p><p><a href="${SITE_URL}/${tool.category_slug}/${tool.slug}">Read the full ${tool.name} review on ${SITE_NAME}</a></p>]]></content:encoded>
       <dc:creator>${escapeXml(`${SITE_NAME} Editorial Team`)}</dc:creator>
       <category>Reviews</category>
-      <category>${escapeXml(tool.category_slug)}</category>
-      <pubDate>${new Date(tool.created_at).toUTCString()}</pubDate>
-    </item>`).join('');
+      <category>${escapeXml(catLabel)}</category>
+      <pubDate>${pubDate}</pubDate>
+    </item>`;
+  }).join('');
 
-  const comparisonItems = comparisons.map((comp) => `
+  const comparisonItems = comparisons.map((comp) => {
+    const catLabel = getCategoryLabel(comp.category_slug);
+    const pubDate = new Date(comp.created_at).toUTCString();
+    const title = comp.meta_title || comp.slug.replace(/-/g, ' ');
+    return `
     <item>
-      <title>${escapeXml(comp.meta_title || comp.slug.replace(/-/g, ' '))}</title>
+      <title>${escapeXml(title)}</title>
       <link>${SITE_URL}/${comp.category_slug}/compare/${comp.slug}</link>
       <guid isPermaLink="true">${SITE_URL}/${comp.category_slug}/compare/${comp.slug}</guid>
       <description>${escapeXml(comp.meta_description || `Side-by-side comparison with features, pricing, and expert verdicts.`)}</description>
+      <content:encoded><![CDATA[<p>${comp.meta_description || 'Side-by-side comparison with features, pricing, and expert verdicts.'}</p><p><a href="${SITE_URL}/${comp.category_slug}/compare/${comp.slug}">View full comparison on ${SITE_NAME}</a></p>]]></content:encoded>
       <dc:creator>${escapeXml(`${SITE_NAME} Editorial Team`)}</dc:creator>
       <category>Comparisons</category>
-      <category>${escapeXml(comp.category_slug)}</category>
-      <pubDate>${new Date(comp.created_at).toUTCString()}</pubDate>
-    </item>`).join('');
+      <category>${escapeXml(catLabel)}</category>
+      <pubDate>${pubDate}</pubDate>
+    </item>`;
+  }).join('');
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>${escapeXml(SITE_NAME)} — Tool Reviews &amp; Comparisons</title>
     <link>${SITE_URL}</link>
     <description>${escapeXml(SITE_DESCRIPTION)}</description>
     <language>en-us</language>
-    <lastBuildDate>${now}</lastBuildDate>
+    <lastBuildDate>${lastBuildDate}</lastBuildDate>
     <managingEditor>hello@propicked.com (${escapeXml(SITE_NAME)} Editorial Team)</managingEditor>
     <webMaster>hello@propicked.com (${escapeXml(SITE_NAME)})</webMaster>
     <copyright>Copyright ${new Date().getFullYear()} ${escapeXml(SITE_NAME)}. All rights reserved.</copyright>

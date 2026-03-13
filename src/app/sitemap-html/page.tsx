@@ -8,7 +8,7 @@ import { GLOSSARY_TERMS, groupTermsByCategory } from '@/lib/glossary-data';
 // HTML SITEMAP PAGE — Full site map for users & crawlers
 // ============================================================
 
-export const revalidate = 3600;
+export const revalidate = false;
 
 export const metadata: Metadata = {
   title: `Sitemap — Browse All Pages | ${SITE_NAME}`,

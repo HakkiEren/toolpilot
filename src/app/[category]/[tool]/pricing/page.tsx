@@ -20,7 +20,7 @@ import type { FAQ } from '@/types';
 // PRICING PAGE — ENHANCED with visual comparison, value meter
 // ============================================================
 
-export const revalidate = 3600;
+export const revalidate = false;
 export const dynamicParams = true;
 
 export async function generateStaticParams() {

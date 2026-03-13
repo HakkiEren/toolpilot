@@ -168,8 +168,8 @@ export const LIMITS = {
   MIN_PAGE_UNIQUENESS: 0.6,          // 60%
   /** Max VS comparisons: only 2-way */
   MAX_VS_ENTITIES: 2,
-  /** Max pages per sitemap file */
-  SITEMAP_MAX_URLS: 10_000,
+  /** Max pages per sitemap file (Google limit: 50K) */
+  SITEMAP_MAX_URLS: 50_000,
   /** Internal links per page */
   INTERNAL_LINKS_PER_PAGE: { min: 3, max: 8 },
 };

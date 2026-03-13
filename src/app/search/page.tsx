@@ -6,7 +6,7 @@ import { AdBanner, AdMultiplex } from '@/components/ads/AdSlot';
 import { SITE_NAME, SITE_URL, CATEGORY_LIST, SUBCATEGORIES } from '@/lib/constants';
 import { generateBreadcrumbSchema } from '@/lib/schema';
 
-export const revalidate = 3600;
+export const revalidate = false;
 
 export const metadata: Metadata = {
   title: `Search & Compare Tools — Find the Perfect Software | ${SITE_NAME}`,

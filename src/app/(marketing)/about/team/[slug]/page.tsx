@@ -2,10 +2,11 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { SITE_NAME, SITE_URL, SEO, CATEGORY_LIST } from '@/lib/constants';
-import { generateBreadcrumbSchema } from '@/lib/schema';
+import { generateBreadcrumbSchema, generateFAQSchema } from '@/lib/schema';
 import { AUTHORS, getTeamMembers } from '@/lib/authors';
 import { getBlogsByAuthor } from '@/lib/data';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
+import { EditorialBadge } from '@/components/common/EditorialBadge';
 
 // ============================================================
 // INDIVIDUAL AUTHOR PROFILE PAGE — E-E-A-T signal
@@ -13,7 +14,7 @@ import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 // published articles, and expertise signals.
 // ============================================================
 
-export const revalidate = 86400; // 24 hours
+export const revalidate = false;
 
 export async function generateStaticParams() {
   return getTeamMembers().map((m) => ({ slug: m.slug }));
@@ -24,7 +25,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { slug } = await params;
   const author = Object.values(AUTHORS).find((a) => a.slug === slug);
-  if (!author) return {};
+  if (!author) notFound();
 
   const title = `${author.name} — ${author.role} at ${SITE_NAME}`;
   const description = author.bio;
@@ -67,6 +68,23 @@ export default async function AuthorProfilePage(
     { name: author.name, url: `/about/team/${slug}` },
   ];
 
+  // FAQ data for this author's profile
+  const authorFaqs = [
+    {
+      question: `Who is ${author.name}?`,
+      answer: `${author.name} is the ${author.role} at ${SITE_NAME}. ${author.shortBio}`,
+    },
+    {
+      question: `What does ${author.name} cover at ${SITE_NAME}?`,
+      answer: `${author.name} specializes in ${author.expertise.join(', ')}. Their areas of knowledge include ${author.knowsAbout.slice(0, 5).join(', ')}.`,
+    },
+    {
+      question: `How many articles has ${author.name} written?`,
+      answer: `${author.name} has authored ${author.articles} articles and ${author.reviews} in-depth reviews at ${SITE_NAME}, covering topics across ${author.expertise.join(' and ')}.`,
+    },
+  ];
+  const faqSchema = generateFAQSchema(authorFaqs);
+
   // Person schema — comprehensive E-E-A-T signal
   const personSchema = {
     '@context': 'https://schema.org',
@@ -98,6 +116,12 @@ export default async function AuthorProfilePage(
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
       />
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
 
       <div className="max-w-4xl mx-auto px-4 py-12">
         <Breadcrumbs items={[
@@ -252,6 +276,24 @@ export default async function AuthorProfilePage(
           </div>
         </section>
 
+        {/* FAQ Section */}
+        <section className="mb-10">
+          <h2 className="text-xl font-bold mb-4">Frequently Asked Questions</h2>
+          <div className="space-y-3">
+            {authorFaqs.map((faq, i) => (
+              <details key={i} className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl group" open={i === 0}>
+                <summary className="flex items-center justify-between px-5 py-4 cursor-pointer font-semibold text-sm text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                  {faq.question}
+                  <span className="text-gray-400 dark:text-gray-500 group-open:rotate-180 transition-transform ml-2">&#9660;</span>
+                </summary>
+                <div className="px-5 pb-4 text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                  {faq.answer}
+                </div>
+              </details>
+            ))}
+          </div>
+        </section>
+
         {/* CTA */}
         <div className="bg-gray-50 dark:bg-gray-900/50 rounded-2xl p-6 border border-gray-200/50 dark:border-gray-800 text-center">
           <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
@@ -265,6 +307,11 @@ export default async function AuthorProfilePage(
               Editorial Policy
             </Link>
           </div>
+        </div>
+
+        {/* Editorial Badge — E-E-A-T freshness signal */}
+        <div className="mt-6 border-t border-gray-200 dark:border-gray-800 pt-6">
+          <EditorialBadge lastUpdated={new Date().toISOString()} author={author.name} />
         </div>
       </div>
     </>

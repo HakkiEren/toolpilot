@@ -129,7 +129,7 @@ function getAwards(tools: Tool[]): Award[] {
   return awards;
 }
 
-export const revalidate = 3600;
+export const revalidate = false;
 export const dynamicParams = true;
 
 // Build flat map: subcategory slug → { subcategory info, parent category }
