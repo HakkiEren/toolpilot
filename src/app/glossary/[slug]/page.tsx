@@ -20,7 +20,7 @@ import {
 // Targets "what is [term]" long-tail search queries
 // ============================================================
 
-export const revalidate = 86400; // 24h — content rarely changes
+export const revalidate = false;
 export const dynamicParams = false;
 
 export function generateStaticParams() {

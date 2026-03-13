@@ -7,7 +7,7 @@ import { ReadingProgress } from '@/components/common/ReadingProgress';
 import { EditorialBadge } from '@/components/common/EditorialBadge';
 import { AdBanner, AdInArticle } from '@/components/ads/AdSlot';
 
-export const revalidate = 3600;
+export const revalidate = false;
 
 export const metadata: Metadata = {
   title: `Best Tools by Category (${new Date().getFullYear()}) — Expert Rankings | ${SITE_NAME}`,

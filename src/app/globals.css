@@ -195,6 +195,18 @@ body {
   box-shadow: 0 12px 40px rgba(0,0,0,0.5);
 }
 
+/* ---- Prose-style content for markdown-rendered text ---- */
+.prose-content > h3 { font-size: 1.25rem; font-weight: 700; margin-top: 1.25rem; margin-bottom: 0.5rem; }
+.prose-content > h4 { font-size: 1.1rem; font-weight: 600; margin-top: 1rem; margin-bottom: 0.4rem; }
+.prose-content > h5 { font-size: 1rem; font-weight: 600; margin-top: 0.75rem; margin-bottom: 0.35rem; }
+.prose-content > p { margin-bottom: 0.75rem; line-height: 1.7; }
+.prose-content > p:last-child { margin-bottom: 0; }
+.prose-content > ul { list-style: disc; padding-left: 1.5rem; margin-bottom: 0.75rem; }
+.prose-content > ol { list-style: decimal; padding-left: 1.5rem; margin-bottom: 0.75rem; }
+.prose-content > ul > li,
+.prose-content > ol > li { margin-bottom: 0.35rem; line-height: 1.6; }
+.prose-content > hr { margin: 1rem 0; border-color: var(--border); }
+
 .shine-hover {
   position: relative;
   overflow: hidden;
@@ -1078,6 +1090,32 @@ h1, h2, h3 {
    REDUCED MOTION
    ============================================================ */
 
+/* ============================================================
+   HIGH CONTRAST MODE — Better readability for users who need it
+   ============================================================ */
+
+@media (prefers-contrast: high) {
+  :root {
+    --border: #94a3b8;
+    --text-muted: #475569;
+    --text-subtle: #64748b;
+  }
+
+  .card, .card-featured {
+    border-width: 2px;
+  }
+
+  a {
+    text-decoration: underline;
+  }
+
+  .gradient-text {
+    -webkit-text-fill-color: initial;
+    background: none;
+    color: var(--primary-dark);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -1096,6 +1134,71 @@ h1, h2, h3 {
 
   main {
     animation: none;
+  }
+}
+
+/* ============================================================
+   PRINT STYLES — Clean printable pages for reviews/comparisons
+   ============================================================ */
+
+@media print {
+  /* Hide non-essential UI elements */
+  header, footer, nav,
+  .skip-link, .ad-slot,
+  [class*="BackToTop"],
+  [class*="CookieConsent"],
+  [class*="NewsletterPopup"],
+  [class*="StickyMobileCTA"],
+  [class*="ShareButtons"],
+  [class*="ReadingProgress"],
+  [class*="ThemeToggle"] {
+    display: none !important;
+  }
+
+  /* Clean backgrounds */
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 12pt;
+    line-height: 1.6;
+  }
+
+  /* Remove shadows and effects */
+  .card, .card-featured, .glass {
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    border: 1px solid #ddd !important;
+  }
+
+  /* Show URLs for links */
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+    color: #666;
+    word-break: break-all;
+  }
+
+  /* Don't show URLs for internal navigation links */
+  nav a::after,
+  .breadcrumb a::after {
+    content: none !important;
+  }
+
+  /* Avoid page breaks inside cards */
+  .card, .card-featured, article, section {
+    break-inside: avoid;
+  }
+
+  /* Page break before major sections */
+  h2 {
+    break-before: auto;
+    break-after: avoid;
+  }
+
+  /* Full width for print */
+  main {
+    max-width: 100% !important;
+    padding: 0 !important;
   }
 }
 

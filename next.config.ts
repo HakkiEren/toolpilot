@@ -19,6 +19,9 @@ const nextConfig: NextConfig = {
   // Strict mode for better development
   reactStrictMode: true,
 
+  // Increase static generation timeout for large page count (15,000+ comparisons)
+  staticPageGenerationTimeout: 600,
+
   // Production compiler optimizations
   compiler: {
     // Remove console.log in production builds (keep errors)

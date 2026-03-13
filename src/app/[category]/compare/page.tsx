@@ -14,7 +14,7 @@ import { EditorialBadge } from '@/components/common/EditorialBadge';
 // COMPARISON HUB PAGE — Lists all comparisons for a category
 // ============================================================
 
-export const revalidate = 3600;
+export const revalidate = false;
 export const dynamicParams = false;
 
 export async function generateStaticParams() {

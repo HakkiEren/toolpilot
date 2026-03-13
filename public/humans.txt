@@ -1,0 +1,20 @@
+/* TEAM */
+Site: ProPicked
+URL: https://propicked.com
+Contact: hello@propicked.com
+Description: Compare the best digital tools across AI, SaaS, E-commerce, Marketing, Hosting & Business.
+
+/* THANKS */
+Next.js: https://nextjs.org
+Vercel: https://vercel.com
+Supabase: https://supabase.com
+Tailwind CSS: https://tailwindcss.com
+
+/* SITE */
+Standards: HTML5, CSS3, JavaScript ES2024
+Components: React 19, Next.js 16
+Platform: Vercel Edge Network
+Database: Supabase (PostgreSQL)
+Software: Visual Studio Code
+Last update: 2026-03-11
+Language: English

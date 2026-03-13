@@ -14,7 +14,7 @@ import { InlineNewsletterCTA } from '@/components/ui/InlineNewsletterCTA';
 // Blog Index Page — Editorial content hub for topical authority
 // ============================================================
 
-export const revalidate = 3600;
+export const revalidate = false;
 
 export const metadata: Metadata = {
   title: `Blog — Expert Guides, Tutorials & Tool Reviews | ${SITE_NAME}`,

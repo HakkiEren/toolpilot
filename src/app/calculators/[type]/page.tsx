@@ -14,7 +14,7 @@ import { CalculatorClient } from './calculator-client';
 // CALCULATOR PAGES — Interactive tools for engagement & SEO
 // ============================================================
 
-export const revalidate = 86400; // 24 hours
+export const revalidate = false;
 
 const CALCULATORS: Record<string, {
   title: string;

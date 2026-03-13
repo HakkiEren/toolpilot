@@ -1,0 +1,14 @@
+name = "propicked"
+main = ".worker-next/index.mjs"
+compatibility_date = "2024-12-30"
+compatibility_flags = ["nodejs_compat"]
+
+# Environment variables for Supabase
+[vars]
+NEXT_PUBLIC_SUPABASE_URL = "https://gqqgbfoniyfbpbognnks.supabase.co"
+NEXT_PUBLIC_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdxcWdiZm9uaXlmYnBib2dubmtzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI1NjExOTIsImV4cCI6MjA4ODEzNzE5Mn0.JK-YNWgATV3t3nPoLWCteECHf8_SNXtLWLvpwlfa_iM"
+
+# Static assets
+[assets]
+directory = ".worker-next/assets"
+binding = "ASSETS"

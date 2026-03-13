@@ -14,7 +14,7 @@ import { EditorialBadge } from '@/components/common/EditorialBadge';
 // published articles, and expertise signals.
 // ============================================================
 
-export const revalidate = 86400; // 24 hours
+export const revalidate = false;
 
 export async function generateStaticParams() {
   return getTeamMembers().map((m) => ({ slug: m.slug }));

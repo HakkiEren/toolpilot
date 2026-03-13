@@ -1,0 +1,1522 @@
+[
+  {
+    "id": "7e710219-718f-483c-9034-cddfda414766",
+    "name": "AI21 Labs",
+    "slug": "ai21-labs",
+    "category_slug": "ai-tools",
+    "ratings_overall": 8,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "e286fe3a-46f6-4e77-8dbc-0bf4cd27bd96",
+    "name": "Beautiful.ai",
+    "slug": "beautiful-ai",
+    "category_slug": "ai-tools",
+    "ratings_overall": 8.2,
+    "pricing_starts_at": 12
+  },
+  {
+    "id": "2b65f538-75ac-4c0f-9b0a-d296addfae0b",
+    "name": "Bolt.new",
+    "slug": "bolt-new",
+    "category_slug": "ai-tools",
+    "ratings_overall": 8.6,
+    "pricing_starts_at": 20
+  },
+  {
+    "id": "2a152b0c-dcd7-401a-8af7-982881fb312f",
+    "name": "Character.AI",
+    "slug": "character-ai",
+    "category_slug": "ai-tools",
+    "ratings_overall": 8.1,
+    "pricing_starts_at": 10
+  },
+  {
+    "id": "b8a85da7-7f6d-4265-98c1-fda7705b80ed",
+    "name": "Cline",
+    "slug": "cline",
+    "category_slug": "ai-tools",
+    "ratings_overall": 8.8,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "f049732a-2613-45c4-aafb-a8787dd33d34",
+    "name": "Codeium",
+    "slug": "codeium",
+    "category_slug": "ai-tools",
+    "ratings_overall": 8.4,
+    "pricing_starts_at": 12
+  },
+  {
+    "id": "b5f6bd6e-85c7-46d4-984c-07cc58e12eed",
+    "name": "Gamma",
+    "slug": "gamma",
+    "category_slug": "ai-tools",
+    "ratings_overall": 8.6,
+    "pricing_starts_at": 10
+  },
+  {
+    "id": "feffeb0c-fc17-4585-8b3c-141f7f908317",
+    "name": "Google Veo",
+    "slug": "google-veo",
+    "category_slug": "ai-tools",
+    "ratings_overall": 8.7,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "f95bd34f-4a17-40da-b456-dd61d328025b",
+    "name": "Granola",
+    "slug": "granola-ai",
+    "category_slug": "ai-tools",
+    "ratings_overall": 8.6,
+    "pricing_starts_at": 10
+  },
+  {
+    "id": "9fd63d5e-dcae-4347-822e-d7aae8b775cc",
+    "name": "Groq",
+    "slug": "groq",
+    "category_slug": "ai-tools",
+    "ratings_overall": 8,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "c2c71b61-3df4-42dc-8242-0b26e36612c1",
+    "name": "Hugging Face",
+    "slug": "hugging-face",
+    "category_slug": "ai-tools",
+    "ratings_overall": 9.2,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "cd30eb21-7ac9-4b3b-b6ad-f168b2b9e4e1",
+    "name": "Ideogram",
+    "slug": "ideogram",
+    "category_slug": "ai-tools",
+    "ratings_overall": 8.4,
+    "pricing_starts_at": 8
+  },
+  {
+    "id": "7d833533-7cad-45d5-a1d3-66834978acc3",
+    "name": "InVideo AI",
+    "slug": "invideo-ai",
+    "category_slug": "ai-tools",
+    "ratings_overall": 8.3,
+    "pricing_starts_at": 25
+  },
+  {
+    "id": "cf3e9625-5d0b-4acd-917f-7af63fc7e260",
+    "name": "Krea AI",
+    "slug": "krea-ai",
+    "category_slug": "ai-tools",
+    "ratings_overall": 8,
+    "pricing_starts_at": 24
+  },
+  {
+    "id": "377ce113-6659-4896-b57f-ec6bd19824fb",
+    "name": "LangChain",
+    "slug": "langchain",
+    "category_slug": "ai-tools",
+    "ratings_overall": 8,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "d4e74b14-9751-483c-9612-25e408a4b617",
+    "name": "Lovable",
+    "slug": "lovable",
+    "category_slug": "ai-tools",
+    "ratings_overall": 8.3,
+    "pricing_starts_at": 20
+  },
+  {
+    "id": "4c66551d-4f42-47d1-bed8-56153372e7c2",
+    "name": "Mem",
+    "slug": "mem-ai",
+    "category_slug": "ai-tools",
+    "ratings_overall": 7.7,
+    "pricing_starts_at": 15
+  },
+  {
+    "id": "950257ee-c2dd-4930-8f0e-da77f4cdb4a3",
+    "name": "Meta Llama",
+    "slug": "meta-llama",
+    "category_slug": "ai-tools",
+    "ratings_overall": 8.8,
+    "pricing_starts_at": 0
+  },
+  {
+    "id": "60dfbd48-ddb4-4df0-af38-1f2884d1653b",
+    "name": "Murf AI",
+    "slug": "murf-ai",
+    "category_slug": "ai-tools",
+    "ratings_overall": 8.3,
+    "pricing_starts_at": 23
+  },
+  {
+    "id": "d3f18b52-c642-4791-b276-d0a039ef71d3",
+    "name": "Napkin AI",
+    "slug": "napkin-ai",
+    "category_slug": "ai-tools",
+    "ratings_overall": 7.8,
+    "pricing_starts_at": 18
+  },
+  {
+    "id": "b57b8419-83d4-467a-b601-492043eb8ec9",
+    "name": "NotebookLM",
+    "slug": "notebook-lm",
+    "category_slug": "ai-tools",
+    "ratings_overall": 9.1,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "bea8c75d-8ff7-4931-bbb7-2201280bedf9",
+    "name": "OpenAI Sora",
+    "slug": "openai-sora",
+    "category_slug": "ai-tools",
+    "ratings_overall": 8.4,
+    "pricing_starts_at": 20
+  },
+  {
+    "id": "22a18c0f-0192-4e07-9f10-fb9ad73dd6f3",
+    "name": "Perplexity API",
+    "slug": "perplexity-api",
+    "category_slug": "ai-tools",
+    "ratings_overall": 8,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "198a9feb-450d-4dc0-a726-ca2b6aad0518",
+    "name": "Perplexity Pro",
+    "slug": "perplexity-pro",
+    "category_slug": "ai-tools",
+    "ratings_overall": 9,
+    "pricing_starts_at": 20
+  },
+  {
+    "id": "6a9fec0b-60aa-4347-b05b-9c7fd2155591",
+    "name": "Perplexity Spaces",
+    "slug": "perplexity-spaces",
+    "category_slug": "ai-tools",
+    "ratings_overall": 8.2,
+    "pricing_starts_at": 20
+  },
+  {
+    "id": "1f857ef5-de1d-4b58-a8d9-3691046f1772",
+    "name": "PhotoRoom",
+    "slug": "photoroom",
+    "category_slug": "ai-tools",
+    "ratings_overall": 8.5,
+    "pricing_starts_at": 10
+  },
+  {
+    "id": "c622191c-04a0-4406-8206-bb6ee6202db6",
+    "name": "Pieces for Developers",
+    "slug": "pieces-for-developers",
+    "category_slug": "ai-tools",
+    "ratings_overall": 7.8,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "c7f21760-c2f9-4c2a-af8c-ea02f0b18a01",
+    "name": "Pixlr",
+    "slug": "pixlr",
+    "category_slug": "ai-tools",
+    "ratings_overall": 7.8,
+    "pricing_starts_at": 8
+  },
+  {
+    "id": "af3b42cd-52c8-47c9-85db-a7d9a4613bcb",
+    "name": "Podcastle",
+    "slug": "podcastle",
+    "category_slug": "ai-tools",
+    "ratings_overall": 8,
+    "pricing_starts_at": 12
+  },
+  {
+    "id": "894f87c7-16ca-4718-b7dd-7b60fb64443f",
+    "name": "Recraft AI",
+    "slug": "recraft-ai",
+    "category_slug": "ai-tools",
+    "ratings_overall": 8.5,
+    "pricing_starts_at": 25
+  },
+  {
+    "id": "5c4d5ea6-2487-4edb-b1e1-5239dfcf096c",
+    "name": "Replicate",
+    "slug": "replicate",
+    "category_slug": "ai-tools",
+    "ratings_overall": 8.3,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "a909e33a-03a0-4cb3-8a6e-1d8057805a56",
+    "name": "Replit AI",
+    "slug": "replit-ai",
+    "category_slug": "ai-tools",
+    "ratings_overall": 8.5,
+    "pricing_starts_at": 25
+  },
+  {
+    "id": "fed67cd2-7c12-4730-b408-deed7ea71dec",
+    "name": "Stability AI",
+    "slug": "stability-ai",
+    "category_slug": "ai-tools",
+    "ratings_overall": 8,
+    "pricing_starts_at": 0
+  },
+  {
+    "id": "edad640b-fe18-4dfc-bdf9-8787a2e37392",
+    "name": "tldraw",
+    "slug": "tldraw",
+    "category_slug": "ai-tools",
+    "ratings_overall": 7.9,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "645b3a84-c797-4233-b98b-1e3b9d832e62",
+    "name": "Together AI",
+    "slug": "together-ai",
+    "category_slug": "ai-tools",
+    "ratings_overall": 8.4,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "052a38c9-6256-4238-bcce-4c82acd29ded",
+    "name": "Tome",
+    "slug": "tome",
+    "category_slug": "ai-tools",
+    "ratings_overall": 7.9,
+    "pricing_starts_at": 16
+  },
+  {
+    "id": "07e9852d-80ea-4153-9b9e-278b7ba1f2d7",
+    "name": "Udio",
+    "slug": "udio",
+    "category_slug": "ai-tools",
+    "ratings_overall": 8.5,
+    "pricing_starts_at": 10
+  },
+  {
+    "id": "5682b1c2-36c3-4b9a-9c60-d238796152bb",
+    "name": "v0 by Vercel",
+    "slug": "v0",
+    "category_slug": "ai-tools",
+    "ratings_overall": 8.8,
+    "pricing_starts_at": 20
+  },
+  {
+    "id": "2b3dd8ba-9792-4365-b438-b2fd8a125d55",
+    "name": "Weights & Biases",
+    "slug": "weights-and-biases",
+    "category_slug": "ai-tools",
+    "ratings_overall": 8,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "d8f71c2e-0864-43e3-997f-0ed1eb126d56",
+    "name": "Brex",
+    "slug": "brex",
+    "category_slug": "business",
+    "ratings_overall": 8.8,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "502e1f8a-04dd-4617-a742-86a058442e5b",
+    "name": "Claap",
+    "slug": "claap",
+    "category_slug": "business",
+    "ratings_overall": 8,
+    "pricing_starts_at": 10
+  },
+  {
+    "id": "d0e57c31-e53b-4829-bdc0-c7e6acb65d6d",
+    "name": "Clio",
+    "slug": "clio",
+    "category_slug": "business",
+    "ratings_overall": 8.7,
+    "pricing_starts_at": 49
+  },
+  {
+    "id": "47dbf260-fce0-4d6c-914b-c76df86e45ea",
+    "name": "Clockwise",
+    "slug": "clockwise",
+    "category_slug": "business",
+    "ratings_overall": 8,
+    "pricing_starts_at": 7
+  },
+  {
+    "id": "fdec4e54-f672-484c-bcc7-6b041128131f",
+    "name": "Craft",
+    "slug": "craft-docs",
+    "category_slug": "business",
+    "ratings_overall": 8.4,
+    "pricing_starts_at": 5
+  },
+  {
+    "id": "c27de6da-00ea-4725-9581-90b79a711934",
+    "name": "Fathom",
+    "slug": "fathom-video",
+    "category_slug": "business",
+    "ratings_overall": 8.5,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "45e4a988-58ec-4c1b-ad56-9d2c0822d458",
+    "name": "Fellow",
+    "slug": "fellow",
+    "category_slug": "business",
+    "ratings_overall": 8.2,
+    "pricing_starts_at": 7
+  },
+  {
+    "id": "0f5ad729-6e5e-40d7-9434-b9366f3191a7",
+    "name": "Grammarly Business",
+    "slug": "grammarly-business",
+    "category_slug": "business",
+    "ratings_overall": 8.9,
+    "pricing_starts_at": 15
+  },
+  {
+    "id": "d76a5624-f716-4f3f-a018-572cee06e546",
+    "name": "Keeper Security",
+    "slug": "keeper-security",
+    "category_slug": "business",
+    "ratings_overall": 8.5,
+    "pricing_starts_at": 3
+  },
+  {
+    "id": "872a13e3-b596-4455-9141-ae1d83ae4bd6",
+    "name": "Krisp",
+    "slug": "krisp",
+    "category_slug": "business",
+    "ratings_overall": 8.3,
+    "pricing_starts_at": 8
+  },
+  {
+    "id": "8fe2212e-e30e-4413-89ad-9d59af50328d",
+    "name": "LegalZoom",
+    "slug": "legalzoom",
+    "category_slug": "business",
+    "ratings_overall": 7.9,
+    "pricing_starts_at": 0
+  },
+  {
+    "id": "b2f8f0e5-16e6-4c89-994e-0915c31df593",
+    "name": "Lucidchart",
+    "slug": "lucidchart",
+    "category_slug": "business",
+    "ratings_overall": 8.7,
+    "pricing_starts_at": 8
+  },
+  {
+    "id": "7d2af318-65ae-47e1-8ea3-80bb03c5475e",
+    "name": "Mercury",
+    "slug": "mercury",
+    "category_slug": "business",
+    "ratings_overall": 9.1,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "de2fd578-bc88-4254-9710-c9019eddf707",
+    "name": "Mixmax",
+    "slug": "mixmax",
+    "category_slug": "business",
+    "ratings_overall": 7.9,
+    "pricing_starts_at": 29
+  },
+  {
+    "id": "c1f9e10b-0347-45ef-8188-ff7bcb92a826",
+    "name": "Mural",
+    "slug": "mural",
+    "category_slug": "business",
+    "ratings_overall": 8.4,
+    "pricing_starts_at": 10
+  },
+  {
+    "id": "ef40b3ee-b137-4c99-ace4-f249ce5297f9",
+    "name": "Notion Calendar",
+    "slug": "notion-calendar",
+    "category_slug": "business",
+    "ratings_overall": 8.1,
+    "pricing_starts_at": 0
+  },
+  {
+    "id": "1fbec0da-1098-4fe4-8cb3-61b05168679b",
+    "name": "Oyster HR",
+    "slug": "oyster-hr",
+    "category_slug": "business",
+    "ratings_overall": 8.5,
+    "pricing_starts_at": 499
+  },
+  {
+    "id": "e79150f7-867e-42fb-9ef6-6aeb57c4b3d3",
+    "name": "Pitch",
+    "slug": "pitch",
+    "category_slug": "business",
+    "ratings_overall": 8.1,
+    "pricing_starts_at": 8
+  },
+  {
+    "id": "80928a1d-4721-410d-8fde-83add756ac78",
+    "name": "Raycast",
+    "slug": "raycast",
+    "category_slug": "business",
+    "ratings_overall": 9.2,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "b5c7ba34-0d82-4700-b7d6-c80b86bfcdd3",
+    "name": "Rocket Lawyer",
+    "slug": "rocket-lawyer",
+    "category_slug": "business",
+    "ratings_overall": 7.7,
+    "pricing_starts_at": 40
+  },
+  {
+    "id": "2c2a79b3-5df3-4748-88fd-406c13baf1b2",
+    "name": "Scribe",
+    "slug": "scribe",
+    "category_slug": "business",
+    "ratings_overall": 8.4,
+    "pricing_starts_at": 23
+  },
+  {
+    "id": "803b684b-3d0c-478b-ada8-5d58aa7de135",
+    "name": "Slite",
+    "slug": "slite",
+    "category_slug": "business",
+    "ratings_overall": 7.9,
+    "pricing_starts_at": 8
+  },
+  {
+    "id": "425eff8d-5d8a-4a7d-8b00-280c2533345f",
+    "name": "Stripe Atlas",
+    "slug": "stripe-atlas",
+    "category_slug": "business",
+    "ratings_overall": 8.6,
+    "pricing_starts_at": 500
+  },
+  {
+    "id": "5bf54e8f-d8fc-4474-9b8e-708d52de25e3",
+    "name": "Sunsama",
+    "slug": "sunsama",
+    "category_slug": "business",
+    "ratings_overall": 8.2,
+    "pricing_starts_at": 16
+  },
+  {
+    "id": "26aa8bf7-d180-4458-96a9-efacd16e58c6",
+    "name": "Tango",
+    "slug": "tango",
+    "category_slug": "business",
+    "ratings_overall": 8.1,
+    "pricing_starts_at": 16
+  },
+  {
+    "id": "bcf488cb-b7b5-4c9f-904c-328cea5f29b6",
+    "name": "Taskade",
+    "slug": "taskade",
+    "category_slug": "business",
+    "ratings_overall": 7.8,
+    "pricing_starts_at": 8
+  },
+  {
+    "id": "2819fc23-69fe-4e56-bfb8-155008505a49",
+    "name": "Whimsical",
+    "slug": "whimsical",
+    "category_slug": "business",
+    "ratings_overall": 8.3,
+    "pricing_starts_at": 10
+  },
+  {
+    "id": "7c45a7e7-d281-4b21-b166-c6c86b7a5027",
+    "name": "Adyen",
+    "slug": "adyen",
+    "category_slug": "ecommerce",
+    "ratings_overall": 8.7,
+    "pricing_starts_at": 0
+  },
+  {
+    "id": "f211a49c-6def-4588-b1d5-ae00845071ef",
+    "name": "AfterShip",
+    "slug": "aftership",
+    "category_slug": "ecommerce",
+    "ratings_overall": 8.4,
+    "pricing_starts_at": 9
+  },
+  {
+    "id": "11c01d32-59fc-4336-8721-1b5e4f82c26a",
+    "name": "Bold Commerce",
+    "slug": "bold-commerce",
+    "category_slug": "ecommerce",
+    "ratings_overall": 7.9,
+    "pricing_starts_at": 50
+  },
+  {
+    "id": "02e31b1b-aae2-4f47-9ed7-9a981a105dce",
+    "name": "CartFlows",
+    "slug": "cartflows",
+    "category_slug": "ecommerce",
+    "ratings_overall": 8.1,
+    "pricing_starts_at": 79
+  },
+  {
+    "id": "04f8a2b0-0835-4b30-a729-942b97199c7d",
+    "name": "Commercetools",
+    "slug": "commercetools",
+    "category_slug": "ecommerce",
+    "ratings_overall": 8.8,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "6a63cbda-9dde-42ab-987f-cb197e216ed0",
+    "name": "Faire",
+    "slug": "faire",
+    "category_slug": "ecommerce",
+    "ratings_overall": 8.8,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "151dac2c-deae-424b-a84f-847a4a4c9080",
+    "name": "Fourthwall",
+    "slug": "fourthwall",
+    "category_slug": "ecommerce",
+    "ratings_overall": 8.4,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "011b0266-b50a-411d-9629-005caa879bfa",
+    "name": "Gorgias",
+    "slug": "gorgias",
+    "category_slug": "ecommerce",
+    "ratings_overall": 8.5,
+    "pricing_starts_at": 10
+  },
+  {
+    "id": "22778c19-a23a-4ac9-9567-551d67db1880",
+    "name": "Helium 10",
+    "slug": "helium-10",
+    "category_slug": "ecommerce",
+    "ratings_overall": 8.6,
+    "pricing_starts_at": 29
+  },
+  {
+    "id": "1fd9e752-f211-409a-9a47-74b197792e28",
+    "name": "Junip",
+    "slug": "junip",
+    "category_slug": "ecommerce",
+    "ratings_overall": 8,
+    "pricing_starts_at": 19
+  },
+  {
+    "id": "c69fbd55-ae7e-4c0c-ae8f-5fe00bfd61fc",
+    "name": "Loop Returns",
+    "slug": "loop-returns",
+    "category_slug": "ecommerce",
+    "ratings_overall": 8.3,
+    "pricing_starts_at": 59
+  },
+  {
+    "id": "467fa190-9134-4370-a859-049f2c4dbca1",
+    "name": "Metorik",
+    "slug": "metorik",
+    "category_slug": "ecommerce",
+    "ratings_overall": 8.3,
+    "pricing_starts_at": 20
+  },
+  {
+    "id": "4e97925a-3fa0-4b5f-b618-8e7c629d41d6",
+    "name": "OpenCart",
+    "slug": "opencart",
+    "category_slug": "ecommerce",
+    "ratings_overall": 7.4,
+    "pricing_starts_at": 0
+  },
+  {
+    "id": "4a1b2f1c-5a5c-463b-98c4-5af9e82bb635",
+    "name": "Ordoro",
+    "slug": "ordoro",
+    "category_slug": "ecommerce",
+    "ratings_overall": 8.4,
+    "pricing_starts_at": 59
+  },
+  {
+    "id": "c4b00d7e-2491-4d1f-9382-43c771b101e4",
+    "name": "Printful",
+    "slug": "printful",
+    "category_slug": "ecommerce",
+    "ratings_overall": 8.3,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "db98e16f-aabd-4b10-a0b1-10967ff621ed",
+    "name": "Rebuy",
+    "slug": "rebuy",
+    "category_slug": "ecommerce",
+    "ratings_overall": 8.5,
+    "pricing_starts_at": 99
+  },
+  {
+    "id": "f5f0b956-5eb4-4c71-8091-95a120ed94a9",
+    "name": "Recharge",
+    "slug": "recharge",
+    "category_slug": "ecommerce",
+    "ratings_overall": 8.7,
+    "pricing_starts_at": 99
+  },
+  {
+    "id": "77006869-2ee7-4ed1-8fe2-9f1862ad4f8d",
+    "name": "ReturnGO",
+    "slug": "returngo",
+    "category_slug": "ecommerce",
+    "ratings_overall": 8.2,
+    "pricing_starts_at": 23
+  },
+  {
+    "id": "6717125b-d3bc-44f0-b229-b7ce2ee5e308",
+    "name": "Saleor",
+    "slug": "saleor",
+    "category_slug": "ecommerce",
+    "ratings_overall": 8.1,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "510fe43a-0815-455c-9352-fc368e3d3a41",
+    "name": "Shogun",
+    "slug": "shogun",
+    "category_slug": "ecommerce",
+    "ratings_overall": 8,
+    "pricing_starts_at": 39
+  },
+  {
+    "id": "09412696-54c7-42b6-81d4-00f099e089c8",
+    "name": "Shopify Markets",
+    "slug": "shopify-markets",
+    "category_slug": "ecommerce",
+    "ratings_overall": 8.6,
+    "pricing_starts_at": 39
+  },
+  {
+    "id": "8166172d-bd61-43f5-b580-afa50efeb972",
+    "name": "Shopify Plus",
+    "slug": "shopify-plus",
+    "category_slug": "ecommerce",
+    "ratings_overall": 9.3,
+    "pricing_starts_at": 2300
+  },
+  {
+    "id": "dd330c7b-0072-46d8-a999-9825d8b039b3",
+    "name": "Shopify POS",
+    "slug": "shopify-pos",
+    "category_slug": "ecommerce",
+    "ratings_overall": 8.4,
+    "pricing_starts_at": 5
+  },
+  {
+    "id": "9bea9141-cf94-4447-bd95-4c45dd05f462",
+    "name": "Snipcart",
+    "slug": "snipcart",
+    "category_slug": "ecommerce",
+    "ratings_overall": 8.2,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "4adcf6df-0b03-41b5-8cee-2da1118aa0b1",
+    "name": "Stamped.io",
+    "slug": "stamped-io",
+    "category_slug": "ecommerce",
+    "ratings_overall": 8.1,
+    "pricing_starts_at": 23
+  },
+  {
+    "id": "d7d0203d-cde3-455d-aeb5-f353de907175",
+    "name": "Swell",
+    "slug": "swell-commerce",
+    "category_slug": "ecommerce",
+    "ratings_overall": 8,
+    "pricing_starts_at": 0
+  },
+  {
+    "id": "ecef0468-1f42-4206-b3f9-5257e288c924",
+    "name": "Yotpo",
+    "slug": "yotpo",
+    "category_slug": "ecommerce",
+    "ratings_overall": 8.4,
+    "pricing_starts_at": 15
+  },
+  {
+    "id": "bac5c8dd-eb15-4e1c-a31d-2beec7aee4ad",
+    "name": "Zettle by PayPal",
+    "slug": "zettle",
+    "category_slug": "ecommerce",
+    "ratings_overall": 7.8,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "5605b907-23b7-46b7-bc22-55877f5d439b",
+    "name": "10Web",
+    "slug": "10web",
+    "category_slug": "hosting",
+    "ratings_overall": 7.9,
+    "pricing_starts_at": 10
+  },
+  {
+    "id": "fa269728-c246-48a6-9322-f1c47dd03950",
+    "name": "CapRover",
+    "slug": "caprover",
+    "category_slug": "hosting",
+    "ratings_overall": 7.9,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "ad97b4b6-2ae4-4d04-b269-eec18a3629a6",
+    "name": "ChemiCloud",
+    "slug": "chemicloud",
+    "category_slug": "hosting",
+    "ratings_overall": 8.1,
+    "pricing_starts_at": 3
+  },
+  {
+    "id": "b4337f7b-d5fb-4730-adc6-4dad6431ed93",
+    "name": "Closte",
+    "slug": "closte",
+    "category_slug": "hosting",
+    "ratings_overall": 7.8,
+    "pricing_starts_at": 10
+  },
+  {
+    "id": "626f94cb-a119-4f0a-9961-2d3a2971ddfc",
+    "name": "Cloudflare CDN",
+    "slug": "cloudflare-cdn",
+    "category_slug": "hosting",
+    "ratings_overall": 9.1,
+    "pricing_starts_at": 0
+  },
+  {
+    "id": "0a500535-d4c3-44b4-9f58-830d54001c95",
+    "name": "Cloudflare Workers",
+    "slug": "cloudflare-workers",
+    "category_slug": "hosting",
+    "ratings_overall": 9,
+    "pricing_starts_at": 5
+  },
+  {
+    "id": "602c09cb-88b8-4949-807f-02e96eb19c6b",
+    "name": "Coolify",
+    "slug": "coolify",
+    "category_slug": "hosting",
+    "ratings_overall": 8.4,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "36b6edf7-6c3a-47d5-a234-181779278791",
+    "name": "Deno Deploy",
+    "slug": "deno-deploy",
+    "category_slug": "hosting",
+    "ratings_overall": 8.2,
+    "pricing_starts_at": 20
+  },
+  {
+    "id": "5851d1b9-3e9e-4886-8fdc-be53b8c2f102",
+    "name": "Devrims",
+    "slug": "devrims",
+    "category_slug": "hosting",
+    "ratings_overall": 7.5,
+    "pricing_starts_at": 22
+  },
+  {
+    "id": "9d8a2159-e9cc-4bdd-8c51-8e06507d599b",
+    "name": "Dokku",
+    "slug": "dokku",
+    "category_slug": "hosting",
+    "ratings_overall": 8,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "b09201ce-2b4f-4e2f-b8c4-9b2fed5accb3",
+    "name": "Fastly",
+    "slug": "fastly",
+    "category_slug": "hosting",
+    "ratings_overall": 8.6,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "05fd9f3d-ec4c-4631-bd92-44831e664b49",
+    "name": "Google Domains",
+    "slug": "google-domains",
+    "category_slug": "hosting",
+    "ratings_overall": 8.1,
+    "pricing_starts_at": 12
+  },
+  {
+    "id": "0e395542-100a-466f-9a3c-a209980fc596",
+    "name": "HostISO",
+    "slug": "hostiso",
+    "category_slug": "hosting",
+    "ratings_overall": 7.6,
+    "pricing_starts_at": 15
+  },
+  {
+    "id": "ed4ba92d-3f4d-45cd-a1a2-223fe7ceb116",
+    "name": "Hostinger VPS",
+    "slug": "hostinger-vps",
+    "category_slug": "hosting",
+    "ratings_overall": 8.2,
+    "pricing_starts_at": 5
+  },
+  {
+    "id": "6b73060c-6747-4c35-abce-7cc208e2fc8f",
+    "name": "InterServer",
+    "slug": "interserver",
+    "category_slug": "hosting",
+    "ratings_overall": 7.8,
+    "pricing_starts_at": 6
+  },
+  {
+    "id": "bac527c7-a76a-46dd-a63f-5451ac0e954c",
+    "name": "Kamatera",
+    "slug": "kamatera",
+    "category_slug": "hosting",
+    "ratings_overall": 8.1,
+    "pricing_starts_at": 4
+  },
+  {
+    "id": "abc9a99c-df88-408e-8ce8-10d906e52afc",
+    "name": "Liquid Web",
+    "slug": "liquid-web",
+    "category_slug": "hosting",
+    "ratings_overall": 8.7,
+    "pricing_starts_at": 15
+  },
+  {
+    "id": "b57f12ca-d2b0-42bd-ad3b-6f14058d01bf",
+    "name": "Microsoft Azure",
+    "slug": "azure",
+    "category_slug": "hosting",
+    "ratings_overall": 9.1,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "a04828a3-fa8e-4c60-8196-fbece340232d",
+    "name": "Nexcess",
+    "slug": "nexcess",
+    "category_slug": "hosting",
+    "ratings_overall": 8.5,
+    "pricing_starts_at": 21
+  },
+  {
+    "id": "16b0bbad-bb7d-4683-91d3-6c8a5af7606d",
+    "name": "Pagely",
+    "slug": "pagely",
+    "category_slug": "hosting",
+    "ratings_overall": 8.6,
+    "pricing_starts_at": 199
+  },
+  {
+    "id": "e6325df0-c3d2-47fb-8aef-fd75e43f2b1e",
+    "name": "Pantheon",
+    "slug": "pantheon",
+    "category_slug": "hosting",
+    "ratings_overall": 8.4,
+    "pricing_starts_at": 41
+  },
+  {
+    "id": "5cb42a9a-34e4-4bca-b844-10240ae2ea04",
+    "name": "Platform.sh",
+    "slug": "platform-sh",
+    "category_slug": "hosting",
+    "ratings_overall": 8.3,
+    "pricing_starts_at": 50
+  },
+  {
+    "id": "bec8cbb7-5077-4d56-943b-892bf257f5d9",
+    "name": "Porkbun",
+    "slug": "porkbun",
+    "category_slug": "hosting",
+    "ratings_overall": 8.6,
+    "pricing_starts_at": 5
+  },
+  {
+    "id": "eb7e02bd-2e37-4dfe-a1eb-8b7e3c360a77",
+    "name": "Pressidium",
+    "slug": "pressidium",
+    "category_slug": "hosting",
+    "ratings_overall": 8.3,
+    "pricing_starts_at": 25
+  },
+  {
+    "id": "ed760e1e-7538-4629-808b-19a232c1eed4",
+    "name": "RunCloud",
+    "slug": "runcloud",
+    "category_slug": "hosting",
+    "ratings_overall": 8,
+    "pricing_starts_at": 8
+  },
+  {
+    "id": "46d98b58-2097-4f80-aa84-610951c8a9b9",
+    "name": "SpinupWP",
+    "slug": "spinupwp",
+    "category_slug": "hosting",
+    "ratings_overall": 8.1,
+    "pricing_starts_at": 12
+  },
+  {
+    "id": "c4bd4423-8646-4d20-9438-1dc265640fab",
+    "name": "SST",
+    "slug": "sst",
+    "category_slug": "hosting",
+    "ratings_overall": 8.5,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "4905df53-5956-4d9e-a5db-6042e718cb19",
+    "name": "TMD Hosting",
+    "slug": "tmd-hosting",
+    "category_slug": "hosting",
+    "ratings_overall": 8,
+    "pricing_starts_at": 3
+  },
+  {
+    "id": "fda29378-fae2-4fc1-90c8-4a500dfc10d2",
+    "name": "Turso",
+    "slug": "turso",
+    "category_slug": "hosting",
+    "ratings_overall": 8.1,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "46af75a7-dc3a-4c3b-a4d2-c01fb179ebd3",
+    "name": "Upstash",
+    "slug": "upstash",
+    "category_slug": "hosting",
+    "ratings_overall": 8.3,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "c69d7807-588f-48cc-a3c1-0e47c37f3d10",
+    "name": "WPX Hosting",
+    "slug": "wpx-hosting",
+    "category_slug": "hosting",
+    "ratings_overall": 8.6,
+    "pricing_starts_at": 21
+  },
+  {
+    "id": "d23069eb-9271-44dd-9294-311195f123b7",
+    "name": "Amplitude",
+    "slug": "amplitude",
+    "category_slug": "marketing",
+    "ratings_overall": 8.9,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "7c9c0c27-8eb3-488d-83bd-8887b666976a",
+    "name": "Apollo.io",
+    "slug": "apollo-io",
+    "category_slug": "marketing",
+    "ratings_overall": 8.5,
+    "pricing_starts_at": 49
+  },
+  {
+    "id": "18187ee8-ceaf-4d34-901e-57757001fdec",
+    "name": "beehiiv",
+    "slug": "beehiiv",
+    "category_slug": "marketing",
+    "ratings_overall": 8.7,
+    "pricing_starts_at": 39
+  },
+  {
+    "id": "f69ba44f-b8a6-4212-ad52-6fe29a504e26",
+    "name": "Benchmark Email",
+    "slug": "benchmark-email",
+    "category_slug": "marketing",
+    "ratings_overall": 7.7,
+    "pricing_starts_at": 13
+  },
+  {
+    "id": "3c3104bf-cff7-474a-8164-f0950961d70c",
+    "name": "Campaign Monitor",
+    "slug": "campaign-monitor",
+    "category_slug": "marketing",
+    "ratings_overall": 8,
+    "pricing_starts_at": 12
+  },
+  {
+    "id": "c08c743d-20ed-4962-8ef8-eb66d956bf75",
+    "name": "Clay",
+    "slug": "clay",
+    "category_slug": "marketing",
+    "ratings_overall": 8.8,
+    "pricing_starts_at": 149
+  },
+  {
+    "id": "49166fb3-05b3-4783-8952-9ce19c09bfa3",
+    "name": "Customer.io",
+    "slug": "customer-io",
+    "category_slug": "marketing",
+    "ratings_overall": 8.6,
+    "pricing_starts_at": 100
+  },
+  {
+    "id": "0fabe0ce-2d6f-4b5b-8873-526a881586ff",
+    "name": "Customer.io Data Pipelines",
+    "slug": "customer-io-data-pipelines",
+    "category_slug": "marketing",
+    "ratings_overall": 8.3,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "bcbaea50-0d99-4d56-a356-749d9c145391",
+    "name": "Customer.io Journeys",
+    "slug": "customer-io-journeys",
+    "category_slug": "marketing",
+    "ratings_overall": 8.7,
+    "pricing_starts_at": 100
+  },
+  {
+    "id": "0e068040-0914-4dba-adc9-f7398e807015",
+    "name": "Frase",
+    "slug": "frase",
+    "category_slug": "marketing",
+    "ratings_overall": 8.3,
+    "pricing_starts_at": 15
+  },
+  {
+    "id": "8aedc56e-5698-4fef-9e7b-3ba861dcda50",
+    "name": "Instantly",
+    "slug": "instantly",
+    "category_slug": "marketing",
+    "ratings_overall": 8.3,
+    "pricing_starts_at": 30
+  },
+  {
+    "id": "a6cf0db2-7e6c-4eab-bc9f-38d727e14485",
+    "name": "Kit (ConvertKit)",
+    "slug": "kit",
+    "category_slug": "marketing",
+    "ratings_overall": 8.6,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "d7f4d09a-8ca3-4636-b6f7-a2e579c31942",
+    "name": "Lemlist",
+    "slug": "lemlist",
+    "category_slug": "marketing",
+    "ratings_overall": 8.4,
+    "pricing_starts_at": 39
+  },
+  {
+    "id": "7ca261e8-164e-4e0c-a330-6ea0e653073f",
+    "name": "LinkedIn Ads",
+    "slug": "linkedin-ads",
+    "category_slug": "marketing",
+    "ratings_overall": 8.3,
+    "pricing_starts_at": 10
+  },
+  {
+    "id": "230a811e-62d9-44fb-863e-3b7f69c98536",
+    "name": "Marketo",
+    "slug": "marketo",
+    "category_slug": "marketing",
+    "ratings_overall": 8.4,
+    "pricing_starts_at": 895
+  },
+  {
+    "id": "b51c8893-c14c-434a-8930-03f4da4f8f74",
+    "name": "Matomo",
+    "slug": "matomo",
+    "category_slug": "marketing",
+    "ratings_overall": 8.5,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "7452f760-bffd-4965-9fe9-28c71a2b62ea",
+    "name": "Moosend",
+    "slug": "moosend",
+    "category_slug": "marketing",
+    "ratings_overall": 8.1,
+    "pricing_starts_at": 9
+  },
+  {
+    "id": "3786ac9d-bc46-4b4c-b544-1728c0d177c9",
+    "name": "Notion Sites",
+    "slug": "notion-sites-marketing",
+    "category_slug": "marketing",
+    "ratings_overall": 7.9,
+    "pricing_starts_at": 10
+  },
+  {
+    "id": "d9726df5-ec54-4a2f-ab2f-a5438df69826",
+    "name": "Pardot",
+    "slug": "pardot",
+    "category_slug": "marketing",
+    "ratings_overall": 8.2,
+    "pricing_starts_at": 1250
+  },
+  {
+    "id": "d1a13928-1fe2-4735-9fd6-d278b40374fb",
+    "name": "PhantomBuster",
+    "slug": "phantom-buster",
+    "category_slug": "marketing",
+    "ratings_overall": 7.8,
+    "pricing_starts_at": 56
+  },
+  {
+    "id": "a23f70ae-993c-4605-95c0-72f76a2105eb",
+    "name": "SE Ranking",
+    "slug": "se-ranking",
+    "category_slug": "marketing",
+    "ratings_overall": 8.3,
+    "pricing_starts_at": 52
+  },
+  {
+    "id": "76beac20-a91e-48c4-9a06-850aa7fb2b69",
+    "name": "Segment",
+    "slug": "segment",
+    "category_slug": "marketing",
+    "ratings_overall": 9,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "afd7054c-14f8-4883-9886-9e9da3b3ca37",
+    "name": "Sprig",
+    "slug": "sprig",
+    "category_slug": "marketing",
+    "ratings_overall": 8.2,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "7b6f5b90-b8d8-463e-ae8b-831d2574217b",
+    "name": "Swipe Pages",
+    "slug": "swipe-pages",
+    "category_slug": "marketing",
+    "ratings_overall": 7.9,
+    "pricing_starts_at": 39
+  },
+  {
+    "id": "633fa562-6f37-4f27-ad4f-7580140cfa99",
+    "name": "TikTok Ads",
+    "slug": "tiktok-ads",
+    "category_slug": "marketing",
+    "ratings_overall": 8.4,
+    "pricing_starts_at": 50
+  },
+  {
+    "id": "c9db8ec9-6a17-4014-b7cd-e64974aa2bc3",
+    "name": "Triple Whale",
+    "slug": "triple-whale-analytics",
+    "category_slug": "marketing",
+    "ratings_overall": 8.4,
+    "pricing_starts_at": 129
+  },
+  {
+    "id": "5329e9e3-4412-43e9-a3b5-7cd077fb9f89",
+    "name": "Typefully",
+    "slug": "typefully",
+    "category_slug": "marketing",
+    "ratings_overall": 8.2,
+    "pricing_starts_at": 13
+  },
+  {
+    "id": "a4fb2dac-c378-46d5-9757-e830bbfd19e8",
+    "name": "Webflow",
+    "slug": "webflow",
+    "category_slug": "marketing",
+    "ratings_overall": 9,
+    "pricing_starts_at": 14
+  },
+  {
+    "id": "b42055bb-4e7d-4c3a-b56b-b91abd3def59",
+    "name": "Attio",
+    "slug": "attio",
+    "category_slug": "saas",
+    "ratings_overall": 8.4,
+    "pricing_starts_at": 29
+  },
+  {
+    "id": "95fb0d42-19b5-4f29-be5c-4985c2c9c1ce",
+    "name": "Bitrix24",
+    "slug": "bitrix24",
+    "category_slug": "saas",
+    "ratings_overall": 7.6,
+    "pricing_starts_at": 49
+  },
+  {
+    "id": "8ca7c958-cabd-49fb-9b88-d886bf33114b",
+    "name": "Chatwoot",
+    "slug": "chatwoot",
+    "category_slug": "saas",
+    "ratings_overall": 8,
+    "pricing_starts_at": 19
+  },
+  {
+    "id": "d26c69f2-2ff6-461f-80ef-a683ed87d773",
+    "name": "ConnectWise",
+    "slug": "connectwise",
+    "category_slug": "saas",
+    "ratings_overall": 7.8,
+    "pricing_starts_at": 35
+  },
+  {
+    "id": "70fe34d5-6bc0-415c-8789-fe635b3e3f41",
+    "name": "DocuWare",
+    "slug": "docuware",
+    "category_slug": "saas",
+    "ratings_overall": 7.8,
+    "pricing_starts_at": 300
+  },
+  {
+    "id": "c2071e76-8909-4711-996e-56fc897cf04a",
+    "name": "Dropbox Business",
+    "slug": "dropbox-business",
+    "category_slug": "saas",
+    "ratings_overall": 8.1,
+    "pricing_starts_at": 15
+  },
+  {
+    "id": "605d588c-cf36-4de8-8902-cc4a719ff326",
+    "name": "Dub",
+    "slug": "dub",
+    "category_slug": "saas",
+    "ratings_overall": 8.1,
+    "pricing_starts_at": 24
+  },
+  {
+    "id": "fc1342eb-a4a3-4f82-a419-7783a148df75",
+    "name": "Erxes",
+    "slug": "erxes",
+    "category_slug": "saas",
+    "ratings_overall": 7.5,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "217379af-6517-4a91-a846-6627d540facf",
+    "name": "Fibery",
+    "slug": "fibery",
+    "category_slug": "saas",
+    "ratings_overall": 8.2,
+    "pricing_starts_at": 10
+  },
+  {
+    "id": "a65e150e-c83a-4338-a5ad-12543f130884",
+    "name": "Forecast",
+    "slug": "forecast-app",
+    "category_slug": "saas",
+    "ratings_overall": 8,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "451ddbe7-db28-47bf-8528-0af0830e3a37",
+    "name": "Freshchat",
+    "slug": "freshchat",
+    "category_slug": "saas",
+    "ratings_overall": 8,
+    "pricing_starts_at": 15
+  },
+  {
+    "id": "70573711-34d1-486f-a1cd-2d94dc714c51",
+    "name": "Front",
+    "slug": "front",
+    "category_slug": "saas",
+    "ratings_overall": 8.5,
+    "pricing_starts_at": 19
+  },
+  {
+    "id": "09c6bb9d-e932-4d38-b15b-25cd1a90f031",
+    "name": "Gather",
+    "slug": "gather",
+    "category_slug": "saas",
+    "ratings_overall": 8.1,
+    "pricing_starts_at": 7
+  },
+  {
+    "id": "1b6e9754-8a69-4cd3-9030-5f2e1c408dc8",
+    "name": "Height",
+    "slug": "height",
+    "category_slug": "saas",
+    "ratings_overall": 8.1,
+    "pricing_starts_at": 7
+  },
+  {
+    "id": "22de3b39-9b98-42a2-bde8-c7b662c761e9",
+    "name": "Help Scout",
+    "slug": "help-scout",
+    "category_slug": "saas",
+    "ratings_overall": 8.5,
+    "pricing_starts_at": 22
+  },
+  {
+    "id": "1980abe0-5dc4-4a42-b94a-9b9e9f33c5e3",
+    "name": "Hive",
+    "slug": "hive",
+    "category_slug": "saas",
+    "ratings_overall": 7.9,
+    "pricing_starts_at": 12
+  },
+  {
+    "id": "8c919aed-7bda-423b-91be-730455d312fd",
+    "name": "Huly",
+    "slug": "huly-platform",
+    "category_slug": "saas",
+    "ratings_overall": 8.4,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "d0fd6ea6-22b4-47ce-8b80-184084eece59",
+    "name": "Kantata",
+    "slug": "kantata",
+    "category_slug": "saas",
+    "ratings_overall": 8,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "c3f1ca4f-57f3-4028-ba1a-5704d3814b63",
+    "name": "Missive",
+    "slug": "missive",
+    "category_slug": "saas",
+    "ratings_overall": 8.3,
+    "pricing_starts_at": 14
+  },
+  {
+    "id": "4b6a900e-2692-470a-8b6a-140912087be5",
+    "name": "Notion Projects",
+    "slug": "notion-projects",
+    "category_slug": "saas",
+    "ratings_overall": 8.5,
+    "pricing_starts_at": 10
+  },
+  {
+    "id": "c802a38f-28b0-42e8-b121-6b6bdda46b93",
+    "name": "Odoo",
+    "slug": "odoo",
+    "category_slug": "saas",
+    "ratings_overall": 8.3,
+    "pricing_starts_at": 24
+  },
+  {
+    "id": "bd76b4a0-1735-46b1-a2e9-6b1c415e0766",
+    "name": "Outline",
+    "slug": "outline-wiki",
+    "category_slug": "saas",
+    "ratings_overall": 8.5,
+    "pricing_starts_at": 10
+  },
+  {
+    "id": "99437f7e-4145-40d3-95ec-279dbbaaeb0b",
+    "name": "PagerDuty",
+    "slug": "pagerduty",
+    "category_slug": "saas",
+    "ratings_overall": 8.6,
+    "pricing_starts_at": 21
+  },
+  {
+    "id": "68388e7d-0dd0-4b1d-8e77-1cfbcfa2d836",
+    "name": "Plane",
+    "slug": "plane",
+    "category_slug": "saas",
+    "ratings_overall": 8.3,
+    "pricing_starts_at": 7
+  },
+  {
+    "id": "8aa187a2-b0b4-4ab0-a2a3-0bdec918d09d",
+    "name": "Podio",
+    "slug": "podio",
+    "category_slug": "saas",
+    "ratings_overall": 7.5,
+    "pricing_starts_at": 14
+  },
+  {
+    "id": "8c3b799c-7a29-44a4-853e-d6d6be9fe223",
+    "name": "Productive",
+    "slug": "productive-io",
+    "category_slug": "saas",
+    "ratings_overall": 8,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "ae0ad254-2f1a-4ad1-a85c-cf20a2cfa8dc",
+    "name": "Retool Workflows",
+    "slug": "retool-workflows",
+    "category_slug": "saas",
+    "ratings_overall": 8.2,
+    "pricing_starts_at": 10
+  },
+  {
+    "id": "857be10d-cb0e-4099-bf02-184a20290d87",
+    "name": "SAP Business One",
+    "slug": "sap-business-one",
+    "category_slug": "saas",
+    "ratings_overall": 8,
+    "pricing_starts_at": 56
+  },
+  {
+    "id": "9b5f4d20-7eaa-4c3b-a6f2-a96eb1cbf0ac",
+    "name": "Scoro",
+    "slug": "scoro",
+    "category_slug": "saas",
+    "ratings_overall": 8,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "3a5bf722-541b-4b1d-89d8-589a906be3ac",
+    "name": "tawk.to",
+    "slug": "tawk-to",
+    "category_slug": "saas",
+    "ratings_overall": 8,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "4eda9c67-eead-49be-9df7-192420a97616",
+    "name": "Teamleader",
+    "slug": "teamleader",
+    "category_slug": "saas",
+    "ratings_overall": 8,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "a4125374-8c98-4ead-8179-c2517b54cb0a",
+    "name": "Twenty CRM",
+    "slug": "twenty-crm",
+    "category_slug": "saas",
+    "ratings_overall": 7.6,
+    "pricing_starts_at": 9
+  },
+  {
+    "id": "2be4b63c-7b5b-4ad2-9bdb-2cebf74fd3bd",
+    "name": "Whereby",
+    "slug": "whereby",
+    "category_slug": "saas",
+    "ratings_overall": 7.8,
+    "pricing_starts_at": 7
+  },
+  {
+    "id": "71ace65c-4a70-4a3c-9306-680eea0b4521",
+    "name": "Workplace by Meta",
+    "slug": "workplace-by-meta",
+    "category_slug": "saas",
+    "ratings_overall": 7.6,
+    "pricing_starts_at": 4
+  },
+  {
+    "id": "0dc6e8d4-da38-4751-b62d-a2f9350547b2",
+    "name": "Zammad",
+    "slug": "zammad",
+    "category_slug": "saas",
+    "ratings_overall": 8,
+    "pricing_starts_at": null
+  },
+  {
+    "id": "666686cb-7a8f-4c24-9982-dc49ea1fb8fb",
+    "name": "Zoho Desk",
+    "slug": "zoho-desk",
+    "category_slug": "saas",
+    "ratings_overall": 8.4,
+    "pricing_starts_at": 14
+  },
+  {
+    "id": "404754b8-e0fc-44e6-9730-ad5c67071e2a",
+    "name": "Zoho Projects",
+    "slug": "zoho-projects",
+    "category_slug": "saas",
+    "ratings_overall": 7.8,
+    "pricing_starts_at": 4
+  }
+]

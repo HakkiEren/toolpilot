@@ -13,7 +13,7 @@ import { BadgeEmbedCode } from './badge-embed';
 // Backlink generation strategy: tools display badge → link to ProPicked
 // ============================================================
 
-export const revalidate = 3600;
+export const revalidate = false;
 
 const year = new Date().getFullYear();
 const pageTitle = `${SITE_NAME} Award Badges — Display Your Rating | ${SITE_NAME}`;

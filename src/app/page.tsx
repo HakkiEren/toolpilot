@@ -15,7 +15,7 @@ import { HeroSearch } from '@/components/common/HeroSearch';
 import { EditorialBadge } from '@/components/common/EditorialBadge';
 import { BlogCard } from '@/components/blog/BlogCard';
 
-export const revalidate = 3600;
+export const revalidate = false;
 
 const year = new Date().getFullYear();
 

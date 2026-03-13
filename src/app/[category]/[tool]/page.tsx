@@ -26,7 +26,7 @@ import { NewsletterSignup } from '@/components/common/NewsletterSignup';
 // TOOL PROFILE PAGE — Individual tool review (ENHANCED)
 // ============================================================
 
-export const revalidate = 3600;
+export const revalidate = false;
 export const dynamicParams = true;
 
 export async function generateStaticParams() {

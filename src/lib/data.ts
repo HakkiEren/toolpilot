@@ -305,6 +305,26 @@ export async function getRelatedComparisons(
   return data.map(mapComparisonRow);
 }
 
+/**
+ * Get all published blog posts for a specific category
+ * Used for deterministic blog card selection on comparison pages
+ */
+export async function getBlogPostsByCategory(
+  categorySlug: string,
+  limit = 50
+): Promise<BlogPost[]> {
+  const { data, error } = await supabase
+    .from('blog_posts')
+    .select('*')
+    .eq('status', 'published')
+    .eq('category_slug', categorySlug)
+    .order('published_at', { ascending: false })
+    .limit(limit);
+
+  if (error || !data) return [];
+  return data.map(mapBlogRow);
+}
+
 export async function getBlogPosts(limit = 10): Promise<BlogPost[]> {
   const { data, error } = await supabase
     .from('blog_posts')
@@ -421,6 +441,17 @@ function mapToolRow(row: any): Tool {
   };
 }
 
+/** Normalize FAQ arrays — some DB rows use {q,a} instead of {question,answer} */
+function normalizeFaqs(faqs: any[] | null | undefined): { question: string; answer: string }[] {
+  if (!faqs || !Array.isArray(faqs)) return [];
+  return faqs
+    .map((f: any) => ({
+      question: (f.question || f.q || '').trim(),
+      answer: (f.answer || f.a || '').trim(),
+    }))
+    .filter((f) => f.question.length > 0 && f.answer.length > 0);
+}
+
 function mapComparisonRow(row: any): Comparison {
   return {
     id: row.id,
@@ -433,7 +464,7 @@ function mapComparisonRow(row: any): Comparison {
     migrationContent: row.migration_content || '',
     scenarioContent: row.scenario_content || '',
     featureMatrix: row.feature_matrix || [],
-    faqs: row.faqs || [],
+    faqs: normalizeFaqs(row.faqs),
     metaTitle: row.meta_title || '',
     metaDescription: row.meta_description || '',
     lastUpdated: row.last_updated || row.updated_at || '',
